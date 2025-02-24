@@ -2,6 +2,12 @@
 
 *Created by Huei-Wen Teng on 20250217 Last updated on 20250217*
 
+## 20250224 In-class Exercise link
+
+[https://forms.gle/fUqXFv4rAMys2K9d6](https://forms.gle/fUqXFv4rAMys2K9d6)
+
+
+
 ##  1. README.md
 
 In our README.md, add your two links to introduce yourslef. The following is my example: 
