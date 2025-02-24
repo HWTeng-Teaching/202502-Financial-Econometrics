@@ -71,3 +71,4 @@ In our README.md, add your two links to introduce yourslef. The following is my 
 | 劉永傑   | 313707053 | Chris    | 資財碩一                    | alan857 |
 | 陳怡今   | 313707052 | Fifi     | 資財所碩一                  | chen9702 |
 | 陳紀蓁   | 313707014 | Ariel    | 資財碩一                    | chen-ariel |
+| 劉岳樺   | 512717026 | Howard   | 財金碩專二                    | [GitHub](https://github.com/Yuehua-Liu) |
