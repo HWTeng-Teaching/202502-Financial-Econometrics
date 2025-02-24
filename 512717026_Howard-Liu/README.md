@@ -1,6 +1,6 @@
 # Howard Liu
 ![self-portrait-1](./self-portrait/self-portrait_1.png)
-[My Personal Blog on Github](https://yuehua-liu.github.io/)
+[My Personal Tech Blog on Github](https://yuehua-liu.github.io/)
 ## 1. Maps
 ![self-portrait-2](./self-portrait/self-portrait_2.png)
 ## 2. Food
