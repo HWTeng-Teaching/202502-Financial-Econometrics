@@ -1,5 +1,5 @@
 ### Map 
-I was born in Kaohsiung City, a passionate countryside area in suothern Taiwan. During my high school and university years, I studied in Kaohsiung, and during the last semester of my undergraduate years,After seriously preparing for the exam and carefully thinking. I had the wonderful opportunity to be student in NYCU. but I am very worried about my graduate school career because my English proficiency is not good, and I have no background in finance. However, I always tell myself just do it
+I was born in Kaohsiung City, a passionate  area in southern Taiwan. During my high school and university years, I studied in Kaohsiung, and during the last semester of my undergraduate years,After seriously preparing for the exam and carefully thinking. I had the wonderful opportunity to be student in NYCU. but I am very worried about my graduate school career because my English proficiency is not good, and I have no background in finance. However, I always tell myself just do it
 
 
 
@@ -9,7 +9,7 @@ I was born in Kaohsiung City, a passionate countryside area in suothern Taiwan. 
 
 
 ## Food 
-I’ve always loved starch, but after I started working out, I fell in love with protein. 
+I always loved starch, but after I started working out, I fell in love with protein. 
 <table>
   <tr>
     <td align="center">

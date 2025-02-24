@@ -1,6 +1,12 @@
 # Paul 陳怡仁
 
 
+[中文自我介紹](https://youtu.be/QwGglvVv33g)
+
+
+[Engilish introduction](https://youtu.be/P7Uc6ezKCMk)
+
+
 [My gitHUB webapge](https://github.com/Pauljkk)
 
 
