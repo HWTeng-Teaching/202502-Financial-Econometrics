@@ -7,7 +7,8 @@
 
 ## Map
 
-![image](https://github.com/user-attachments/assets/0a32f207-ab9d-4d4c-8de5-88385ceb2cf7)
+<img width="952" alt="image" src="https://github.com/user-attachments/assets/dea505bf-ac30-4616-81b7-a6daafe9ca07" />
+
 
 
 
