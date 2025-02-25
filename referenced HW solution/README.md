@@ -2,7 +2,7 @@
 
 ## HW0224
 
-There are three questions. For questions with many subquestion, I will split it to multiple students.  
+There are three questions. For questions with too many subquestion, I will split it to multiple students.  
 Those who are assigned with the same question, edit your subquesitons in the same question. 
 
 For example:
