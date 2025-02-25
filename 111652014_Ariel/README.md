@@ -1,5 +1,5 @@
 # Shih 施又睿
-[My GitHub webpage]([https://github.com/Ariella1315](https://ariella1315.github.io/webpage.html))
+[My GitHub webpage](https://ariella1315.github.io/webpage.html)
 ## Map
 ![image](https://github.com/Ariella1315/image/blob/main/2025-02-23_182709.png)
 ## Food
