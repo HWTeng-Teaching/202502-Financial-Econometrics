@@ -2,7 +2,7 @@
 
 *Created by Apple on 20250217 Last updated on 20250223*
 
-[My gitHUB webapge](https://Applewang168.github.io/about_me/)
+[My gitHUB webapge](https://Applewang168.github.io/About_me/)
 
 
 ## Map
