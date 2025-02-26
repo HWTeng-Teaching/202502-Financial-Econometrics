@@ -3,7 +3,7 @@
 
 [My GitHub webpage](https://changhungcheng.github.io/chc.github.io/)
 
-## Map
+## Maps
 
 ![MAP](https://github.com/user-attachments/assets/d6cea80b-8386-4eca-bf24-2615a1f5c30d)
 
