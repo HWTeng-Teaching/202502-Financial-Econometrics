@@ -1,7 +1,7 @@
 # Jack 張宏正
 
 
-[My gitHUB webapge]([https://github.com/ChangHungCheng](https://changhungcheng.github.io/chc.github.io/)) 
+[My GitHub webpage](https://changhungcheng.github.io/chc.github.io/)
 
 ## Map
 
