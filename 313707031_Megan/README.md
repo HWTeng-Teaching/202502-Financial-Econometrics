@@ -3,7 +3,7 @@
 
 *Created by Megan on 20250222*
 
-[My gitHUB webapge](https://github.com/11mei) 
+[My gitHUB webapge](https://11mei.github.io/.github.io/) 
 
 ## MAP
 I’m from Sanchong, a lively area in New Taipei City. I did my undergrad at Soochow University, majoring in Financial Engineering and Actuarial Mathematics. Now, I’m a first-year master's student in Information Management and Finance at NYCU.
