@@ -1,8 +1,9 @@
 
 # Irene 羅芷羚
 
-*Created by Irene on 20250221*
-*My github website:https://chihling830.github.io/*
+Created by Irene on 20250221.  
+My GitHub website: [chihling830.github.io](https://chihling830.github.io/)
+
 
 
 
