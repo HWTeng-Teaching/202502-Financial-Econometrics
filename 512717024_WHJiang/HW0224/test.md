@@ -20,4 +20,4 @@ $$
 
 (e) Obtain the slope estimate for the Microsoft stock. How does it compare to the slope for the other stocks?
 
-(f) Finally, put the slope estimate under the assumption that $$ \( \alpha_j = 0 \) $$. Do the estimates of the betas change much?
+(f) Finally, put the slope estimate under the assumption that \( \alpha_j = 0 \) . Do the estimates of the betas change much?
