@@ -1,51 +1,49 @@
 
 temp_file <- tempfile(fileext = ".rdata")
 
-# 下载文件
+
 download.file(url = "https://www.principlesofeconometrics.com/poe5/data/rdata/capm5.rdata", 
               destfile = temp_file, 
-              mode = "wb")  # 二进制模式下载
+              mode = "wb")  
 
-# 加载数据
 load(temp_file)
 capm5
 
 
-# 确定正确的列名(如果需要调整请根据names(capm5)的输出结果修改)
-firms <- c("ge", "ibm", "ford", "msft", "dis", "xom")
-market_col <- "mkt"  # 市场回报率的列名
-riskfree_col <- "riskfree"  # 无风险利率的列名
 
-# 计算超额市场回报
+firms <- c("ge", "ibm", "ford", "msft", "dis", "xom")
+market_col <- "mkt"
+riskfree_col <- "riskfree" 
+
+
 capm5$MKT_excess <- capm5[[market_col]] - capm5[[riskfree_col]]
 
-# 创建数据框存储结果
+
 results <- data.frame(Firm = firms, Beta = numeric(length(firms)))
 
-# 对每家公司估计CAPM模型
+
 for(i in 1:length(firms)) {
-  # 计算公司超额收益
+  
   firm_excess <- capm5[[firms[i]]] - capm5[[riskfree_col]]
   
-  # 估计CAPM模型: (R_i - R_f) = α + β(R_m - R_f) + ε
+
   model <- lm(firm_excess ~ capm5$MKT_excess)
   
-  # 存储beta值
+  
   results$Alpha[i] <- coef(model)[1]
   results$Beta[i] <- coef(model)[2]
 }
 
-# 输出beta值结果
 print(results)
 
-# 找出最具防御性和进攻性的公司
+
 defensive_firm <- results$Firm[which.min(results$Beta)]
 defensive_beta <- min(results$Beta)
 
 aggressive_firm <- results$Firm[which.max(results$Beta)]
 aggressive_beta <- max(results$Beta)
 
-# 打印结果
+
 cat(defensive_firm, "Beta值 =", round(defensive_beta, 4), "\n")
 cat(aggressive_firm, "Beta值 =", round(aggressive_beta, 4), "\n")
 
