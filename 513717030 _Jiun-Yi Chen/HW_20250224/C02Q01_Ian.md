@@ -14,7 +14,8 @@ $\bar{x}$ = $\frac{\sum x_i}{5}$ = $\frac{3 + 2 + 1 + (-1) + 0}{5}$ = $\frac{5}{
 
 $\bar{y}$ = $\frac{\sum y_i}{5}$ = $\frac{4 + 2 + 3 + 1 + 0}{5}$ = $\frac{10}{5} = 2$
 
-(a) and (c) ## Step 2: Complete the Table
+## (a) and (c) 
+## Step 2: Complete the Table
 
 | $x$ | $y$ | $x - \bar{x}$ | $(x - \bar{x})^2$ | $y - \bar{y}$ | $(x - \bar{x})(y - \bar{y})$ |
 |--------|--------|----------------|-------------------|----------------|----------------------|
@@ -32,7 +33,8 @@ $\sum (y - \bar{y})^2 = 2^2 + 0^2 + 1^2 + (-1)^2 + (-2)^2 = 4 + 0 + 1 + 1 + 4 = 
 
 $\sum (x - \bar{x})(y - \bar{y}) = 4 + 0 + 0 + 2 + 2 = 8$
 
-(b) ## Step 3: Compute $b_1$ and $b_2$
+## (b) 
+## Step 3: Compute $b_1$ and $b_2$
 
 The slope of the regression line is:
 
@@ -46,7 +48,8 @@ Thus, the regression equation is:
 
 $\hat{y} = 0.8x + 1.2$
 
-(d)## Step 4: Compute Fitted Values of y
+## (d)
+## Step 4: Compute Fitted Values of y
 
 Using the regression equation $\hat{y} = 0.8x + 1.2$:
 
