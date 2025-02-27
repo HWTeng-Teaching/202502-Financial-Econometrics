@@ -1,3 +1,6 @@
+## My GitHub Page
+[Visit my GitHub Page](https://github.com/waynechen5)
+
 # Personal Introduction
 
 ## Maps 
