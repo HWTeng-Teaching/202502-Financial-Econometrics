@@ -11,9 +11,9 @@
 | **5** | **10** | **0** | **10** | **0** | **8** |
 ## (b)
 $$
-b_2 = \frac{\sum (x_i - \bar{x}) (y_i - \bar{y})}{\sum (x_i - \bar{x})^2}
+b_2 = \frac{\sum (x_i - \bar{x}) (y_i - \bar{y})}{\sum (x_i - \bar{x})^2} = 
 $$
 
 $$
-b_1 = \bar{y} - b_2 \bar{x}
+b_1 = \bar{y} - b_2 \bar{x} = 
 $$
