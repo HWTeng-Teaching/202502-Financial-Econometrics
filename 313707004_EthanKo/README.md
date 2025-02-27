@@ -2,7 +2,7 @@
 
 *Created by Ethan Ko on 20250217 Last updated on 20250224*
 
-[My gitHUB webapge](https://github.com/EthanKo0205)
+[My gitHUB webapge]((https://ethanko0205.github.io/))
 
 
 ## Map
