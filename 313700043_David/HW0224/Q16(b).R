@@ -35,3 +35,5 @@ cat(aggressive_firm, "Beta值 =", round(aggressive_beta, 4), "\n")
 
 
 
+
+
