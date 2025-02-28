@@ -32,8 +32,3 @@ aggressive_beta <- max(results$Beta)
 
 cat(defensive_firm, "Beta值 =", round(defensive_beta, 4), "\n")
 cat(aggressive_firm, "Beta值 =", round(aggressive_beta, 4), "\n")
-
-
-
-
-
