@@ -36,11 +36,13 @@ $$
 ## **In Urban and Rural Regions**
 ### **Urban:**
 For 12 years of education:
+
 $$
 \hat{\text{WAGE}} = -10.76 + 5.46 \times 12 = 18.76
 $$
 
 For 16 years of education:
+
 $$
 \hat{\text{WAGE}} = -10.76 + 5.46 \times 16 = 28.6
 $$
@@ -49,11 +51,13 @@ $$
 
 ### **Rural:**
 For 12 years of education:
+
 $$
 \hat{\text{WAGE}} = -4.88 + 1.8 \times 12 = 16.72
 $$
 
 For 16 years of education:
+
 $$
 \hat{\text{WAGE}} = -4.88 + 1.8 \times 16 = 23.92
 $$
