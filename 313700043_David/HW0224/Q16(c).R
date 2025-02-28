@@ -4,16 +4,6 @@ market_excess <- capm5$MKT_excess
 
 model_msft <- lm(msft_excess ~ market_excess)
 
-plot(market_excess, msft_excess,
-     main = "CAPM for Microsoft",
-     xlab = "Market Excess Return (R_m - R_f)",
-     ylab = "MSFT Excess Return (R_MSFT - R_f)",
-     pch = 19,       # 點的形狀
-     col = "blue")   # 點的顏色
-
-abline(model_msft, col = "red", lwd = 2)
-
-
 library(ggplot2)
 alpha_msft <- results$Alpha[4]
 beta_msft <- results$Beta[4]
