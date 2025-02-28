@@ -42,7 +42,7 @@ $$
 
 For 16 years of education:
 $$
-\hat{\text{WAGE}} = -10.76 + 5.46 \times 16 = -8.6
+\hat{\text{WAGE}} = -10.76 + 5.46 \times 16 = 28.6
 $$
 
 ---
