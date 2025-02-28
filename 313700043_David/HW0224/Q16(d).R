@@ -1,4 +1,3 @@
-
 # 新建 results，其中放四個欄位：
 #  - Beta_with_intercept: 有截距CAPM的Beta
 #  - Beta_no_intercept: 無截距CAPM的Beta
@@ -34,6 +33,5 @@ for (i in seq_along(firms)) {
 }
 
 # 查看結果
-results_compare$Beta_diff <- results$Beta_with_intercept - results$Beta_no_intercept
+results_compare$Beta_diff <- results_compare$Beta_with_intercept - results_compare$Beta_no_intercept
 print(results_compare)
-
