@@ -1,3 +1,8 @@
+#(a)
+#This model is a simple regression model because:
+#1.It has a single independent variable 
+#2.It includes an intercept and an error term 
+#3.It can be estimated using OLS regression to determine the values of imtercept and slope
 # 🌟 清空環境
 rm(list = ls())
 
