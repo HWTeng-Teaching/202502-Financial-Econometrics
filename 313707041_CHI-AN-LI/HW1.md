@@ -11,7 +11,7 @@
 
 ## (b)
 $$
-b_2 = \frac{\sum (x_i - \bar{x}) (y_i - \bar{y})}{\sum (x_i - \bar{x})^2} = 0.8
+$b_2 = \frac{\sum (x_i - \bar{x}) (y_i - \bar{y})}{\sum (x_i - \bar{x})^2} = 0.8
 $$
 b2表示當x增加一單位，y平均會增加0.8單位
 $$
