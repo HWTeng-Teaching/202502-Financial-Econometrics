@@ -1,6 +1,6 @@
 # 2.1
 ## (a)
-\[
+$$
 \begin{array}{|c|c|c|c|c|c|}
 \hline
 (x) & (y) & (x - \bar{x}) & (x - \bar{x})^2 & (y - \bar{y}) & ( (x - \bar{x}) (y - \bar{y}) ) \\
@@ -14,7 +14,8 @@
 \sum x_i = 5  & \sum y_i = 10  & \sum (x_i - \bar{x}) = 0  & \sum (x_i - \bar{x})^2 = 10  & \sum (y_i - \bar{y}) = 0  & \sum (x_i - \bar{x})(y_i - \bar{y}) = 8  \\
 \hline
 \end{array}
-\]
+$$
+
 
 ## (b)
 $$
