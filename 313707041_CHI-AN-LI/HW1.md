@@ -25,27 +25,23 @@ b₁ 表示當 \( x = 0 \) 時，\( y \) 預期為 1.2 單位。
 
 ## (c)
 
-### **計算數值**
-- \( \sum x_i^2 = 15 \)
-- \( \sum x_i y_i = 18 \)
-- \( \bar{x} = 1 \)，\( \bar{y} = 2 \)
-- \( N = 5 \)
+$$
+\sum x_i^2 = 15, \quad \sum x_i y_i = 18, \quad \bar{x} = 1, \quad \bar{y} = 2, \quad N = 5
+$$
 
-### **驗證公式**
-1. **驗證 \( \sum (x_i - \bar{x})^2 \)**
-   \[
+1. **驗證** \( \sum (x_i - \bar{x})^2 \)
+   $$
    \sum (x_i - \bar{x})^2 = \sum x_i^2 - N \bar{x}^2
-   \]
-   \[
+   $$
+   $$
    10 = 15 - (5 \times 1^2) = 10
-   \]
-   ✅ **成立**
+   $$
 
-2. **驗證 \( \sum (x_i - \bar{x})(y_i - \bar{y}) \)**
-   \[
+2. **驗證** \( \sum (x_i - \bar{x})(y_i - \bar{y}) \)
+   $$
    \sum (x_i - \bar{x})(y_i - \bar{y}) = \sum x_i y_i - N \bar{x} \bar{y}
-   \]
-   \[
+   $$
+   $$
    8 = 18 - (5 \times 1 \times 2) = 8
-   \]
-   ✅ **成立**
+   $$
+
