@@ -11,7 +11,7 @@
 
 ## (b)
 $$
-b_2 = \frac{\sum (x_i - \bar{x}) (y_i - \bar{y})}{\sum (x_i - \bar{x})^2} = 
+b_2 = \frac{\sum (x_i - \bar{x}) (y_i - \bar{y})}{\sum (x_i - \bar{x})^2} = 0.8
 $$
 
 $$
