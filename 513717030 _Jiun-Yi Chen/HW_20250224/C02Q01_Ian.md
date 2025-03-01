@@ -154,7 +154,7 @@ legend("top", inset = -0.15,  # Moves the legend above the plot
        pt.cex = c(1, 1, 1.5),
        cex = 1,
        bty = "n")  # No legend border
-
+```
 ## (f)
 # Regression Analysis Results
 ![Rplot](https://github.com/user-attachments/assets/50e87af2-ae96-41f9-8e8d-3b2f6f1ca842)
