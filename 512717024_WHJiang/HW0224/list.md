@@ -1,6 +1,13 @@
 ## C02Q01 a~j (Problem)
 ![image](https://github.com/user-attachments/assets/9bdc617b-1206-463c-a30c-fada902dc03a)
 
+## C02Q14 a,b,c (Problem)
+![image](https://github.com/user-attachments/assets/734ed15a-1204-4eb6-8617-0822da2f0510)
+
+## C02Q16 a,b,c,d (Computer Exercise)
+![image](https://github.com/user-attachments/assets/fe8c6ba2-1391-4541-a5bd-a0ed943e2491)
+
+
 請考慮下列五個觀察值。你必須僅使用計算器完成此練習的所有部分。
 
 | x  | y  | x – x̄ | (x – x̄)² | y – ȳ | (x – x̄)(y – ȳ) |
@@ -254,9 +261,4 @@
   代入：var(b₂) = 1.2 / 10 = 0.12  
 **標準誤：** se(b₂) = √(0.12) ≈ 0.3464
 
-## C02Q14 a,b,c (Problem)
-![image](https://github.com/user-attachments/assets/734ed15a-1204-4eb6-8617-0822da2f0510)
-
-## C02Q16 a,b,c,d (Computer Exercise)
-![image](https://github.com/user-attachments/assets/fe8c6ba2-1391-4541-a5bd-a0ed943e2491)
 
