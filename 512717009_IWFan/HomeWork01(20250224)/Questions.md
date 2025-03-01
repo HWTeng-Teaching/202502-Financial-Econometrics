@@ -167,7 +167,7 @@ SE(ε̂) = 0.0956
 ### (c)
 Urban Area
 
-回歸公式:
+regression model:
 WAGÊ = -10.76 + 2.46 * EDUC
 
 - EDUC = 12:
@@ -178,7 +178,7 @@ WAGÊ = -10.76 + 2.46 * 16 = 28.60
 
 Rural Area
 
-回歸公式:
+regression model:
 WAGÊ = -4.88 + 1.80 * EDUC
 
 - EDUC = 12:
