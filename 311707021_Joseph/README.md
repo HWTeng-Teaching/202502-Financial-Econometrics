@@ -3,7 +3,7 @@
 
 *Created by Joseph
 
-[My gitHUB webapge](file:///C:/Users/User/Downloads/%E4%B8%AD%E6%96%87CV%20%20(1).html)
+[My gitHUB webapge](https://joseph-resumeintro.my.canva.site/human-resources-resume-website-in-beige-black-simple-and-minimal-style)
 
 
 ## Map
