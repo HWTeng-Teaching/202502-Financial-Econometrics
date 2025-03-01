@@ -286,4 +286,5 @@ Conclusion:
 
 #### Conclusion
 ✅ Forcing α = 0 does not materially impact the beta estimates.
+
 ✅ Stock risk classifications remain unchanged.
