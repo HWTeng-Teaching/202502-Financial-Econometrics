@@ -1,6 +1,7 @@
 ## My GitHub Page
 [Visit my GitHub Page](https://github.com/waynechen5)  
 [My MFS](https://waynechen5.github.io/)
+[self-introsuction](https://waynechen5.github.io/self-introduction.html)
 # Personal Introduction
 
 ## Maps 
