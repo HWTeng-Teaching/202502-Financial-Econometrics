@@ -102,7 +102,9 @@ Sorting  x  values:  -1, 0, 1, 2, 3 . Since we have an odd number of values N=5 
 
 $\text{Median of }x = 1$
 
-##(e)
-![1](https://github.com/user-attachments/assets/e880c087-b347-4dc1-aa45-a30cadfbc5f2)
+## (e)
+![Rplot](https://github.com/user-attachments/assets/99905a27-3e75-4518-a6c4-cca46e982594)
+R 
+![圖片](https://github.com/user-attachments/assets/16530c77-cafb-4b10-badc-8b6d77ff80ae)
+![圖片](https://github.com/user-attachments/assets/f1d1d7e5-f3aa-4a80-b689-fe192fdc002a)
 
-![圖片](https://github.com/user-attachments/assets/7dc3fe7a-7dae-45e4-a68d-c1ad2f2369c3)
