@@ -107,18 +107,18 @@ $\text{Median of }x = 1$
 
 R 
 ```R Language
-# Define the data points
+# Define the data points 定義座標點
 x <- c(3, 2, 1, -1, 0)
 y <- c(4, 2, 3, 1, 0)
 
-# Compute the fitted values based on the regression equation
+# Compute the fitted values based on the regression equation 計算回歸方程式
 y_hat <- 0.8 * x + 1.2
 
-# Compute the mean point (x̄, ȳ)
+# Compute the mean point (x̄, ȳ) 計算平均值
 x_mean <- mean(x)
 y_mean <- mean(y)
 
-# Set up plot limits (adjusted to ensure the regression line fits)
+# Set up plot limits (adjusted to ensure the regression line fits) 設定迴歸線不要飄到太外面(美觀)
 x_min <- min(x) - 1
 x_max <- max(x) + 1
 y_min <- min(y) - 1
