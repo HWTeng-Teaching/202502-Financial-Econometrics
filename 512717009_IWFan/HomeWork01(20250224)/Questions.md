@@ -37,13 +37,13 @@ b1 = ȳ - b2 * x̄ = 2 - 0.8 * 1 = 1.2
 
 Σ(xi - x̄)² = Σxi² - N * x̄² = 15 - 5 * 1² = 10
 
-(與a小題相同，驗證成立)
+The same as in part (a), the verification holds.
 
 Σxiyi = 3*4 + 2*2 + 1*3 + (-1)*1 + 0*0 = 18
 
 Σ(x - x̄)(y - ȳ) = Σxiyi - N * x̄ * ȳ = 18 - 5*1*2 = 8
 
-(與a小題相同，驗證成立)
+The same as in part (a), the verification holds.
 
 ### (d) 
 x  | y  | ŷ  | e^  | e^2 | x*e
@@ -78,44 +78,43 @@ ŷ = 1.2 + 0.8x
 
 ŷ = 1.2 + 0.8(1) = 2
 
-結論:回歸線通過 (1, 2)
+Conclusion: The regression line passes through the point of means (1, 2)
 ![image](https://github.com/user-attachments/assets/f418d4e9-8bce-4466-8ba5-092b9c45f3bc)
 
 
 ### (g)
 ȳ = b1 + b2 * x̄
 
-已知：
 b1 = 1.2
+
 b2 = 0.8
+
 x̄ = 1
 
 ȳ = b1 + b2 * x̄ = 1.2 + 0.8 * 1 = 2
 
 ȳ = 2
 
-結論：驗證成立
+Conclusion: The verification holds.
 
 ### (h)
-驗證 ŷ = ȳ
+Verification  ŷ = ȳ
 
-預測 ŷi:
+Prediction  ŷi:
 x = 3, ŷ = 3.6
 x = 2, ŷ = 2.8
 x = 1, ŷ = 2.0
 x = -1, ŷ = 0.4
 x = 0, ŷ = 1.2
 
-預測均值:
 ŷ = (3.6 + 2.8 + 2.0 + 0.4 + 1.2) / 5 = 2
 
-樣本平均數:
 ȳ = 2
 
-結論:驗證成立
+Conclusion: The verification holds.
 
 ### (i)
-計算殘差平方和 (RSS)
+ (RSS)
 | x  | y  | ŷ  | e = y - ŷ | e² |
 |----|----|----|----|----|
 3  | 4  | 3.6 | 0.4 | 0.16
@@ -124,7 +123,7 @@ ȳ = 2
 -1 | 1  | 0.4 | 0.6 | 0.36
 0  | 0  | 1.2 | -1.2 | 1.44
 
-合計 e² = 3.6
+e² = 3.6
 
 σ^2 = SSE/N−2=3.6/3=1.2
 
