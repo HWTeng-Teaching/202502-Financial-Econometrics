@@ -106,6 +106,54 @@ $\text{Median of }x = 1$
 ![圖片](https://github.com/user-attachments/assets/7b6eb60b-364b-4d73-a217-5e518dbd2579)
 
 R 
+```R Language
+# Define the data points
+x <- c(3, 2, 1, -1, 0)
+y <- c(4, 2, 3, 1, 0)
+
+# Compute the fitted values based on the regression equation
+y_hat <- 0.8 * x + 1.2
+
+# Compute the mean point (x̄, ȳ)
+x_mean <- mean(x)
+y_mean <- mean(y)
+
+# Set up plot limits (adjusted to ensure the regression line fits)
+x_min <- min(x) - 1
+x_max <- max(x) + 1
+y_min <- min(y) - 1
+y_max <- max(y) + 1
+
+# Open plotting space and adjust margins for legend outside the plot
+par(mar = c(4, 4, 5, 2))  # Increase top margin to make space for legend
+
+# Create an empty plot
+plot(x, y, pch = 19, col = "blue", xlim = c(x_min, x_max), ylim = c(y_min, y_max),
+     xlab = "X", ylab = "Y", main = "Scatter Plot with Regression Line")
+
+# Add regression line only inside the plot area
+x_seq <- seq(x_min, x_max, length.out = 100)  # Generate x values within axis limits
+y_seq <- 0.8 * x_seq + 1.2  # Compute corresponding y values
+valid_indices <- (y_seq >= y_min) & (y_seq <= y_max)  # Ensure y-values stay inside the plot
+lines(x_seq[valid_indices], y_seq[valid_indices], col = "red", lwd = 2)  # Draw regression line only inside the plot
+
+# Add mean point
+points(x_mean, y_mean, col = "green", pch = 19, cex = 1.5)
+
+# Draw X and Y axes with arrows
+arrows(x_min, 0, x_max, 0, col = "black", length = 0.1, lwd = 1.5) # X-axis arrow
+arrows(0, y_min, 0, y_max, col = "black", length = 0.1, lwd = 1.5) # Y-axis arrow
+
+# Move the legend outside the plot
+par(xpd = TRUE)  # Allow legend outside plot area
+legend("top", inset = -0.15,  # Moves the legend above the plot
+       legend = c("Data Points", "Regression Line", "Mean (x̄, ȳ)"),
+       pch = c(19, NA, 19),  # Symbol for points (Data & Mean), NA for line
+       lty = c(NA, 1, NA),   # Line type (only for Regression Line)
+       col = c("blue", "red", "green"),
+       pt.cex = c(1, 1, 1.5),
+       cex = 1,
+       bty = "n")  # No legend border
 ![圖片](https://github.com/user-attachments/assets/aca7cf37-fc97-4a44-a5d8-8cad01ed55a3)
 
 ![圖片](https://github.com/user-attachments/assets/28ab59fc-19a0-4049-8c16-3c24c644eb7f)
