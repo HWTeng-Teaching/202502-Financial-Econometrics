@@ -103,10 +103,38 @@ Sorting  x  values:  -1, 0, 1, 2, 3 . Since we have an odd number of values N=5 
 $\text{Median of }x = 1$
 
 ## (e)
-![Rplot](https://github.com/user-attachments/assets/99905a27-3e75-4518-a6c4-cca46e982594)
+![圖片](https://github.com/user-attachments/assets/7b6eb60b-364b-4d73-a217-5e518dbd2579)
+
 R 
 ![圖片](https://github.com/user-attachments/assets/aca7cf37-fc97-4a44-a5d8-8cad01ed55a3)
 
 ![圖片](https://github.com/user-attachments/assets/28ab59fc-19a0-4049-8c16-3c24c644eb7f)
+
+## (f)
+# Regression Analysis Results
+![Rplot](https://github.com/user-attachments/assets/50e87af2-ae96-41f9-8e8d-3b2f6f1ca842)
+
+## (g)
+$\bar{x}$ = 1
+$\bar{y}$ = 2
+$b_{1}$ = 1.2
+$b_{2}$ = 0.8
+then $\bar{y} = b_{1} + b_{2} \bar{x}$ = 1.2 +0.8*1 = 2
+
+## (h)
+
+We known $\sum{\hat{y}}$ = 10 from d. ,then  $\bar{\hat{y}}$ = 2 .
+And we known $\sum{y}$ = 10 from a. ,then  $\bar{y}$ = 2 .
+So, $\bar{y}$ = $\bar{\hat{y}}$
+
+## (i)
+$\sum{\hat{e_{i}}^2}$ =3.6
+\
+$\hat{\sigma}^2 = \hat{e_{i}}^2 / N-2 = 3.6 / 3 = 1.2$
+
+## (j)
+$\hat{Var}(b_2 | x)$ = $\hat{\sigma}^2$ / $\sum{(x_{i}-\bar{x})}^2$ = 1.2 / 10 = 0.12
+\
+$se(b_2)$ = $\sqrt{\hat{Var}(b_2 | x)}$ = 0.3464
 
 
