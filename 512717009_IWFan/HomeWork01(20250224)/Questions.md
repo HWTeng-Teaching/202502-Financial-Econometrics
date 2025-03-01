@@ -79,6 +79,8 @@ ŷ = 1.2 + 0.8x
 ŷ = 1.2 + 0.8(1) = 2
 
 結論:回歸線通過 (1, 2)
+![image](https://github.com/user-attachments/assets/f418d4e9-8bce-4466-8ba5-092b9c45f3bc)
+
 
 ### (g)
 ȳ = b1 + b2 * x̄
