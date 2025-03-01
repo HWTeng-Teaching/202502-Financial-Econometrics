@@ -55,3 +55,15 @@ ggplot(capm5, aes(x = x, y = y)) +
   theme(text = element_text(family = "Arial"))
 
 cat("===== CAPM 分析完成 =====\n")
+
+#假設截距項為零的β值
+?lm
+for (i in company) {
+  y <- capm5[[i]] - capm5$riskfree
+  x <- capm5$mkt - capm5$riskfree
+  tab <- lm(y ~ x - 1)
+  
+  cat("Company:", i, "\n")
+  cat("Slope:", coef(tab)[1], "\n")
+  cat("-------------------------\n")
+}
