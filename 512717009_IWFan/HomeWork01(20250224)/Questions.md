@@ -205,8 +205,9 @@ WAGÊ = -4.88 + 1.80 * 16 = 23.92
 - y = α + βx + e
 - y = stock excess return
 - x = market excess return
+
+- $y = r_j + r_f , x = r_m - r_f , \beta_1 = \alpha ,\beta_2 = \beta_j$
 - This is exactly a simple regression form.
-$y = r_j + r_f , x = r_m - r_f , \beta_1 = \alpha ,\beta_2 = \beta_j$
 
 ## (b) Estimated betas and interpretation
 | Firm | Beta | Interpretation |
