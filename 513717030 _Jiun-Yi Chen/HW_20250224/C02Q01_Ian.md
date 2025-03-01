@@ -105,6 +105,8 @@ $\text{Median of }x = 1$
 ## (e)
 ![Rplot](https://github.com/user-attachments/assets/99905a27-3e75-4518-a6c4-cca46e982594)
 R 
-![圖片](https://github.com/user-attachments/assets/16530c77-cafb-4b10-badc-8b6d77ff80ae)
-![圖片](https://github.com/user-attachments/assets/f1d1d7e5-f3aa-4a80-b689-fe192fdc002a)
+![圖片](https://github.com/user-attachments/assets/aca7cf37-fc97-4a44-a5d8-8cad01ed55a3)
+
+![圖片](https://github.com/user-attachments/assets/28ab59fc-19a0-4049-8c16-3c24c644eb7f)
+
 
