@@ -201,29 +201,30 @@ WAGÊ = -4.88 + 1.80 * 16 = 23.92
 ## Q.16
 ![image](https://github.com/user-attachments/assets/37c9bd07-de49-4e89-a514-446189c83afa)
 ## Ans:
-## (a) 為何是簡單回歸模型？
+## (a) Why is this a simple regression model?
 - y = α + βx + e
-- y = 股票超額報酬
-- x = 市場超額報酬
-- 符合簡單回歸格式，故是簡單回歸模型。
+- y = stock excess return
+- x = market excess return
+- This is exactly a simple regression form.
 
-## (b) 估計β並評論
-| 公司 | β | 解釋 |
+## (b) Estimated betas and interpretation
+| Firm | Beta | Interpretation |
 |----|----|----|
-| GE | 0.95 | 接近市場風險 |
-| IBM | 1.03 | 稍微積極 |
-| Ford | 1.45 | 最積極 |
-| Microsoft | 1.10 | 略高風險 |
-| Disney | 0.88 | 較防禦型 |
-| ExxonMobil | 0.65 | 最防禦型 |
+| GE | 0.95 | Market-like |
+| IBM | 1.03 | Slightly aggressive |
+| Ford | 1.45 | Most aggressive |
+| Microsoft | 1.10 | Slightly above market |
+| Disney | 0.88 | Slightly defensive |
+| ExxonMobil | 0.65 | Most defensive |
 
-## (c) α應為0，估計吻合嗎？
-- α接近0，但非完全為0。
-- 市場非效率、模型不完備等因素導致。
-- 整體來說CAPM表現尚可。
+## (c) Should alpha = 0?
+- In theory, α = 0.
+- In practice, estimated alphas are small but non-zero.
+- This is due to noise, misspecification, or inefficiency.
+- Overall: α is close to 0, so CAPM works reasonably well.
 
-## (d) 強迫α=0對β的影響
-| 公司 | 原β | 強迫α=0的β | 變化 |
+## (d) Beta change when α = 0
+| Firm | Original Beta | Beta (α = 0) | Change |
 |----|----|----|----|
 | GE | 0.95 | 0.93 | -0.02 |
 | IBM | 1.03 | 1.02 | -0.01 |
@@ -231,4 +232,6 @@ WAGÊ = -4.88 + 1.80 * 16 = 23.92
 | Microsoft | 1.10 | 1.08 | -0.02 |
 | Disney | 0.88 | 0.86 | -0.02 |
 | ExxonMobil | 0.65 | 0.64 | -0.01 |
-- 變化幅度小，β穩定，符合理論預期。
+- Very minor changes.
+- Beta is very stable.
+- CAPM theory holds up well.
