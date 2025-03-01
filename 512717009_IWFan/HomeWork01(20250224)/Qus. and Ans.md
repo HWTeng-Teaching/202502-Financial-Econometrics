@@ -125,7 +125,7 @@ Conclusion: The verification holds.
 -1 | 1  | 0.4 | 0.6 | 0.36
 0  | 0  | 1.2 | -1.2 | 1.44
 
-e² = 3.6
+Σe² = 3.6
 
 σ^2 = SSE/N−2=3.6/3=1.2
 
