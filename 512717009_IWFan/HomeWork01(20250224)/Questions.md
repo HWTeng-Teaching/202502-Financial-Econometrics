@@ -13,6 +13,17 @@
 |$\sum{x_{i}}$ =5|$\sum{y_{i}}$ =10|$\sum{(x_{i}-\bar{x})}$ =0 |$\sum{(x_{i}-\bar{x})^2}$=10|$\sum{(y_{i}-\bar{y})}$ =0 |$\sum{(x- \bar{x})(y-\bar{y})}$=8|     
 
 #### b.
+regression Line $\hat{y}$ =  $b_{1}$ + $b_{2}$ x
+
+using formula to find the slope $b_{2}$
+
+$b_{2}$ = $(x- \bar{x})(y-\bar{y})$ / $( x- \bar{x})^2$ = 0.8
+
+and using (2,7) (2,8) to regression Line
+
+and find interception $b_{1}$ = 1.2
+
+
 
 ## Q.14
 ![image](https://github.com/user-attachments/assets/b5c78667-3cee-439f-b464-4d6370d4b129)
