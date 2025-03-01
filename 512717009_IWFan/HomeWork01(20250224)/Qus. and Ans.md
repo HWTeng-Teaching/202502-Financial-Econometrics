@@ -127,7 +127,7 @@ Conclusion: The verification holds.
 
 Σe² = 3.6
 
-σ^2 = SSE/N−2=3.6/3=1.2
+σ^2 = Σe²/N−2=3.6/3=1.2
 
 ### (j)
 $\hat{Var}(b_2 | x)$ = $\hat{\sigma}^2$ / $\sum{(x_{i}-\bar{x})}$ = 1.2 / 10 = 0.12
