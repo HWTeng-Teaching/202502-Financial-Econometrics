@@ -1,5 +1,6 @@
 ## C02Q01 a~j (Problem)
 ![image](https://github.com/user-attachments/assets/9bdc617b-1206-463c-a30c-fada902dc03a)
+
 請考慮下列五個觀察值。你必須僅使用計算器完成此練習的所有部分。
 
 | x  | y  | x – x̄ | (x – x̄)² | y – ȳ | (x – x̄)(y – ȳ) |
