@@ -64,6 +64,8 @@ CVx = 100 * (√2.5 / 1) = 158.11388
 median( x )  = 1 
 
 
+### (e)
+![image](https://github.com/user-attachments/assets/0685f7df-e29f-4f8f-8d26-f3c870e29a2a)
 
 
 ## Q.14
