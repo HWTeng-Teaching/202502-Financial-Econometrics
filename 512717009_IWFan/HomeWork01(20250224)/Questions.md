@@ -153,6 +153,44 @@ Elasticity ≈ 1.2472
 
 ### (b)
 
+WAGÊ = -10.76 + 2.46 * EDUC
+
+EDUC̄ = 13.68
+
+WAGĒ = -10.76 + 2.46 * 13.68 = 22.8928
+
+Elasticity = β2 * (EDUC̄ / WAGĒ)
+
+Elasticity = 2.46 * (13.68 / 22.8928) = 1.470
+
+SE(ε̂) = (EDUC̄ / WAGĒ) * SE(β2)
+
+SE(ε̂) = (13.68 / 22.8928) * 0.16 = 0.0956
+
+SE(ε̂) = 0.0956
+
+### (c)
+Urban Area
+回歸公式:
+WAGÊ = -10.76 + 2.46 * EDUC
+
+- EDUC = 12:
+WAGÊ = -10.76 + 2.46 * 12 = 18.76
+
+- EDUC = 16:
+WAGÊ = -10.76 + 2.46 * 16 = 28.60
+
+Rural Area
+回歸公式:
+WAGÊ = -4.88 + 1.80 * EDUC
+
+- EDUC = 12:
+WAGÊ = -4.88 + 1.80 * 12 = 16.72
+
+- EDUC = 16:
+WAGÊ = -4.88 + 1.80 * 16 = 23.92
+
+
 
 ## Q.16
 ![image](https://github.com/user-attachments/assets/37c9bd07-de49-4e89-a514-446189c83afa)
