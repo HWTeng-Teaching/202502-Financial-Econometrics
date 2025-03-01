@@ -107,18 +107,11 @@ $\text{Median of }x = 1$
 
 R 
 ```R Language
-# Define the data points 定義座標點
-x <- c(3, 2, 1, -1, 0)
-y <- c(4, 2, 3, 1, 0)
-
-# Compute the fitted values based on the regression equation 計算回歸方程式
-y_hat <- 0.8 * x + 1.2
-
-# Compute the mean point (x̄, ȳ) 計算平均值
+# Compute the mean point (x̄, ȳ)
 x_mean <- mean(x)
 y_mean <- mean(y)
 
-# Set up plot limits (adjusted to ensure the regression line fits) 設定迴歸線不要飄到太外面(美觀)
+# Set up plot limits (adjusted to ensure the regression line fits)
 x_min <- min(x) - 1
 x_max <- max(x) + 1
 y_min <- min(y) - 1
@@ -146,7 +139,7 @@ arrows(0, y_min, 0, y_max, col = "black", length = 0.1, lwd = 1.5) # Y-axis arro
 
 # Move the legend outside the plot
 par(xpd = TRUE)  # Allow legend outside plot area
-legend("top", inset = -0.15,  # Moves the legend above the plot
+legend("topleft", inset = -0.005,  # Moves the legend above the plot
        legend = c("Data Points", "Regression Line", "Mean (x̄, ȳ)"),
        pch = c(19, NA, 19),  # Symbol for points (Data & Mean), NA for line
        lty = c(NA, 1, NA),   # Line type (only for Regression Line)
