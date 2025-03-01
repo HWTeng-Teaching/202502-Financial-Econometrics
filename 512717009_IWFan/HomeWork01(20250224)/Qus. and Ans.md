@@ -32,6 +32,8 @@ b2 = Σ(x - x̄)(y - ȳ) / Σ(x - x̄)^2 = 8 / 10 = 0.8
 
 b1 = ȳ - b2 * x̄ = 2 - 0.8 * 1 = 1.2
 
+b1 is the estimated value of ( ) E y when 0 x= ; it is the intercept of the fitted line. 
+
 ### (c) 
 Σxi² = 3² + 2² + 1² + (-1)² + 0² = 15
 
