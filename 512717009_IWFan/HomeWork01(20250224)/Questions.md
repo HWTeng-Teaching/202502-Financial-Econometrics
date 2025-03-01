@@ -134,6 +134,8 @@ $se(b_2)$ = $\sqrt{\hat{Var}(b_2 | x)}$ = 0.3464
 
 
 
+
+
 ## Q.14
 ![image](https://github.com/user-attachments/assets/b5c78667-3cee-439f-b464-4d6370d4b129)
 
@@ -171,6 +173,7 @@ SE(ε̂) = 0.0956
 
 ### (c)
 Urban Area
+
 回歸公式:
 WAGÊ = -10.76 + 2.46 * EDUC
 
@@ -181,6 +184,7 @@ WAGÊ = -10.76 + 2.46 * 12 = 18.76
 WAGÊ = -10.76 + 2.46 * 16 = 28.60
 
 Rural Area
+
 回歸公式:
 WAGÊ = -4.88 + 1.80 * EDUC
 
@@ -192,5 +196,9 @@ WAGÊ = -4.88 + 1.80 * 16 = 23.92
 
 
 
+
+
 ## Q.16
 ![image](https://github.com/user-attachments/assets/37c9bd07-de49-4e89-a514-446189c83afa)
+## Ans:
+
