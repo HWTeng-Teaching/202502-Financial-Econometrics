@@ -252,15 +252,34 @@ Conclusion:
   
 ![image](https://github.com/user-attachments/assets/1503c424-1d1b-403d-96fb-3a9edb867390)
 
-## (d) Beta change when α = 0
-| Firm | Original Beta | Beta (α = 0) | Change |
-|----|----|----|----|
-| GE | 0.95 | 0.93 | -0.02 |
-| IBM | 1.03 | 1.02 | -0.01 |
-| Ford | 1.45 | 1.47 | +0.02 |
-| Microsoft | 1.10 | 1.08 | -0.02 |
-| Disney | 0.88 | 0.86 | -0.02 |
-| ExxonMobil | 0.65 | 0.64 | -0.01 |
-- Very minor changes.
-- Beta is very stable.
-- CAPM theory holds up well.
+## (d) 
+#### Re-estimated Betas (α = 0)
+
+| Firm       | β̂ (α=0) | SE |
+|------------|----|----|
+| GE         | 1.147 | 0.0891 |
+| IBM        | 0.984 | 0.0978 |
+| Ford       | 1.667 | 0.206 |
+| Microsoft  | 1.206 | 0.122 |
+| Disney     | 1.013 | 0.0942 |
+| ExxonMobil | 0.463 | 0.0717 |
+
+#### Comparison with Original (Part b)
+
+| Firm       | Original β̂ (with α) | β̂ (α=0) | Change |
+|------------|----|----|----|
+| GE         | 1.148 | 1.147 | -0.001 |
+| IBM        | 0.977 | 0.984 | +0.007 |
+| Ford       | 1.662 | 1.667 | +0.005 |
+| Microsoft  | 1.202 | 1.206 | +0.004 |
+| Disney     | 1.012 | 1.013 | +0.001 |
+| ExxonMobil | 0.457 | 0.463 | +0.006 |
+
+#### Interpretation
+- Very minor changes in β̂.
+- Classification of aggressive vs defensive stocks **remains unchanged**.
+- This is expected since α̂ was very close to zero in part (b) and (c).
+
+#### Conclusion
+✅ Forcing α = 0 does not materially impact the beta estimates.
+✅ Stock risk classifications remain unchanged.
