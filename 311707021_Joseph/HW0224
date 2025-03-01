@@ -83,6 +83,96 @@ median_x <- median(x)
 table_df <- data.frame(x, y, y_hat, e, e_sq, x_e)
 print(table_df)
 
+#Q1e
+library(ggplot2)
+
+# 數據
+x <- c(3, 2, 1, -1, 0)
+y <- c(4, 2, 3, 1, 0)
+
+# 建立數據框
+data <- data.frame(x, y)
+
+# 繪製散點圖並添加回歸直線
+ggplot(data, aes(x = x, y = y)) +
+  geom_point(color = "blue", size = 3) +  # 繪製數據點
+  geom_smooth(method = "lm", se = FALSE, color = "red") +  # 加入回歸直線
+  labs(title = "Regression Line", x = "X values", y = "Y values") +
+  theme_minimal()
+
+#Q1f
+x_mean <- mean(x)
+y_mean <- mean(y)
+
+# 繪製散點圖 + 回歸線 + 標示均值點
+ggplot(data, aes(x = x, y = y)) +
+  geom_point(color = "blue", size = 3) +  # 散點
+  geom_smooth(method = "lm", se = FALSE, color = "red") +  # 回歸線
+  geom_point(aes(x = x_mean, y = y_mean), color = "green", size = 4, shape = 17) +  # 標示均值點
+  annotate("text", x = x_mean, y = y_mean, label = "(x̄, ȳ)", vjust = -1, color = "green") + 
+  labs(title = "Regression Line with Mean Point", x = "X values", y = "Y values") +
+  theme_minimal()
+
+#Q1g,h
+x_mean <- mean(x)
+y_mean <- mean(y)
+
+# 計算回歸係數
+model <- lm(y ~ x)  # 建立回歸模型
+b0 <- coef(model)[1]  # 截距
+b1 <- coef(model)[2]  # 斜率
+
+# 驗證均值關係
+y_mean_calc <- b0 + b1 * x_mean
+
+# 顯示結果
+cat("樣本均值 ȳ:", y_mean, "\n")
+cat("計算所得 ȳ = b0 + b1 * x̄:", y_mean_calc, "\n")
+
+# 檢查是否相等（允許小數點誤差）
+all.equal(y_mean, y_mean_calc)
+
+#Q1i
+model <- lm(y ~ x)
+
+# 提取殘差
+residuals <- residuals(model)
+
+# 計算殘差平方和 (RSS)
+RSS <- sum(residuals^2)
+
+# 計算估計的殘差變異數 sigma^2
+n <- length(y)  # 樣本數
+sigma_hat_sq <- RSS / (n - 2)
+
+# 顯示結果
+cat("估計的 sigma^2:", sigma_hat_sq, "\n")
+
+#Q1j
+model <- lm(y ~ x)
+
+# 提取斜率估計值
+b2 <- coef(model)[2]
+
+# 計算殘差變異數 sigma^2
+residuals <- residuals(model)
+RSS <- sum(residuals^2)  # 殘差平方和
+n <- length(y)  # 樣本數
+sigma_hat_sq <- RSS / (n - 2)
+
+# 計算 x 的變異數總和
+Sxx <- sum((x - mean(x))^2)
+
+# 計算 Var(b2) 和 se(b2)
+var_b2 <- sigma_hat_sq / Sxx
+se_b2 <- sqrt(var_b2)
+
+# 顯示結果
+cat("估計的 Var(b2):", var_b2, "\n")
+cat("估計的 se(b2):", se_b2, "\n")
+
+#Q14 please see the pdf
+
 # Q16
 #讀資料
 temp_file <- tempfile(fileext = ".rdata")
