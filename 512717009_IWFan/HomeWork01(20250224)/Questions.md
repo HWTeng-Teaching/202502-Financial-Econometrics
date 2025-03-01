@@ -249,6 +249,8 @@ Scatter Plot & Fitted Line:
 Conclusion:
 - α̂ is close to zero and insignificant, consistent with CAPM.
 - Fitted line visually supports the regression estimates.
+  
+![image](https://github.com/user-attachments/assets/1503c424-1d1b-403d-96fb-3a9edb867390)
 
 ## (d) Beta change when α = 0
 | Firm | Original Beta | Beta (α = 0) | Change |
