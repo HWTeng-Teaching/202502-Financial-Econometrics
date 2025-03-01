@@ -2,9 +2,16 @@
 ![image](https://github.com/user-attachments/assets/93ff4c71-2084-4039-8ee2-9e0d90cce888)
 
 ## Ans:
-#### a. ![image](https://github.com/user-attachments/assets/fbb086b1-38ec-41e6-a82b-5cfb23f34b5d)
-![image](https://github.com/user-attachments/assets/8377b2f3-f365-42cb-98f8-4d17bcb81e82)
-![image](https://github.com/user-attachments/assets/415740e0-5def-4a73-8b40-284b6931479f)
+#### a.
+|$x$             | $y$             | $x- \bar{x}$              |$( x- \bar{x})^2$           | $y- \bar{y}$              |$(x- \bar{x})(y-\bar{y})$        |
+|----------------|-----------------|---------------------------|----------------------------|---------------------------|---------------------------------|
+|3               |4                | 2                         |4                           |2                          |	4                            |
+|2               |2                | 1                         |1                           |0                          |  0                              |
+|1               |3                | 0                         |0                           |1                          |	0                            |
+|-1              |1                | -2                        |4                           |-1                         |	2                            |
+|0               |0                | -1                        |1                           |-2                         |	2                            |
+|$\sum{x_{i}}$ =5|$\sum{y_{i}}$ =10|$\sum{(x_{i}-\bar{x})}$ =0 |$\sum{(x_{i}-\bar{x})^2}$=10|$\sum{(y_{i}-\bar{y})}$ =0 |$\sum{(x- \bar{x})(y-\bar{y})}$=8|     
+
 #### b.
 
 ## Q.14
