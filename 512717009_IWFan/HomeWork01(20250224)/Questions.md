@@ -1,15 +1,13 @@
 ## Q.01
-## 2.1 Regression Analysis Exercise
-
 Consider the following five observations. You are to do all the parts of this exercise using only a calculator.
 
-| x  | y  | x - \bar{x} | (x - \bar{x})^2 | y - \bar{y} | (x - \bar{x})(y - \bar{y}) |
-|----|----|------------|----------------|------------|-------------------|
-| 3  | 4  |            |                |            |                   |
-| 2  | 2  |            |                |            |                   |
-| 1  | 3  |            |                |            |                   |
-| -1 | 1  |            |                |            |                   |
-| 0  | 0  |            |                |            |                   |
+| x  | y  | \( x - \bar{x} \) | \( (x - \bar{x})^2 \) | \( y - \bar{y} \) | \( (x - \bar{x})(y - \bar{y}) \) |
+|----|----|-----------------|--------------------|-----------------|----------------------|
+| 3  | 4  |                 |                    |                 |                      |
+| 2  | 2  |                 |                    |                 |                      |
+| 1  | 3  |                 |                    |                 |                      |
+| -1 | 1  |                 |                    |                 |                      |
+| 0  | 0  |                 |                    |                 |                      |
 | **Σ** | **Σ** | **Σ** | **Σ** | **Σ** | **Σ** |
 
 ### Tasks:
@@ -19,15 +17,18 @@ a. Complete the entries in the table. Put the sums in the last row. What are the
 b. Calculate \( b_1 \) and \( b_2 \) using (2.7) and (2.8) and state their interpretation.
 
 c. Compute \( \sum_{i=1}^{5} x_i^2 \), \( \sum_{i=1}^{5} x_i y_i \). Using these numerical values, show that:
-   \[ \sum (x_i - \bar{x})^2 = \sum x_i^2 - N \bar{x}^2 \]
+   
+   $$ \sum (x_i - \bar{x})^2 = \sum x_i^2 - N \bar{x}^2 $$
+   
    and
-   \[ \sum (x_i - \bar{x}) (y_i - \bar{y}) = \sum x_i y_i - N \bar{x} \bar{y} \]
+   
+   $$ \sum (x_i - \bar{x}) (y_i - \bar{y}) = \sum x_i y_i - N \bar{x} \bar{y} $$
 
 ---
 
 d. Use the least squares estimates from part (b) to compute the fitted values of \( y \), and complete the remainder of the table below. Put the sums in the last row.
 
-| x_i  | y_i  | \( \hat{y}_i \) | \( e_i \) | \( e_i^2 \) | \( x_i e_i \) |
+| \( x_i \)  | \( y_i \)  | \( \hat{y}_i \) | \( e_i \) | \( e_i^2 \) | \( x_i e_i \) |
 |------|------|------------|------------|------------|------------|
 | 3    | 4    |            |            |            |            |
 | 2    | 2    |            |            |            |            |
@@ -45,10 +46,13 @@ f. On the sketch in part (e), locate the point of the means \( (\bar{x}, \bar{y}
 ---
 
 g. Show that for these numerical values:
-   \[ \bar{y} = b_1 + b_2 \bar{x} \]
+   
+   $$ \bar{y} = b_1 + b_2 \bar{x} $$
 
 h. Show that for these numerical values:
-   \[ \hat{y} = \bar{y} \]
+   
+   $$ \hat{y} = \bar{y} $$
+   
    where \( \hat{y} = \sum \hat{y}_i / N \).
 
 ---
