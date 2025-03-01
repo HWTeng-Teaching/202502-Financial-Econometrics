@@ -154,9 +154,6 @@ legend("top", inset = -0.15,  # Moves the legend above the plot
        pt.cex = c(1, 1, 1.5),
        cex = 1,
        bty = "n")  # No legend border
-![圖片](https://github.com/user-attachments/assets/aca7cf37-fc97-4a44-a5d8-8cad01ed55a3)
-
-![圖片](https://github.com/user-attachments/assets/28ab59fc-19a0-4049-8c16-3c24c644eb7f)
 
 ## (f)
 # Regression Analysis Results
