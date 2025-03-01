@@ -201,7 +201,7 @@ WAGÊ = -4.88 + 1.80 * 16 = 23.92
 ## Q.16
 ![image](https://github.com/user-attachments/assets/37c9bd07-de49-4e89-a514-446189c83afa)
 ## Ans:
-## (a) Why is this a simple regression model?
+## (a) 
 - y = α + βx + e
 - y = stock excess return
 - x = market excess return
@@ -209,21 +209,46 @@ WAGÊ = -4.88 + 1.80 * 16 = 23.92
 - $y = r_j + r_f , x = r_m - r_f , \beta_1 = \alpha ,\beta_2 = \beta_j$
 - This is exactly a simple regression form.
 
-## (b) Estimated betas and interpretation
-| Firm | Beta | Interpretation |
-|----|----|----|
-| GE | 0.95 | Market-like |
-| IBM | 1.03 | Slightly aggressive |
-| Ford | 1.45 | Most aggressive |
-| Microsoft | 1.10 | Slightly above market |
-| Disney | 0.88 | Slightly defensive |
-| ExxonMobil | 0.65 | Most defensive |
+## (b) 
+| Firm       | α̂j      | SE(α̂j) | β̂j   | SE(β̂j) | N  |
+|------------|--------|------|-----|------|----|
+| GE         | -0.000959 | 0.00442 | 1.148 | 0.0895 | 180 |
+| IBM        | 0.00605  | 0.00483 | 0.977 | 0.0978 | 180 |
+| Ford       | 0.00378  | 0.0100  | 1.662 | 0.207  | 180 |
+| Microsoft  | 0.00325  | 0.00604 | 1.202 | 0.122  | 180 |
+| Disney     | 0.00105  | 0.00468 | 1.012 | 0.0946 | 180 |
+| ExxonMobil | 0.00528  | 0.00354 | 0.457 | 0.0716 | 180 |
 
-## (c) Should alpha = 0?
-- In theory, α = 0.
-- In practice, estimated alphas are small but non-zero.
-- This is due to noise, misspecification, or inefficiency.
-- Overall: α is close to 0, so CAPM works reasonably well.
+### Interpretation
+
+- Most Aggressive: **Ford** (β = 1.662)
+- Relatively Aggressive: **GE**, **Microsoft**
+- Relatively Defensive: **Disney**, **IBM**
+- Most Defensive: **ExxonMobil** (β = 0.457)
+
+### Notes
+- β > 1: Aggressive (more volatile than market)
+- β < 1: Defensive (less volatile than market)
+- α should theoretically be 0 under CAPM. Small deviations indicate market inefficiency or model misspecification.
+
+## (c) 
+α̂ = 0.00325, SE(α̂) = 0.00604
+β̂ = 1.202, SE(β̂) = 0.122
+
+Interpretation of α̂:
+- CAPM theory says α = 0.
+- Estimated α̂ = 0.00325 is very close to 0.
+- Standard error (0.00604) > estimate itself, so α is statistically insignificant.
+- This supports CAPM’s assumption that α = 0 in efficient markets.
+
+Scatter Plot & Fitted Line:
+- Scatter plot (Figure xr2.15) shows Microsoft excess returns vs. market excess returns.
+- Fitted line passes close to origin, consistent with α close to zero.
+- Positive slope reflects β > 1 (Microsoft is slightly aggressive).
+
+Conclusion:
+- α̂ is close to zero and insignificant, consistent with CAPM.
+- Fitted line visually supports the regression estimates.
 
 ## (d) Beta change when α = 0
 | Firm | Original Beta | Beta (α = 0) | Change |
