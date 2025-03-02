@@ -256,8 +256,8 @@ Conclusion:
 - α̂ is close to zero and insignificant, consistent with CAPM.
 - Fitted line visually supports the regression estimates.
   
-![image](https://github.com/user-attachments/assets/1503c424-1d1b-403d-96fb-3a9edb867390)
-![CAPM回歸 (Microsoft)](https://your-image-hosting-link/capm_regression_microsoft.png)
+![image](https://github.com/user-attachments/assets/0fd4d7e4-4e4d-4831-9025-311a35c51ccf)
+
 
 ## (d) 
 #### Re-estimated Betas (α = 0)
