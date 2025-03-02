@@ -74,8 +74,8 @@ head(capm5[, c("date", "ge_excess", "ibm_excess", "ford_excess",
 # summary(capm4$ge_excess)
 # summary(capm4$mkt_excess)
 
-# 到此為止，已經完成(b)小題所需的資料前處理(因capm5資料 不存在,改用capm4：
-# - 將六檔(capm4)股票的報酬率轉換為超額報酬 (r_{jm})
+# 到此為止，已經完成(b)小題所需的資料前處理：
+# - 將六檔(capm5)股票的報酬率轉換為超額報酬 (r_{jm})
 # - 將市場報酬率轉換為超額報酬 (r_m - r_f)
 # 這些變數後續可用於後續(c)~(f)小題的迴歸分析。
 
