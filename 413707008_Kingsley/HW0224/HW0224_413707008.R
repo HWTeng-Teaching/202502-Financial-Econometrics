@@ -252,6 +252,9 @@ url <- "https://www.principlesofeconometrics.com/poe5/data/rdata/capm5.rdata"
 con <- url(url, "rb")  # "rb" = read binary mode
 # Load the RData file directly from the web
 load(con)
+# Close the connection
+close(con)
+
 #load("C:/Users/user/AppData/Local/Temp/7zO4D193FC2/capm5.rdata")
 
 # Load required libraries
