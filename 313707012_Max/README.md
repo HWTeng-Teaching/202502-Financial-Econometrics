@@ -3,8 +3,8 @@
 
 *Created by PO-Cheng Cho on 20250217 Last updated on 20250217*
 
-[My gitHUB webapge]([https://cho-po-cheng.github.io/PoCheng.github.io/]) 
-
+[My gitHUB webapge](https://github.com/cho-po-cheng)  
+[self-introsuction](https://cho-po-cheng.github.io/PoCheng.github.io/)
 
 ## Map
 ![image](https://github.com/user-attachments/assets/7daa0e03-9deb-456f-8bee-aca3c661ed96)
