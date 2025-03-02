@@ -1,4 +1,4 @@
-##  Bella陳麗靜
+##  Bella 陳麗靜
 
 [**Welcome My Webpage**](https://bella0627.github.io/)
 
