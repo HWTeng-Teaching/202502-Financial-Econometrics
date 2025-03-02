@@ -132,7 +132,7 @@ Conclusion: The verification holds.
 ### (j)
 $\hat{Var}(b_2 | x)$ = $\hat{\sigma}^2$ / $\sum{(x_{i}-\bar{x})}$ = 1.2 / 10 = 0.12
 
-$se(b_2)$ = $\sqrt{\hat{Var}(b_2 | x)}$ = 0.3464
+**Standard Error:** se(b₂) = √(0.12) ≈ 0.3464
 
 
 
