@@ -107,6 +107,6 @@ se(b₂) = √var(b₂ | x) = √0.12 = 0.346
 # 2.14
 ## (a)
 \[
-$\epsilon$ = \frac{x}{\beta_1 + \beta_2 x}
+\epsilon = \frac{x}{\beta_1 + \beta_2 x}
 \]
 
