@@ -246,7 +246,14 @@ print("Predicted Wages for 12 and 16 Years of Education:")
 print(predicted_wages)
 
 # Question 16
-load("C:/Users/user/AppData/Local/Temp/7zO4D193FC2/capm5.rdata")
+# Define the URL
+url <- "https://www.principlesofeconometrics.com/poe5/data/rdata/capm5.rdata"
+# Open a connection to the URL
+con <- url(url, "rb")  # "rb" = read binary mode
+# Load the RData file directly from the web
+load(con)
+#load("C:/Users/user/AppData/Local/Temp/7zO4D193FC2/capm5.rdata")
+
 # Load required libraries
 library(tidyverse)
 library(broom)
