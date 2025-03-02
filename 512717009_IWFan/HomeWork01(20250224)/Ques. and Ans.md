@@ -256,7 +256,6 @@ Conclusion:
 - α̂ is close to zero and insignificant, consistent with CAPM.
 - Fitted line visually supports the regression estimates.
   
-![image](https://github.com/user-attachments/assets/9016c17f-9cac-4ed6-915c-3b5eb954ec14)
 ![image](https://github.com/user-attachments/assets/874eef51-bd3c-40b8-87fd-f59517dc9d6d)
 
 
