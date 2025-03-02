@@ -1,1 +1,877 @@
+rm(list = ls())
+> ##############################
+> # Data: 5 Observations
+> ##############################
+> data <- data.frame(
++   Obs = 1:5,
++   x = c(3, 2, 1, -1, 0),
++   y = c(4, 2, 3, 1, 0)
++ )
+> n <- nrow(data)
+> ##############################
+> # (a) Complete the Table & Compute Sample Means
+> ##############################
+> # Calculate sample means
+> xbar <- mean(data$x)
+> ybar <- mean(data$y)
+> # Compute deviations and related columns
+> data$x_minus_mean <- data$x - xbar
+> data$sq_x_minus_mean <- (data$x - xbar)^2
+> data$y_minus_mean <- data$y - ybar
+> data$x_y_dev <- (data$x - xbar) * (data$y - ybar)
+> # Sum up columns for the table's last row
+> sum_row <- c(
++   x = sum(data$x),
++   y = sum(data$y),
++   x_minus_mean = sum(data$x_minus_mean),
++   sq_x_minus_mean = sum(data$sq_x_minus_mean),
++   y_minus_mean = sum(data$y_minus_mean),
++   x_y_dev = sum(data$x_y_dev)
++ )
+> cat("===== (a) Table and Sample Means =====\n")
+===== (a) Table and Sample Means =====
+> print(data)
+  Obs  x y x_minus_mean sq_x_minus_mean y_minus_mean x_y_dev
+1   1  3 4            2               4            2       4
+2   2  2 2            1               1            0       0
+3   3  1 3            0               0            1       0
+4   4 -1 1           -2               4           -1       2
+5   5  0 0           -1               1           -2       2
+> cat("\nSum row:\n")
 
+Sum row:
+> print(sum_row)
+              x               y    x_minus_mean sq_x_minus_mean    y_minus_mean 
+              5              10               0              10               0 
+        x_y_dev 
+              8 
+> cat("\nSample means: x̄ =", xbar, ", ȳ =", ybar, "\n\n")
+
+Sample means: x̄ = 1 , ȳ = 2 
+
+> ##############################
+> # (b) Compute Regression Coefficients b1 and b2
+> ##############################
+> # Using formulas: 
+> #   b2 = sum((x - x̄)(y - ȳ)) / sum((x - x̄)^2)
+> #   b1 = ȳ - b2*x̄
+> b2 <- sum(data$x_y_dev) / sum(data$sq_x_minus_mean)
+> b1 <- ybar - b2 * xbar
+> cat("===== (b) Regression Coefficients =====\n")
+===== (b) Regression Coefficients =====
+> cat("Intercept, b1 =", b1, "\n")
+Intercept, b1 = 1.2 
+> cat("Slope, b2 =", b2, "\n")
+Slope, b2 = 0.8 
+> cat("Interpretation:\n")
+Interpretation:
+> cat(" - b2 indicates that for each one-unit increase in x, y increases by", b2, "units on average.\n")
+ - b2 indicates that for each one-unit increase in x, y increases by 0.8 units on average.
+> cat(" - b1 is the predicted y value when x = 0.\n\n")
+ - b1 is the predicted y value when x = 0.
+
+> ##############################
+> # (c) Verify Σ(x−x̄)² and Σ(x−x̄)(y−ȳ) using alternative formulas
+> ##############################
+> sum_x2 <- sum(data$x^2)
+> sum_xy <- sum(data$x * data$y)
+> cat("===== (c) Verification of Alternative Formulas =====\n")
+===== (c) Verification of Alternative Formulas =====
+> cat("Sum x² =", sum_x2, "\n")
+Sum x² = 15 
+> cat("n*x̄² =", n * xbar^2, "\n")
+n*x̄² = 5 
+> cat("Σ(x − x̄)² =", sum(data$sq_x_minus_mean), "\n")
+Σ(x − x̄)² = 10 
+> cat("Thus, Σ(x − x̄)² = Σx² − n*x̄²\n\n")
+Thus, Σ(x − x̄)² = Σx² − n*x̄²
+
+> cat("Sum x*y =", sum_xy, "\n")
+Sum x*y = 18 
+> cat("n*x̄*ȳ =", n * xbar * ybar, "\n")
+n*x̄*ȳ = 10 
+> cat("Σ(x − x̄)(y − ȳ) =", sum(data$x_y_dev), "\n")
+Σ(x − x̄)(y − ȳ) = 8 
+> cat("Thus, Σ(x − x̄)(y − ȳ) = Σxy − n*x̄*ȳ\n\n")
+Thus, Σ(x − x̄)(y − ȳ) = Σxy − n*x̄*ȳ
+
+> ##############################
+> # (d) Compute Fitted Values, Residuals, and Additional Quantities
+> ##############################
+> # Fitted regression line: ŷ = b1 + b2*x
+> data$fitted <- b1 + b2 * data$x
+> data$residuals <- data$y - data$fitted
+> data$resid_sq <- data$residuals^2
+> data$x_resid <- data$x * data$residuals
+> cat("===== (d) Fitted Values and Residuals =====\n")
+===== (d) Fitted Values and Residuals =====
+> print(data[, c("x", "y", "fitted", "residuals", "resid_sq", "x_resid")])
+   x y fitted residuals resid_sq x_resid
+1  3 4    3.6       0.4     0.16     1.2
+2  2 2    2.8      -0.8     0.64    -1.6
+3  1 3    2.0       1.0     1.00     1.0
+4 -1 1    0.4       0.6     0.36    -0.6
+5  0 0    1.2      -1.2     1.44     0.0
+> cat("\nSums:\n")
+
+Sums:
+> cat("Σx =", sum(data$x), "\n")
+Σx = 5 
+> cat("Σy =", sum(data$y), "\n")
+Σy = 10 
+> cat("Σŷ =", sum(data$fitted), "\n")
+Σŷ = 10 
+> cat("Σe =", sum(data$residuals), "\n")
+Σe = -2.220446e-16 
+> cat("Σe² =", sum(data$resid_sq), "\n")
+Σe² = 3.6 
+> cat("Σ(x*e) =", sum(data$x_resid), "\n\n")
+Σ(x*e) = -1.332268e-15 
+
+> # Compute additional statistics:
+> # Sample variance of y and x, covariance, correlation, CV, and median of x.
+> s2_y <- sum((data$y - ybar)^2) / (n - 1)
+> s2_x <- sum((data$x - xbar)^2) / (n - 1)
+> s_y <- sqrt(s2_y)
+> s_x <- sqrt(s2_x)
+> s_xy <- sum((data$x - xbar) * (data$y - ybar)) / (n - 1)
+> r_xy <- s_xy / (s_x * s_y)
+> CV_x <- 100 * (s_x / xbar)
+> median_x <- median(data$x)
+> cat("===== Additional Statistics =====\n")
+===== Additional Statistics =====
+> cat("s_y² =", s2_y, "\n")
+s_y² = 2.5 
+> cat("s_x² =", s2_x, "\n")
+s_x² = 2.5 
+> cat("Sample covariance, s_xy =", s_xy, "\n")
+Sample covariance, s_xy = 2 
+> cat("Sample correlation, r_xy =", r_xy, "\n")
+Sample correlation, r_xy = 0.8 
+> cat("Coefficient of Variation of x, CV_x =", CV_x, "%\n")
+Coefficient of Variation of x, CV_x = 158.1139 %
+> cat("Median of x =", median_x, "\n\n")
+Median of x = 1 
+
+> ##############################
+> # (e) Plot the Data and Fitted Regression Line
+> ##############################
+> cat("===== (e) Plotting Data and Fitted Regression Line =====\n")
+===== (e) Plotting Data and Fitted Regression Line =====
+> plot(data$x, data$y, pch = 16, col = "blue",
++      xlab = "x", ylab = "y",
++      main = "Scatterplot with Fitted Regression Line")
+> abline(a = b1, b = b2, col = "red", lwd = 2)
+> ##############################
+> # (f) Plot the Centroid and Check if the Fitted Line Passes Through It
+> ##############################
+> points(xbar, ybar, col = "darkgreen", pch = 17, cex = 1.5)
+> text(xbar, ybar, labels = "Centroid", pos = 4, col = "darkgreen")
+> cat("===== (f) Centroid =====\n")
+===== (f) Centroid =====
+> cat("The centroid (x̄, ȳ) is (", xbar, ",", ybar, ")\n")
+The centroid (x̄, ȳ) is ( 1 , 2 )
+> cat("The fitted line passes through the centroid if ȳ = b1 + b2*x̄.\n\n")
+The fitted line passes through the centroid if ȳ = b1 + b2*x̄.
+
+> ##############################
+> # (g) Verify ȳ = b1 + b2*x̄
+> ##############################
+> cat("===== (g) Verification =====\n")
+===== (g) Verification =====
+> cat("b1 + b2*x̄ =", b1 + b2 * xbar, "\n")
+b1 + b2*x̄ = 2 
+> cat("ȳ =", ybar, "\n\n")
+ȳ = 2 
+
+> ##############################
+> # (h) Verify that the Average Fitted Value Equals ȳ
+> ##############################
+> avg_fitted <- mean(data$fitted)
+> cat("===== (h) Average Fitted Value =====\n")
+===== (h) Average Fitted Value =====
+> cat("Average fitted value =", avg_fitted, "\n")
+Average fitted value = 2 
+> cat("ȳ =", ybar, "\n\n")
+ȳ = 2 
+
+> ##############################
+> # (i) Compute σ̂² (Error Variance)
+> ##############################
+> # Degrees of freedom = n - 2 for simple regression
+> sigma2_hat <- sum(data$resid_sq) / (n - 2)
+> cat("===== (i) σ̂² =====\n")
+===== (i) σ̂² =====
+> cat("σ̂² =", sigma2_hat, "\n\n")
+σ̂² = 1.2 
+
+> ##############################
+> # (j) Compute var(b₂|x) and se(b₂)
+> ##############################
+> var_b2 <- sigma2_hat / sum(data$sq_x_minus_mean)
+> se_b2 <- sqrt(var_b2)
+> cat("===== (j) Variance and Standard Error of b₂ =====\n")
+===== (j) Variance and Standard Error of b₂ =====
+> cat("var(b₂|x) =", var_b2, "\n")
+var(b₂|x) = 0.12 
+> cat("se(b₂) =", se_b2, "\n")
+se(b₂) = 0.3464102 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> # 清除環境變數
+> rm(list = ls())
+> ##############################
+> # 參數設定 (根據題目給定數值)
+> ##############################
+> # Urban regression parameters:
+> urban_intercept <- -10.76
+> urban_beta      <- 2.46
+> n_urban         <- 986
+> # Urban given mean EDUC:
+> urban_mean_EDUC <- 13.68
+> # For urban, the SE for beta is given as 0.16 and for intercept 2.27 (未來若需要可用)
+> urban_se_beta   <- 0.16
+> # Rural regression parameters:
+> rural_intercept <- -4.88
+> rural_beta      <- 1.80
+> n_rural         <- 214
+> # Given mean wage for rural:
+> rural_mean_WAGE <- 19.74
+> ##############################
+> # (a) Rural: Elasticity Calculation
+> ##############################
+> # 由於迴歸線通過均值點，所以：
+> # mean_EDUC_rural = (mean_WAGE - rural_intercept) / rural_beta
+> rural_mean_EDUC <- (rural_mean_WAGE - rural_intercept) / rural_beta
+> # 計算彈性： elasticity = beta * (mean_EDUC / mean_WAGE)
+> elasticity_rural <- rural_beta * (rural_mean_EDUC / rural_mean_WAGE)
+> # 輸出結果 (應約為1.25)
+> cat("(a) Rural Elasticity Calculation:\n")
+(a) Rural Elasticity Calculation:
+> cat("Mean EDUC (Rural) =", round(rural_mean_EDUC, 2), "\n")
+Mean EDUC (Rural) = 13.68 
+> cat("Elasticity (Rural) =", round(elasticity_rural, 2), "\n\n")
+Elasticity (Rural) = 1.25 
+
+> ##############################
+> # (b) Urban: Standard Error of Elasticity
+> ##############################
+> # 首先計算 Urban 的 mean WAGE:
+> urban_mean_WAGE <- urban_intercept + urban_beta * urban_mean_EDUC
+> # Urban elasticity = urban_beta * (urban_mean_EDUC / urban_mean_WAGE)
+> elasticity_urban <- urban_beta * (urban_mean_EDUC / urban_mean_WAGE)
+> # 由於均值被視為固定，則 SE(elasticity) = (mean_EDUC / mean_WAGE) * SE(beta)
+> se_elasticity_urban <- (urban_mean_EDUC / urban_mean_WAGE) * urban_se_beta
+> cat("(b) Urban Elasticity and its Standard Error:\n")
+(b) Urban Elasticity and its Standard Error:
+> cat("Mean WAGE (Urban) =", round(urban_mean_WAGE, 2), "\n")
+Mean WAGE (Urban) = 22.89 
+> cat("Elasticity (Urban) =", round(elasticity_urban, 2), "\n")
+Elasticity (Urban) = 1.47 
+> cat("SE(Elasticity, Urban) =", round(se_elasticity_urban, 3), "\n\n")
+SE(Elasticity, Urban) = 0.096 
+
+> # Urban predictions
+> urban_pred_12 <- urban_intercept + urban_beta * 12
+> urban_pred_16 <- urban_intercept + urban_beta * 16
+> # Rural predictions
+> rural_pred_12 <- rural_intercept + rural_beta * 12
+> rural_pred_16 <- rural_intercept + rural_beta * 16
+> cat("(c) Predicted Wages:\n")
+(c) Predicted Wages:
+> cat("Urban: 12 years =", round(urban_pred_12, 2), ", 16 years =", round(urban_pred_16, 2), "\n")
+Urban: 12 years = 18.76 , 16 years = 28.6 
+> cat("Rural: 12 years =", round(rural_pred_12, 2), ", 16 years =", round(rural_pred_16, 2), "\n\n")
+Rural: 12 years = 16.72 , 16 years = 23.92 
+
+> ##############################
+> # 整理結果成表格 (供摘要用)
+> ##############################
+> results_table <- data.frame(
++   Area = c("Urban", "Rural"),
++   Mean_EDUC = c(urban_mean_EDUC, round(rural_mean_EDUC, 2)),
++   Mean_WAGE = c(round(urban_mean_WAGE,2), rural_mean_WAGE),
++   Beta = c(urban_beta, rural_beta),
++   Elasticity = c(round(elasticity_urban, 2), round(elasticity_rural, 2)),
++   SE_Elasticity = c(round(se_elasticity_urban, 3), NA),
++   Pred_12 = c(round(urban_pred_12, 2), round(rural_pred_12, 2)),
++   Pred_16 = c(round(urban_pred_16, 2), round(rural_pred_16, 2))
++ )
+> print(results_table)
+   Area Mean_EDUC Mean_WAGE Beta Elasticity SE_Elasticity Pred_12 Pred_16
+1 Urban     13.68     22.89 2.46       1.47         0.096   18.76   28.60
+2 Rural     13.68     19.74 1.80       1.25            NA   16.72   23.92
+> ##############################
+> # 繪製圖表：預測工資 vs. EDUC (Urban 與 Rural)
+> ##############################
+> # 設定教育年數區間 (例如從10到20)
+> educ_range <- seq(10, 20, by = 0.1)
+> # 計算預測工資
+> urban_wage <- urban_intercept + urban_beta * educ_range
+> rural_wage <- rural_intercept + rural_beta * educ_range
+> # 繪圖 (以基礎繪圖為例)
+> plot(educ_range, urban_wage, type = "l", lwd = 2, col = "blue",
++      ylim = range(c(urban_wage, rural_wage)),
++      xlab = "Years of Education", ylab = "Predicted Wage",
++      main = "Predicted Wage vs. Education (Urban & Rural)")
+> lines(educ_range, rural_wage, lwd = 2, col = "red")
+> # 加入在 12 與 16 年的預測點
+> points(c(12, 16), c(urban_pred_12, urban_pred_16), col = "blue", pch = 16, cex = 1.5)
+> points(c(12, 16), c(rural_pred_12, rural_pred_16), col = "red", pch = 16, cex = 1.5)
+> # 加入圖例
+> legend("topleft", legend = c("Urban", "Rural"),
++        col = c("blue", "red"), lwd = 2, bty = "n")
+> 
+> 
+> 
+> 
+> 
+> 
+> # 繪圖 (以基礎繪圖為例)
+> plot(educ_range, urban_wage, type = "l", lwd = 2, col = "yellow",
++      ylim = range(c(urban_wage, rural_wage)),
++      xlab = "Years of Education", ylab = "Predicted Wage",
++      main = "Predicted Wage vs. Education (Urban & Rural)")
+> lines(educ_range, rural_wage, lwd = 2, col = "orange")
+> # 加入在 12 與 16 年的預測點
+> points(c(12, 16), c(urban_pred_12, urban_pred_16), col = "yellow", pch = 16, cex = 1.5)
+> points(c(12, 16), c(rural_pred_12, rural_pred_16), col = "orange", pch = 16, cex = 1.5)
+> # 加入圖例
+> legend("topleft", legend = c("Urban", "Rural"),
++        col = c("yellow", "orange"), lwd = 2, bty = "n")
+> 
+> rm(list=ls()) # Caution: this clears the Environment
+> library(devtools)
+載入需要的套件：usethis
+> library(PoEdata)
+> library(bookdown)
+> library(knitr)
+> library(xtable)
+> library(printr)
+> library(stargazer)
+
+Please cite as: 
+
+ Hlavac, Marek (2022). stargazer: Well-Formatted Regression and Summary Statistics Tables.
+ R package version 5.2.3. https://CRAN.R-project.org/package=stargazer 
+
+> library(rmarkdown)
+> # 載入 Rdata 資料檔案
+> temp_file <- tempfile(fileext = ".rdata")
+> download.file(url = "https://www.principlesofeconometrics.com/poe5/data/rdata/capm5.rdata", 
++               destfile = temp_file, 
++               mode = "wb")  
+嘗試 URL 'https://www.principlesofeconometrics.com/poe5/data/rdata/capm5.rdata'
+Content type 'unknown' length 18998 bytes (18 KB)
+downloaded 18 KB
+
+> load(temp_file)
+> # 檢查載入 Rdata 資料檔案
+> data("capm5")  # This is the way that we download the data
+警告訊息：
+於 data("capm5")： 沒有 ‘capm5’ 這個資料集
+> ?capm5  # provides info for the dataset
+在指定的程式套件和圖書館裡沒有與 ‘capm5’ 有關的說明書：
+您可以用用 ‘??capm5’
+> capm5
+         date time        ge       ibm      ford      msft       dis       xom
+1   30JAN1998    1  0.056218 -0.056153  0.058842  0.154255  0.080884 -0.030644
+2   27FEB1998    2  0.003226  0.059620  0.109069  0.136154  0.047368  0.081728
+3   31MAR1998    3  0.112379 -0.005386  0.145856  0.056047 -0.046343  0.060784
+4   30APR1998    4 -0.011603  0.115523  0.086181  0.006983  0.168337  0.080407
+5   29MAY1998    5 -0.021277  0.015922  0.132333 -0.058946 -0.090818 -0.029461
+6   30JUN1998    6  0.089955 -0.022872  0.137349  0.277819 -0.072296  0.012411
+7   31JUL1998    7 -0.012517  0.154056 -0.026780  0.014418 -0.015158 -0.015762
+8   31AUG1998    8 -0.105521 -0.148340 -0.217105 -0.127345 -0.203267 -0.062669
+9   30SEP1998    9 -0.001719  0.140954  0.053221  0.147231 -0.075171  0.079274
+10  30OCT1998   10  0.099764  0.155642  0.164043 -0.038047  0.063645  0.014159
+11  30NOV1998   11  0.032857  0.113434  0.014977  0.152302  0.194896  0.052845
+12  31DEC1998   12  0.132503  0.116578  0.065834  0.136783 -0.067961 -0.025000
+13  29JAN1999   13  0.028186 -0.006102  0.054696  0.261830  0.100000 -0.039316
+14  26FEB1999   14 -0.043504 -0.072469 -0.034588 -0.142143  0.066288 -0.046655
+15  31MAR1999   15  0.106293  0.044183 -0.044257  0.194005 -0.115453  0.060094
+16  30APR1999   16 -0.047458  0.180183  0.136009 -0.092748  0.020080  0.177148
+17  28MAY1999   17 -0.034994  0.110200 -0.106549 -0.007686 -0.082677 -0.033439
+18  30JUN1999   18  0.111248  0.114224 -0.012035  0.117738  0.057940 -0.034429
+19  30JUL1999   19 -0.032301 -0.027563 -0.132492 -0.048510 -0.105477  0.029173
+20  31AUG1999   20  0.030390 -0.007996  0.074742  0.078660  0.006803 -0.001134
+21  30SEP1999   21  0.058765 -0.028600 -0.035971 -0.021607 -0.063063 -0.036450
+22  29OCT1999   22  0.142857 -0.188017  0.101990  0.022084  0.019231 -0.025493
+23  30NOV1999   23 -0.039668  0.050204 -0.079727 -0.016374  0.059811  0.076827
+24  31DEC1999   24  0.192392  0.046695  0.055693  0.282306  0.049327  0.015760
+25  31JAN2000   25 -0.136511  0.040556 -0.057444 -0.161670  0.241453  0.035687
+26  29FEB2000   26 -0.009355 -0.083563 -0.163317 -0.086845 -0.077453 -0.092105
+27  31MAR2000   27  0.178735  0.148418  0.103604  0.188811  0.231343  0.034855
+28  28APR2000   28  0.010442 -0.055085  0.202449 -0.343529  0.050000 -0.003208
+29  31MAY2000   29  0.005167 -0.035830 -0.113014 -0.103047 -0.031746  0.078069
+30  30JUN2000   30  0.005931  0.020373 -0.077691  0.278721 -0.074516 -0.057764
+31  31JUL2000   31 -0.026903  0.026241  0.094477 -0.127344 -0.003221  0.019108
+32  31AUG2000   32  0.140948  0.175142 -0.100419  0.000000  0.006462  0.025812
+33  29SEP2000   33 -0.014711 -0.147727  0.046512 -0.136079 -0.017657  0.091884
+34  31OCT2000   34 -0.049837 -0.124444  0.043951  0.141969 -0.063725  0.000701
+35  30NOV2000   35 -0.095781 -0.049442 -0.129187 -0.166969 -0.191972 -0.008381
+36  29DEC2000   36 -0.029559 -0.090909  0.030220 -0.244009  0.007257 -0.012074
+37  31JAN2001   37 -0.040834  0.317647  0.215573  0.407781  0.052268 -0.032063
+38  28FEB2001   38  0.011309 -0.106875 -0.013480 -0.033777  0.016420 -0.031610
+39  30MAR2001   39 -0.096344 -0.037237  0.011147 -0.073093 -0.075929 -0.000617
+40  30APR2001   40  0.159341  0.197130  0.059033  0.238857  0.057692  0.093827
+41  31MAY2001   41  0.009685 -0.027792 -0.174016  0.021107  0.045289  0.006659
+42  29JUN2001   42 -0.005102  0.010733  0.008214  0.055218 -0.086338 -0.015549
+43  31JUL2001   43 -0.104410 -0.068938  0.037475 -0.093288 -0.087920 -0.043847
+44  31AUG2001   44 -0.057931 -0.048665 -0.208088 -0.138087 -0.034915 -0.033046
+45  28SEP2001   45 -0.088336 -0.082341 -0.126824 -0.103068 -0.267794 -0.018680
+46  31OCT2001   46 -0.021237  0.178260 -0.066282  0.136408 -0.001611  0.001269
+47  30NOV2001   47  0.057402  0.070880  0.180062  0.104213  0.101130 -0.046134
+48  31DEC2001   48  0.045714  0.046457 -0.170011  0.031771  0.022472  0.050802
+49  31JAN2002   49 -0.073104 -0.108052 -0.020356 -0.038340  0.016409 -0.006361
+50  28FEB2002   50  0.041184 -0.089258 -0.027451 -0.084288  0.092118  0.063508
+51  28MAR2002   51 -0.027273  0.059927  0.108199  0.033768  0.003478  0.061259
+52  30APR2002   52 -0.157543 -0.194615 -0.029715 -0.133477  0.004333 -0.083505
+53  31MAY2002   53 -0.012995 -0.037727  0.109375 -0.025832 -0.011648 -0.000249
+54  28JUN2002   54 -0.061336 -0.105034 -0.093484  0.074445 -0.175033  0.024793
+55  31JUL2002   55  0.108434 -0.022222 -0.151875 -0.122852 -0.061905 -0.101662
+56  30AUG2002   56 -0.063665  0.072869 -0.126206  0.022926 -0.115623 -0.029380
+57  30SEP2002   57 -0.176451 -0.226453 -0.167375 -0.108802 -0.034439 -0.100141
+58  31OCT2002   58  0.024341  0.353799 -0.126531  0.222451  0.103038  0.055172
+59  29NOV2002   59  0.074059  0.102990  0.345154  0.078736  0.186826  0.040701
+60  31DEC2002   60 -0.095133 -0.108375 -0.182777 -0.103675 -0.166498  0.004023
+61  31JAN2003   61 -0.049692  0.009032 -0.009677 -0.082012  0.072961 -0.022610
+62  28FEB2003   62  0.047537 -0.001279 -0.086718  0.002107 -0.025143  0.002928
+63  31MAR2003   63  0.060291  0.006158 -0.096154  0.021519 -0.002345  0.027337
+64  30APR2003   64  0.154902  0.082494  0.382979  0.055762  0.096357  0.007153
+65  30MAY2003   65 -0.025467  0.038869  0.019417 -0.037167  0.053055  0.041193
+66  30JUN2003   66  0.005923 -0.062926  0.046667  0.041853  0.005089 -0.013462
+67  31JUL2003   67 -0.008368 -0.015152  0.015469  0.030031  0.109873 -0.009190
+68  29AUG2003   68  0.039733  0.011323  0.045208  0.004165 -0.064781  0.066610
+69  30SEP2003   69  0.014542  0.077064 -0.068339  0.048265 -0.016098 -0.029178
+70  31OCT2003   70 -0.026837  0.013019  0.135562 -0.053957  0.122459 -0.000546
+71  28NOV2003   71 -0.011720  0.013634  0.088211 -0.016450  0.019876 -0.003554
+72  31DEC2003   72  0.087548  0.023636  0.212121  0.064566  0.019489  0.132597
+73  30JAN2004   73  0.085539  0.070673 -0.085000  0.010230  0.028718 -0.005122
+74  27FEB2004   74 -0.027059 -0.025899 -0.054333 -0.040506  0.105417  0.039961
+75  31MAR2004   75 -0.061501 -0.048290 -0.013091 -0.060309 -0.058048 -0.013754
+76  30APR2004   76 -0.018676 -0.039961  0.139278  0.048135 -0.078431  0.023082
+77  28MAY2004   77  0.039065  0.006805 -0.033203  0.003827  0.019105  0.022797
+78  30JUN2004   78  0.047558 -0.004967  0.053872  0.088830  0.086067  0.026821
+79  30JUL2004   79  0.026235 -0.012252 -0.053035 -0.002451 -0.094155  0.042558
+80  31AUG2004   80 -0.013835 -0.025267 -0.041440 -0.038961 -0.027718  0.001512
+81  30SEP2004   81  0.030192  0.012398 -0.004252  0.012821  0.004454  0.048373
+82  29OCT2004   82  0.016081  0.046769 -0.065480  0.011573  0.118404  0.018415
+83  30NOV2004   83  0.036342  0.052033  0.088258  0.068645  0.065821  0.046729
+84  31DEC2004   84  0.038462  0.046053  0.032440 -0.003357  0.043155  0.000195
+85  31JAN2005   85 -0.010137 -0.052343 -0.093579 -0.016467  0.029856  0.006633
+86  28FEB2005   86 -0.019651 -0.007065 -0.039484 -0.039574 -0.024101  0.232171
+87  31MAR2005   87  0.024432 -0.012962 -0.104348 -0.039348  0.028275 -0.058601
+88  29APR2005   88  0.003882 -0.164150 -0.187114  0.046752 -0.081100 -0.043121
+89  31MAY2005   89  0.007735 -0.008248  0.095499  0.022925  0.039394 -0.009469
+90  30JUN2005   90 -0.044134 -0.017869  0.026052 -0.037209 -0.082362  0.022598
+91  29JUL2005   91 -0.004329  0.124798  0.058594  0.030998  0.018268  0.022272
+92  31AUG2005   92 -0.025797 -0.031632 -0.071695  0.072237 -0.017551  0.024511
+93  30SEP2005   93  0.008331 -0.004962 -0.011033 -0.060263 -0.042080  0.060768
+94  31OCT2005   94  0.007128  0.020693 -0.146045 -0.001166  0.009946 -0.116462
+95  30NOV2005   95  0.053377  0.088178 -0.022836  0.080156  0.022979  0.038831
+96  30DEC2005   96 -0.011758 -0.075366 -0.050431 -0.055275 -0.027678 -0.032052
+97  31JAN2006   97 -0.065621 -0.010949  0.124352  0.076482  0.055903  0.117144
+98  28FEB2006   98  0.011298 -0.010578 -0.071096 -0.042273  0.105887 -0.048765
+99  31MAR2006   99  0.058108  0.027792 -0.001255  0.012653 -0.003573  0.025097
+100 28APR2006  100 -0.005463 -0.001576 -0.114322 -0.112459  0.002510  0.036477
+          mkt   riskfree
+1    0.004502 0.00447963
+2    0.073303 0.00447963
+3    0.051301 0.00451929
+4    0.010903 0.00450343
+5   -0.025748 0.00448757
+6    0.031939 0.00449550
+7   -0.023368 0.00447963
+8   -0.157840 0.00447963
+9    0.063828 0.00441614
+10   0.074393 0.00424132
+11   0.062024 0.00417766
+12   0.063051 0.00440820
+13   0.038456 0.00396249
+14  -0.038085 0.00392259
+15   0.037932 0.00392259
+16   0.049105 0.00391461
+17  -0.020709 0.00389864
+18   0.050820 0.00401833
+19  -0.030716 0.00412989
+20  -0.009987 0.00423336
+21  -0.022846 0.00432082
+22   0.062147 0.00432877
+23   0.036823 0.00446376
+24   0.083758 0.00510424
+25  -0.039612 0.00463817
+26   0.031820 0.00470942
+27   0.053526 0.00484385
+28  -0.059529 0.00492283
+29  -0.038967 0.00523809
+30   0.051591 0.00532460
+31  -0.017106 0.00529315
+32   0.075910 0.00528529
+33  -0.051054 0.00529315
+34  -0.024597 0.00528529
+35  -0.102492 0.00529315
+36   0.020402 0.00532460
+37   0.039499 0.00470150
+38  -0.099263 0.00442408
+39  -0.070260 0.00412192
+40   0.083832 0.00388267
+41   0.010576 0.00333803
+42  -0.017464 0.00313697
+43  -0.018297 0.00306449
+44  -0.058980 0.00291126
+45  -0.091526 0.00241759
+46   0.027835 0.00198649
+47   0.078774 0.00170067
+48   0.017859 0.00155333
+49  -0.015984 0.00143856
+50  -0.021699 0.00147137
+51   0.044685 0.00151236
+52  -0.049632 0.00147957
+53  -0.010524 0.00147137
+54  -0.070249 0.00147137
+55  -0.081135 0.00146317
+56   0.007965 0.00143856
+57  -0.099965 0.00146317
+58   0.074925 0.00144677
+59   0.061275 0.00113456
+60  -0.053316 0.00111810
+61  -0.023392 0.00106046
+62  -0.015390 0.00104399
+63   0.010325 0.00102751
+64   0.082762 0.00104399
+65   0.063471 0.00103575
+66   0.016335 0.00089558
+67   0.023112 0.00086256
+68   0.024966 0.00087082
+69  -0.009112 0.00087907
+70   0.060318 0.00087082
+71   0.016594 0.00086256
+72   0.045528 0.00089558
+73   0.023049 0.00085431
+74   0.015459 0.00084605
+75  -0.010694 0.00084605
+76  -0.024231 0.00084605
+77   0.014125 0.00085431
+78   0.021582 0.00097806
+79  -0.037667 0.00111810
+80   0.002713 0.00125793
+81   0.020546 0.00142216
+82   0.017805 0.00152055
+83   0.048210 0.00170067
+84   0.035179 0.00191308
+85  -0.026556 0.00199464
+86   0.022672 0.00210056
+87  -0.016935 0.00226328
+88  -0.025186 0.00240136
+89   0.037955 0.00249060
+90   0.011534 0.00262024
+91   0.043327 0.00275778
+92  -0.005946 0.00290319
+93   0.010565 0.00304837
+94  -0.020801 0.00323354
+95   0.040385 0.00338622
+96   0.003455 0.00354666
+97   0.040033 0.00365880
+98  -0.001640 0.00373882
+99   0.019055 0.00387469
+100  0.012962 0.00400238
+ [ reached 'max' / getOption("max.print") -- omitted 80 rows ]
+> head(capm5)
+       date time        ge       ibm     ford      msft       dis       xom       mkt
+1 30JAN1998    1  0.056218 -0.056153 0.058842  0.154255  0.080884 -0.030644  0.004502
+2 27FEB1998    2  0.003226  0.059620 0.109069  0.136154  0.047368  0.081728  0.073303
+3 31MAR1998    3  0.112379 -0.005386 0.145856  0.056047 -0.046343  0.060784  0.051301
+4 30APR1998    4 -0.011603  0.115523 0.086181  0.006983  0.168337  0.080407  0.010903
+5 29MAY1998    5 -0.021277  0.015922 0.132333 -0.058946 -0.090818 -0.029461 -0.025748
+6 30JUN1998    6  0.089955 -0.022872 0.137349  0.277819 -0.072296  0.012411  0.031939
+    riskfree
+1 0.00447963
+2 0.00447963
+3 0.00451929
+4 0.00450343
+5 0.00448757
+6 0.00449550
+> tail(capm5)
+         date time        ge       ibm      ford      msft       dis       xom
+175 31JUL2012  175 -0.004319  0.002045 -0.036496 -0.036613  0.013196  0.014958
+176 31AUG2012  176 -0.001928 -0.001429  0.016234  0.052596  0.006716  0.011744
+177 28SEP2012  177  0.104780  0.064665  0.055674 -0.034393  0.056802  0.047537
+178 31OCT2012  178 -0.072655 -0.062280  0.136917 -0.040995 -0.060444 -0.003062
+179 30NOV2012  179  0.003324 -0.018558  0.025986 -0.059390  0.010994 -0.026983
+180 31DEC2012  180  0.002366  0.007787  0.131004  0.003558  0.017721 -0.018039
+          mkt   riskfree
+175  0.010266 0.00025797
+176  0.026265 0.00025797
+177  0.026539 0.00024966
+178 -0.014100 0.00023303
+179  0.006191 0.00022472
+180  0.012534 0.00022472
+> nrow(capm5)
+[1] 180
+> # 3. 檢查讀取資料的結構
+> str(capm5)       # 查看資料框的結構
+'data.frame':	180 obs. of  10 variables:
+ $ date    : chr  "30JAN1998" "27FEB1998" "31MAR1998" "30APR1998" ...
+ $ time    : int  1 2 3 4 5 6 7 8 9 10 ...
+ $ ge      : num  0.05622 0.00323 0.11238 -0.0116 -0.02128 ...
+ $ ibm     : num  -0.05615 0.05962 -0.00539 0.11552 0.01592 ...
+ $ ford    : num  0.0588 0.1091 0.1459 0.0862 0.1323 ...
+ $ msft    : num  0.15426 0.13615 0.05605 0.00698 -0.05895 ...
+ $ dis     : num  0.0809 0.0474 -0.0463 0.1683 -0.0908 ...
+ $ xom     : num  -0.0306 0.0817 0.0608 0.0804 -0.0295 ...
+ $ mkt     : num  0.0045 0.0733 0.0513 0.0109 -0.0257 ...
+ $ riskfree: num  0.00448 0.00448 0.00452 0.0045 0.00449 ...
+ - attr(*, "var.labels")= chr [1:10] "day/month/year" "time = 1 to 180" "General Electric monthly rate of return" "IBM monthly rate of return" ...
+> head(capm5)      # 查看前幾筆資料
+       date time        ge       ibm     ford      msft       dis       xom       mkt
+1 30JAN1998    1  0.056218 -0.056153 0.058842  0.154255  0.080884 -0.030644  0.004502
+2 27FEB1998    2  0.003226  0.059620 0.109069  0.136154  0.047368  0.081728  0.073303
+3 31MAR1998    3  0.112379 -0.005386 0.145856  0.056047 -0.046343  0.060784  0.051301
+4 30APR1998    4 -0.011603  0.115523 0.086181  0.006983  0.168337  0.080407  0.010903
+5 29MAY1998    5 -0.021277  0.015922 0.132333 -0.058946 -0.090818 -0.029461 -0.025748
+6 30JUN1998    6  0.089955 -0.022872 0.137349  0.277819 -0.072296  0.012411  0.031939
+    riskfree
+1 0.00447963
+2 0.00447963
+3 0.00451929
+4 0.00450343
+5 0.00448757
+6 0.00449550
+> summary(capm5)   # 簡易統計摘要
+     date                time              ge                  ibm           
+ Length:180         Min.   :  1.00   Min.   :-0.2728770   Min.   :-0.226453  
+ Class :character   1st Qu.: 45.75   1st Qu.:-0.0396237   1st Qu.:-0.027620  
+ Mode  :character   Median : 90.50   Median : 0.0003235   Median : 0.008802  
+                    Mean   : 90.50   Mean   : 0.0048716   Mean   : 0.011365  
+                    3rd Qu.:135.25   3rd Qu.: 0.0461698   3rd Qu.: 0.051488  
+                    Max.   :180.00   Max.   : 0.2512360   Max.   : 0.353799  
+      ford                msft                dis                 xom           
+ Min.   :-0.578846   Min.   :-0.343529   Min.   :-0.267794   Min.   :-0.116462  
+ 1st Qu.:-0.078200   1st Qu.:-0.047076   1st Qu.:-0.035373   1st Qu.:-0.025860  
+ Median :-0.009489   Median : 0.005958   Median : 0.010826   Median : 0.003318  
+ Mean   : 0.011166   Mean   : 0.009243   Mean   : 0.006464   Mean   : 0.009020  
+ 3rd Qu.: 0.082674   3rd Qu.: 0.055833   3rd Qu.: 0.055440   3rd Qu.: 0.045437  
+ Max.   : 1.273764   Max.   : 0.407781   Max.   : 0.241453   Max.   : 0.232171  
+      mkt               riskfree        
+ Min.   :-0.184603   Min.   :0.0001832  
+ 1st Qu.:-0.021892   1st Qu.:0.0007138  
+ Median : 0.011597   Median :0.0020476  
+ Mean   : 0.005382   Mean   :0.0023545  
+ 3rd Qu.: 0.038475   3rd Qu.:0.0042453  
+ Max.   : 0.113984   Max.   :0.0053246  
+> capm5$ge_excess        <- capm5$ge         - capm5$riskfree
+> capm5$ibm_excess       <- capm5$ibm        - capm5$riskfree
+> capm5$ford_excess      <- capm5$ford       - capm5$riskfree
+> capm5$msft_excess      <- capm5$msft       - capm5$riskfree
+> capm5$dis_excess       <- capm5$dis        - capm5$riskfree
+> capm5$xom_excess       <- capm5$xom        - capm5$riskfree
+> # 5. 建立市場的超額報酬 (r_m - r_f)
+> capm5$mkt_excess <- capm5$mkt - capm5$riskfree
+> # 6. 確認新變數是否正確生成
+> head(capm5[, c("date", "ge_excess", "ibm_excess", "ford_excess",  
++                "msft_excess", "dis_excess", "xom_excess", "mkt_excess")])
+       date   ge_excess  ibm_excess ford_excess msft_excess  dis_excess  xom_excess
+1 30JAN1998  0.05173837 -0.06063263  0.05436237  0.14977537  0.07640437 -0.03512363
+2 27FEB1998 -0.00125363  0.05514037  0.10458937  0.13167437  0.04288837  0.07724837
+3 31MAR1998  0.10785971 -0.00990529  0.14133671  0.05152771 -0.05086229  0.05626471
+4 30APR1998 -0.01610643  0.11101957  0.08167757  0.00247957  0.16383357  0.07590357
+5 29MAY1998 -0.02576457  0.01143443  0.12784543 -0.06343357 -0.09530557 -0.03394857
+6 30JUN1998  0.08545950 -0.02736750  0.13285350  0.27332350 -0.07679150  0.00791550
+   mkt_excess
+1  0.00002237
+2  0.06882337
+3  0.04678171
+4  0.00639957
+5 -0.03023557
+6  0.02744350
+> # Q16(b)-01. 逐一對六檔股票做 CAPM 迴歸: r_{j} - r_f = α_j + β_j (r_m - r_f) + e_j
+> lm_ge     <- lm(ge_excess   ~ mkt_excess, data=capm5)
+> lm_ibm    <- lm(ibm_excess  ~ mkt_excess, data=capm5)
+> lm_ford   <- lm(ford_excess ~ mkt_excess, data=capm5)
+> lm_msft   <- lm(msft_excess ~ mkt_excess, data=capm5)
+> lm_dis    <- lm(dis_excess  ~ mkt_excess, data=capm5)
+> lm_xom    <- lm(xom_excess  ~ mkt_excess, data=capm5)
+>   res_table <- data.frame(
++     row.names = c("alpha_hat", "(alpha_se)", "beta_hat", "(beta_se)", "N"),
++     
++     GE   = c(
++       sprintf("%.6f", coef(lm_ge)[1]),
++       sprintf("(%.4f)", coef(summary(lm_ge))[1,2]),
++       sprintf("%.6f", coef(lm_ge)[2]),
++       sprintf("(%.4f)", coef(summary(lm_ge))[2,2]),
++       length(lm_ge$residuals)
++     ),
++     IBM  = c(
++       sprintf("%.6f", coef(lm_ibm)[1]),
++       sprintf("(%.4f)", coef(summary(lm_ibm))[1,2]),
++       sprintf("%.6f", coef(lm_ibm)[2]),
++       sprintf("(%.4f)", coef(summary(lm_ibm))[2,2]),
++       length(lm_ibm$residuals)
++     ),
++     FORD = c(
++       sprintf("%.6f", coef(lm_ford)[1]),
++       sprintf("(%.4f)", coef(summary(lm_ford))[1,2]),
++       sprintf("%.6f", coef(lm_ford)[2]),
++       sprintf("(%.4f)", coef(summary(lm_ford))[2,2]),
++       length(lm_ford$residuals)
++     ),
++     MSFT = c(
++       sprintf("%.6f", coef(lm_msft)[1]),
++       sprintf("(%.4f)", coef(summary(lm_msft))[1,2]),
++       sprintf("%.6f", coef(lm_msft)[2]),
++       sprintf("(%.4f)", coef(summary(lm_msft))[2,2]),
++       length(lm_msft$residuals)
++     ),
++     DIS  = c(
++       sprintf("%.6f", coef(lm_dis)[1]),
++       sprintf("(%.4f)", coef(summary(lm_dis))[1,2]),
++       sprintf("%.6f", coef(lm_dis)[2]),
++       sprintf("(%.4f)", coef(summary(lm_dis))[2,2]),
++       length(lm_dis$residuals)
++     ),
++     XOM  = c(
++       sprintf("%.6f", coef(lm_xom)[1]),
++       sprintf("(%.4f)", coef(summary(lm_xom))[1,2]),
++       sprintf("%.6f", coef(lm_xom)[2]),
++       sprintf("(%.4f)", coef(summary(lm_xom))[2,2]),
++       length(lm_xom$residuals)
++     )
++   )
+> # Q16(b)-3. 查看表格
+> res_table
+                  GE      IBM     FORD     MSFT      DIS      XOM
+alpha_hat  -0.000959 0.006053 0.003779 0.003250 0.001047 0.005284
+(alpha_se)  (0.0044) (0.0048) (0.0102) (0.0060) (0.0047) (0.0035)
+beta_hat    1.147952 0.976890 1.662031 1.201840 1.011521 0.456521
+(beta_se)   (0.0895) (0.0978) (0.2069) (0.1222) (0.0946) (0.0716)
+N                180      180      180      180      180      180
+> cat("
++ 結論：
++ 從上表可以看出，各檔股票的 beta 值如下：
++ - GE    的 beta ~", round(coef(lm_ge)[2], 3), "
++ - IBM   的 beta ~", round(coef(lm_ibm)[2], 3), "
++ - FORD  的 beta ~", round(coef(lm_ford)[2], 3), "
++ - MSFT  的 beta ~", round(coef(lm_msft)[2], 3), "
++ - DIS   的 beta ~", round(coef(lm_dis)[2], 3), "
++ - XOM   的 beta ~", round(coef(lm_xom)[2], 3), "
++ 
++ 若 beta > 1，代表對市場波動較敏感，屬於較『積極型』的股票；若 beta < 1，則較『防禦型』。
++ 可以發現：
++ - FORD, GE, MSFT 的 beta > 1，顯示較積極，其中 FORD 的 beta ~ 1.662，最為積極。
++ - IBM, DIS, XOM 的 beta < 1，屬較防禦型，其中 XOM 的 beta ~ 0.457，最為防禦。
++ ")
+
+結論：
+從上表可以看出，各檔股票的 beta 值如下：
+- GE    的 beta ~ 1.148 
+- IBM   的 beta ~ 0.977 
+- FORD  的 beta ~ 1.662 
+- MSFT  的 beta ~ 1.202 
+- DIS   的 beta ~ 1.012 
+- XOM   的 beta ~ 0.457 
+
+若 beta > 1，代表對市場波動較敏感，屬於較『積極型』的股票；若 beta < 1，則較『防禦型』。
+可以發現：
+- FORD, GE, MSFT 的 beta > 1，顯示較積極，其中 FORD 的 beta ~ 1.662，最為積極。
+- IBM, DIS, XOM 的 beta < 1，屬較防禦型，其中 XOM 的 beta ~ 0.457，最為防禦。
+> # 檢視 Microsoft 迴歸結果摘要，確認 α (截距) 是否接近零
+> summary(lm_msft)
+
+Call:
+lm(formula = msft_excess ~ mkt_excess, data = capm5)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-0.27424 -0.04744 -0.00820  0.03869  0.35801 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept) 0.003250   0.006036   0.538    0.591    
+mkt_excess  1.201840   0.122152   9.839   <2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 0.08083 on 178 degrees of freedom
+Multiple R-squared:  0.3523,	Adjusted R-squared:  0.3486 
+F-statistic:  96.8 on 1 and 178 DF,  p-value: < 2.2e-16
+
+> # 繪製 Microsoft 的超額報酬 (msft_excess) 與市場超額報酬 (mkt_excess) 的散佈圖
+> plot(capm5$mkt_excess, capm5$msft_excess,
++      main = "Microsoft: Excess Return vs. Market Excess Return",
++      xlab = "Market Excess Return (MKT - RISKFREE)",
++      ylab = "Microsoft Excess Return (msft - riskfree)",
++      pch = 16, col = "blue")
+> # 疊加 Microsoft 的迴歸線（來自 lm_msft 模型）
+> abline(lm_msft, col = "red", lwd = 2)
+> # 以無截距模型重新估計每檔股票的 CAPM 模型
+> lm_ge_noint   <- lm(ge_excess   ~ 0 + mkt_excess, data = capm5)
+> # 繪製 Microsoft 的超額報酬 (msft_excess) 與市場超額報酬 (mkt_excess) 的散佈圖
+> plot(capm5$mkt_excess, capm5$msft_excess,
++      main = "Microsoft: Excess Return vs. Market Excess Return",
++      xlab = "Market Excess Return (MKT - RISKFREE)",
++      ylab = "Microsoft Excess Return (msft - riskfree)",
++      pch = 16, col = "yellow")
+> # 疊加 Microsoft 的迴歸線（來自 lm_msft 模型）
+> abline(lm_msft, col = "orange", lwd = 2)
+> # 以無截距模型重新估計每檔股票的 CAPM 模型
+> lm_ge_noint   <- lm(ge_excess   ~ 0 + mkt_excess, data = capm5)
+> lm_ibm_noint  <- lm(ibm_excess  ~ 0 + mkt_excess, data = capm5)
+> lm_ford_noint <- lm(ford_excess ~ 0 + mkt_excess, data = capm5)
+> lm_msft_noint <- lm(msft_excess ~ 0 + mkt_excess, data = capm5)
+> lm_dis_noint  <- lm(dis_excess  ~ 0 + mkt_excess, data = capm5)
+> lm_xom_noint  <- lm(xom_excess  ~ 0 + mkt_excess, data = capm5)
+> # 顯示 Microsoft 無截距模型結果，方便檢查 β 值
+> summary(lm_msft_noint)
+
+Call:
+lm(formula = msft_excess ~ 0 + mkt_excess, data = capm5)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-0.27073 -0.04443 -0.00506  0.04185  0.36112 
+
+Coefficients:
+           Estimate Std. Error t value Pr(>|t|)    
+mkt_excess   1.2059     0.1217    9.91   <2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 0.08067 on 179 degrees of freedom
+Multiple R-squared:  0.3543,	Adjusted R-squared:  0.3507 
+F-statistic: 98.21 on 1 and 179 DF,  p-value: < 2.2e-16
+
+> # 將有截距與無截距模型的 β 值整理比較
+> beta_original <- c(
++   GE   = coef(lm_ge)[2],
++   IBM  = coef(lm_ibm)[2],
++   FORD = coef(lm_ford)[2],
++   MSFT = coef(lm_msft)[2],
++   DIS  = coef(lm_dis)[2],
++   XOM  = coef(lm_xom)[2]
++ )
+> beta_noint <- c(
++   GE   = coef(lm_ge_noint)[1],
++   IBM  = coef(lm_ibm_noint)[1],
++   FORD = coef(lm_ford_noint)[1],
++   MSFT = coef(lm_msft_noint)[1],
++   DIS  = coef(lm_dis_noint)[1],
++   XOM  = coef(lm_xom_noint)[1]
++ )
+> # 將 β 值整理成資料框進行比較
+> beta_comparison <- data.frame(beta_original, beta_noint)
+> print(beta_comparison)
+                beta_original beta_noint
+GE.mkt_excess       1.1479521  1.1467633
+IBM.mkt_excess      0.9768898  0.9843954
+FORD.mkt_excess     1.6620307  1.6667168
+MSFT.mkt_excess     1.2018398  1.2058695
+DIS.mkt_excess      1.0115207  1.0128190
+XOM.mkt_excess      0.4565208  0.4630727
