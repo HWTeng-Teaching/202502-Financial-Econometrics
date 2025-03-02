@@ -179,6 +179,8 @@ cat("\nf. Regression Line and Mean Point:\n")
 cat(answers$f_check, "\n\n")
 
 # Part g
+x_bar = mean(data$x, na.rm = TRUE)
+y_bar = mean(data$y, na.rm = TRUE)
 check_g <- b1 + b2 * x_bar
 check_g == y_bar
 
