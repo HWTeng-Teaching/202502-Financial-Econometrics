@@ -37,24 +37,12 @@ nrow(capm5)
 ##########################################
 # (b) 小題：建立各股票與市場的超額報酬變數
 ##########################################
-
-# 1. 設定工作目錄 (依照你的檔案路徑修改)
-# setwd("你的工作目錄路徑")
-
-# 2. 讀取資料
-# 假設 capm5 資料是 CSV 格式，且含有欄位：
-# Date, GE, IBM, Ford, Microsoft, Disney, MKT, RISKFREE
-# capm5 <- read.csv("capm5.csv", header = TRUE)
-
-# 如果有日期欄位，可將其轉成日期格式 (假設欄位名稱為 "Date")
-# capm5$Date <- as.Date(capm5$Date, format = "%Y-%m-%d")
-
-# 3. 檢查讀取資料的結構
+# 檢查讀取資料的結構
 str(capm5)       # 查看資料框的結構
 head(capm5)      # 查看前幾筆資料
 summary(capm5)   # 簡易統計摘要
 
-# 4. 建立各股票的超額報酬 r_{jm} = r_j - r_f
+# 建立各股票的超額報酬 r_{jm} = r_j - r_f
 
 capm5$ge_excess        <- capm5$ge         - capm5$riskfree
 capm5$ibm_excess       <- capm5$ibm        - capm5$riskfree
@@ -63,21 +51,17 @@ capm5$msft_excess      <- capm5$msft       - capm5$riskfree
 capm5$dis_excess       <- capm5$dis        - capm5$riskfree
 capm5$xom_excess       <- capm5$xom        - capm5$riskfree
 
-# 5. 建立市場的超額報酬 (r_m - r_f)
+# 建立市場的超額報酬 (r_m - r_f)
 capm5$mkt_excess <- capm5$mkt - capm5$riskfree
 
-# 6. 確認新變數是否正確生成
+# 確認新變數是否正確生成
 head(capm5[, c("date", "ge_excess", "ibm_excess", "ford_excess",  
                "msft_excess", "dis_excess", "xom_excess", "mkt_excess")])
-
-# 7. 其他可選擇性檢查或統計描述
-# summary(capm4$ge_excess)
-# summary(capm4$mkt_excess)
 
 # 到此為止，已經完成(b)小題所需的資料前處理：
 # - 將六檔(capm5)股票的報酬率轉換為超額報酬 (r_{jm})
 # - 將市場報酬率轉換為超額報酬 (r_m - r_f)
-# 這些變數後續可用於後續(c)~(f)小題的迴歸分析。
+# 這些變數後續也可用於後續(c) / (d)小題的迴歸分析。
 
 ##############################################
 # 開始解(b)小題：對各股票做 CAPM 迴歸並輸出表格
