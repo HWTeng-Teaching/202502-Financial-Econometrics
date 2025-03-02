@@ -86,3 +86,40 @@ The stocks Ford, GE, and Microsoft are relatively aggressive with Ford being the
 The others are relatively defensive with Exxon Mobil being the most defensive with a beta value of $\beta_2$ = 0.457.
 
 
+** c.
+```
+# 安裝並載入 ggplot2（如果尚未安裝）
+if (!require(ggplot2)) install.packages("ggplot2")
+library(ggplot2)
+
+# 選擇要分析的公司
+selected_company <- "msft"  # 可改成 "ge", "ibm", "ford", "dis", "xom"
+
+# 計算超額報酬
+capm5$Market_Excess <- capm5$mkt - capm5$riskfree
+capm5$Stock_Excess <- capm5[[selected_company]] - capm5$riskfree
+
+# 執行線性回歸（含截距）
+capm_model <- lm(Stock_Excess ~ Market_Excess, data = capm5)
+
+# 繪製回歸圖（確保顯示截距並加上箭頭指標）
+ggplot(capm5, aes(x = Market_Excess, y = Stock_Excess)) +
+  geom_point(alpha = 0.6, color = "brown") +  # 繪製散點圖
+  geom_abline(intercept = coef(capm_model)[1], slope = coef(capm_model)[2], color = "green", size = 1.2) +  # 回歸線
+  geom_hline(yintercept = 0, linetype = "dashed", color = "black") +  # Y 軸 0 的虛線
+  geom_vline(xintercept = 0, linetype = "dashed", color = "black") +  # X 軸 0 的虛線
+  annotate("segment", x = min(capm5$Market_Excess), xend = max(capm5$Market_Excess) * 1.1, 
+           y = 0, yend = 0, arrow = arrow(type = "closed", length = unit(0.07, "inches"))) +  # X軸箭頭
+  annotate("segment", x = 0, xend = 0, 
+           y = min(capm5$Stock_Excess), yend = max(capm5$Stock_Excess) * 1.1, 
+           arrow = arrow(type = "closed", length = unit(0.07, "inches"))) +  # Y軸箭頭
+  labs(title = paste("CAPM Regression for", toupper(selected_company)),
+       subtitle = paste("Intercept (alpha) =", round(coef(capm_model)[1], 4),
+                        ", Beta =", round(coef(capm_model)[2], 4)),
+       x = "Market Excess Return",
+       y = paste(toupper(selected_company), "Excess Return")) +
+  theme_minimal()
+```
+![C02Q16 C  picture](https://github.com/user-attachments/assets/623907e0-06d8-4a37-9302-2e7b56b9db96)
+
+** d
