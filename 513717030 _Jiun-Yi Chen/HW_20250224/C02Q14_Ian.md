@@ -1,4 +1,5 @@
 ![圖片](https://github.com/user-attachments/assets/373cd42f-5040-4e76-a418-70492eaeadd8)
+![圖片](https://github.com/user-attachments/assets/5bf60269-e8cc-4bf1-91b9-07d115350a8d)
 
 ## (a)
 Suppose Wage =W , mean education(EDUC) = $\bar{x}$
