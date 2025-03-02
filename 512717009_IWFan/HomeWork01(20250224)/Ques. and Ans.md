@@ -257,6 +257,7 @@ Conclusion:
 - Fitted line visually supports the regression estimates.
   
 ![image](https://github.com/user-attachments/assets/1503c424-1d1b-403d-96fb-3a9edb867390)
+![CAPM回歸 (Microsoft)](https://your-image-hosting-link/capm_regression_microsoft.png)
 
 ## (d) 
 #### Re-estimated Betas (α = 0)
