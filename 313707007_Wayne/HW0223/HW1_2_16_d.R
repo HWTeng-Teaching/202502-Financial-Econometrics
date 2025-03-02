@@ -1,5 +1,3 @@
-# 安裝 ggplot2（如果還沒安裝）
-if (!require(ggplot2)) install.packages("ggplot2")
 library(ggplot2)
 
 # 定義公司名稱
