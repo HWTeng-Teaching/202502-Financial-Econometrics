@@ -2,6 +2,7 @@
 
 ## (a)
 Suppose Wage =W , mean education(EDUC) = $\bar{x}$
+\
 When $\bar{W} =19.74$,  fit it in rural regression line function , we can find $\bar{x}$= (19.74+4.88) / 1.8 = 13.6778
 ![圖片](https://github.com/user-attachments/assets/19ce7560-e650-4ce4-ad60-8bb4b0d5ec06)
 ![圖片](https://github.com/user-attachments/assets/48a7689c-2639-4245-ac0e-96ac41e31ff6)
@@ -29,6 +30,13 @@ $\mathrm{se}(\hat{\epsilon})
 
 
 ## (c)
+*in urban area*\
+$\hat{WAGE}$ where EDUC=12 = -10.76 +2.46 * 12 = 18.76\
+$\hat{WAGE}$ where EDUC=16 = -10.76 +2.46 * 16 = 28.60
 
+
+*in rural area*\
+$\hat{WAGE}$ where EDUC=12 = -4.88 +1.80 * 12 = 16.72\
+$\hat{WAGE}$ where EDUC=16 = -4.88 +1.80 * 16 = 23.92
 
 
