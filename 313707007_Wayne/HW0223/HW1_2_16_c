@@ -1,5 +1,3 @@
-# 安裝並載入 ggplot2（如果尚未安裝）
-if (!require(ggplot2)) install.packages("ggplot2")
 library(ggplot2)
 
 # 選擇要分析的公司
