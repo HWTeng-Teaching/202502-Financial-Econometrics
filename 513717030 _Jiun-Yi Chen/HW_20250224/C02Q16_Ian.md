@@ -14,6 +14,7 @@ $r_j - r_f = \beta_j (r_m - r_f)$
 
 where \( r_j \) and \( r_f \) are the returns to security \( j \) and the risk-free rate, respectively, \( r_m \) is the return on the market portfolio, and \( \beta_j \) is the security’s *beta* value. A stock’s *beta* is important to investors since it reveals the stock’s volatility. It measures the sensitivity of security \( j \)’s return to variation in the whole stock market. As such, values of \( \beta \) less than one indicate that the stock is *defensive* since its variation is less than the market’s. A beta greater than one indicates an *aggressive stock*. Investors usually want an estimate of a stock’s *beta* before purchasing it. The CAPM model shown above is the *economic model* in this case. The *econometric model* is obtained by including an intercept in the model (even though theory says it should be zero) and an error term:
 
+## b
 ```
 # Load necessary library
 library(dplyr)
@@ -79,5 +80,9 @@ print(results_t)
 | **b₂ = βⱼ**  | 1.148     | 0.977    | 1.662    | 1.202    | 1.012    | 0.457    |
 | **SE(βⱼ)**   | (0.0895)  | (0.0978)  | (0.2069)  | (0.1222)  | (0.0946)  | (0.0716)  |
 | **N**        | 180       | 180      | 180      | 180      | 180      | 180      |
+
+The stocks Ford, GE, and Microsoft are relatively aggressive with Ford being the most aggressive with a beta value of $\beta_2$ = 1.662. 
+
+The others are relatively defensive with Exxon Mobil being the most defensive with a beta value of $\beta_2$ = 0.457.
 
 
