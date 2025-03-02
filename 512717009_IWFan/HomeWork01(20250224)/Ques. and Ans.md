@@ -81,7 +81,7 @@ ŷ = 1.2 + 0.8x
 ŷ = 1.2 + 0.8(1) = 2
 
 Conclusion: The regression line passes through the point of means (1, 2)
-![image](https://github.com/user-attachments/assets/f418d4e9-8bce-4466-8ba5-092b9c45f3bc)
+
 
 
 ### (g)
