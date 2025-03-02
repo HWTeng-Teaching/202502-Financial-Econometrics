@@ -13,6 +13,6 @@
 
 ## Smiles
 
-###![S__46260232](https://github.com/user-attachments/assets/8b98ba07-897e-4e8d-a634-36aa266472bb)
+![S__46260232](https://github.com/user-attachments/assets/8b98ba07-897e-4e8d-a634-36aa266472bb)
 
 
