@@ -72,6 +72,7 @@ CV_x = 100 * (s_x / x̄) = 100 * (√2.5 / 1) = 158.1%
 
 
 ## (e) 
+![image](https://github.com/user-attachments/assets/9a692efa-b65e-429f-9a49-e4d66051137a)
 
 ŷᵢ = 1.2 + 0.8xᵢ
 
