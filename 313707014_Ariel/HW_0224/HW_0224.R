@@ -64,7 +64,7 @@ print(alpha_results)
 significant_alphas <- alpha_results %>% filter(P_Value < 0.05)
 print(significant_alphas)
 
-# 🔹 繪製 Microsoft (MSFT) 回歸圖
+# 繪製 Microsoft (MSFT) 回歸圖
 ggplot(capm5, aes(x = excess_market, y = excess_MSFT)) +
   geom_point(alpha = 0.6, color = "blue") +  # 散點圖
   geom_smooth(method = "lm", se = FALSE, color = "red") +  # 加上回歸線
@@ -76,13 +76,13 @@ ggplot(capm5, aes(x = excess_market, y = excess_MSFT)) +
 
 #d. 
 
-# 🔹 強制 α = 0 的回歸
+# 強制 α = 0 的回歸
 run_capm_no_alpha <- function(stock_returns, market_returns) {
   model <- lm(stock_returns ~ market_returns - 1)  # 去掉截距
   return(summary(model))
 }
 
-# 🔹 重新估計 β（不包含 α）
+# 重新估計 β（不包含 α）
 models_no_alpha <- list(
   "GE" = run_capm_no_alpha(capm5$excess_GE, capm5$excess_market),
   "IBM" = run_capm_no_alpha(capm5$excess_IBM, capm5$excess_market),
@@ -92,11 +92,11 @@ models_no_alpha <- list(
   "ExxonMobil" = run_capm_no_alpha(capm5$excess_Exxon, capm5$excess_market)
 )
 
-# 🔹 比較 β 值變化
+# 比較 β 值變化
 beta_old <- sapply(models, function(m) coef(m)[2])  # 原本的 β
 beta_new <- sapply(models_no_alpha, function(m) coef(m)[1])  # 新的 β（去掉 α）
 
-# 🔹 建立比較表格
+# 建立比較表格
 beta_comparison <- data.frame(
   Stock = names(models),
   Beta_Original = beta_old,
