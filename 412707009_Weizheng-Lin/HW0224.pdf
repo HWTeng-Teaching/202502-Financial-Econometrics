@@ -1,3 +1,5 @@
+
+##homework 
 ## a
 
 | x  |y  | $x - \bar{x}$ | $x - \bar{x}^2$ | $y - \bar{y}$ | $(x - \bar{x})(y - \bar{y})$ |
@@ -12,9 +14,6 @@
 $\bar{x} = 1$, $\bar{y} = 2$
 
 ## b
-
-**The Ordinary Least Squares (OLS) Estimators**  
-
 
 $b_2 = \frac{\sum (x_i - \bar{x}) (y_i - \bar{y})}{\sum (x_i - \bar{x})^2} \tag{2.7}$
 
@@ -64,41 +63,3 @@ median of x = 1
 50th percentile of = 1
 
 
-## e 
-
-## f 
-
-
-
-## g
-
-$\bar{x} = 1$
-
-$\bar{y} = 2$
-
-b_1 = 1.2
-
-b_2 = 0.8
-
-$\bar{y} = b_1+b_2 \bar{x}$ = 2
-
-
-## h
-
-$\sum \hat{y}_i\$ = 10, 
-
-$\hat{\bar{y}}$ = $\frac{\sum \hat{y}_i}{N}$ = 2
-
-$\bar{y}$ = 2
-
-## i 
-
-SSE = $\sum{\hat{e_{i}}^2}$ =3.6
-
-$\hat{\sigma}^2 = \frac{SSE}{N-2} = \frac{3.6}{3} = 1.2$
-
-## j 
-
-$\hat{Var}(b_2 | x)$ = $\hat{\sigma}^2$ / $\sum{(x_{i}-\bar{x})^2}$ = 1.2 / 10 = 0.12
-
-$se(b_2)$ = $\sqrt{\hat{Var}(b_2 | x)}$ = 0.3464
