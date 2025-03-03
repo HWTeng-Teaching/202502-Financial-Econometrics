@@ -13,7 +13,7 @@
 
 
 ## Smiles
-### In 2010, I was recruited to TSMC’s Fab 15, where I was responsible for the critical HK/MG process technology during the 28nm competition with Samsung Electronics. Currently, I am engaged in self-built housing and land development projects, further broadening my business scope.
+###  Currently, I am engaged in self-built housing and land development projects, further broadening my business scope. In the future, I aspire to leverage the learning and resources from NYCU then to explore passive income opportunitie.  
 ![image](https://github.com/user-attachments/assets/c4de0b1b-1547-440d-9ad8-4ce187896d70)
 
 
