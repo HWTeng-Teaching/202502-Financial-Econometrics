@@ -1,1 +1,40 @@
+# 2.16
+## (b)
+# 定義變數
+rf <- capm5$riskfree      # 無風險利率
+rm_rf <- capm5$mkt - rf   # 市場超額報酬 (r_m - r_f)
 
+# 股票列表
+stocks <- c("ge", "ibm", "ford", "msft", "dis", "xom")
+
+# 建立 DataFrame 存放回歸結果
+results <- data.frame(Stock = stocks, Alpha = NA, Beta = NA, R_squared = NA, P_value_Beta = NA)
+
+# 迴歸分析 CAPM: r_j - r_f = α_j + β_j (r_m - r_f) + e_j
+for (i in 1:length(stocks)) {
+  stock <- stocks[i]
+  rj_rf <- capm5[[stock]] - rf  # 計算個股的超額報酬
+  
+  # 移除 NA 值
+  data_clean <- na.omit(data.frame(rm_rf, rj_rf))
+  
+  # 執行回歸分析
+  model <- lm(rj_rf ~ rm_rf, data = data_clean)
+  
+  # 提取回歸結果
+  alpha <- coef(model)[1]  # 截距 α_j
+  beta <- coef(model)[2]   # 斜率 β_j
+  r_squared <- summary(model)$r.squared  # 決定係數 R²
+  p_value_beta <- summary(model)$coefficients[2, 4]  # β 的 P 值
+  
+  # 存入結果
+  results[i, 2:5] <- c(alpha, beta, r_squared, p_value_beta)
+  
+  # 顯示回歸結果
+  cat("\nCAPM 回歸結果 -", stock, "\n")
+  print(summary(model))
+}
+
+# 顯示所有公司的回歸結果
+library(ace_tools)  # 使用 ace_tools 顯示 DataFrame
+display_dataframe_to_user(name="CAPM 回歸結果", dataframe=results)
