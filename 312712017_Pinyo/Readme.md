@@ -2,7 +2,7 @@
 
 # Pinyo
 
-[Way to my GitHub](https://github.com/icebergggCHEN) 
+[Way to my web page](https://pinykewd.github.io/) 
 
 
 ## Map
