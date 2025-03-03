@@ -183,7 +183,7 @@ download.file(url = "https://www.principlesofeconometrics.com/poe5/data/rdata/ca
               mode = "wb")  
 
 load(temp_file)
-capm5
+capm5 #得到五家公司
 
 firms <- c("ge", "ibm", "ford", "msft", "dis", "xom")
 market_r <- "mkt"
@@ -192,7 +192,7 @@ riskfree_r <- "riskfree"
 #計算市場超額報酬以及公司超額報酬，兩者跑回歸
 capm5$MKT_excess <- capm5[[market_r]] - capm5[[riskfree_r]]
 results <- data.frame(Firm = firms, Beta = numeric(length(firms)))
-for(i in 1:length(firms)) {
+for(i in 1:length(firms)) { #跑五次
   
   firm_excess <- capm5[[firms[i]]] - capm5[[riskfree_r]]
   
@@ -232,7 +232,7 @@ abline(lm_msft, col = "red", linetype = "dashed")
 
 計算alpha為0的capm
 results_no_intercept <- data.frame(
-  Firm = firms,
+  Firm = firms
   Beta = numeric(length(firms))  # 預先放置 Beta (無截距) 的欄位
 )
 for (i in seq_along(firms)) {
