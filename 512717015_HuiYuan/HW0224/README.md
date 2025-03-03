@@ -38,9 +38,8 @@ $r_{xy} = \frac{s_{xy}}{s_x s_y}=0.8$
 $CV_x = 100 \times \frac{s_x}{\bar{x}}=158.144$  
 $x$的中位數為1  
 
-## (e)
-
-## (f)
+## (e).(f)
+![image](https://github.com/user-attachments/assets/edc6dbb9-badf-420d-9092-354f28a15746)
 
 ## (g)
 
