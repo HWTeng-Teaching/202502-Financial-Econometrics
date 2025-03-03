@@ -114,6 +114,11 @@ se(b₂) = √var(b₂ | x) = √0.12 = 0.346
 ![image](https://github.com/user-attachments/assets/27b9c8c3-ede8-447f-a866-095700175b8e)
 According to the result,ford is most aggressive and xom is most defensive.
 
-##
+## (c)
+![image](https://github.com/user-attachments/assets/e35d6ff1-6dad-411d-913b-68c8d2992f9b)
+
+## (d)
+![image](https://github.com/user-attachments/assets/a939c6d1-af58-40bc-b7af-55f5fd9d05c8)
+結果差異不大
 
 
