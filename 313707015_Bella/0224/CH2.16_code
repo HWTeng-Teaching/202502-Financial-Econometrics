@@ -1,0 +1,130 @@
+(a)(b)
+# 設定工作目錄
+setwd("C:/Users/bella/Desktop/NYCU/計量經濟/POEdata")
+
+# 確認檔案是否存在
+list.files()
+
+# 載入 capm5.rdata
+load("capm5.rdata")
+
+# 檢查數據格式
+head(capm5)
+
+# 公司名稱
+companies <- c("ge", "ibm", "ford", "msft", "dis", "xom")
+
+# 建立空的 data frame 來存放結果
+results <- data.frame(
+  Company = character(),
+  Alpha = numeric(),
+  Beta = numeric(),
+  P_Value_Alpha = numeric(),
+  P_Value_Beta = numeric(),
+  T_Value_Alpha = numeric(),
+  T_Value_Beta = numeric(),
+  R_Squared = numeric(),
+  stringsAsFactors = FALSE
+)
+
+# 估計 CAPM 模型
+for (company in companies) {
+  formula <- as.formula(paste0(company, " - riskfree ~ mkt - riskfree"))
+  model <- lm(formula, data = capm5)
+  summary_model <- summary(model)
+  
+  # 提取回歸結果
+  alpha <- coef(model)[1]  # 截距
+  beta <- coef(model)[2]   # β 值
+  
+  p_value_alpha <- coef(summary_model)[1, 4]  # 截距的 p 值
+  p_value_beta <- coef(summary_model)[2, 4]   # β 的 p 值
+  
+  t_value_alpha <- coef(summary_model)[1, 3]  # 截距的 t 值
+  t_value_beta <- coef(summary_model)[2, 3]   # β 的 t 值
+  
+  r_squared <- summary_model$r.squared  # R²
+  
+  # 將結果存入 data frame
+  results <- rbind(results, data.frame(
+    Company = company,
+    Alpha = alpha,
+    Beta = beta,
+    P_Value_Alpha = p_value_alpha,
+    P_Value_Beta = p_value_beta,
+    T_Value_Alpha = t_value_alpha,
+    T_Value_Beta = t_value_beta,
+    R_Squared = r_squared
+  ))
+}
+
+# 顯示結果
+print(results)
+
+(c)
+# 微軟 (MSFT) 的回歸模型
+msft_model <- capm_models[["msft"]]
+
+# 顯示回歸結果
+summary(msft_model)
+
+# 繪製微軟的回歸線
+plot(capm5$mkt - capm5$riskfree, 
+     capm5$msft - capm5$riskfree,
+     main = "Microsoft CAPM 回歸線",
+     xlab = "市場超額報酬 (Mkt - Rf)",
+     ylab = "微軟超額報酬 (MSFT - Rf)",
+     pch = 16, col = "blue")
+
+# 加入回歸線
+abline(msft_model, col = "red", lwd = 2)
+
+# 檢查截距值 alpha
+alpha_value <- coef(msft_model)[1]
+cat("微軟的截距 (alpha):", alpha_value, "\n")
+
+# 如果 alpha 接近 0，輸出結論
+if (abs(alpha_value) < 0.05) {
+  cat("截距接近 0，符合 CAPM 理論。\n")
+} else {
+  cat("截距不為 0，可能表示市場無效率或模型假設不完全。\n")
+}
+
+(d)
+# 公司名稱
+companies <- c("ge", "ibm", "ford", "msft", "dis", "xom")
+
+# 建立空的 data frame 來存放結果
+results_no_intercept <- data.frame(
+  Company = character(),
+  Beta_Original = numeric(),
+  Beta_No_Intercept = numeric(),
+  Difference = numeric(),
+  stringsAsFactors = FALSE
+)
+
+for (company in companies) {
+  # 原本的 CAPM 迴歸 (有截距)
+  formula1 <- as.formula(paste0(company, " - riskfree ~ mkt - riskfree"))
+  model1 <- lm(formula1, data = capm5)
+  beta_original <- coef(model1)[2]  # 原始 β
+  
+  # 假設 α = 0 的 CAPM 迴歸 (無截距)
+  formula2 <- as.formula(paste0(company, " - riskfree ~ mkt - riskfree - 1"))
+  model2 <- lm(formula2, data = capm5)
+  beta_no_intercept <- coef(model2)[1]  # 無截距時的 β
+  
+  # 計算 β 的變化
+  difference <- beta_no_intercept - beta_original
+  
+  # 存入 data frame
+  results_no_intercept <- rbind(results_no_intercept, data.frame(
+    Company = company,
+    Beta_Original = beta_original,
+    Beta_No_Intercept = beta_no_intercept,
+    Difference = difference
+  ))
+}
+
+# 顯示結果
+print(results_no_intercept)

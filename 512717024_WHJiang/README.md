@@ -1,6 +1,6 @@
-# github
+# Jiang-Wen-Hwang 江文煌
 
-[My gitHUB webapge](https://github.com/Jiang-Wen-Hwang)
+[My gitHUB Webapge](https://Jiang-Wen-Hwang.github.io)
 
 ## maps
 ###  I was born, studied, worked and founded my business in Hsinchu and have established companies in Hsinchu, Shanghai, and Suzhou. Our company specializes in the semiconductor.                                             

@@ -1,0 +1,65 @@
+# 2.16
+# (b)
+# 定義變數
+rf <- capm5$riskfree      # 無風險利率
+rm_rf <- capm5$mkt - rf   # 市場超額報酬 (r_m - r_f)
+
+# 股票列表
+stocks <- c("ge", "ibm", "ford", "msft", "dis", "xom")
+
+results <- data.frame(Stock = stocks, Alpha = NA, Beta = NA, R_squared = NA, P_value_Beta = NA)
+
+# 迴歸分析 CAPM: r_j - r_f = α_j + β_j (r_m - r_f) + e_j
+for (i in 1:length(stocks)) {
+  stock <- stocks[i]
+  rj_rf <- capm5[[stock]] - rf  # 計算個股的超額報酬
+  data_clean <- na.omit(data.frame(rm_rf, rj_rf))
+  model <- lm(rj_rf ~ rm_rf, data = data_clean)
+  
+  alpha <- coef(model)[1]  # 截距 α_j
+  beta <- coef(model)[2]   # 斜率 β_j
+  r_squared <- summary(model)$r.squared  # 決定係數 R²
+  p_value_beta <- summary(model)$coefficients[2, 4]  # β 的 P 值
+  
+  results[i, 2:5] <- c(alpha, beta, r_squared, p_value_beta)
+  
+  cat("\nCAPM 回歸結果 -", stock, "\n")
+  print(summary(model))
+}
+library(ace_tools)  # 使用 ace_tools 顯示 DataFrame
+display_dataframe_to_user(name="CAPM 回歸結果", dataframe=results)
+# (c)
+
+rj_rf_msft <- capm5$msft - rf  # Microsoft 超額報酬
+
+model_msft <- lm(rj_rf_msft ~ rm_rf, data = data_clean_msft)
+
+plot(data_clean_msft$rm_rf, data_clean_msft$rj_rf_msft, 
+     main = "Microsoft CAPM 回歸分析", 
+     xlab = "市場超額報酬 (rm - rf)", 
+     ylab = "Microsoft 超額報酬 (rj - rf)", 
+     pch = 16, col = "blue")
+
+abline(model_msft, col = "red", lwd = 2)
+
+# (d)
+results_no_alpha <- data.frame(Stock = stocks, Beta = NA, R_squared = NA, P_value_Beta = NA)
+
+for (i in 1:length(stocks)) {
+  stock <- stocks[i]
+  rj_rf <- capm5[[stock]] - rf  # 個股超額報酬
+
+  # 移除 NA 值
+  data_clean <- na.omit(data.frame(rm_rf, rj_rf))
+
+  # 執行無截距回歸 (α_j = 0)
+  model_no_alpha <- lm(rj_rf ~ rm_rf + 0, data = data_clean)  # +0 表示無截距
+  beta <- coef(model_no_alpha)[1]  # 斜率 β_j
+  r_squared <- summary(model_no_alpha)$r.squared  # 決定係數 R²
+  p_value_beta <- summary(model_no_alpha)$coefficients[1, 4]  # β 的 P 值
+
+  # 存入結果
+  results_no_alpha[i, 2:4] <- c(beta, r_squared, p_value_beta)
+}
+
+print(results_no_alpha)

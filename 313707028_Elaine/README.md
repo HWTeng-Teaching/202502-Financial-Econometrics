@@ -2,7 +2,7 @@
 
 *Created by Elaine on 20250218*
 
-[My gitHUB webapge](https://github.com/ElaineeeeChen)
+[My gitHUB webapge](https://ElaineeeeChen.github.io/)
 
 
 ## Map

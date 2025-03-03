@@ -1,0 +1,29 @@
+# 儲存 beta 值
+beta_values <- c()
+
+for (i in company) {
+  y <- capm5[[i]] - capm5$riskfree
+  x <- capm5$mkt - capm5$riskfree
+  tab <- lm(y ~ x)
+  beta_values <- c(beta_values, coef(tab)[2])  # 儲存 beta
+}
+
+# 建立 beta 數據框
+beta_results <- data.frame(Company = company, Beta = beta_values)
+
+# 找出最 aggressive 與最 defensive 的公司
+most_aggressive <- beta_results[which.max(beta_results$Beta), ]
+most_defensive <- beta_results[which.min(beta_results$Beta), ]
+
+# 顯示 beta 結果
+print(beta_results)
+cat("Most Aggressive Company:", most_aggressive$Company, "with Beta =", most_aggressive$Beta, "\n")
+cat("Most Defensive Company:", most_defensive$Company, "with Beta =", most_defensive$Beta, "\n")
+
+# 繪製 Beta 值圖表
+library(ggplot2)
+ggplot(beta_results, aes(x = Company, y = Beta, fill = Company)) +
+  geom_bar(stat = "identity") +
+  theme_minimal() +
+  labs(title = "Beta Values of Firms", y = "Beta", x = "Company") +
+  geom_text(aes(label = round(Beta, 2)), vjust = -0.5)

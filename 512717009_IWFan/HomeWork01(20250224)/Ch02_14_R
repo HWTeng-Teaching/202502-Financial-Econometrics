@@ -1,0 +1,348 @@
+ rm(list = ls())
+> ##############################
+> # Data: 5 Observations
+> ##############################
+> data <- data.frame(
++   Obs = 1:5,
++   x = c(3, 2, 1, -1, 0),
++   y = c(4, 2, 3, 1, 0)
++ )
+> n <- nrow(data)
+> ##############################
+> # (a) Complete the Table & Compute Sample Means
+> ##############################
+> # Calculate sample means
+> xbar <- mean(data$x)
+> ybar <- mean(data$y)
+> # Compute deviations and related columns
+> data$x_minus_mean <- data$x - xbar
+> data$sq_x_minus_mean <- (data$x - xbar)^2
+> data$y_minus_mean <- data$y - ybar
+> data$x_y_dev <- (data$x - xbar) * (data$y - ybar)
+> # Sum up columns for the table's last row
+> sum_row <- c(
++   x = sum(data$x),
++   y = sum(data$y),
++   x_minus_mean = sum(data$x_minus_mean),
++   sq_x_minus_mean = sum(data$sq_x_minus_mean),
++   y_minus_mean = sum(data$y_minus_mean),
++   x_y_dev = sum(data$x_y_dev)
++ )
+> cat("===== (a) Table and Sample Means =====\n")
+===== (a) Table and Sample Means =====
+> print(data)
+  Obs  x y x_minus_mean sq_x_minus_mean y_minus_mean x_y_dev
+1   1  3 4            2               4            2       4
+2   2  2 2            1               1            0       0
+3   3  1 3            0               0            1       0
+4   4 -1 1           -2               4           -1       2
+5   5  0 0           -1               1           -2       2
+> cat("\nSum row:\n")
+
+Sum row:
+> print(sum_row)
+              x               y    x_minus_mean sq_x_minus_mean    y_minus_mean 
+              5              10               0              10               0 
+        x_y_dev 
+              8 
+> cat("\nSample means: x̄ =", xbar, ", ȳ =", ybar, "\n\n")
+
+Sample means: x̄ = 1 , ȳ = 2 
+
+> ##############################
+> # (b) Compute Regression Coefficients b1 and b2
+> ##############################
+> # Using formulas: 
+> #   b2 = sum((x - x̄)(y - ȳ)) / sum((x - x̄)^2)
+> #   b1 = ȳ - b2*x̄
+> b2 <- sum(data$x_y_dev) / sum(data$sq_x_minus_mean)
+> b1 <- ybar - b2 * xbar
+> cat("===== (b) Regression Coefficients =====\n")
+===== (b) Regression Coefficients =====
+> cat("Intercept, b1 =", b1, "\n")
+Intercept, b1 = 1.2 
+> cat("Slope, b2 =", b2, "\n")
+Slope, b2 = 0.8 
+> cat("Interpretation:\n")
+Interpretation:
+> cat(" - b2 indicates that for each one-unit increase in x, y increases by", b2, "units on average.\n")
+ - b2 indicates that for each one-unit increase in x, y increases by 0.8 units on average.
+> cat(" - b1 is the predicted y value when x = 0.\n\n")
+ - b1 is the predicted y value when x = 0.
+
+> ##############################
+> # (c) Verify Σ(x−x̄)² and Σ(x−x̄)(y−ȳ) using alternative formulas
+> ##############################
+> sum_x2 <- sum(data$x^2)
+> sum_xy <- sum(data$x * data$y)
+> cat("===== (c) Verification of Alternative Formulas =====\n")
+===== (c) Verification of Alternative Formulas =====
+> cat("Sum x² =", sum_x2, "\n")
+Sum x² = 15 
+> cat("n*x̄² =", n * xbar^2, "\n")
+n*x̄² = 5 
+> cat("Σ(x − x̄)² =", sum(data$sq_x_minus_mean), "\n")
+Σ(x − x̄)² = 10 
+> cat("Thus, Σ(x − x̄)² = Σx² − n*x̄²\n\n")
+Thus, Σ(x − x̄)² = Σx² − n*x̄²
+
+> cat("Sum x*y =", sum_xy, "\n")
+Sum x*y = 18 
+> cat("n*x̄*ȳ =", n * xbar * ybar, "\n")
+n*x̄*ȳ = 10 
+> cat("Σ(x − x̄)(y − ȳ) =", sum(data$x_y_dev), "\n")
+Σ(x − x̄)(y − ȳ) = 8 
+> cat("Thus, Σ(x − x̄)(y − ȳ) = Σxy − n*x̄*ȳ\n\n")
+Thus, Σ(x − x̄)(y − ȳ) = Σxy − n*x̄*ȳ
+
+> ##############################
+> # (d) Compute Fitted Values, Residuals, and Additional Quantities
+> ##############################
+> # Fitted regression line: ŷ = b1 + b2*x
+> data$fitted <- b1 + b2 * data$x
+> data$residuals <- data$y - data$fitted
+> data$resid_sq <- data$residuals^2
+> data$x_resid <- data$x * data$residuals
+> cat("===== (d) Fitted Values and Residuals =====\n")
+===== (d) Fitted Values and Residuals =====
+> print(data[, c("x", "y", "fitted", "residuals", "resid_sq", "x_resid")])
+   x y fitted residuals resid_sq x_resid
+1  3 4    3.6       0.4     0.16     1.2
+2  2 2    2.8      -0.8     0.64    -1.6
+3  1 3    2.0       1.0     1.00     1.0
+4 -1 1    0.4       0.6     0.36    -0.6
+5  0 0    1.2      -1.2     1.44     0.0
+> cat("\nSums:\n")
+
+Sums:
+> cat("Σx =", sum(data$x), "\n")
+Σx = 5 
+> cat("Σy =", sum(data$y), "\n")
+Σy = 10 
+> cat("Σŷ =", sum(data$fitted), "\n")
+Σŷ = 10 
+> cat("Σe =", sum(data$residuals), "\n")
+Σe = -2.220446e-16 
+> cat("Σe² =", sum(data$resid_sq), "\n")
+Σe² = 3.6 
+> cat("Σ(x*e) =", sum(data$x_resid), "\n\n")
+Σ(x*e) = -1.332268e-15 
+
+> # Compute additional statistics:
+> # Sample variance of y and x, covariance, correlation, CV, and median of x.
+> s2_y <- sum((data$y - ybar)^2) / (n - 1)
+> s2_x <- sum((data$x - xbar)^2) / (n - 1)
+> s_y <- sqrt(s2_y)
+> s_x <- sqrt(s2_x)
+> s_xy <- sum((data$x - xbar) * (data$y - ybar)) / (n - 1)
+> r_xy <- s_xy / (s_x * s_y)
+> CV_x <- 100 * (s_x / xbar)
+> median_x <- median(data$x)
+> cat("===== Additional Statistics =====\n")
+===== Additional Statistics =====
+> cat("s_y² =", s2_y, "\n")
+s_y² = 2.5 
+> cat("s_x² =", s2_x, "\n")
+s_x² = 2.5 
+> cat("Sample covariance, s_xy =", s_xy, "\n")
+Sample covariance, s_xy = 2 
+> cat("Sample correlation, r_xy =", r_xy, "\n")
+Sample correlation, r_xy = 0.8 
+> cat("Coefficient of Variation of x, CV_x =", CV_x, "%\n")
+Coefficient of Variation of x, CV_x = 158.1139 %
+> cat("Median of x =", median_x, "\n\n")
+Median of x = 1 
+
+> ##############################
+> # (e) Plot the Data and Fitted Regression Line
+> ##############################
+> cat("===== (e) Plotting Data and Fitted Regression Line =====\n")
+===== (e) Plotting Data and Fitted Regression Line =====
+> plot(data$x, data$y, pch = 16, col = "blue",
++      xlab = "x", ylab = "y",
++      main = "Scatterplot with Fitted Regression Line")
+> abline(a = b1, b = b2, col = "red", lwd = 2)
+> ##############################
+> # (f) Plot the Centroid and Check if the Fitted Line Passes Through It
+> ##############################
+> points(xbar, ybar, col = "darkgreen", pch = 17, cex = 1.5)
+> text(xbar, ybar, labels = "Centroid", pos = 4, col = "darkgreen")
+> cat("===== (f) Centroid =====\n")
+===== (f) Centroid =====
+> cat("The centroid (x̄, ȳ) is (", xbar, ",", ybar, ")\n")
+The centroid (x̄, ȳ) is ( 1 , 2 )
+> cat("The fitted line passes through the centroid if ȳ = b1 + b2*x̄.\n\n")
+The fitted line passes through the centroid if ȳ = b1 + b2*x̄.
+
+> ##############################
+> # (g) Verify ȳ = b1 + b2*x̄
+> ##############################
+> cat("===== (g) Verification =====\n")
+===== (g) Verification =====
+> cat("b1 + b2*x̄ =", b1 + b2 * xbar, "\n")
+b1 + b2*x̄ = 2 
+> cat("ȳ =", ybar, "\n\n")
+ȳ = 2 
+
+> ##############################
+> # (h) Verify that the Average Fitted Value Equals ȳ
+> ##############################
+> avg_fitted <- mean(data$fitted)
+> cat("===== (h) Average Fitted Value =====\n")
+===== (h) Average Fitted Value =====
+> cat("Average fitted value =", avg_fitted, "\n")
+Average fitted value = 2 
+> cat("ȳ =", ybar, "\n\n")
+ȳ = 2 
+
+> ##############################
+> # (i) Compute σ̂² (Error Variance)
+> ##############################
+> # Degrees of freedom = n - 2 for simple regression
+> sigma2_hat <- sum(data$resid_sq) / (n - 2)
+> cat("===== (i) σ̂² =====\n")
+===== (i) σ̂² =====
+> cat("σ̂² =", sigma2_hat, "\n\n")
+σ̂² = 1.2 
+
+> ##############################
+> # (j) Compute var(b₂|x) and se(b₂)
+> ##############################
+> var_b2 <- sigma2_hat / sum(data$sq_x_minus_mean)
+> se_b2 <- sqrt(var_b2)
+> cat("===== (j) Variance and Standard Error of b₂ =====\n")
+===== (j) Variance and Standard Error of b₂ =====
+> cat("var(b₂|x) =", var_b2, "\n")
+var(b₂|x) = 0.12 
+> cat("se(b₂) =", se_b2, "\n")
+se(b₂) = 0.3464102 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> # 清除環境變數
+> rm(list = ls())
+> ##############################
+> # 參數設定 (根據題目給定數值)
+> ##############################
+> # Urban regression parameters:
+> urban_intercept <- -10.76
+> urban_beta      <- 2.46
+> n_urban         <- 986
+> # Urban given mean EDUC:
+> urban_mean_EDUC <- 13.68
+> # For urban, the SE for beta is given as 0.16 and for intercept 2.27 (未來若需要可用)
+> urban_se_beta   <- 0.16
+> # Rural regression parameters:
+> rural_intercept <- -4.88
+> rural_beta      <- 1.80
+> n_rural         <- 214
+> # Given mean wage for rural:
+> rural_mean_WAGE <- 19.74
+> ##############################
+> # (a) Rural: Elasticity Calculation
+> ##############################
+> # 由於迴歸線通過均值點，所以：
+> # mean_EDUC_rural = (mean_WAGE - rural_intercept) / rural_beta
+> rural_mean_EDUC <- (rural_mean_WAGE - rural_intercept) / rural_beta
+> # 計算彈性： elasticity = beta * (mean_EDUC / mean_WAGE)
+> elasticity_rural <- rural_beta * (rural_mean_EDUC / rural_mean_WAGE)
+> # 輸出結果 (應約為1.25)
+> cat("(a) Rural Elasticity Calculation:\n")
+(a) Rural Elasticity Calculation:
+> cat("Mean EDUC (Rural) =", round(rural_mean_EDUC, 2), "\n")
+Mean EDUC (Rural) = 13.68 
+> cat("Elasticity (Rural) =", round(elasticity_rural, 2), "\n\n")
+Elasticity (Rural) = 1.25 
+
+> ##############################
+> # (b) Urban: Standard Error of Elasticity
+> ##############################
+> # 首先計算 Urban 的 mean WAGE:
+> urban_mean_WAGE <- urban_intercept + urban_beta * urban_mean_EDUC
+> # Urban elasticity = urban_beta * (urban_mean_EDUC / urban_mean_WAGE)
+> elasticity_urban <- urban_beta * (urban_mean_EDUC / urban_mean_WAGE)
+> # 由於均值被視為固定，則 SE(elasticity) = (mean_EDUC / mean_WAGE) * SE(beta)
+> se_elasticity_urban <- (urban_mean_EDUC / urban_mean_WAGE) * urban_se_beta
+> cat("(b) Urban Elasticity and its Standard Error:\n")
+(b) Urban Elasticity and its Standard Error:
+> cat("Mean WAGE (Urban) =", round(urban_mean_WAGE, 2), "\n")
+Mean WAGE (Urban) = 22.89 
+> cat("Elasticity (Urban) =", round(elasticity_urban, 2), "\n")
+Elasticity (Urban) = 1.47 
+> cat("SE(Elasticity, Urban) =", round(se_elasticity_urban, 3), "\n\n")
+SE(Elasticity, Urban) = 0.096 
+
+> # Urban predictions
+> urban_pred_12 <- urban_intercept + urban_beta * 12
+> urban_pred_16 <- urban_intercept + urban_beta * 16
+> # Rural predictions
+> rural_pred_12 <- rural_intercept + rural_beta * 12
+> rural_pred_16 <- rural_intercept + rural_beta * 16
+> cat("(c) Predicted Wages:\n")
+(c) Predicted Wages:
+> cat("Urban: 12 years =", round(urban_pred_12, 2), ", 16 years =", round(urban_pred_16, 2), "\n")
+Urban: 12 years = 18.76 , 16 years = 28.6 
+> cat("Rural: 12 years =", round(rural_pred_12, 2), ", 16 years =", round(rural_pred_16, 2), "\n\n")
+Rural: 12 years = 16.72 , 16 years = 23.92 
+
+> ##############################
+> # 整理結果成表格 (供摘要用)
+> ##############################
+> results_table <- data.frame(
++   Area = c("Urban", "Rural"),
++   Mean_EDUC = c(urban_mean_EDUC, round(rural_mean_EDUC, 2)),
++   Mean_WAGE = c(round(urban_mean_WAGE,2), rural_mean_WAGE),
++   Beta = c(urban_beta, rural_beta),
++   Elasticity = c(round(elasticity_urban, 2), round(elasticity_rural, 2)),
++   SE_Elasticity = c(round(se_elasticity_urban, 3), NA),
++   Pred_12 = c(round(urban_pred_12, 2), round(rural_pred_12, 2)),
++   Pred_16 = c(round(urban_pred_16, 2), round(rural_pred_16, 2))
++ )
+> print(results_table)
+   Area Mean_EDUC Mean_WAGE Beta Elasticity SE_Elasticity Pred_12 Pred_16
+1 Urban     13.68     22.89 2.46       1.47         0.096   18.76   28.60
+2 Rural     13.68     19.74 1.80       1.25            NA   16.72   23.92
+> ##############################
+> # 繪製圖表：預測工資 vs. EDUC (Urban 與 Rural)
+> ##############################
+> # 設定教育年數區間 (例如從10到20)
+> educ_range <- seq(10, 20, by = 0.1)
+> # 計算預測工資
+> urban_wage <- urban_intercept + urban_beta * educ_range
+> rural_wage <- rural_intercept + rural_beta * educ_range
+> # 繪圖 (以基礎繪圖為例)
+> plot(educ_range, urban_wage, type = "l", lwd = 2, col = "blue",
++      ylim = range(c(urban_wage, rural_wage)),
++      xlab = "Years of Education", ylab = "Predicted Wage",
++      main = "Predicted Wage vs. Education (Urban & Rural)")
+> lines(educ_range, rural_wage, lwd = 2, col = "red")
+> # 加入在 12 與 16 年的預測點
+> points(c(12, 16), c(urban_pred_12, urban_pred_16), col = "blue", pch = 16, cex = 1.5)
+> points(c(12, 16), c(rural_pred_12, rural_pred_16), col = "red", pch = 16, cex = 1.5)
+> # 加入圖例
+> legend("topleft", legend = c("Urban", "Rural"),
++        col = c("blue", "red"), lwd = 2, bty = "n")
+> 
+> 
+> 
+> 
+> 
+> 
+> # 繪圖 (以基礎繪圖為例)
+> plot(educ_range, urban_wage, type = "l", lwd = 2, col = "yellow",
++      ylim = range(c(urban_wage, rural_wage)),
++      xlab = "Years of Education", ylab = "Predicted Wage",
++      main = "Predicted Wage vs. Education (Urban & Rural)")
+> lines(educ_range, rural_wage, lwd = 2, col = "orange")
+> # 加入在 12 與 16 年的預測點
+> points(c(12, 16), c(urban_pred_12, urban_pred_16), col = "yellow", pch = 16, cex = 1.5)
+> points(c(12, 16), c(rural_pred_12, rural_pred_16), col = "orange", pch = 16, cex = 1.5)
+> # 加入圖例
+> legend("topleft", legend = c("Urban", "Rural"),
++        col = c("yellow", "orange"), lwd = 2, bty = "n")

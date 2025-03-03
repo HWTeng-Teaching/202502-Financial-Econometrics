@@ -1,7 +1,7 @@
 
 # YC
 
-[My gitHUB webapge](https://github.com/optoptoptopt) 
+[My gitHUB webapge](https://optoptoptopt.github.io/) 
 
 
 
