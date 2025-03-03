@@ -1,6 +1,6 @@
 # Ａｌａｎ 邵靖皓
 
-[My gitHUB webapge](https://github.com/alanshao1026) 
+[My gitHUB webapge](https://alanshao1026.github.io/)
 
 ## Map
 
