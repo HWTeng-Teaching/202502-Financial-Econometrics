@@ -105,5 +105,9 @@ var(b₂ | x) = σ̂² / Σ (xᵢ - x̄)² = 1.2 / 10 = 0.12
 se(b₂) = √var(b₂ | x) = √0.12 = 0.346
 
 # 2.14
+![image](https://github.com/user-attachments/assets/db462c72-2482-48c0-bf7b-40773cc0effa)
+
+# 2.16
+![image](https://github.com/user-attachments/assets/986e7f2e-a967-438a-b816-ba28f99608f8)
 
 
