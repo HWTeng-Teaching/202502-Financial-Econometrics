@@ -1,5 +1,4 @@
 ## a
-blew is answer 
 
 | x  |y  | $x - \bar{x}$ | $x - \bar{x}^2$ | $y - \bar{y}$ | $(x - \bar{x})(y - \bar{y})$ |
 |--------|--------|----------------|----------------------|----------------|----------------------|
@@ -10,10 +9,12 @@ blew is answer
 | 0      | 0      | -1             | 1                    | -2             | 2                    |
 |$\sum{x_{i}}$ =5|$\sum{y_{i}}$ =10|$\sum{(x_{i}-\bar{x})}$ =0 |$\sum{(x_{i}-\bar{x})^2}$=10|$\sum{(y_{i}-\bar{y})}$ =0 |$\sum{(x- \bar{x})(y-\bar{y})}$=8| ㄝ
 
-So,$\bar{x} = 1$, $\bar{y} = 2$
+$\bar{x} = 1$, $\bar{y} = 2$
 
 ## b
-##use (2.7) and (2.8) 
+
+**The Ordinary Least Squares (OLS) Estimators**  
+
 
 $b_2 = \frac{\sum (x_i - \bar{x}) (y_i - \bar{y})}{\sum (x_i - \bar{x})^2} \tag{2.7}$
 
@@ -64,9 +65,6 @@ median of x = 1
 
 
 ## e 
-
-
-
 
 ## f 
 
