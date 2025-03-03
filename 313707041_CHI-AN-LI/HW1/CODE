@@ -1,5 +1,5 @@
 # 2.16
-## (b)
+# (b)
 # 定義變數
 rf <- capm5$riskfree      # 無風險利率
 rm_rf <- capm5$mkt - rf   # 市場超額報酬 (r_m - r_f)
