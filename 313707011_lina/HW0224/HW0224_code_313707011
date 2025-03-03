@@ -1,0 +1,88 @@
+library(POE5Rdata)
+data("capm5")
+
+# 2. 16 (b)
+
+# 定義函數來執行 CAPM 迴歸並提取統計數據
+run_capm <- function(stock_excess, market_excess) {
+  model <- lm(stock_excess ~ market_excess, data = capm5)
+  summary_model <- summary(model)
+  
+  # 提取統計量
+  alpha <- summary_model$coefficients[1, 1]  # 截距 α
+  beta <- summary_model$coefficients[2, 1]   # 斜率 β
+  t_alpha <- summary_model$coefficients[1, 3] # α 的 t 值
+  t_beta <- summary_model$coefficients[2, 3]  # β 的 t 值
+  p_alpha <- summary_model$coefficients[1, 4] # α 的 p 值
+  p_beta <- summary_model$coefficients[2, 4]  # β 的 p 值
+  r_squared <- summary_model$r.squared       # R²
+  
+  return(c(alpha, beta, t_alpha, t_beta, p_alpha, p_beta, r_squared))
+}
+
+# 估計每支股票的 CAPM 模型
+results <- data.frame(
+  Firm = c("GE", "IBM", "Ford", "Microsoft", "Disney", "ExxonMobil"),
+  t(sapply(list(
+    capm5$GE_excess, capm5$IBM_excess, capm5$Ford_excess, 
+    capm5$Microsoft_excess, capm5$Disney_excess, capm5$ExxonMobil_excess
+  ), run_capm, market_excess = capm5$MKT_excess))
+)
+
+# 設定欄位名稱
+colnames(results) <- c("Firm", "Alpha", "Beta", "t(Alpha)", "t(Beta)", "p(Alpha)", "p(Beta)", "R-Squared")
+
+# 顯示結果
+print(results)
+
+
+
+# 2. 16 (c)
+
+# 繪製 Microsoft 的回歸圖
+plot(capm5$MKT_excess, capm5$Microsoft_excess, 
+     main="CAPM Regression: Microsoft",
+     xlab="Market Excess Return", 
+     ylab="Microsoft Excess Return", 
+     pch=16, col="blue")
+
+# 加入回歸線
+abline(lm(capm5$Microsoft_excess ~ capm5$MKT_excess), col="red", lwd=2)
+
+
+
+# 2. 16 (d)
+
+# 定義函數來估計 β（假設 α = 0）
+run_capm_no_intercept <- function(stock_excess, market_excess) {
+  model <- lm(stock_excess ~ market_excess - 1, data = capm5)  # -1 表示去除截距
+  summary_model <- summary(model)
+  
+  # 提取 β 值
+  beta <- summary_model$coefficients[1, 1]
+  t_beta <- summary_model$coefficients[1, 3]
+  p_beta <- summary_model$coefficients[1, 4]
+  r_squared <- summary_model$r.squared
+  
+  return(c(beta, t_beta, p_beta, r_squared))
+}
+
+# 估計新的 β 值
+results_no_intercept <- data.frame(
+  Firm = c("GE", "IBM", "Ford", "Microsoft", "Disney", "ExxonMobil"),
+  t(sapply(list(
+    capm5$GE_excess, capm5$IBM_excess, capm5$Ford_excess, 
+    capm5$Microsoft_excess, capm5$Disney_excess, capm5$ExxonMobil_excess
+  ), run_capm_no_intercept, market_excess = capm5$MKT_excess))
+)
+
+# 設定欄位名稱
+colnames(results_no_intercept) <- c("Firm", "Beta_no_Alpha", "t(Beta)", "p(Beta)", "R-Squared")
+
+# 顯示新 β 值
+print(results_no_intercept)
+
+# 比較新的 β 值與原本的 β 值
+comparison <- merge(results, results_no_intercept, by = "Firm")
+print(comparison[, c("Firm", "Beta", "Beta_no_Alpha")])
+
