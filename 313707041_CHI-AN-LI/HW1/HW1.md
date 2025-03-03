@@ -116,7 +116,7 @@ According to the result,ford is most aggressive and xom is most defensive.
 
 ## (c)
 ![image](https://github.com/user-attachments/assets/e35d6ff1-6dad-411d-913b-68c8d2992f9b)
-
+不正確，alpha並不等於0
 ## (d)
 ![image](https://github.com/user-attachments/assets/a939c6d1-af58-40bc-b7af-55f5fd9d05c8)
 結果差異不大
