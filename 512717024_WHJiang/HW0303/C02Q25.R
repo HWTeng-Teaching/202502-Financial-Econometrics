@@ -1,0 +1,106 @@
+# 清除工作區變數
+rm(list = ls())
+
+##############################
+# 載入資料
+##############################
+# 假設資料檔案 "cex5_small.csv" 位於工作目錄中，且包含變數：
+#   - FOODAWAY：過去一季每人每月外食支出（單位：美元）
+#   - INCOME：家庭過去一年每月收入（以100美元為單位）
+#   - degree  : 家庭中成員的學歷狀況 (例如："advanced", "college", "none")
+cex5 <- read.csv("cex5_small.csv", header = TRUE)
+str(cex5)
+summary(cex5)
+
+##############################
+# (a) 繪製 FOODAWAY 的直方圖並計算描述性統計數據
+##############################
+hist(cex5$FOODAWAY, breaks = 30, 
+     main = "FOODAWAY 的直方圖", 
+     xlab = "FOODAWAY (美元)", col = "lightblue")
+foodaway_mean <- mean(cex5$FOODAWAY, na.rm = TRUE)
+foodaway_median <- median(cex5$FOODAWAY, na.rm = TRUE)
+foodaway_quantiles <- quantile(cex5$FOODAWAY, probs = c(0.25, 0.75), na.rm = TRUE)
+cat("【(a) FOODAWAY 描述性統計】\n")
+cat("平均值 =", foodaway_mean, "\n")
+cat("中位數 =", foodaway_median, "\n")
+cat("第25百分位數 =", foodaway_quantiles[1], "\n")
+cat("第75百分位數 =", foodaway_quantiles[2], "\n\n")
+
+##############################
+# (b) 分群計算 FOODAWAY 的平均值與中位數
+##############################
+# 假設變數 "degree" 表示家庭中成員的學歷狀況，其水平包括：
+# "advanced" (有高等學位)、"college" (有大學學位) 與 "none" (無高等或大學學位)
+if("degree" %in% names(cex5)) {
+  cex5$degree <- as.factor(cex5$degree)
+  library(dplyr)
+  group_stats <- cex5 %>%
+    group_by(degree) %>%
+    summarize(
+      Mean_FOODAWAY = mean(FOODAWAY, na.rm = TRUE),
+      Median_FOODAWAY = median(FOODAWAY, na.rm = TRUE)
+    )
+  cat("【(b) 各學歷群體 FOODAWAY 描述性統計】\n")
+  print(group_stats)
+  cat("\n")
+} else {
+  cat("【(b) 提示】\n")
+  cat("資料中未找到表示家庭學歷狀況的變數 'degree'。請根據實際資料調整分群條件。\n\n")
+}
+
+##############################
+# (c) 繪製 ln(FOODAWAY) 的直方圖並計算描述性統計數據
+##############################
+# 由於 log() 僅對正數有意義，將非正數 FOODAWAY 設為 NA
+cex5$ln_FOODAWAY <- with(cex5, ifelse(FOODAWAY > 0, log(FOODAWAY), NA))
+hist(cex5$ln_FOODAWAY, breaks = 30, 
+     main = "ln(FOODAWAY) 的直方圖", 
+     xlab = "ln(FOODAWAY)", col = "lightgreen")
+ln_foodaway_mean <- mean(cex5$ln_FOODAWAY, na.rm = TRUE)
+ln_foodaway_median <- median(cex5$ln_FOODAWAY, na.rm = TRUE)
+ln_foodaway_quantiles <- quantile(cex5$ln_FOODAWAY, probs = c(0.25, 0.75), na.rm = TRUE)
+cat("【(c) ln(FOODAWAY) 描述性統計】\n")
+cat("平均值 =", ln_foodaway_mean, "\n")
+cat("中位數 =", ln_foodaway_median, "\n")
+cat("第25百分位數 =", ln_foodaway_quantiles[1], "\n")
+cat("第75百分位數 =", ln_foodaway_quantiles[2], "\n")
+cat("說明：因為 FOODAWAY 包含非正數值（例如零），而 log(FOODAWAY) 只對正數定義，\n")
+cat("故在轉換過程中會刪除非正數的觀察值，導致 ln(FOODAWAY) 的觀察數量可能少於 FOODAWAY。\n\n")
+
+##############################
+# (d) 估計迴歸模型 ln(FOODAWAY) = β₁ + β₂ INCOME + e
+##############################
+# 只使用 ln_FOODAWAY 非 NA 的觀察值
+lm_model <- lm(ln_FOODAWAY ~ INCOME, data = cex5)
+summary(lm_model)
+beta2 <- coef(lm_model)["INCOME"]
+cat("【(d) 迴歸模型估計】\n")
+cat("模型：ln(FOODAWAY) = ", round(coef(lm_model)[1], 4), " + ", round(beta2, 4), " * INCOME + e\n")
+cat("解釋：當 INCOME 增加 1 單位（即100美元）時，ln(FOODAWAY) 平均變化", round(beta2, 4), "單位。\n")
+cat("這可近似解釋為 FOODAWAY 支出變化的百分比效應。\n\n")
+
+##############################
+# (e) 繪製 ln(FOODAWAY) 與 INCOME 的散佈圖並加入擬合線
+##############################
+plot(cex5$INCOME, cex5$ln_FOODAWAY,
+     xlab = "INCOME (以100美元為單位)",
+     ylab = "ln(FOODAWAY)",
+     main = "ln(FOODAWAY) 與 INCOME 散佈圖及擬合線",
+     pch = 16, col = "blue")
+abline(lm_model, col = "red", lwd = 2)
+legend("topleft", legend = c("資料點", "擬合線"),
+       col = c("blue", "red"), pch = c(16, NA), lty = c(NA, 1), lwd = c(NA, 2))
+
+##############################
+# (f) 計算最小平方法殘差並繪製殘差圖
+##############################
+residuals_model <- residuals(lm_model)
+plot(cex5$INCOME, residuals_model,
+     xlab = "INCOME (以100美元為單位)",
+     ylab = "殘差",
+     main = "INCOME 與迴歸模型殘差圖",
+     pch = 16, col = "purple")
+abline(h = 0, lty = 2)
+cat("【(f) 殘差圖說明】\n")
+cat("請檢查殘差圖是否呈現隨機分布，若出現明顯模式或異方差性，可能暗示模型假設違反。\n")
