@@ -1,5 +1,3 @@
-<img width="592" alt="image" src="https://github.com/user-attachments/assets/39866cd5-4bf1-45d8-8708-bc27efc334e2" /># HW solution
-
 ## HW0224
 
 There are three questions. For questions with too many subquestion, I will split it to multiple students.  
