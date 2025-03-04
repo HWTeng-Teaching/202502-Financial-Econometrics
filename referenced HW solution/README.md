@@ -1,4 +1,4 @@
-# HW solution
+<img width="592" alt="image" src="https://github.com/user-attachments/assets/39866cd5-4bf1-45d8-8708-bc27efc334e2" /># HW solution
 
 ## HW0224
 
@@ -19,4 +19,18 @@ For example:
 | 陳紀蓁 | HW0224Q4 | C02Q14(a,b,c)  |
 | 陳麗靜 | HW0224Q5 | C02Q16(a,b)    |
 | 許傑 | HW0224Q6 | C02Q16(c,d)    |
+
+
+## HW0303
+
+| ID        | Name   | HWCODE   | Assignment    |
+|-----------|--------|----------|--------------|
+| 313707027 | 王姿蘋 | HW0303Q1 | C02Q17(a,b,c,d) |
+| 313707028 | 陳亭秀 | HW0303Q2 | C02Q17(e,f,g) |
+| 313707029 | 鄭玉琪 | HW0303Q3 | C02Q25(a,b) |
+| 313707031 | 陳宜湄 | HW0303Q4 | C02Q25(c,d) |
+| 313707032 | 趙思維 | HW0303Q5 | C02Q25(e,f) |
+| 313707034 | 邵靖皓 | HW0303Q6 | C02Q28(a,b) |
+| 313707035 | 吳富騏 | HW0303Q7 | C02Q28(c,d) |
+| 313707036 | 黃紹瑋 | HW0303Q8 | C02Q28(e,f) |
 
