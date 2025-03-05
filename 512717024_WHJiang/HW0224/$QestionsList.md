@@ -482,5 +482,17 @@ $$
 
 **(d)**
 
+### The estimates for βj given 0 αj = are as follows:
+| **Parameter**        | **beta_original** | **beta_noint** |
+|----------------------|-------------------|----------------|
+| GE.mkt_excess        | 1.1479521         | 1.1467633      |
+| IBM.mkt_excess       | 0.9768898         | 0.9843954      |
+| FORD.mkt_excess      | 1.6620307         | 1.6667168      |
+| MSFT.mkt_excess      | 1.2018398         | 1.2058695      |
+| DIS.mkt_excess       | 1.0115207         | 1.0128190      |
+| XOM.mkt_excess       | 0.4565208         | 0.4630727      |
+
+*The restriction αj = 0 has led to small changes in the βj ; but it has not changed the aggressive 
+or defensive nature of the stock.  
 
 
