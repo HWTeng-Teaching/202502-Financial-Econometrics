@@ -21,3 +21,21 @@ ggplot(data = collegetown, aes(x = sqft, y = price)) +
        x = "House Size (Hundreds of Square Feet)",
        y = "House Price (Thousands of Dollars)") +
   theme_minimal()
+
+
+# 2.17b
+
+# 執行線性回歸: price = β1 + β2 * sqft + e
+model <- lm(price ~ sqft, data = collegetown)
+
+# 顯示回歸結果
+summary(model)
+
+# 繪製散佈圖與回歸線
+ggplot(collegetown, aes(x = sqft, y = price)) +
+  geom_point(color = "blue", alpha = 0.6) +  # 繪製散佈圖
+  geom_smooth(method = "lm", color = "red", se = FALSE) +  # 加入回歸線
+  labs(title = "Scatter Plot with Fitted Regression Line",
+       x = "House Size (Hundreds of Square Feet)",
+       y = "House Price (Thousands of Dollars)") +
+  theme_minimal()
