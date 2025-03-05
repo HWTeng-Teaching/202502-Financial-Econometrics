@@ -1,0 +1,39 @@
+# 設定資料集的 URL
+url <- "https://www.principlesofeconometrics.com/poe5/data/rdata/cex5_small.rdata"
+
+# 下載資料集並儲存為本地檔案
+download.file(url, destfile = "cex5_small.rdata")
+
+# 載入資料集
+load("cex5_small.rdata")
+
+# 檢視資料集的變數名稱，確認 foodaway 是否存在
+names(cex5_small)
+
+
+# 2.25a
+# 載入 ggplot2 套件
+library(ggplot2)
+
+# 繪製 foodaway 的直方圖，y 軸轉換為百分比並乘以 3
+ggplot(cex5_small, aes(x = foodaway)) +
+  geom_histogram(aes(y = (..count.. / sum(..count..)) * 100 * 3), # 計算百分比並乘以3
+                 binwidth = 10, fill = "blue", color = "black", alpha = 0.7) +
+  labs(title = "Distribution of Monthly Food Away from Home Expenditure per Person", 
+       x = "Food Away from Home Expenditure per Month per Person Past Quarter, $", 
+       y = "Percentage (%)") +
+  theme_minimal()
+
+# 計算摘要統計量
+summary_stats <- summary(cex5_small$foodaway)
+
+# 計算 25th 和 75th 百分位數
+quantiles <- quantile(cex5_small$foodaway, probs = c(0.25, 0.75))
+
+# 顯示統計結果
+list(
+  Mean = mean(cex5_small$foodaway),      # 平均值
+  Median = median(cex5_small$foodaway),  # 中位數
+  "25th Percentile" = quantiles[1],      # 第25百分位數
+  "75th Percentile" = quantiles[2]       # 第75百分位數
+)
