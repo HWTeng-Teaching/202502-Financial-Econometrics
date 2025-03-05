@@ -12,8 +12,8 @@ ls()
 # 檢視數據結構
 str(collegetown)  
 
-# 2.17a
 
+# 2.17a
 # 繪製 soft (房屋大小) 與 price (房價) 的散佈圖
 ggplot(data = collegetown, aes(x = sqft, y = price)) +
   geom_point(color = "blue", alpha = 0.6) +
@@ -24,7 +24,6 @@ ggplot(data = collegetown, aes(x = sqft, y = price)) +
 
 
 # 2.17b
-
 # 執行線性回歸: price = β1 + β2 * sqft + e
 model <- lm(price ~ sqft, data = collegetown)
 
@@ -39,3 +38,65 @@ ggplot(collegetown, aes(x = sqft, y = price)) +
        x = "House Size (Hundreds of Square Feet)",
        y = "House Price (Thousands of Dollars)") +
   theme_minimal()
+
+
+# 2.17c
+# 執行二次回歸: price = α1 + α2 * sqft^2 + e
+model_quad <- lm(price ~ I(sqft^2), data = collegetown)
+
+# 顯示回歸結果
+summary(model_quad)
+
+# 提取 α2 的估計值
+alpha2_hat <- coef(model_quad)[2]
+
+# 計算當 sqft = 2000 時的邊際影響
+sqft_value <- 2000
+marginal_effect <- 2 * alpha2_hat * sqft_value
+marginal_effect
+
+
+# 2.17d
+# 計算 sqft = 20 的切線斜率
+# 提取 α1 和 α2
+alpha1_hat <- coef(model_quad)[1]
+alpha2_hat <- coef(model_quad)[2]
+
+# 設定 sqft = 20
+sqft_value <- 20
+
+# 計算切線斜率
+slope <- 2 * alpha2_hat * sqft_value
+
+# 計算 y0（估計價格）
+y0 <- alpha1_hat + alpha2_hat * sqft_value^2
+
+# 繪製二次回歸曲線與切線
+ggplot(collegetown, aes(x = sqft, y = price)) +
+  geom_point(color = "blue", alpha = 0.6) +  # 散佈圖
+  geom_smooth(method = "lm", formula = y ~ poly(x, 2), color = "red", se = FALSE) +  # 二次回歸曲線
+  geom_abline(intercept = y0 - slope * sqft_value, slope = slope, color = "green", linetype = "dashed") +  # 切線
+  geom_vline(xintercept = sqft_value, color = "black", linetype = "dotted") +  # 標示 sqft = 20 位置
+  labs(title = "Quadratic Regression with Tangent Line at sqft = 20",
+       x = "House Size (Hundreds of Square Feet)",
+       y = "House Price (Thousands of Dollars)") +
+  theme_minimal()
+
+
+# 2.17e
+# 提取回歸係數
+alpha1_hat <- coef(model_quad)[1]
+alpha2_hat <- coef(model_quad)[2]
+
+# 設定 SQFT = 20
+sqft_value <- 20
+
+# 計算預測房價（PRICE 估計值）
+price_hat <- alpha1_hat + alpha2_hat * sqft_value^2
+
+# 計算邊際影響（dPRICE/dSQFT）
+marginal_effect <- 2 * alpha2_hat * sqft_value
+
+# 計算彈性 E
+elasticity <- marginal_effect * (sqft_value / price_hat)
+elasticity
