@@ -133,3 +133,15 @@ ggplot(residuals_df, aes(x = sqft, y = residuals_quadratic)) +
        x = "House Size (Hundreds of Square Feet)",
        y = "Residuals") +
   theme_minimal()
+
+
+# 2.17g
+# 計算線性迴歸模型 (b) 的 SSE
+SSE_linear <- sum(residuals_linear^2)
+
+# 計算二次迴歸模型 (c) 的 SSE
+SSE_quadratic <- sum(residuals_quadratic^2)
+
+# 顯示結果
+SSE_linear
+SSE_quadratic
