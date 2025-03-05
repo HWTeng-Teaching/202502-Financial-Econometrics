@@ -407,7 +407,45 @@ x  | y  | ŷ  | e^  | e^2 | x*e
 
 ## Ans:
 
-**(a)**
+**(a)**  
+CAPM 的計量經濟版本可以寫成：
+
+$$
+r_{j} - r_f = \beta_j (r_m - r_f)
+$$
+
+轉換為：
+
+$$
+r_{j} = \alpha_j + \beta_j (r_m - r_f) + e_j
+$$
+
+其中我們定義：
+
+$$
+y = r_j - r_f \quad \text{以及} \quad x = r_m - r_f
+$$
+
+將上述定義代入原始的 CAPM 計量經濟模型，我們可以將模型改寫為：
+
+$$
+y = \alpha_j + \beta_j x + e_j
+$$
+
+接著：
+
+$$
+y = \beta_1 + \beta_2 x + e
+$$
+
+並且參數對應關係為：
+
+$$
+\beta_1 = \alpha_j \quad \text{以及} \quad \beta_2 = \beta_j
+$$
+
+由於這個模型僅涉及一個自變數 \(x\) 和一個應變數 \(y\)，因此這是一個**簡單回歸模型**。
+
 
 **(b)**
 ### CAPM Regressions for 6 Stocks
