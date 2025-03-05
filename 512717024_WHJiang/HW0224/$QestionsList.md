@@ -482,7 +482,7 @@ $$
 
 **(d)**
 
-### The estimates for βj given 0 αj = are as follows:
+### **βj 估計結果（假設 αj = 0）**
 | **Parameter**        | **beta_original** | **beta_noint** |
 |----------------------|-------------------|----------------|
 | GE.mkt_excess        | 1.1479521         | 1.1467633      |
@@ -492,7 +492,6 @@ $$
 | DIS.mkt_excess       | 1.0115207         | 1.0128190      |
 | XOM.mkt_excess       | 0.4565208         | 0.4630727      |
 
-*The restriction αj = 0 has led to small changes in the βj ; but it has not changed the aggressive 
-or defensive nature of the stock.  
+*限制條件 αj = 0 導致 βj 產生輕微變動；但這並未改變股票的「進取型」或「防禦型」屬性。*
 
 
