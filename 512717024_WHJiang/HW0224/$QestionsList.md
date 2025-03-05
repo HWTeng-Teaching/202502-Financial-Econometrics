@@ -477,6 +477,9 @@ $$
 
 
 **(c)**
+
+![image](https://github.com/user-attachments/assets/2b94571b-42aa-43e3-b3c4-f2a363fc54c2)
+
 **(d)**
 
 
