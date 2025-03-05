@@ -15,27 +15,27 @@ names(cex5_small)
 # 載入 ggplot2 套件
 library(ggplot2)
 
-# 繪製 foodaway 的直方圖，y 軸轉換為百分比並乘以 3
+# 繪製 foodaway 的直方圖，y 軸轉換為百分比
 ggplot(cex5_small, aes(x = foodaway)) +
-  geom_histogram(aes(y = (..count.. / sum(..count..)) * 100 * 3), # 計算百分比並乘以3
+  geom_histogram(aes(y = (..count.. / sum(..count..)) * 100), 
                  binwidth = 10, fill = "blue", color = "black", alpha = 0.7) +
-  labs(title = "Distribution of Monthly Food Away from Home Expenditure per Person", 
-       x = "Food Away from Home Expenditure per Month per Person Past Quarter, $", 
+  labs(title = "Histogram of foodaway", 
+       x = "Food Away from Home Expenditure", 
        y = "Percentage (%)") +
   theme_minimal()
 
-# 計算摘要統計量
-summary_stats <- summary(cex5_small$foodaway)
+# 計算 foodaway 的摘要統計量
+summary_foodaway <- summary(cex5_small$foodaway)
 
 # 計算 25th 和 75th 百分位數
-quantiles <- quantile(cex5_small$foodaway, probs = c(0.25, 0.75))
+quantiles_foodaway <- quantile(cex5_small$foodaway, probs = c(0.25, 0.75))
 
 # 顯示統計結果
 list(
-  Mean = mean(cex5_small$foodaway),      # 平均值
-  Median = median(cex5_small$foodaway),  # 中位數
-  "25th Percentile" = quantiles[1],      # 第25百分位數
-  "75th Percentile" = quantiles[2]       # 第75百分位數
+  "foodaway 平均值" = mean(cex5_small$foodaway, na.rm = TRUE),
+  "foodaway 中位數" = median(cex5_small$foodaway, na.rm = TRUE),
+  "foodaway 第25百分位數" = quantiles_foodaway[1],
+  "foodaway 第75百分位數" = quantiles_foodaway[2]
 )
 
 
@@ -66,3 +66,46 @@ table_data <- data.frame(
 
 # 以 kable() 格式化輸出表格
 kable(table_data, col.names = c("", "N", "Mean", "Median"), align = "c")
+
+
+# 2.25c
+# 計算原始 FOODAWAY 的觀測數
+original_count <- nrow(cex5_small)
+
+# 移除 foodaway 中的 0 或負值，避免 ln(0) 或 ln(負數) 產生 NaN
+cex5_small <- cex5_small[cex5_small$foodaway > 0, ]
+
+# 計算 ln(foodaway)
+cex5_small$ln_foodaway <- log(cex5_small$foodaway)
+
+# 計算過濾後的觀測數
+filtered_count <- nrow(cex5_small)
+
+# 計算觀測數減少的數量
+num_removed <- original_count - filtered_count
+
+# 繪製 ln(foodaway) 的直方圖，y 軸轉換為百分比
+ggplot(cex5_small, aes(x = ln_foodaway)) +
+  geom_histogram(aes(y = (..count.. / sum(..count..)) * 100), 
+                 binwidth = 0.2, fill = "blue", color = "black", alpha = 0.7) +
+  labs(title = "Histogram of ln(foodaway)", 
+       x = "ln(Food Away from Home Expenditure)", 
+       y = "Percentage (%)") +
+  theme_minimal()
+
+# 計算 ln(foodaway) 的摘要統計量
+summary_ln_foodaway <- summary(cex5_small$ln_foodaway)
+
+# 計算 25th 和 75th 百分位數
+quantiles_ln_foodaway <- quantile(cex5_small$ln_foodaway, probs = c(0.25, 0.75))
+
+# 顯示統計結果
+list(
+  "ln(foodaway) 平均值" = mean(cex5_small$ln_foodaway),
+  "ln(foodaway) 中位數" = median(cex5_small$ln_foodaway),
+  "ln(foodaway) 第25百分位數" = quantiles_ln_foodaway[1],
+  "ln(foodaway) 第75百分位數" = quantiles_ln_foodaway[2],
+  "原始觀測數量" = original_count,
+  "過濾後觀測數量" = filtered_count,
+  "減少的觀測數量" = num_removed
+)
