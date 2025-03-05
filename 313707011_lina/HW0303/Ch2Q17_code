@@ -1,17 +1,23 @@
-# 下載資料並載入
+# 載入必要函式庫
+library(ggplot2)
+
+# 下載並載入 RData 數據
 url <- "https://www.principlesofeconometrics.com/poe5/data/rdata/collegetown.rdata"
-download.file(url, destfile = "collegetown.rdata", mode = "wb")
+download.file(url, destfile = "collegetown.rdata")  # 下載檔案
+load("collegetown.rdata")  # 載入數據
 
-# 載入 .rdata 文件
-load("collegetown.rdata")
+# 確認數據框名稱
+ls()  
 
-# 檢查載入的變數
-ls()
+# 檢視數據結構
+str(collegetown)  
 
 # 2.17a
 
-# 安裝 ggplot2（如果尚未安裝）
-install.packages("ggplot2")
-
-# 載入必要的函式庫
-library(ggplot2)
+# 繪製 soft (房屋大小) 與 price (房價) 的散佈圖
+ggplot(data = collegetown, aes(x = sqft, y = price)) +
+  geom_point(color = "blue", alpha = 0.6) +
+  labs(title = "Scatter Plot of House Price vs. House Size",
+       x = "House Size (Hundreds of Square Feet)",
+       y = "House Price (Thousands of Dollars)") +
+  theme_minimal()
