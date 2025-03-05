@@ -109,3 +109,17 @@ list(
   "過濾後觀測數量" = filtered_count,
   "減少的觀測數量" = num_removed
 )
+
+
+# 2.25d
+# 過濾 foodaway > 0，避免 ln(0) 無效
+cex5_small <- cex5_small[cex5_small$foodaway > 0, ]
+
+# 計算 ln(FOODAWAY)
+cex5_small$ln_foodaway <- log(cex5_small$foodaway)
+
+# 執行線性回歸 ln(FOODAWAY) = β1 + β2 * INCOME + e
+model <- lm(ln_foodaway ~ income, data = cex5_small)
+
+# 顯示回歸結果
+summary(model)
