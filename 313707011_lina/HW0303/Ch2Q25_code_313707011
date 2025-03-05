@@ -40,6 +40,9 @@ list(
 
 
 # 2.25b
+# 載入必要的套件
+library(knitr)
+
 # 計算不同教育程度的 FOODAWAY 平均值、中位數與樣本數 (N)
 N_advanced <- sum(cex5_small$advanced == 1, na.rm = TRUE)
 mean_advanced <- mean(cex5_small$foodaway[cex5_small$advanced == 1], na.rm = TRUE)
