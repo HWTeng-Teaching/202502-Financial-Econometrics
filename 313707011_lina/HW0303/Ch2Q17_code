@@ -100,3 +100,36 @@ marginal_effect <- 2 * alpha2_hat * sqft_value
 # 計算彈性 E
 elasticity <- marginal_effect * (sqft_value / price_hat)
 elasticity
+
+
+# 2.17f
+library(ggplot2)
+
+# 計算線性回歸模型 (b) 的殘差
+residuals_linear <- resid(model)
+
+# 計算二次回歸模型 (c) 的殘差
+residuals_quadratic <- resid(model_quad)
+
+# 創建資料框以便繪圖
+residuals_df <- data.frame(
+  sqft = collegetown$sqft,
+  residuals_linear = residuals_linear,
+  residuals_quadratic = residuals_quadratic
+)
+
+# 線性迴歸模型殘差圖
+ggplot(residuals_df, aes(x = sqft, y = residuals_linear)) +
+  geom_point(color = "blue", alpha = 0.6) +
+  labs(title = "Residuals from Linear Model",
+       x = "House Size (Hundreds of Square Feet)",
+       y = "Residuals") +
+  theme_minimal()
+
+# 二次迴歸模型殘差圖
+ggplot(residuals_df, aes(x = sqft, y = residuals_quadratic)) +
+  geom_point(color = "blue", alpha = 0.6) +
+  labs(title = "Residuals from Quadratic Model",
+       x = "House Size (Hundreds of Square Feet)",
+       y = "Residuals") +
+  theme_minimal()
