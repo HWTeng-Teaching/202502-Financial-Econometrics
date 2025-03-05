@@ -7,3 +7,11 @@ load("collegetown.rdata")
 
 # 檢查載入的變數
 ls()
+
+# 2.17a
+
+# 安裝 ggplot2（如果尚未安裝）
+install.packages("ggplot2")
+
+# 載入必要的函式庫
+library(ggplot2)
