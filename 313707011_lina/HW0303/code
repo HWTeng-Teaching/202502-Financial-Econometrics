@@ -1,0 +1,9 @@
+# 下載資料並載入
+url <- "https://www.principlesofeconometrics.com/poe5/data/rdata/collegetown.rdata"
+download.file(url, destfile = "collegetown.rdata", mode = "wb")
+
+# 載入 .rdata 文件
+load("collegetown.rdata")
+
+# 檢查載入的變數
+ls()
