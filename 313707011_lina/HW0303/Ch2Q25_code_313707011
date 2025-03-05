@@ -7,7 +7,7 @@ download.file(url, destfile = "cex5_small.rdata")
 # 載入資料集
 load("cex5_small.rdata")
 
-# 檢視資料集的變數名稱，確認 foodaway 是否存在
+# 確認變數名稱，確保包含 foodaway、advanced、college
 names(cex5_small)
 
 
@@ -37,3 +37,29 @@ list(
   "25th Percentile" = quantiles[1],      # 第25百分位數
   "75th Percentile" = quantiles[2]       # 第75百分位數
 )
+
+
+# 2.25b
+# 計算不同教育程度的 FOODAWAY 平均值、中位數與樣本數 (N)
+N_advanced <- sum(cex5_small$advanced == 1, na.rm = TRUE)
+mean_advanced <- mean(cex5_small$foodaway[cex5_small$advanced == 1], na.rm = TRUE)
+median_advanced <- median(cex5_small$foodaway[cex5_small$advanced == 1], na.rm = TRUE)
+
+N_college <- sum(cex5_small$college == 1 & cex5_small$advanced == 0, na.rm = TRUE)
+mean_college <- mean(cex5_small$foodaway[cex5_small$college == 1 & cex5_small$advanced == 0], na.rm = TRUE)
+median_college <- median(cex5_small$foodaway[cex5_small$college == 1 & cex5_small$advanced == 0], na.rm = TRUE)
+
+N_none <- sum(cex5_small$college == 0 & cex5_small$advanced == 0, na.rm = TRUE)
+mean_none <- mean(cex5_small$foodaway[cex5_small$college == 0 & cex5_small$advanced == 0], na.rm = TRUE)
+median_none <- median(cex5_small$foodaway[cex5_small$college == 0 & cex5_small$advanced == 0], na.rm = TRUE)
+
+# 建立表格
+table_data <- data.frame(
+  Category = c("ADVANCED = 1", "COLLEGE = 1", "NONE"),
+  N = c(N_advanced, N_college, N_none),
+  Mean = c(mean_advanced, mean_college, mean_none),
+  Median = c(median_advanced, median_college, median_none)
+)
+
+# 以 kable() 格式化輸出表格
+kable(table_data, col.names = c("", "N", "Mean", "Median"), align = "c")
