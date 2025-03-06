@@ -59,7 +59,65 @@
 ![image](https://github.com/user-attachments/assets/7278f5e6-cddd-4cf7-82e5-bcd74b778f77)
 
 ## Ans:
+**(a)** 
 
+![image](https://github.com/user-attachments/assets/e2d4e725-da8f-4b7f-aee1-ec1da3eb9739)
+
+foodaway_mean = 49.27085 
+
+foodaway_median = 32.555 
+
+foodaway_quant25 = 12.04 
+
+foodaway_quant75 = 67.5025 
+
+--------------------------------------------------------------
+
+**(b)**
+
+| degree   | Mean_foodaway | Median_foodaway |
+|----------|---------------|-----------------|
+| none     | 39.0          | 26.0            |
+| college  | 48.6          | 36.1            |
+| advanced | 73.2          | 48.2            |
+
+--------------------------------------------------------------
+
+**(c)** 
+
+<img src="https://github.com/user-attachments/assets/a1a58c7c-f5e1-4656-a30c-1644e37c3607" alt="圖片描述" width="175" height="225" />
+
+* Summary:
+  
+| Min.    | 1st Qu. | Median | Mean   | 3rd Qu. | Max.   | NA's |
+|---------|---------|--------|--------|---------|--------|------|
+| -0.3011 | 3.0759  | 3.6865 | 3.6508 | 4.2797  | 7.0724 | 178  |
+
+--------------------------------------------------------------
+
+**(d)**
+
+【迴歸模型估計】
+ln(FOODAWAY) =  3.1293  +  0.0069  * INCOME + e
+
+* 當 INCOME 增加 1 單位（即100美元）時，ln(FOODAWAY) 平均變化 0.0069 單位。
+* 這可近似解釋為 FOODAWAY 支出變化的百分比效應。
+
+--------------------------------------------------------------
+
+**(e)** 
+
+<img src="https://github.com/user-attachments/assets/a4fca684-2941-4b17-aa21-6086314029dd" alt="圖片描述" width="400" height="200" />
+
+--------------------------------------------------------------
+
+**(f)** 
+
+<img src="https://github.com/user-attachments/assets/4f3c2741-7d38-4562-9bd6-c17b85a9e8c0" alt="圖片描述" width="400" height="200" />
+
+The residuals is a 1*1200 vector, due to layout constraints, I only display partial results (only list the first 56th). The patterns of the OLS residuals versus income seem completely random.
+
+<img src="https://github.com/user-attachments/assets/c6a8e8fe-565d-43bc-b8ce-d22db94a553c" alt="圖片描述" width="400" height="200" />
 
 ## Q.28
 ![image](https://github.com/user-attachments/assets/5c8f9c86-3739-4f76-8087-20360b029b26)
