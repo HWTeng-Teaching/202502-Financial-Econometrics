@@ -365,7 +365,7 @@ The estimated model is $$\hat{WAGE}=-10.4747+2.4178EDUC$$
 
 *p-value: < 2.2e-16
 
-The estimated model is $$\hat{WAGE}=4.9165+0.0891EDUChat2$$
+The estimated model is hat{WAGE} = 4.9165 + 0.0891 \cdot EDUChat2
 
 ### Marginal effect at 12 years of education = 2.139216 
 ### Marginal effect at 16 years of education = 2.852288 
