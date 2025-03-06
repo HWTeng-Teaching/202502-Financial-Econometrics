@@ -114,7 +114,8 @@ ln(FOODAWAY) =  3.1293  +  0.0069  * INCOME + e
 
 **(f)** 
 
-<img src="https://github.com/user-attachments/assets/4f3c2741-7d38-4562-9bd6-c17b85a9e8c0" alt="圖片描述" width="400" height="200" />
+![image](https://github.com/user-attachments/assets/8da19990-47d1-45e3-b61a-b7dd4747e702)
+
 
 The residuals is a 1*1200 vector, due to layout constraints, I only display partial results (only list the first 56th). The patterns of the OLS residuals versus income seem completely random.
 
