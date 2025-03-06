@@ -1,1 +1,157 @@
+library(devtools)
+library(knitr)
+library(xtable)
+library(printr)
+library(stargazer)
 
+# 載入 Rdata 資料檔案
+temp_file <- tempfile(fileext = ".rdata")
+
+download.file(url = "https://www.principlesofeconometrics.com/poe5/data/rdata/cps5_small.rdata", 
+              destfile = temp_file, 
+              mode = "wb")  
+load(temp_file)
+
+######### START HERE #####################
+# 檢查資料結構
+str(cps5_small)
+summary(cps5_small)
+head(cps5_small)
+tail(cps5_small)
+nrow(cps5_small)
+
+##############################
+# (a) Summary Statistics & Histograms for WAGE and EDUC
+##############################
+# 取得 WAGE 與 EDUC 的描述性統計和直方圖
+
+# Summary statistics for WAGE and EDUC
+summary_wage <- summary(cps5_small$wage)
+summary_educ <- summary(cps5_small$educ)
+cat("【Descriptive Statistics】\n")
+cat("WAGE Summary:\n"); print(summary_wage)
+cat("\nEDUC Summary:\n"); print(summary_educ)
+
+# Plot histograms
+par(mfrow = c(1, 2))
+hist(cps5_small$wage, breaks = 10, col = "purple",
+     main = "Histogram of WAGE",
+     xlab = "WAGE (Hourly wage)")
+hist(cps5_small$educ, breaks = 10, col = "orange",
+     main = "Histogram of EDUC",
+     xlab = "EDUC (Years of education)")
+par(mfrow = c(1, 1))
+
+# From the graph of the education chart above, it can be observed that the distribution also exhibits
+# positive skewness, and there is a lower frequency of observations in the lower education range.
+
+##############################
+# (b) Linear Regression: WAGE = β1 + β2 EDUC + e
+##############################
+
+# 估計線性回歸模型並討論結果
+lm_linear <- lm(wage ~ educ, data = cps5_small)
+summary_lm_linear <- summary(lm_linear)
+cat("\n【Linear Regression Results】\n")
+print(summary_lm_linear)
+
+# Interpretation:
+# β2 represents the average change in WAGE (hourly wage rate) for an additional year of education.
+# β1 is the predicted wage when EDUC = 0.
+
+##############################
+# (c) Residual Analysis: Plot Residuals vs. EDUC
+##############################
+
+# 計算最小平方法殘差並繪製殘差與 EDUC 的關係圖
+residuals_linear <- residuals(lm_linear)
+plot(cps5_small$educ, residuals_linear,
+     xlab = "EDUC (Years of education)",
+     ylab = "Residuals",
+     main = "Residuals vs. EDUC (Linear Model)",
+     pch = 16, col = "blue")
+abline(h = 0, lty = 2)
+cat("\n【Residual Plot】\n")
+cat("Examine the plot to see if residuals are randomly scattered (as expected under SR1–SR5).\n")
+
+##############################
+# (d) Separate Regressions by Subgroups: Males, Females, Blacks, Whites
+##############################
+
+# 針對男性、女性、黑人、白人分別估計回歸模型
+# For Males
+lm_male <- lm(wage[which(cps5_small$female==0)] ~ educ[which(cps5_small$female==0)], data = cps5_small)
+summary_male <- summary(lm_male)
+cat("\n【 Regression for Males】\n")
+print(summary_male)
+
+# For Females
+lm_female <- lm(wage[which(cps5_small$female==1)] ~ educ[which(cps5_small$female==1)], data = cps5_small)
+summary_female <- summary(lm_female)
+cat("\n【Regression for Females】\n")
+print(summary_female)
+
+# For Blacks
+lm_black <- lm(wage[which(cps5_small$black==1)] ~ educ[which(cps5_small$black==1)], data = cps5_small)
+summary_black <- summary(lm_black)
+cat("\n【Regression for Blacks】\n")
+print(summary_black)
+
+# For Whites
+lm_white <- lm(wage[which(cps5_small$black==0)] ~ educ[which(cps5_small$black==0)], data = cps5_small)
+summary_white <- summary(lm_white)
+cat("\n【Regression for Whites】\n")
+print(summary_white)
+
+# Compare the estimated coefficients and discuss differences among subgroups.
+
+##############################
+# (e) Quadratic Regression: WAGE = α1 + α2 EDUC² + e, and Marginal Effects
+##############################
+
+# 估計二次迴歸模型並計算不同教育水準下的邊際效應
+lm_quad <- lm(wage ~ I(educ^2), data = cps5_small)
+#summary_lm_quad <- summary(lm_quad)
+cat("\n【Quadratic Regression Results】\n")
+#print(summary_lm_quad)
+summary(lm_quad)
+
+# Marginal effect of an extra year of education is the derivative:
+# dWAGE/dEDUC = 2 * α2 * EDUC
+alpha2 <- coef(lm_quad)["I(educ^2)"]
+
+# For a person with 12 years of education:
+marginal_effect_12 <- 2 * alpha2 * 12
+# For a person with 16 years of education:
+marginal_effect_16 <- 2 * alpha2 * 16
+
+cat("\nMarginal effect at 12 years of education =", marginal_effect_12, "\n")
+cat("Marginal effect at 16 years of education =", marginal_effect_16, "\n")
+cat("Compare these values with the linear model's estimated β2 (from part (b)).\n")
+
+##############################
+# (f) Plot Fitted Values from Both Models
+##############################
+
+# 在同一圖上繪製線性回歸與二次回歸的擬合線，以及原始資料點
+plot(cps5_small$educ, cps5_small$wage,
+     xlab = "EDUC (Years of education)",
+     ylab = "WAGE (Hourly wage)",
+     main = "Fitted Lines: Linear vs. Quadratic Models",
+     pch = 16, col = "purple")
+# Fitted linear model line
+educ_range <- seq(min(cps5_small$educ, na.rm = TRUE), max(cps5_small$educ, na.rm = TRUE), length.out = 300)
+#educ_range
+fitted_linear <- predict(lm_linear, newdata = data.frame(educ = educ_range))
+lines(educ_range, fitted_linear, col = "orange", lwd = 2)
+
+# Fitted quadratic model values
+fitted_quad <- predict(lm_quad, newdata = data.frame(educ = educ_range))
+lines(educ_range, fitted_quad, col = "red", lwd = 2, lty = 2)
+
+legend("topleft", legend = c("Data Points", "Linear Fit", "Quadratic Fit"),
+       col = c("purple", "orange", "red"), pch = c(16, NA, NA),
+       lty = c(NA, 1, 2), lwd = c(NA, 2, 2))
+
+cat("\n【(f) Plot Comparison】\n")
+cat("Examine the plot to decide which model appears to fit the data better.\n")
