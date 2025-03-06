@@ -30,7 +30,8 @@
   
 **(d)**
 
-<img src="https://github.com/user-attachments/assets/f67d12f7-c29f-4a97-97f1-93d77ae2d537" alt="圖片描述" width="400" height="200" />
+![image](https://github.com/user-attachments/assets/569b373a-8a9f-443a-a044-5c53def05116)
+
 
 --------------------------------------------------------------
 
