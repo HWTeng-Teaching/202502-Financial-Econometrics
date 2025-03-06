@@ -53,3 +53,18 @@ ggplot(cps5_small, aes(x = educ, y = residuals)) +
   theme_minimal()
 
 # 2.28d
+# 針對男性（male = 1）
+model_male <- lm(wage ~ educ, data = cps5_small, subset = (female == 0))
+summary(model_male)
+
+# 針對女性（female = 1）
+model_female <- lm(wage ~ educ, data = cps5_small, subset = (female == 1))
+summary(model_female)
+
+# 針對黑人（black = 1）
+model_black <- lm(wage ~ educ, data = cps5_small, subset = (black == 1))
+summary(model_black)
+
+# 針對白人（black = 0）
+model_white <- lm(wage ~ educ, data = cps5_small, subset = (black == 0))
+summary(model_white)
