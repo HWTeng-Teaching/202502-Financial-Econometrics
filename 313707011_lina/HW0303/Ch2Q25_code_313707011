@@ -120,11 +120,24 @@ summary(model)
 
 
 # 2.25e
-# 繪製 ln(FOODAWAY) 對 INCOME 的散佈圖，並加入迴歸擬合線
+# 繪製 ln(FOODAWAY) 對 Income 的散佈圖，並加入迴歸擬合線
 ggplot(cex5_small, aes(x = income, y = ln_foodaway)) +
   geom_point(alpha = 0.5, color = "blue") +  # 繪製散佈圖
   geom_smooth(method = "lm", se = FALSE, color = "red") +  # 加入回歸擬合線
-  labs(title = "Scatter Plot of ln(foodaway) vs. INCOME",
-       x = "INCOME",
+  labs(title = "Scatter Plot of ln(foodaway) vs. Income",
+       x = "Income",
        y = "ln(foodaway)") +
+  theme_minimal()
+
+
+# 2.25f
+# 計算殘差 residuals
+cex5_small$residuals <- resid(model)
+
+# 繪製 殘差對 Income 的散佈圖
+ggplot(cex5_small, aes(x = income, y = residuals)) +
+  geom_point(alpha = 0.5, color = "blue") +  # 繪製散佈圖
+  labs(title = "Residuals vs. Income",
+       x = "Income",
+       y = "Residuals") +
   theme_minimal()
