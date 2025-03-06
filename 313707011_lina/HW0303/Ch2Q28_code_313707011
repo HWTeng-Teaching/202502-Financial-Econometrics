@@ -1,0 +1,32 @@
+# 設定資料集的 URL
+url <- "https://www.principlesofeconometrics.com/poe5/data/rdata/cps5_small.rdata"
+
+# 下載資料集並儲存為本地檔案
+download.file(url, destfile = "cps5_small.rdata")
+
+# 載入資料集
+load("cps5_small.rdata")
+
+# 確認變數名稱
+names(cps5_small)
+
+
+# 2.28a
+# 摘要統計
+summary(cps5_small$wage)
+summary(cps5_small$educ)
+
+# 加載 ggplot2 套件
+library(ggplot2)
+
+# WAGE 直方圖
+ggplot(cps5_small, aes(x = wage)) +
+  geom_histogram(binwidth = 5, fill = "blue", color = "black", alpha = 0.7) +
+  labs(title = "Distribution of Hourly Wage", x = "Hourly Wage (USD)", y = "Frequency") +
+  theme_minimal()
+
+# EDUC 直方圖
+ggplot(cps5_small, aes(x = educ)) +
+  geom_histogram(binwidth = 1, fill = "red", color = "black", alpha = 0.7) +
+  labs(title = "Distribution of Years of Education", x = "Years of Education", y = "Frequency") +
+  theme_minimal()
