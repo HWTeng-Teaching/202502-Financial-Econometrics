@@ -360,6 +360,7 @@ OLS 殘差確實呈現隨機分佈，沒有明顯的模式。收入越高，觀�
 
 *Compare these values with the linear model's estimated β2 (from part (b))
 *The marginal effect in (b) for educ=12 and educ=16 are both 2.4
+
 對於受教育年限為 12 年的人來說，額外一年教育對預期薪資的邊際效應估計為 2(0.0891)(12) = 2.1392。也就是說，對於一個受過 12 年教育的人來說，增加一年教育預計會使薪水增加 2.14 美元。對於一個受過 16 年教育的人來說，額外一年教育的邊際效應是 2(0.0891)(16) = 2.8523。對於受教育年限為 16 年的人來說，額外接受一年教育預計可將薪資增加 2.85 美元。 (b) 中的線性模型表明，無論受教育年限有多少，增加一年的教育預計會使工資增加 2.40 美元。也就是說，變化率是恆定的。二次模型表明，額外一年的教育對工資的影響會隨著已達到的教育水平而增加。
 
 --------------------------------------------
@@ -372,3 +373,4 @@ OLS 殘差確實呈現隨機分佈，沒有明顯的模式。收入越高，觀�
 *Quadratic Regression Model fit the data better.
 Because we can see this figure the linear model get negative wage,it doesn't make sense.
 The quadratic model fit the points for EDUC<10 well.
+二次模型似乎比線性方程式更能擬合數據，尤其是在較低教育程度。
