@@ -68,3 +68,14 @@ summary(model_black)
 # 針對白人（black = 0）
 model_white <- lm(wage ~ educ, data = cps5_small, subset = (black == 0))
 summary(model_white)
+
+
+# 2.28e
+# 估計二次回歸
+model_quad <- lm(wage ~ I(educ^2), data = cps5_small)
+
+# 顯示回歸結果
+summary(model_quad)
+
+
+# 2.28f
