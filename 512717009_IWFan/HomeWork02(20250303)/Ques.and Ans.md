@@ -135,9 +135,8 @@ ln(FOODAWAY)與INCOME呈正相關。
 ![image](https://github.com/user-attachments/assets/8da19990-47d1-45e3-b61a-b7dd4747e702)
 
 
-The residuals is a 1*1200 vector, due to layout constraints, I only display partial results (only list the first 56th). The patterns of the OLS residuals versus income seem completely random.
+OLS 殘差確實呈現隨機分佈，沒有明顯的模式。收入越高，觀察結果越少，因此「空白」就越多。
 
-<img src="https://github.com/user-attachments/assets/c6a8e8fe-565d-43bc-b8ce-d22db94a553c" alt="圖片描述" width="400" height="200" />
 
 
 
