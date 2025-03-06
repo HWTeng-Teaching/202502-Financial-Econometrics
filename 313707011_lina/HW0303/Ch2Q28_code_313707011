@@ -30,3 +30,26 @@ ggplot(cps5_small, aes(x = educ)) +
   geom_histogram(binwidth = 1, fill = "red", color = "black", alpha = 0.7) +
   labs(title = "Distribution of Years of Education", x = "Years of Education", y = "Frequency") +
   theme_minimal()
+
+
+# 2.28b
+# 執行線性回歸
+model <- lm(wage ~ educ, data = cps5_small)
+
+# 顯示回歸結果
+summary(model)
+
+
+# 2.28c
+# 計算 OLS 殘差
+cps5_small$residuals <- residuals(model)
+
+ggplot(cps5_small, aes(x = educ, y = residuals)) +
+  geom_point(alpha = 0.5, color = "blue") +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "red") +
+  labs(title = "Residuals vs. Education",
+       x = "Years of Education",
+       y = "Residuals") +
+  theme_minimal()
+
+# 2.28d
