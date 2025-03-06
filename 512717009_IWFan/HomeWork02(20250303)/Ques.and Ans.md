@@ -125,3 +125,231 @@ The residuals is a 1*1200 vector, due to layout constraints, I only display part
 ![image](https://github.com/user-attachments/assets/5c8f9c86-3739-4f76-8087-20360b029b26)
 
 ## Ans:
+**(a)** 
+
+* WAGE Summary:
+
+| Min.    | 1st Qu. | Median | Mean   | 3rd Qu. | Max.   |
+|---------|---------|--------|--------|---------|--------|
+| 3.94 | 13.00  | 19.30 | 23.64 | 29.80  | 221.10 |
+
+* EDUC Summary:
+
+| Min.    | 1st Qu. | Median | Mean   | 3rd Qu. | Max.   |
+|---------|---------|--------|--------|---------|--------|
+|  0.0  | 12.0   | 14.0  | 14.2  | 16.0   | 21.0   |
+
+<img src="https://github.com/user-attachments/assets/18d8526b-3848-446c-ad8c-454da7d00384" alt="圖片描述" width="600" height="250" />
+
+--------------------------------------------
+
+**(b)**
+
+【Linear Regression Results】
+
+*Residuals:
+   
+|   Min   |   1Q    | Median  |   3Q   |   Max   |
+|---------|---------|---------|--------|---------|
+| -31.785 | -8.381  | -3.166  | 5.708  | 193.152 |
+    
+
+*Coefficients:
+ 
+|    Term     | Estimate| Std. Error | t value   | Pr ( > abs(t) )|
+|-------------|-----------|------------|---------|--------------|
+| (Intercept) | -10.4000  | 1.9624     | -5.3    | 1.38e-07 *** |
+| educ        | 2.3968    | 0.1354     | 17.7    | < 2e-16 ***  |
+* Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+*Residual standard error: 13.55 on 1198 degrees of freedom
+
+*Multiple R-squared:  0.2073,	
+
+*Adjusted R-squared:  0.2067 
+
+*F-statistic: 313.3 on 1 and 1198 DF,  
+
+*p-value: < 2.2e-16
+
+--------------------------------------------
+
+**(c)** 
+
+<img src="https://github.com/user-attachments/assets/14787cb6-b993-4d57-a0c8-1fa1f7b76a00" alt="圖片描述" width="400" height="200" />
+
+*There are some patterns evident.
+
+*There is an outlier.  
+ 
+- 殘差的條件平均數不為零 - 這違反了假設 **SR2（嚴格外生性）**
+
+$$
+\(E(e_i \mid X) = 0\)
+$$
+
+- 隨著 EDUC 增加，殘差的幅度也增加，這顯示誤差的變異數會隨著 EDUC 的增加而增大 -> 這違反了假設 **SR3（條件同質變異）**
+
+$$
+\(Var(e_i \mid X) = \sigma^2\)
+$$
+
+-  如果 SR1–SR5 的假設都成立，則殘差中不應該出現任何規律性。
+
+--------------------------------------------
+
+**(d)**
+
+
+### 【 Regression for Males】
+
+*Residuals:
+
+|   Min    |   1Q    | Median  |   3Q   |   Max   |
+|----------|---------|---------|--------|---------|
+| -27.643  | -9.279  | -2.957  | 5.663  | 191.329 |
+ 
+*Coefficients:
+
+| Term                         | Estimate | Std. Error | t value | Pr ( > abs(t) ) |
+|------------------------------|---------:|-----------:|--------:|-----------------|
+| (Intercept)                  |  -8.2849 | 2.6738     | -3.099  |    0.00203 **   |
+| educ (cps5_small$female == 0)|  2.3785  | 0.1881     | 12.648  |    < 2e-16 ***  |
+* Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+*Residual standard error: 14.71 on 670 degrees of freedom
+
+*Multiple R-squared:  0.1927,	
+
+*Adjusted R-squared:  0.1915 
+
+*F-statistic:   160 on 1 and 670 DF,  
+
+*p-value: < 2.2e-16
+
+### 【Regression for Females】
+
+*Residuals:
+
+|   Min   |   1Q    | Median  |   3Q   |   Max   |
+|---------|---------|---------|--------|---------|
+| -30.837 | -6.971  | -2.811  | 5.102  | 49.502  |
+
+
+*Coefficients:
+
+| Term                          | Estimate  | Std. Error | t value | Pr ( > abs(t) ) |
+|-------------------------------|----------:|-----------:|--------:|-----------------|
+| (Intercept)                   | -16.6028  | 2.7837     | -5.964  |    4.51e-09 *** |
+| educ (cps5_small$female == 1) | 2.6595    | 0.1876     | 14.174  |    < 2e-16 ***  |
+* Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+*Residual standard error: 11.5 on 526 degrees of freedom
+
+*Multiple R-squared:  0.2764,	
+
+*Adjusted R-squared:  0.275 
+
+*F-statistic: 200.9 on 1 and 526 DF,  
+
+*p-value: < 2.2e-16
+
+### 【Regression for Blacks】
+
+*Residuals:
+
+|   Min   |   1Q    | Median  |   3Q   |   Max   |
+|---------|---------|---------|--------|---------|
+| -15.673 | -6.719  | -2.673  | 4.321  | 40.381  |
+
+
+*Coefficients:
+
+| Term                         | Estimate  | Std. Error | t value | Pr ( > abs(t) ) |
+|------------------------------|----------:|-----------:|--------:|-----------------|
+| (Intercept)                  |  -6.2541  |   5.5539   |  -1.126 |   0.263         |
+| educ (cps5_small$black == 1) |   1.9233  |   0.3983   |   4.829 |   4.79e-06 ***  |         
+* Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+*Residual standard error: 10.51 on 103 degrees of freedom
+
+*Multiple R-squared:  0.1846,	
+
+*Adjusted R-squared:  0.1767 
+
+*F-statistic: 23.32 on 1 and 103 DF,  
+
+*p-value: 4.788e-06
+
+### 【Regression for Whites】
+
+*Residuals:
+
+|   Min   |   1Q    | Median  |   3Q   |   Max   |
+|---------|---------|---------|--------|---------|
+| -32.131 | -8.539  | -3.119  | 5.960  | 192.890 |
+
+
+*Coefficients:
+
+| Term                         | Estimate  | Std. Error | t value | Pr ( > abs(t) ) |
+|------------------------------|----------:|-----------:|--------:|-----------------|
+| (Intercept)                  | -10.475   | 2.081      | -5.034  |    5.6e-07 ***  |
+| educ (cps5_small$black == 0) | 2.418     | 0.143      | 16.902  |    < 2e-16 ***  |
+* Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+*Residual standard error: 13.79 on 1093 degrees of freedom
+
+*Multiple R-squared:  0.2072,	
+
+*Adjusted R-squared:  0.2065
+
+*F-statistic: 285.7 on 1 and 1093 DF,  
+
+*p-value: < 2.2e-16
+
+--------------------------------------------
+
+**(e)** 
+
+【Quadratic Regression Results】
+
+*Residuals:
+
+|   Min   |   1Q    | Median  |   3Q   |   Max   |
+|---------|---------|---------|--------|---------|
+| -34.820 | -8.117  | -2.752  | 5.248  | 193.365 |
+
+*Coefficients:
+
+| Term         | Estimate  | Std. Error | t value | Pr ( > abs(t) ) |
+|--------------|----------:|-----------:|--------:|--------------|
+| (Intercept)  |  4.916477 |  1.091864  |  4.503  | 7.36e-06 *** |
+| I(educ^2)    |  0.089134 |  0.004858  | 18.347  | < 2e-16 ***  |
+* Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+*Residual standard error: 13.45 on 1198 degrees of freedom
+
+*Multiple R-squared:  0.2194,	
+
+*Adjusted R-squared:  0.2187 
+
+*F-statistic: 336.6 on 1 and 1198 DF,  
+
+*p-value: < 2.2e-16
+
+### Marginal effect at 12 years of education = 2.139216 
+### Marginal effect at 16 years of education = 2.852288 
+
+*Compare these values with the linear model's estimated β2 (from part (b))
+*The marginal effect in (b) for educ=12 and educ=16 are both 2.4
+
+--------------------------------------------
+
+**(f)** 
+
+<img src="https://github.com/user-attachments/assets/882d76cd-c570-4723-95ee-d73da8a5fb62" alt="圖片描述" width="300" height="400" />
+
+*Quadratic Regression Model fit the data better.
+Because we can see this figure the linear model get negative wage,it doesn't make sense.
+The quadratic model fit the points for EDUC<10 well.
