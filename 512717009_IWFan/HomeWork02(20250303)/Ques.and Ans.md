@@ -72,6 +72,9 @@ foodaway_quant25 = 12.04
 
 foodaway_quant75 = 67.5025 
 
+**結論摘要**
+FOODAWAY分佈右偏，高收入族群外食支出偏高。
+
 --------------------------------------------------------------
 
 **(b)**
@@ -82,6 +85,8 @@ foodaway_quant75 = 67.5025
 | college  | 48.6          | 36.1            |
 | advanced | 73.2          | 48.2            |
 
+**結論摘要**
+有大學學歷家庭外食支出普遍較高。
 --------------------------------------------------------------
 
 **(c)** 
@@ -95,6 +100,9 @@ Summary:
 |---------|---------|--------|--------|---------|--------|------|
 | -0.3011 | 3.0759  | 3.6865 | 3.6508 | 4.2797  | 7.0724 | 178  |
 
+**結論摘要**
+ln(FOODAWAY)排除了0外食支出的家庭，樣本變少。ln後分佈較接近常態。
+
 --------------------------------------------------------------
 
 **(d)**
@@ -103,6 +111,9 @@ Summary:
 ln(FOODAWAY) =  3.1293  +  0.0069  * INCOME + e
 
 * 當 INCOME 增加 1 單位（即100美元）時，ln(FOODAWAY) 平均變化 0.0069 單位。
+  
+**結論摘要**
+INCOME係數正，收入增加會提高外食支出。
 
 --------------------------------------------------------------
 
@@ -110,6 +121,8 @@ ln(FOODAWAY) =  3.1293  +  0.0069  * INCOME + e
 
 ![image](https://github.com/user-attachments/assets/cabd0c66-543d-4049-9455-af19f936ea07)
 
+**結論摘要**
+ln(FOODAWAY)與INCOME呈正相關，回歸線向上。
 
 --------------------------------------------------------------
 
@@ -121,6 +134,8 @@ ln(FOODAWAY) =  3.1293  +  0.0069  * INCOME + e
 The residuals is a 1*1200 vector, due to layout constraints, I only display partial results (only list the first 56th). The patterns of the OLS residuals versus income seem completely random.
 
 <img src="https://github.com/user-attachments/assets/c6a8e8fe-565d-43bc-b8ce-d22db94a553c" alt="圖片描述" width="400" height="200" />
+
+
 
 ## Q.28
 ![image](https://github.com/user-attachments/assets/5c8f9c86-3739-4f76-8087-20360b029b26)
