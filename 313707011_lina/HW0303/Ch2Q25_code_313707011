@@ -112,14 +112,19 @@ list(
 
 
 # 2.25d
-# 過濾 foodaway > 0，避免 ln(0) 無效
-cex5_small <- cex5_small[cex5_small$foodaway > 0, ]
-
-# 計算 ln(FOODAWAY)
-cex5_small$ln_foodaway <- log(cex5_small$foodaway)
-
 # 執行線性回歸 ln(FOODAWAY) = β1 + β2 * INCOME + e
 model <- lm(ln_foodaway ~ income, data = cex5_small)
 
 # 顯示回歸結果
 summary(model)
+
+
+# 2.25e
+# 繪製 ln(FOODAWAY) 對 INCOME 的散佈圖，並加入迴歸擬合線
+ggplot(cex5_small, aes(x = income, y = ln_foodaway)) +
+  geom_point(alpha = 0.5, color = "blue") +  # 繪製散佈圖
+  geom_smooth(method = "lm", se = FALSE, color = "red") +  # 加入回歸擬合線
+  labs(title = "Scatter Plot of ln(foodaway) vs. INCOME",
+       x = "INCOME",
+       y = "ln(foodaway)") +
+  theme_minimal()
