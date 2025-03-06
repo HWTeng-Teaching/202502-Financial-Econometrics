@@ -85,9 +85,10 @@ foodaway_quant75 = 67.5025
 
 **(c)** 
 
-<img src="https://github.com/user-attachments/assets/a1a58c7c-f5e1-4656-a30c-1644e37c3607" alt="圖片描述" width="175" height="225" />
+![image](https://github.com/user-attachments/assets/4416c50a-dff2-42ac-b0bf-442d4f17a5cf)
 
-* Summary:
+
+Summary:
   
 | Min.    | 1st Qu. | Median | Mean   | 3rd Qu. | Max.   | NA's |
 |---------|---------|--------|--------|---------|--------|------|
@@ -97,17 +98,17 @@ foodaway_quant75 = 67.5025
 
 **(d)**
 
-【迴歸模型估計】
+【Regression model estimation】
 ln(FOODAWAY) =  3.1293  +  0.0069  * INCOME + e
 
 * 當 INCOME 增加 1 單位（即100美元）時，ln(FOODAWAY) 平均變化 0.0069 單位。
-* 這可近似解釋為 FOODAWAY 支出變化的百分比效應。
 
 --------------------------------------------------------------
 
 **(e)** 
 
-<img src="https://github.com/user-attachments/assets/a4fca684-2941-4b17-aa21-6086314029dd" alt="圖片描述" width="400" height="200" />
+![image](https://github.com/user-attachments/assets/cabd0c66-543d-4049-9455-af19f936ea07)
+
 
 --------------------------------------------------------------
 
