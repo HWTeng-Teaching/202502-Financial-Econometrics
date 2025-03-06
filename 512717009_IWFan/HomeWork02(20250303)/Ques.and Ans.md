@@ -56,8 +56,9 @@
 **(g)**
 ### Linear Model SSE = 5262847 
 ### Quadratic Model SSE = 4222356 
-![image](https://github.com/user-attachments/assets/7c317b7e-234a-4806-bc4d-6c956fb6b449)
 
+殘差平方和線性關係為 5,262,846.9。二次關係的殘差平方和為 4,222,356.3。
+較低的 SSE 意味資料值對於二次模型比對於線性模型更接近擬合線。
 
 ## Q.25
 ![image](https://github.com/user-attachments/assets/7278f5e6-cddd-4cf7-82e5-bcd74b778f77)
