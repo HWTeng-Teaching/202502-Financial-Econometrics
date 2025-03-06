@@ -373,4 +373,5 @@ OLS 殘差確實呈現隨機分佈，沒有明顯的模式。收入越高，觀�
 *Quadratic Regression Model fit the data better.
 Because we can see this figure the linear model get negative wage,it doesn't make sense.
 The quadratic model fit the points for EDUC<10 well.
+
 二次模型似乎比線性方程式更能擬合數據，尤其是在較低教育程度。
