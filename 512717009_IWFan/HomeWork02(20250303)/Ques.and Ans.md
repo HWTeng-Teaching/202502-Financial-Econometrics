@@ -45,13 +45,14 @@
 
 **(f)**
 
-<img src="https://github.com/user-attachments/assets/71cf665d-9041-4f1f-a39a-c4e88bfd0ee7" alt="圖片描述" width="400" height="200" />
+![image](https://github.com/user-attachments/assets/ef9ea346-8564-46dd-b2f8-8dac2e8006a0)
+
 
 --------------------------------------------------------------
 
 **(g)**
-### 線性模型 SSE = 5262847 
-### 二次模型 SSE = 4222356 
+### Linear Model SSE = 5262847 
+### Quadratic Model SSE = 4222356 
 較低的 SSE 代表模型對資料的擬合效果較好
 
 ## Q.25
