@@ -353,6 +353,8 @@ OLS 殘差確實呈現隨機分佈，沒有明顯的模式。收入越高，觀�
 
 *p-value: < 2.2e-16
 
+![image](https://github.com/user-attachments/assets/1fb60857-3cc9-42ba-85f4-b774bcd2adf8)
+
 ### Marginal effect at 12 years of education = 2.139216 
 ### Marginal effect at 16 years of education = 2.852288 
 
