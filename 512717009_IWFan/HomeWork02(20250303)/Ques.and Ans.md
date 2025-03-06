@@ -139,7 +139,8 @@ The residuals is a 1*1200 vector, due to layout constraints, I only display part
 |---------|---------|--------|--------|---------|--------|
 |  0.0  | 12.0   | 14.0  | 14.2  | 16.0   | 21.0   |
 
-<img src="https://github.com/user-attachments/assets/18d8526b-3848-446c-ad8c-454da7d00384" alt="圖片描述" width="600" height="250" />
+![image](https://github.com/user-attachments/assets/6a5b2339-6197-4f93-86c6-d44560c0b745)
+
 
 --------------------------------------------
 
@@ -176,7 +177,8 @@ The residuals is a 1*1200 vector, due to layout constraints, I only display part
 
 **(c)** 
 
-<img src="https://github.com/user-attachments/assets/14787cb6-b993-4d57-a0c8-1fa1f7b76a00" alt="圖片描述" width="400" height="200" />
+![image](https://github.com/user-attachments/assets/a0b9d3bd-c4f8-40e0-b513-f8cf68a4d714)
+
 
 *There are some patterns evident.
 
@@ -348,7 +350,8 @@ $$
 
 **(f)** 
 
-<img src="https://github.com/user-attachments/assets/882d76cd-c570-4723-95ee-d73da8a5fb62" alt="圖片描述" width="300" height="400" />
+![image](https://github.com/user-attachments/assets/37954d58-653e-4533-93fc-fb3c35a0534b)
+
 
 *Quadratic Regression Model fit the data better.
 Because we can see this figure the linear model get negative wage,it doesn't make sense.
