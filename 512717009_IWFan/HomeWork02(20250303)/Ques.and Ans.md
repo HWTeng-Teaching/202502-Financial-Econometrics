@@ -239,6 +239,8 @@ OLS 殘差確實呈現隨機分佈，沒有明顯的模式。收入越高，觀�
 
 *p-value: < 2.2e-16
 
+The estimated model is $$\hat{WAGE}=-8.2849+2.3785EDUC$$ 
+
 ### 【Regression for Females】
 
 *Residuals:
@@ -265,6 +267,8 @@ OLS 殘差確實呈現隨機分佈，沒有明顯的模式。收入越高，觀�
 *F-statistic: 200.9 on 1 and 526 DF,  
 
 *p-value: < 2.2e-16
+
+The estimated model is $$\hat{WAGE}=-16.6028+2.6595EDUC$$  
 
 ### 【Regression for Blacks】
 
@@ -293,6 +297,8 @@ OLS 殘差確實呈現隨機分佈，沒有明顯的模式。收入越高，觀�
 
 *p-value: 4.788e-06
 
+The estimated model is $$\hat{WAGE}=-6.2541+1.9233EDUC$$ 
+
 ### 【Regression for Whites】
 
 *Residuals:
@@ -319,6 +325,8 @@ OLS 殘差確實呈現隨機分佈，沒有明顯的模式。收入越高，觀�
 *F-statistic: 285.7 on 1 and 1093 DF,  
 
 *p-value: < 2.2e-16
+
+The estimated model is $$\hat{WAGE}=-10.4747+2.4178EDUC$$
 
 從結果中我們可以看出，額外一年的教育對白人工人的預期工資率的提升作用比對黑人工人更大。
 多接受一年教育可以提高女性工人的預期工資率，其提高幅度比男性工人更大。
