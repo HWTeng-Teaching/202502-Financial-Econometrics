@@ -42,6 +42,7 @@ alpha2 <- coef(quad_model)["I(sqft^2)"]
 
 marginal_effect <- 2 * alpha2 * sqft_2000
 print(marginal_effect)
+
 # 7.38076  (area increase 100 square feet-> price increase 7380.76)
 
 
