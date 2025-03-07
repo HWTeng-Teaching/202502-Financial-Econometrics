@@ -79,3 +79,11 @@ summary(model_quad)
 
 
 # 2.28f
+ggplot(cps5_small, aes(x = educ, y = wage)) +
+  geom_point(alpha = 0.5, color = "black") +  # 加入散點圖
+  geom_smooth(method = "lm", color = "red", se = FALSE, formula = y ~ x) +  # 線性回歸
+  geom_smooth(method = "lm", color = "blue", se = FALSE, formula = y ~ poly(x, 2)) +  # 二次回歸
+  labs(title = "Comparison of Linear and Quadratic Models",
+       x = "Years of Education",
+       y = "Hourly Wage (USD)") +
+  theme_minimal()

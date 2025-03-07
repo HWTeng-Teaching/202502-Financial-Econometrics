@@ -1,0 +1,95 @@
+remotes::install_github("ccolonescu/POE5Rdata", force = TRUE)
+library(POE5Rdata)
+data("collegetown")
+install.packages("ggplot2")
+library(ggplot2)
+
+#2.17.a
+library(ggplot2)
+summary(collegetown)
+ggplot(collegetown, aes(x = sqft, y = price)) +
+  geom_point(color = "blue", alpha = 0.6) +
+  labs(title = "Scatter Plot of House Price vs. House Size",
+       x = "House Size (Hundreds of Square Feet)",
+       y = "Sale Price (Thousands of Dollars)") +
+  theme_minimal()
+
+#2.17.b
+model <- lm(price ~ sqft, data = collegetown) #執行線性回歸
+summary(model)# 顯示回歸結果
+ggplot(collegetown, aes(x = sqft, y = price)) +
+  geom_point(color = "blue", alpha = 0.6) +  
+  geom_smooth(method = "lm", se = FALSE, color = "red") +  # 加入回歸線
+  labs(title = "House Price vs. House Size with Fitted Regression Line",
+       x = "House Size (Hundreds of Square Feet)",
+       y = "Sale Price (Thousands of Dollars)") +
+  theme_minimal()
+#迴歸方程式
+coefficients <- coef(model)
+intercept <- coefficients[1]
+slope <- coefficients[2]
+cat("回歸方程式: PRICE = ", round(intercept, 4), " + ", round(slope, 4), " * SQFT\n")
+
+#2.17.c
+
+collegetown$sqft2 <- collegetown$sqft^2 #SQFT 平方項
+quad_model <- lm(price ~ sqft2, data = collegetown)
+summary(quad_model)
+
+alpha1 <- coef(quad_model)[1]# 提取迴歸係數
+alpha2 <- coef(quad_model)[2]
+cat("回歸方程式: PRICE = ", round(alpha1, 4), " + ", round(alpha2, 4), " * SQFT^2\n")
+
+sqft_value <- 20  # 換算為 "百平方英尺"
+marginal_effect <-  2 * alpha2 * sqft_value #切線斜率
+marginal_effect
+
+#2.17.d
+price_at_2000 <- alpha1 + alpha2 * sqft_value^2
+# 建立切線資料點
+tangent_line <- data.frame(
+  sqft = seq(min(collegetown$sqft), max(collegetown$sqft), length.out = 100),
+  price = marginal_effect * (seq(min(collegetown$sqft), max(collegetown$sqft), length.out = 100) - sqft_value) + price_at_2000
+)
+
+# 繪製二次回歸曲線與切線
+ggplot(collegetown, aes(x = sqft, y = price)) +
+  geom_point(color = "blue", alpha = 0.6) +  # 散佈圖
+  geom_smooth(method = "lm", formula = y ~ poly(x, 2), se = FALSE, color = "red") +  # 二次回歸曲線
+  geom_line(data = tangent_line, aes(x = sqft, y = price), color = "green", linetype = "dashed") +  # 切線
+  annotate("point", x = sqft_value, y = price_at_2000, color = "black", size = 3) +  # 2000 平方英尺的點
+  labs(title = "Quadratic Regression with Tangent at 2000 sq ft",
+       x = "House Size (Hundreds of Square Feet)",
+       y = "Sale Price (Thousands of Dollars)") +
+  theme_minimal()
+
+#2.17.e
+elasticity <- marginal_effect * (sqft_value / price_at_2000)
+elasticity
+
+
+#2.17.f
+collegetown$linear_residuals <- resid(model)
+collegetown$quad_residuals <- resid(quad_model)
+ggplot(collegetown, aes(x = sqft, y = linear_residuals)) +
+  geom_point(color = "blue", alpha = 0.6) +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "red") +
+  labs(title = "Residual Plot for Linear Regression",
+       x = "House Size (Hundreds of Square Feet)",
+       y = "Residuals") +
+  theme_minimal()
+
+# 二次回歸殘差圖
+ggplot(collegetown, aes(x = sqft, y = quad_residuals)) +
+  geom_point(color = "green", alpha = 0.6) +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "red") +
+  labs(title = "Residual Plot for Quadratic Regression",
+       x = "House Size (Hundreds of Square Feet)",
+       y = "Residuals") +
+  theme_minimal()
+
+#2.17.g
+sse_linear <- sum(collegetown$linear_residuals^2)
+sse_quad <- sum(collegetown$quad_residuals^2)
+sse_linear
+sse_quad

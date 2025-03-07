@@ -1,0 +1,117 @@
+library(devtools)
+library(PoEdata)
+library(knitr)
+library(xtable)
+library(printr)
+library(stargazer)
+library(dplyr, warn.conflicts = FALSE)
+
+# 載入 Rdata 資料檔案
+temp_file <- tempfile(fileext = ".rdata")
+download.file(
+  url = "https://www.principlesofeconometrics.com/poe5/data/rdata/cex5_small.rdata",
+  destfile = temp_file, 
+  mode = "wb"
+)
+load(temp_file)
+
+######### 檢查資料結構 #####################
+str(cex5_small)
+summary(cex5_small)
+head(cex5_small)
+tail(cex5_small)
+nrow(cex5_small)
+
+##############################
+# (a) 繪製 FOODAWAY 的直方圖並計算描述性統計數據
+##############################
+hist(cex5_small$foodaway, breaks = 30, 
+     main = "Histogram of foodaway", 
+     xlab = "foodaway (USD)",
+     col = "orange")
+foodaway_mean    <- mean(cex5_small$foodaway, na.rm = TRUE)
+foodaway_median  <- median(cex5_small$foodaway, na.rm = TRUE)
+foodaway_quant25 <- quantile(cex5_small$foodaway, probs = 0.25, na.rm = TRUE)
+foodaway_quant75 <- quantile(cex5_small$foodaway, probs = 0.75, na.rm = TRUE)
+
+cat("【foodaway 描述性統計】\n")
+cat("平均值 =",  foodaway_mean,   "\n")
+cat("中位數 =",  foodaway_median, "\n")
+cat("第25百分位數 =", foodaway_quant25, "\n")
+cat("第75百分位數 =", foodaway_quant75, "\n\n")
+
+##############################
+# (b) 分群計算 FOODAWAY 的平均值與中位數
+##############################
+# 假設變數 "advanced" 與 "college" 皆存在，若 advanced==1，則歸類 "advanced"；否則若 college==1，則歸類 "college"；否則 "none"
+if("advanced" %in% names(cex5_small) & "college" %in% names(cex5_small)) {
+  cex5_small$degree <- ifelse(cex5_small$advanced == 1, "advanced",
+                              ifelse(cex5_small$college == 1, "college", "none"))
+  # 轉為 factor 並指定階層順序
+  cex5_small$degree <- factor(cex5_small$degree, levels = c("none", "college", "advanced"))
+  
+  group_stats <- cex5_small %>%
+    group_by(degree) %>%
+    summarize(
+      Mean_foodaway   = mean(foodaway, na.rm = TRUE),
+      Median_foodaway = median(foodaway, na.rm = TRUE)
+    )
+  
+  cat("【各學歷群體 FOODAWAY 描述性統計】\n")
+  print(group_stats)
+  cat("\n")
+} else {
+  cat("【各學歷群體 FOODAWAY 描述性統計】\n")
+  cat("資料中未找到表示家庭學歷狀況的變數 'advanced' 或 'college'。請根據實際資料調整分群條件。\n\n")
+}
+
+##############################
+# (c) 繪製 ln(FOODAWAY) 的直方圖並計算描述性統計數據
+##############################
+# 計算 ln(FOODAWAY)（log() 僅對正數有意義）
+cex5_small$lnfoodaway <- log(cex5_small$foodaway)
+# 將非正數 (0 或負數) 轉為 NA (log(0) 會產生 -Inf)
+cex5_small$lnfoodaway[is.infinite(cex5_small$lnfoodaway)] <- NA
+
+hist(cex5_small$lnfoodaway, breaks = 15, 
+     main = "Histogram of ln(FOODAWAY)", 
+     xlab = "ln(FOODAWAY)",
+     col = "purple")
+summary(cex5_small$lnfoodaway)
+
+##############################
+# (d) 估計迴歸模型 ln(FOODAWAY) = β₁ + β₂ INCOME + e
+##############################
+lm_model <- lm(lnfoodaway ~ income, data = cex5_small)
+beta2    <- coef(lm_model)["income"]
+
+cat("【迴歸模型估計】\n")
+cat("模型：ln(FOODAWAY) = ", round(coef(lm_model)[1], 4), " + ", 
+    round(beta2, 4), " * income + e\n")
+cat("解釋：當 income 增加 1 單位（即100美元）時，ln(FOODAWAY) 平均變化", 
+    round(beta2, 4), "單位。\n")
+cat("這可近似解釋為 FOODAWAY 支出變化的百分比效應。\n\n")
+
+##############################
+# (e) 繪製 ln(FOODAWAY) 與 INCOME 的散佈圖並加入擬合線
+##############################
+plot(cex5_small$income, cex5_small$lnfoodaway,
+     xlab = "income (In units of $100)",
+     ylab = "ln(FOODAWAY)",
+     main = "Scatter plot and fitted line of ln(FOODAWAY) versus income",
+     pch = 16, col = "purple")
+abline(lm_model, col = 'orange', lwd = 2)
+legend("topleft", legend = c("Data Point", "Fitted Line"),
+       col = c("purple", "orange"), pch = c(16, NA),
+       lty = c(NA, 1), lwd = c(NA, 2))
+
+##############################
+# (f) 計算最小平方法殘差並繪製殘差圖
+##############################
+residuals_model <- lm(lnfoodaway ~ income, data = cex5_small, na.action = na.exclude)
+plot(resid(residuals_model) ~ income, data = cex5_small,
+     xlab = "income (In units of $100)",
+     ylab = "Residual",
+     main = "Income and Regression Model Residuals",
+     pch = 16, col = "purple")
+abline(h = 0, lty = 2)

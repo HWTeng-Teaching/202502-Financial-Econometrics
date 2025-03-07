@@ -1,0 +1,117 @@
+library(devtools)
+library(PoEdata)
+library(bookdown)
+library(knitr)
+library(xtable)
+library(printr)
+library(stargazer)
+library(rmarkdown)
+
+# 載入 Rdata 資料檔案
+temp_file <- tempfile(fileext = ".rdata")
+
+
+download.file(url = "https://www.principlesofeconometrics.com/poe5/data/rdata/collegetown.rdata", 
+              destfile = temp_file, 
+              mode = "wb")  
+load(temp_file)
+
+
+##############################
+# (a) Plot a scatter plot of house prices and house area
+##############################
+plot(collegetown$sqft, collegetown$price,
+     xlab = "House area (100 square feet)",
+     ylab = "Housing Prices (Thousand USD)",
+     main = "Scatter plot of house price and house area",
+     pch = 16, col = "purple")
+
+##############################
+# (b) Estimating a linear regression model: price = β₁ + β sqft + e
+##############################
+lm_linear <- lm(price ~ sqft, data = collegetown)
+summary(lm_linear)
+
+abline(lm_linear, col = "orange", lwd = 2)
+legend("topleft", legend = c("Data Point", "Linear regression fit line"),
+       col = c("purple", "orange"), pch = c(16, NA), lty = c(NA, 1), lwd = c(NA, 2))
+
+# β₂ 的估計值表示房價（千美元）每增加一個單位的 SQFT（即100平方英尺）所增加的平均金額。
+# β₁ 為當 SQFT = 0 時的預測房價。
+
+##############################
+# (c) Estimating quadratic regression models: PRICE = α₁ + α₂ sqft² + e
+##############################
+lm_quad <- lm(price ~ I(sqft^2), data = collegetown)
+summary(lm_quad)
+
+dPRICE/dSQFT = 2 * α₂ * SQFT
+sqft_target <- 20
+alpha2 <- coef(lm_quad)["I(sqft^2)"]
+marginal_effect <- 2 * alpha2 * sqft_target
+cat("在2000平方英尺房屋下，每增加100平方英尺的邊際效應 =",
+    marginal_effect, "（千美元）\n\n")
+
+##############################
+# (d) Plot the quadratic regression fit curve and indicate the tangent line at the 2000 square foot house.
+##############################
+sqft_seq <- seq(min(collegetown$sqft), max(collegetown$sqft), length.out = 300)
+pred_quad <- predict(lm_quad, newdata = data.frame(sqft = sqft_seq))
+
+plot(collegetown$sqft, collegetown$price,
+     xlab = "House area (100 square feet)",
+     ylab = "Housing Prices (Thousand USD)",
+     main = "Quadratic regression fit curve and tangent line at 2000 square feet",
+     pch = 16, col = "purple")
+lines(sqft_seq, pred_quad, col = "orange", lwd = 2)
+
+price_target <- predict(lm_quad, newdata = data.frame(sqft = sqft_target))
+# 切線斜率：dPRICE/dSQFT = 2 * α₂ * SQFT_target
+tangent_slope <- 2 * alpha2 * sqft_target
+# 定義切線函數： y - price_target = tangent_slope*(SQFT - SQFT_target)
+tangent_line <- price_target + tangent_slope * (sqft_seq - sqft_target)
+lines(sqft_seq, tangent_line, col = "brown", lwd = 2, lty = 2)
+legend("topleft", legend = c("Data Point", "Quadratic regression fitting curve", "2000 square feet tangent"),
+       col = c("purple", "orange", "brown"), pch = c(16, NA, NA),
+       lty = c(NA, 1, 2), lwd = c(NA, 2, 2))
+
+##############################
+# (e) Calculate the elasticity of house price with respect to area for a 2,000 square foot house
+##############################
+# 彈性 = (d price/d sqft) * (sqft / price) evaluated at sqft_target
+elasticity <- tangent_slope * (sqft_target / price_target)
+cat("在2000平方英尺房屋下，房價相對於面積的彈性 =", elasticity, "\n\n")
+
+##############################
+# (f) Calculate the least squares residuals for models (b) and (c) and plot them
+##############################
+# 線性模型殘差
+res_linear <- residuals(lm_linear)
+# 二次模型殘差
+res_quad <- residuals(lm_quad)
+
+# 以並列圖方式繪製
+par(mfrow = c(1, 2))
+plot(collegetown$sqft, res_linear,
+     xlab = "House area (100 square feet)",
+     ylab = "Residual",
+     main = "Linear Model Residual Plots",
+     pch = 16, col = "blue")
+abline(h = 0, lty = 2)
+plot(collegetown$sqft, res_quad,
+     xlab = "House area (100 square feet)",
+     ylab = "Residual",
+     main = "Quadratic Model Residual Plots",
+     pch = 16, col = "red")
+abline(h = 0, lty = 2)
+par(mfrow = c(1, 1))
+# 檢查殘差圖是否有系統性模式或異方差性問題
+
+##############################
+# (g) Compare the residual sum of squares (SSE) of models (b) and (c)
+##############################
+SSE_linear <- sum(res_linear^2)
+SSE_quad <- sum(res_quad^2)
+cat("Linear Model SSE =", SSE_linear, "\n")
+cat("Quadratic Model SSE =", SSE_quad, "\n")
+# 較低的 SSE 代表模型對資料的擬合效果較好
