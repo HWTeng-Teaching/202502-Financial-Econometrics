@@ -153,7 +153,10 @@ summary_stats <- cex5_small %>%
 print(summary_stats)
 
 #2.25.c
-cex5_small$log_foodaway <- log(cex5_small$foodaway)
+cex5_small$ln_foodaway <- ifelse(cex5_small$foodaway > 0, log(cex5_small$foodaway), NA)
+sum(!is.na(cex5_small$ln_foodaway))
+summary(cex5_small$ln_foodaway)
+
 hist_data_log <- hist(cex5_small$log_foodaway, 
                       main = "Histogram of ln(FOODAWAY)", 
                       xlab = "ln(FOODAWAY)", 
