@@ -158,5 +158,9 @@ ggplot(cps5_small, aes(x = educ, y = wage)) +
        y = "Wage"
       ) +
   theme_minimal()
-
-#橘色（二次函數）較符合實際情況，截距項不應為負，且二次迴歸可解決此資料之異質變異數問題
+#比較兩模型
+anova(linear_model, quadratic_model)
+AIC(linear_model, quadratic_model)
+BIC(linear_model, quadratic_model)
+#橘色（二次函數）較符合實際情況，截距項不應為負，但透過ANOVA,AIC,BIC比較，quadratic model
+#僅稍優於linear model
