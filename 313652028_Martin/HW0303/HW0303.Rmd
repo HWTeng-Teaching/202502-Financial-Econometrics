@@ -1,0 +1,525 @@
+---
+title: "HW0303"
+author: "Yung-Jung Cheng"
+date: "2025-03-08"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(POE5Rdata)
+library(ggplot2)
+library(dplyr)
+
+```
+
+# Q17
+The data file collegetown contains observations on 500 single-family houses sold in Baton Rouge, Louisiana, during 2009–2013. The data include sale price (in thousands of dollars), PRICE, and total interior area of the house in hundreds of square feet, SQFT.  
+
+```{r Q17, message=FALSE}
+data("collegetown")
+```
+
+## Q17 (a)
+Plot house price against house size in a scatter diagram.
+
+### Ans
+
+```{r Q17a}
+# 繪製房價對房屋面積的散點圖
+plot(collegetown$sqft, collegetown$price,
+     main="Scatter Plot of Price vs. House Size",
+     xlab="House Size (100 sqft)",
+     ylab="Price (Thousands of Dollars)",
+     pch=19, col="blue")
+
+
+```
+
+## Q17 (b)
+Estimate the linear regression model PRICE = β1 + β2SQFT + e. Interpret the estimates. Draw a sketch of the fitted line.
+
+### Ans
+```{r Q17b}
+# 建立線性迴歸模型
+linear_model <- lm(price ~ sqft, data=collegetown)
+
+# 查看模型摘要以解釋估計值
+summary(linear_model)
+
+# 繪製數據和擬合線
+plot(collegetown$sqft, collegetown$price,
+     main="Linear Regression of Price on House Size",
+     xlab="House Size (100 sqft)",
+     ylab="Price (Thousands of Dollars)",
+     pch=19, col="blue")
+abline(linear_model, col="red", lwd=2)  # 添加擬合線
+
+```
+
+## Q17 (c)
+Estimate the quadratic regression model PRICE = α1 + α2SQFT 2 + e. Compute the marginal effect of an additional 100 square feet of living area in a home with 2000 square feet of living space.
+
+### Ans
+```{r Q17c}
+# 建立二次迴歸模型
+quadratic_model <- lm(price ~ sqft + I(sqft^2), data=collegetown)
+
+# 查看模型摘要
+summary(quadratic_model)
+
+# 計算在2000平方英尺時額外100平方英尺的邊際效果
+# 邊際效果為導數 dPrice/dSQFT = α2 + 2*α3*SQFT 在 SQFT = 20（因為數據中的SQFT是以100為單位）
+marginal_effect <- coef(quadratic_model)["sqft"] + 2 * coef(quadratic_model)["I(sqft^2)"] * 20
+marginal_effect
+
+
+```
+
+
+## Q17 (d)
+Graph the fitted curve for the model in part (c). On the graph, sketch the line that is tangent to the curve for a 2000-square-foot house.
+
+### Ans
+
+```{r Q17d}
+# 繪製數據點
+plot(collegetown$sqft, collegetown$price, 
+     main="Quadratic Regression of Price on House Size with Tangent Line at 2000 sqft",
+     xlab="House Size (100 sqft)",
+     ylab="Price (Thousands of Dollars)",
+     pch=19, col="blue")
+
+# 繪製擬合曲線
+curve(coef(quadratic_model)["(Intercept)"] + 
+      coef(quadratic_model)["sqft"] * x + 
+      coef(quadratic_model)["I(sqft^2)"] * x^2, 
+      from=min(collegetown$sqft), to=max(collegetown$sqft), add=TRUE, col="red")
+
+# 計算切線斜率
+slope <- coef(quadratic_model)["sqft"] + 2 * coef(quadratic_model)["I(sqft^2)"] * 20
+
+# 繪製切線於2000平方英尺
+tangent_line <- function(x) {
+  intercept <- coef(quadratic_model)["(Intercept)"] + 
+               coef(quadratic_model)["sqft"] * 20 + 
+               coef(quadratic_model)["I(sqft^2)"] * 20^2 - 
+               slope * 20
+  intercept + slope * x
+}
+
+# 添加切線到圖形
+curve(tangent_line(x), from=10, to=70, add=TRUE, col="green", lwd=2, lty=2)
+points(20, tangent_line(20), pch=19, col="red")  # 標記切點
+
+
+```
+
+
+## Q17 (e)
+For the model in part (c), compute the elasticity of PRICE with respect to SQFT for a home with 2000 square feet of living space.
+
+### Ans
+
+```{r Q17e}
+# 從二次迴歸模型中提取係數
+alpha1 <- coef(quadratic_model)["(Intercept)"]
+alpha2 <- coef(quadratic_model)["sqft"]
+alpha3 <- coef(quadratic_model)["I(sqft^2)"]
+
+# 計算在SQFT = 20 (即2000平方英尺)時的價格
+price_at_2000_sqft <- alpha1 + alpha2 * 20 + alpha3 * 20^2
+
+# 計算在SQFT = 20處的邊際效果（即導數）
+marginal_effect_at_2000_sqft <- alpha2 + 2 * alpha3 * 20
+
+# 計算彈性：(dPrice/Price) / (dSQFT/SQFT) = (邊際效果 * SQFT) / 價格
+elasticity <- (marginal_effect_at_2000_sqft * 20) / price_at_2000_sqft
+
+# 輸出彈性值
+elasticity
+
+```
+
+## Q17 (f)
+For the regressions in (b) and (c), compute the least squares residuals and plot them against SQFT. Do any of our assumptions appear violated?
+
+### Ans
+
+```{r Q17f}
+# 線性模型的殘差
+residuals_linear <- residuals(linear_model)
+
+# 二次模型的殘差
+residuals_quadratic <- residuals(quadratic_model)
+
+# 繪製殘差圖
+par(mfrow=c(2,1))  # 將圖形區域分為兩行一列
+
+# 線性模型殘差
+plot(collegetown$sqft, residuals_linear, main="Residuals of Linear Model",
+     xlab="House Size (100 sqft)", ylab="Residuals (Thousands of Dollars)",
+     pch=19, col="blue")
+abline(h=0, col="red", lty=2)  # 添加水平線於殘差為0處
+
+# 二次模型殘差
+plot(collegetown$sqft, residuals_quadratic, main="Residuals of Quadratic Model",
+     xlab="House Size (100 sqft)", ylab="Residuals (Thousands of Dollars)",
+     pch=19, col="green")
+abline(h=0, col="red", lty=2)  # 添加水平線於殘差為0處
+
+```
+
+Both appear to be acceptable.
+
+
+##Q17 (g)
+One basis for choosing between these two specifications is how well the data are fit by the model. Compare the sum of squared residuals (SSE) from the models in (b) and (c). Which model has a lower SSE? How does having a lower SSE indicate a “better-fitting” model?
+
+### Ans
+```{r Q17g}
+
+# 計算線性模型的 SSE
+SSE_linear <- sum(residuals_linear^2)
+
+# 計算二次模型的 SSE
+SSE_quadratic <- sum(residuals_quadratic^2)
+
+# 輸出 SSE 值
+SSE_linear
+SSE_quadratic
+
+# 判斷哪個模型 SSE 較低
+if (SSE_linear < SSE_quadratic) {
+  print("Linear model has a better fit (lower SSE).")
+} else {
+  print("Quadratic model has a better fit (lower SSE).")
+}
+
+```
+A lower SSE means that the predicted values are, on average, closer to the actual values.
+And that indicate it is a “better-fitting” model
+
+
+-----------------
+
+# Q25
+Consumer expenditure data from 2013 are contained in the file cex5_small. [Note: cex5 is a larger version with more observations and variables.] Data are on three-person households consisting of a husband and wife, plus one other member, with incomes between \$1000 per month to \$20,000 per month. FOODAWAY is past quarter’s food away from home expenditure per month per person, in dollars, and INCOME is household monthly income during past year, in \$100 units.
+
+```{r Q25, message=FALSE}
+data("cex5_small")
+```
+
+## Q25(a)
+Construct a histogram of FOODAWAY and its summary statistics. What are the mean and median values? What are the 25th and 75th percentiles?
+
+### Ans
+```{r Q25a}
+# 繪製 FOODAWAY 直方圖
+ggplot(cex5_small, aes(x = foodaway)) +
+  geom_histogram(bins = 10, fill = "skyblue", color = "black", alpha = 0.7) +
+  labs(title = "Histogram of FOODAWAY", x = "FOODAWAY", y = "Frequency") +
+  theme_minimal()
+
+
+# 計算統計摘要
+summary(cex5_small$foodaway)
+
+# 計算 25th 和 75th 百分位數
+quantile(cex5_small$foodaway, probs = c(0.25, 0.75))
+
+```
+## Q25(b)
+What are the mean and median values of FOODAWAY for households including a member with an advanced degree? With a college degree member? With no advanced or college degree member?
+
+### Ans
+```{r Q25b}
+
+# 計算不同教育程度的 FOODAWAY 平均數與中位數，並移除分組
+foodaway_stats <- cex5_small %>%
+  group_by(advanced, college) %>%
+  summarise(
+    mean_foodaway = mean(foodaway, na.rm = TRUE),
+    median_foodaway = median(foodaway, na.rm = TRUE),
+    .groups = "drop"  # 這行讓輸出變成一般的 dataframe，而非分組資料
+  )
+
+# 顯示結果
+print(foodaway_stats)
+
+
+```
+
+## Q25(c)
+Construct a histogram of ln(FOODAWAY) and its summary statistics. Explain why FOODAWAY and ln(FOODAWAY) have different numbers of observations.
+
+### Ans
+
+```{r Q25c}
+# 先過濾掉 FOODAWAY 為 0 的觀測值，因為 ln(0) 不存在
+cex5_small_filtered <- cex5_small %>%
+  filter(foodaway > 0) %>%
+  mutate(ln_foodaway = log(foodaway))
+
+# 繪製 ln(FOODAWAY) 直方圖
+ggplot(cex5_small_filtered, aes(x = ln_foodaway)) +
+  geom_histogram(bins = 30, fill = "skyblue", color = "black", alpha = 0.7) +
+  labs(title = "Histogram of ln(FOODAWAY)", x = "ln(FOODAWAY)", y = "Frequency") +
+  theme_minimal()
+
+# 計算 ln(FOODAWAY) 的統計摘要
+summary(cex5_small_filtered$ln_foodaway)
+
+
+```
+
+Since $ln(0)$ does not exist, we need to remove these observations. As a result, $FOODAWAY$ and $ln(FOODAWAY)$  have different numbers of observations.
+
+
+## Q25(d)
+Estimate the linear regression ln(FOODAWAY)=β1 + β2INCOME + e. Interpret the estimated slope.
+
+### Ans
+
+```{r Q25d}
+# 確保只使用 foodaway > 0 的數據，因為 ln(0) 無效
+cex5_small_filtered <- cex5_small %>%
+  filter(foodaway > 0) %>%
+  mutate(ln_foodaway = log(foodaway))
+
+# 進行線性回歸
+lm_model <- lm(ln_foodaway ~ income, data = cex5_small_filtered)
+
+# 顯示回歸結果
+summary(lm_model)
+
+```
+
+For every 1-unit increase in INCOME (which is 100 USD), the predicted value of $ln(FOODAWAY)$ increases by 0.0069.
+The percentage increase in FOODAWAY can be calculated as: $e^{0.0069}-1=0.69%$
+
+## Q25(e)
+Plot $ln(FOODAWAY)$ against $INCOME$, and include the fitted line from part (d).
+
+### Ans
+```{r Q25e}
+# 繪製散佈圖與回歸線
+ggplot(cex5_small_filtered, aes(x = income, y = ln_foodaway)) +
+  geom_point(alpha = 0.5, color = "blue") +  # 繪製資料點
+  geom_smooth(method = "lm", color = "red", se = FALSE) +  # 加上回歸線
+  labs(title = "Scatter Plot of ln(FOODAWAY) vs INCOME",
+       x = "Household Income (100 USD)",
+       y = "ln(FOODAWAY)") +
+  theme_minimal()
+
+
+```
+
+## Q25(f)
+Calculate the least squares residuals from the estimation in part (d). Plot them vs. INCOME. Do you find any unusual patterns, or do they seem completely random?
+
+### Ans
+
+```{r Q25f}
+# 計算殘差
+cex5_small_filtered$residuals <- lm_model$residuals
+
+# 繪製殘差圖
+ggplot(cex5_small_filtered, aes(x = income, y = residuals)) +
+  geom_point(alpha = 0.5, color = "blue") +  # 繪製資料點
+  geom_hline(yintercept = 0, color = "red", linetype = "dashed") +  # 添加 y=0 的參考線
+  labs(title = "Residuals vs. INCOME",
+       x = "Household Income (100 USD)",
+       y = "Residuals") +
+  theme_minimal()
+
+```
+
+it seem completely random!
+
+
+
+-----------------
+
+# Q28
+How much does education affect wage rates? The data file cps5_small contains 1200 observations on hourly wage rates, education, and other variables from the 2013 Current Population Survey (CPS). [Note: cps5 is a larger version.]
+```{r Q28, message=FALSE}
+data("cps5_small")
+```
+
+## Q28(a)
+Obtain the summary statistics and histograms for the variables WAGE and EDUC. Discuss the data characteristics.
+
+### Ans
+
+```{r Q28a}
+# 敘述統計
+summary(cps5_small$wage)
+summary(cps5_small$educ)
+
+# 繪製直方圖
+hist(cps5_small$wage, main="Histogram of WAGE", xlab="WAGE", breaks=20)
+hist(cps5_small$educ, main="Histogram of EDUC", xlab="EDUC", breaks=15)
+
+```
+
+
+- WAGE:
+  - The distribution of wages is right-skewed, with most values clustered at the lower end and a few exceptionally high wages.
+  - The median wage is significantly lower than the mean, indicating the presence of outliers or extreme high values.
+  - Wages range from a minimum of approximately $3.94 to a maximum of $221.10.
+- EDUC:
+  - Education years show a concentrated distribution mostly between 12 to 16 years.
+  - The median and mean are close, around 14 years, indicating a symmetric distribution around the middle school to college education level.
+  - The data spans from no formal education (0 years) to advanced degrees (21 years).
+
+
+## Q28(b)
+Estimate the linear regression WAGE = β1 + β2EDUC + e and discuss the results.
+
+### Ans
+```{r Q28b}
+linear_model <- lm(wage ~ educ, data=cps5_small)
+summary(linear_model)
+
+```
+
+- **Equation**: \( \text{WAGE} = -10.4 + 2.3968 \times \text{EDUC} \).
+- **Slope**: Each additional year of education increases wages by approximately $2.3968, significant (p < 2e-16).
+- **R-squared**: 0.2073, indicating the model explains about 21% of wage variance.
+- **Residuals**: Range widely, suggesting outliers or extreme values.
+The model demonstrates a significant positive relationship between education and wages.
+
+
+## Q28(c)
+Calculate the least squares residuals and plot them against EDUC. Are any patterns evident? If assumptions SR1–SR5 hold, should any patterns be evident in the least squares residuals?
+
+### Ans
+
+```{r Q28c}
+
+# 計算殘差
+residuals <- residuals(linear_model)
+
+# 繪製殘差與教育年數的散點圖
+plot(cps5_small$educ, residuals, 
+     xlab = "Education (Years)", 
+     ylab = "Residuals", 
+     main = "Plot of Residuals vs. Education",
+     pch = 20, col = "red")
+
+# 添加水平線於殘差=0的位置
+abline(h = 0, col = "blue", lwd = 2)
+
+```
+Yes, it seem to be close to 0 with some outliers.
+If SR1 to SR5 hold, the residuals should be randomly distributed around zero with no systematic patterns or changes in variance across the range of education.
+
+
+## Q28(d)
+Estimate separate regressions for males, females, blacks, and whites. Compare the results.
+
+### Ans
+```{r Q28d}
+# 針對男性和女性分別進行迴歸分析
+male_model <- lm(wage ~ educ, data = cps5_small, subset = (female == 0))
+female_model <- lm(wage ~ educ, data = cps5_small, subset = (female == 1))
+
+# 針對黑人和白人分別進行迴歸分析
+black_model <- lm(wage ~ educ, data = cps5_small, subset = (black == 1))
+white_model <- lm(wage ~ educ, data = cps5_small, subset = (black == 0))
+
+# 查看每個模型的摘要結果
+summary(male_model)
+summary(female_model)
+summary(black_model)
+summary(white_model)
+
+```
+
+
+- Coefficients:
+  - **Males**: For each additional year of education, wages increase by approximately $2.38.
+  - **Females**: Each additional year increases wages by about $2.66.
+  - **Blacks**: Each additional year increases wages by about $1.92.
+  - **Whites**: Each additional year increases wages by about $2.42.
+
+- Model Fit:
+  - **Females** show the highest model explanatory power with an R-squared of 0.2764, indicating that education explains about 27.64% of wage variability.
+  - **Males**, **Blacks**, and **Whites** have R-squared values of 0.1927, 0.1846, and 0.2072 respectively.
+- Summary:
+  - Education impacts wages most significantly for females and least for blacks. The models vary in effectiveness, with females showing the highest explanatory power.
+
+
+
+## Q28(e)
+Estimate the quadratic regression WAGE = α1 + α2EDUC2 + e and discuss the results. Estimate the marginal effect of another year of education on wage for a person with 12 years of education and for a person with 16 years of education. Compare these values to the estimated marginal effect of education from the linear regression in part (b).
+
+### Ans
+
+```{r Q28e}
+# 建立包含教育年數平方的二次迴歸模型
+quadratic_model <- lm(wage ~ educ + I(educ^2), data = cps5_small)
+
+# 查看模型摘要
+summary(quadratic_model)
+
+# 計算在12年和16年教育時的邊際效應
+educ_values <- c(12, 16)
+marginal_effects <- coef(quadratic_model)[2] + 2 * coef(quadratic_model)[3] * educ_values
+
+# 顯示邊際效應
+names(marginal_effects) <- paste("Marginal effect at EDUC =", educ_values)
+marginal_effects
+
+
+```
+
+The quadratic regression shows increasing marginal effects of education on wages: 2.0747 for 12 years and 2.9094 for 16 years. Compared to the linear model's consistent increase of about $2.3968 per year, the quadratic model suggests that the wage benefit of education grows with higher levels of education.
+
+
+## Q28(f)
+Plot the fitted linear model from part (b) and the fitted values from the quadratic model from part (e) in the same graph with the data on WAGE and EDUC. Which model appears to fit the data better?
+
+### Ans
+
+```{r Q28f}
+# 線性模型
+linear_model <- lm(wage ~ educ, data = cps5_small)
+
+# 二次模型
+quadratic_model <- lm(wage ~ educ + I(educ^2), data = cps5_small)
+
+# 生成教育年數的預測範圍
+educ_range <- seq(from = min(cps5_small$educ), to = max(cps5_small$educ), by = 0.1)
+
+# 計算線性模型的預測值
+linear_predictions <- predict(linear_model, newdata = list(educ = educ_range))
+
+# 計算二次模型的預測值
+quadratic_predictions <- predict(quadratic_model, newdata = list(educ = educ_range))
+
+# 繪製數據點
+plot(cps5_small$educ, cps5_small$wage, xlab = "Education (Years)", ylab = "Wage", 
+     main = "Comparison of Linear and Quadratic Model Fits", 
+     pch = 19, col = "gray")
+
+# 繪製線性模型的擬合線
+lines(educ_range, linear_predictions, col = "blue", lwd = 2)
+
+# 繪製二次模型的擬合線
+lines(educ_range, quadratic_predictions, col = "red", lwd = 2)
+
+# 添加圖例
+legend("topright", legend = c("Data", "Linear Model", "Quadratic Model"), 
+       col = c("gray", "blue", "red"), pch = c(19, NA, NA), lty = c(NA, 1, 1), lwd = c(NA, 2, 2))
+
+
+```
+
+the quadratic model from part (e) appears to fit the data better.
+
+
+
+
+
