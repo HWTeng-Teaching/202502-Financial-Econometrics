@@ -53,8 +53,8 @@ ncorna_foodaway <- cex5_small$foodaway[cex5_small$college==F&cex5_small$advanced
 summary(ncorna_foodaway)
 
 #c
-cex5_small$lnfoodaway <- log1p(cex5_small$foodaway)
-cex5_small <- cex5_small[cex5_small$lnfoodaway!=0,]
+cex5_small <- cex5_small[cex5_small$foodaway>0,]
+cex5_small$lnfoodaway <- log(cex5_small$foodaway)
 length(cex5_small$lnfoodaway)
 summary(cex5_small$lnfoodaway)
 hist(cex5_small$lnfoodaway,main = 'Histogram of LNFOODAWAY',xlab = 'LNFOODAWAY',breaks=30)
