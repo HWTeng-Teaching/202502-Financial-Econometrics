@@ -223,3 +223,82 @@ ggplot(data, aes(x = income, y = residuals)) +
        x = "Monthly Income（$100 USD）",
        y = "residual (ln(FOODAWAY))") +
   theme_minimal()
+
+#Q28a
+install.packages("remotes")  # 確保 remotes 套件已安裝
+remotes::install_github("ccolonescu/POE5Rdata")  # 需確認 GitHub Repo 位置
+library(POE5Rdata)
+data(cps5_small)
+data <- cps5_small
+
+# 檢查數據結構
+str(data)
+summary(data)
+
+#取得統計數據
+summary(data$wage)
+summary(data$educ)
+
+mean(data$wage, na.rm = TRUE)      # 平均值
+sd(data$wage, na.rm = TRUE)        # 標準差
+median(data$wage, na.rm = TRUE)    # 中位數
+quantile(data$wage, probs = c(0.25, 0.75), na.rm = TRUE) # 第1與第3四分位數
+
+mean(data$educ, na.rm = TRUE)      # 教育年數的平均值
+sd(data$educ, na.rm = TRUE)        # 教育年數的標準差
+median(data$educ, na.rm = TRUE)    # 教育年數的中位數
+quantile(data$educ, probs = c(0.25, 0.75), na.rm = TRUE) # 第1與第3四分位數
+
+
+# 繪製 直方圖
+
+ggplot(data, aes(x = wage)) +
+  geom_histogram(binwidth = 2, fill = "lightblue", color = "black") +
+  labs(title = "WAGE 直方圖", x = "時薪（美元）", y = "頻數") +
+  theme_minimal()
+
+ggplot(data, aes(x = educ)) +
+  geom_histogram(binwidth = 1, fill = "lightblue", color = "black") +
+  labs(title = "EDUC 直方圖", x = "受教育年數", y = "頻數") +
+  theme_minimal()
+
+#Q28b
+model <- lm(wage ~ educ, data = cps5_small)
+summary(model)
+
+#Q28c
+cps5_small$residuals <- residuals(model)
+ggplot(cps5_small, aes(x = educ, y = residuals)) +
+  geom_point(alpha = 0.5, color = "blue") +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "red") +
+  labs(title = "Residuals vs. Education",
+       x = "Years of Education",
+       y = "Residuals") +
+  theme_minimal()
+
+#Q28D
+model_male <- lm(wage ~ educ, data = cps5_small, subset = (female == 0))
+summary(model_male)
+
+model_female <- lm(wage ~ educ, data = cps5_small, subset = (female == 1))
+summary(model_female)
+
+model_black <- lm(wage ~ educ, data = cps5_small, subset = (black == 1))
+summary(model_black)
+
+model_white <- lm(wage ~ educ, data = cps5_small, subset = (black == 0))
+summary(model_white)
+
+#Q28E
+model_quad <- lm(wage ~ I(educ^2), data = cps5_small)
+summary(model_quad)
+
+#Q28F
+ggplot(cps5_small, aes(x = educ, y = wage)) +
+  geom_point(alpha = 0.5, color = "black") +  
+  geom_smooth(method = "lm", color = "green", se = FALSE, formula = y ~ x) +  # 線性回歸
+  geom_smooth(method = "lm", color = "red", se = FALSE, formula = y ~ poly(x, 2)) +  # 二次回歸
+  labs(title = "Comparison of Linear and Quadratic Models",
+       x = "Years of Education",
+       y = "Hourly Wage (USD)") +
+  theme_minimal()
