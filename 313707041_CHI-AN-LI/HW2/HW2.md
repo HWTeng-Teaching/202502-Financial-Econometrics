@@ -1,5 +1,6 @@
 # 2.17
-## (a)
+## (a) (b)
 
-![image](https://github.com/user-attachments/assets/dc214c63-3782-4186-87ec-90c14d5affe8)
+![image](https://github.com/user-attachments/assets/d546591e-87df-4a7d-9982-56abddab735b)
+
 
