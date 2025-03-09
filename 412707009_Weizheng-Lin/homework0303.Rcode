@@ -1,0 +1,301 @@
+#2.17
+
+library(POE5Rdata)
+data("collegetown")
+summary(collegetown)
+
+
+#a
+plot(collegetown$sqft, collegetown$price,
+xlab="House Size(SQFT)",
+ylab="House Price(in thouands of dollars)",
+pch=16, col="black ", cex=0.8)
+
+
+#b
+lm_model<-lm(price~sqft,data=collegetown)
+summary(lm_model)
+abline(lm_model,col="red",lwd=2)
+
+#c
+lm_quad<-lm(price~I(sqft^2),data=collegetown)
+summary(lm_quad)
+
+
+
+#d
+library(ggplot2)
+
+beta1 <- coef(lm_quad)[1]  
+beta2 <- coef(lm_quad)[2] 
+
+sqft_vals <- seq(min(collegetown$sqft), max(collegetown$sqft), length.out = 500)
+price_preds <- beta1 + beta2 * sqft_vals^2 
+
+sqft_20 <- 20
+price_2000 <- beta1 + beta2 * sqft_20^2
+
+ME <- 2 * beta2 * sqft_20
+
+# 左側範圍維持從 10 到 20
+left_tangent_sqft <- seq(sqft_20 - 10, sqft_20, length.out = 50)
+# 右側延長至 100（從 20 到 100）
+right_tangent_sqft <- seq(sqft_20, 100, length.out = 100)
+# 合併兩段，避免重複 20 點
+tangent_sqft <- c(left_tangent_sqft, right_tangent_sqft[-1])
+tangentb_price <- price_2000 + ME * (tangent_sqft - sqft_20)
+
+ggplot() +
+  geom_point(data = collegetown, aes(x = sqft, y = price), color = "blue", alpha = 0.5) +
+  geom_line(aes(x = sqft_vals, y = price_preds), color = "red", linewidth = 1.2) +
+  geom_line(aes(x = tangent_sqft, y = tangentb_price), color = "black", linetype = "solid", linewidth = 1) +
+  geom_point(aes(x = sqft_20, y = price_2000), color = "black", size = 3) +
+  labs(x = "house size (hundreds of square feet)",
+       y = "price (in thousands of dollars)") +
+  theme_minimal()
+
+
+
+# e. 計算彈性 Elasticity
+sqft_2000 <- 20
+price_2000 <- predict(lm_quad, newdata = data.frame(sqft = sqft_2000))
+
+marginal_effect
+elasticity <- ME * (sqft_2000 / price_2000)
+print(elasticity)
+# 0.8819511
+
+# f
+# 計算各模型的殘差
+collegetown$resid_lm <- resid(lm_model)
+collegetown$resid_quad <- resid(lm_quad)
+
+# 線性模型殘差圖
+p1 <- ggplot(collegetown, aes(x = sqft, y = resid_lm, color = "Linear Model")) +
+  geom_point(alpha = 0.5) +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "black") +
+  scale_color_manual(values = c("Linear Model" = "blue")) +
+  labs(title = "Residuals of Linear Regression",
+       x = "House Size (hundreds of square feet)",
+       y = "Residuals",
+       color = "Model") +
+  theme_minimal()
+
+# 二次模型殘差圖
+p2 <- ggplot(collegetown, aes(x = sqft, y = resid_quad, color = "Quadratic Model")) +
+  geom_point(alpha = 0.5) +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "black") +
+  scale_color_manual(values = c("Quadratic Model" = "red")) +
+  labs(title = "Residuals of Quadratic Regression",
+       x = "House Size (hundreds of square feet)",
+       y = "Residuals",
+       color = "Model") +
+  theme_minimal()
+
+print(p1)
+print(p2)
+
+
+# g. SSE (Sum of Squared Errors)
+sse_lm <- sum(resid(lm_model)^2)
+sse_quad <- sum(resid(lm_quad)^2)
+
+print(c(SSE_Linear = sse_lm, SSE_Quadratic = sse_quad))
+
+
+
+
+
+
+
+#2.25
+library(POE5Rdata)
+data("cex5_small")
+summary(cex5_small)
+
+#a
+hist(cex5_small$foodaway,
+     main = "Histogram of Food Away From Home Expenditure",
+     xlab = "Foodaway ($ per month per person)",
+     col = "blue",  # Fill color for the bars
+     border = "white")   # Border color for the bars
+
+summary(cex5_small$foodaway)
+
+mean_foodaway   <- mean(cex5_small$foodaway)
+median_foodaway <- median(cex5_small$foodaway)
+
+quantiles_25_75 <- quantile(cex5_small$foodaway, probs = c(0.25, 0.75))
+
+cat("Mean of foodaway:   ", mean_foodaway, "\n")
+cat("Median of foodaway: ", median_foodaway, "\n")
+cat("25th percentile:     ", quantiles_25_75[1], "\n")
+cat("75th percentile:     ", quantiles_25_75[2], "\n")
+
+
+
+#b
+install.packages("dplyr")
+
+library(dplyr)
+
+# 利用 dplyr::mutate() 與 dplyr::case_when() 建立新的教育層級變數
+cex5_small <- dplyr::mutate(cex5_small, education_group = dplyr::case_when(
+  advanced == 1 ~ "Advanced Degree",   # 當 advanced 為 1，表示進階學歷
+  college == 1  ~ "College Degree",     # 否則當 college 為 1，表示大學學歷
+  TRUE          ~ "No College Degree"    # 其他狀況則為「無大學學歷」
+))
+
+# 根據 education_group 分組，並計算 foodaway 的平均值與中位數
+education_stats <- cex5_small %>%
+  dplyr::group_by(education_group) %>%
+  dplyr::summarise(
+    Mean_Foodaway = mean(foodaway, na.rm = TRUE),
+    Median_Foodaway = median(foodaway, na.rm = TRUE)
+  )
+
+print(education_stats)
+
+# c
+library(ggplot2)
+
+# 建立 ln_foodaway，只對 foodaway 大於 0 的觀測值取自然對數
+cex5_small$ln_foodaway <- ifelse(cex5_small$foodaway > 0, log(cex5_small$foodaway), NA)
+
+# 過濾掉 ln_foodaway 為 NA 或非有限值的列
+cex5_small_valid <- subset(cex5_small, is.finite(ln_foodaway))
+
+# 繪製直方圖
+ggplot(cex5_small_valid, aes(x = ln_foodaway)) +
+  geom_histogram(binwidth = 0.2, fill = "blue", color = "black", alpha = 0.7) +
+  labs(title = "Histogram of ln(FOODAWAY)",
+       x = "ln(FOODAWAY)",
+       y = "Frequency") +
+  theme_minimal()
+
+
+#d
+# 移除 ln_foodaway 或 income 為 NA 的觀測值
+cex5_clean <- na.omit(cex5_small[, c("ln_foodaway", "income")])
+
+lm_model <- lm(ln_foodaway ~ income, data = cex5_clean)
+summary(lm_model)
+
+#e
+# 過濾掉 ln_foodaway 為 NA 或非有限值的觀測值
+cex5_valid <- subset(cex5_small, is.finite(ln_foodaway))
+
+ggplot(cex5_valid, aes(x = income, y = ln_foodaway)) +
+  geom_point(color = "blue", alpha = 0.8, pch = 16, size = 2) +
+  geom_smooth(method = "lm", se = FALSE, color = "red", linewidth = 1.2) +
+  labs(x = "INCOME (in $100 units)",
+       y = "ln(FOODAWAY)") +
+  theme_minimal()
+
+
+#f
+cex5_clean$residuals <- residuals(lm_model)
+ggplot(cex5_clean, aes(x = income, y = residuals)) +
+  geom_point(color = "blue", pch = 16, alpha = 0.6) +
+  geom_hline(yintercept = 0, color = "red", linewidth = 1) +
+  labs(title = "Residuals vs. INCOME",
+       x = "INCOME (in $100 units)",
+       y = "Residuals") +
+  theme_minimal()
+
+
+#2.28
+
+library(POE5Rdata)
+data("cps5")
+summary(cps5)
+
+
+
+#a
+library(ggplot2)
+
+# Wage 直方圖與摘要
+ggplot(cps5_small, aes(x = wage)) +
+  geom_histogram(binwidth = 2, fill = "blue", color = "black", alpha = 0.7) +
+  labs(x = "WAGE (per hour, $)", y = "Frequency") +
+  theme_minimal()
+summary(cps5_small$wage)
+
+# Educ 直方圖與摘要
+ggplot(cps5_small, aes(x = educ)) +
+  geom_histogram(binwidth = 2, fill = "blue", color = "black", alpha = 0.7) +
+  labs(x = "EDUC (years)", y = "Frequency") +
+  theme_minimal()
+summary(cps5_small$educ)
+
+
+#b
+ols_model<-lm(wage~educ,data=cps5_small)
+summary(ols _model)
+
+
+#c
+
+residuals <- residuals(ols_model)
+ggplot(data = cps5_small, aes(x = educ, y = residuals)) +
+  geom_point(color = "black") +
+  geom_hline(yintercept = 0, color = "blue") +
+  labs(x = "EDUC", y = "RESIDUALS") +
+  theme_minimal()
+
+
+#d
+
+# 依據性別與種族分群，分別估計 wage ~ educ 的迴歸模型
+
+
+male_model   <- lm(wage ~ educ, data = cps5_small, subset = (female == 0))
+female_model <- lm(wage ~ educ, data = cps5_small, subset = (female == 1))
+
+
+black_model <- lm(wage ~ educ, data = cps5_small, subset = (black == 1))
+white_model <- lm(wage ~ educ, data = cps5_small, subset = (black == 0))
+
+summary(male_model)
+summary(female_model)
+summary(black_model)
+summary(white_model)
+
+
+#e
+model_ quad <- lm(wage ~ I(educ^2), data = cps5_small)
+summary(model _quad)
+alpha2 <- coef(model _quad)["I(educ^2)"]
+
+
+#在 12 年與 16 年教育
+ME_12 <- 2 * alpha2 * 12
+ME_16 <- 2 * alpha2 * 16
+
+cat("Marginal Effect at 12 years of education:", ME_12, "\n")
+cat("Marginal Effect at 16 years of education:", ME_16, "\n")
+
+
+
+#f
+# 建立線性回歸模型 (ols) 與二次回歸模型 (quadratic)
+ols <- lm(wage ~ educ, data = cps5_small)
+quadratic <- lm(wage ~ educ + I(educ^2), data = cps5_small)
+
+plot(cps5_small$educ, cps5_small$wage,
+     main = "WAGE vs EDUC with Linear and Quadratic Fits",
+     xlab = "Years of Education", ylab = "Hourly Wage",
+     col = "darkgreen", pch = 17, cex = 1)
+abline(ols, col = "orange", lwd = 3, lty = 3)
+
+# 預測 quadratic 模型在教育年限範圍內的值
+educ_range <- seq(min(cps5_small$educ), max(cps5_small$educ), length.out = 100)
+quad_pred <- predict(quadratic, newdata = data.frame(educ = educ_range))
+
+lines(educ_range, quad_pred, col = "purple", lwd = 3)
+
+# polt
+legend("topleft", legend = c("Linear Fit", "Quadratic Fit", "Actual Data"),
+       col = c("orange", "purple", "darkgreen"), 
+       lty = c(3, 1, NA), pch = c(NA, NA, 17), lwd = 3)
