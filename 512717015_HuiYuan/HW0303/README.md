@@ -9,6 +9,7 @@
 ## (c)
 
 ## (d)
+![image](https://github.com/user-attachments/assets/f51ed58f-323c-40d4-aa1d-966338d32b7a)
 
 ## (e)
 
