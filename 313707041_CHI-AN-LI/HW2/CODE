@@ -66,3 +66,101 @@ if (SSE_quad < SSE_linear) {
   print("Linear Model has a lower SSE, indicating a better fit.")
 }
 
+## 2.25
+# (a)
+hist(cex5_small$foodaway, 
+     main = "Histogram of FOODAWAY", 
+     xlab = "FOODAWAY (Food Expenditure per Person)", 
+     col = "lightblue", border = "black")
+mean_foodaway <- mean(cex5_small$foodaway, na.rm = TRUE)
+median_foodaway <- median(cex5_small$foodaway, na.rm = TRUE)
+percentiles <- quantile(cex5_small$foodaway, probs = c(0.25, 0.75), na.rm = TRUE)
+print(paste("Mean of foodaway:", mean_foodaway))
+print(paste("Median of foodaway:", median_foodaway))
+print(paste("25th Percentile:", percentiles[1]))
+print(paste("75th Percentile:", percentiles[2]))
+#(b)
+# 計算有高等學位 (advanced_degree) 的家庭之 foodaway 統計量
+advanced_foodaway <- cex5_small$foodaway[cex5_small$advanced == 1]
+mean_advanced <- mean(advanced_foodaway, na.rm = TRUE)
+median_advanced <- median(advanced_foodaway, na.rm = TRUE)
+
+# 計算有大學學位 (college_degree) 但沒有高等學位的家庭
+college_foodaway <- cex5_small$foodaway[cex5_small$college == 1 & cex5_small$advanced == 0]
+mean_college <- mean(college_foodaway, na.rm = TRUE)
+median_college <- median(college_foodaway, na.rm = TRUE)
+
+# 計算沒有大學或高等學位的家庭
+no_degree_foodaway <- cex5_small$foodaway[cex5_small$college == 0 & cex5_small$advanced == 0]
+mean_no_degree <- mean(no_degree_foodaway, na.rm = TRUE)
+median_no_degree <- median(no_degree_foodaway, na.rm = TRUE)
+
+# 輸出結果
+print(paste("Mean foodaway (Advanced Degree):", mean_advanced))
+print(paste("Median foodaway (Advanced Degree):", median_advanced))
+
+print(paste("Mean foodaway (College Degree only):", mean_college))
+print(paste("Median foodaway (College Degree only):", median_college))
+
+print(paste("Mean foodaway (No College/Advanced Degree):", mean_no_degree))
+print(paste("Median foodaway (No College/Advanced Degree):", median_no_degree))
+#(c)
+# 取對數處理，過濾掉非正數的值
+cex5_small$ln_foodaway <- log(cex5_small$foodaway)
+valid_ln_foodaway <- cex5_small$ln_foodaway[!is.na(cex5_small$ln_foodaway) & is.finite(cex5_small$ln_foodaway)]
+
+# 繪製 ln(foodaway) 直方圖
+hist(valid_ln_foodaway, 
+     main = "Histogram of ln(FOODAWAY)", 
+     xlab = "ln(FOODAWAY)", 
+     col = "lightgreen", border = "black")
+
+# 計算統計量
+mean_ln_foodaway <- mean(valid_ln_foodaway, na.rm = TRUE)
+median_ln_foodaway <- median(valid_ln_foodaway, na.rm = TRUE)
+percentiles_ln <- quantile(valid_ln_foodaway, probs = c(0.25, 0.75), na.rm = TRUE)
+
+# 輸出統計結果
+print(paste("Mean of ln(foodaway):", mean_ln_foodaway))
+print(paste("Median of ln(foodaway):", median_ln_foodaway))
+print(paste("25th Percentile of ln(foodaway):", percentiles_ln[1]))
+print(paste("75th Percentile of ln(foodaway):", percentiles_ln[2]))
+#(d)
+# 進行線性回歸
+cex5_small$ln_foodaway <- log(cex5_small$foodaway)
+cex5_small$ln_foodaway[!is.finite(cex5_small$ln_foodaway)] <- NA  # 轉換 Inf 為 NA
+reg_model <- lm(ln_foodaway ~ income, data = cex5_small)
+
+# 顯示回歸結果
+summary(reg_model)
+#(e)
+# 繪製 ln(foodaway) 對 income 的散佈圖
+plot(cex5_small$income, cex5_small$ln_foodaway,
+     main = "Scatter Plot of ln(FOODAWAY) vs. INCOME",
+     xlab = "Household Monthly Income (100 USD units)", 
+     ylab = "ln(FOODAWAY)",
+     pch = 19, col = "blue")
+
+# 加上回歸線
+abline(reg_model, col = "red", lwd = 2)  # 紅色回歸線
+#(f)
+# 只保留完整數據 (去除 NA 值)
+cex5_clean <- na.omit(cex5_small[, c("income", "ln_foodaway")])
+
+# 重新執行回歸
+reg_model <- lm(ln_foodaway ~ income, data = cex5_clean)
+
+# 重新計算殘差
+residuals_reg <- resid(reg_model)
+
+# 繪製殘差圖
+plot(cex5_clean$income, residuals_reg,
+     main = "Residual Plot: ln(FOODAWAY) vs. INCOME",
+     xlab = "Household Monthly Income (100 USD units)", 
+     ylab = "Residuals",
+     pch = 19, col = "blue")
+
+# 添加 y=0 基準線
+abline(h = 0, col = "red", lwd = 2)
+
+
