@@ -226,3 +226,67 @@ p <- ggplot(cex5_small, aes(x = income, y = residuals)) +
        y = "Residuals") +
   theme_minimal()
 print(p)  
+
+#Q2.28.a
+data3 <- POE5Rdata::cps5_small
+summary(data3$wage)
+summary(data3$educ)
+hist(data3$wage,main = 'Histogram of wage',xlab = 'Wage')
+hist(data3$educ,main = 'Histogram of education', xlab = 'Education')
+
+#Q2.28.b
+
+mod4 <- lm(data3$wage ~ data3$educ)
+summary(mod4)
+
+plot(data3$educ , data3$wage,
+     xlab = 'educ',
+     ylab = 'wage')
+abline(coef(mod4)[1],coef(mod4)[2],col = 'red',lwd = 2)
+
+resid4 <- resid(mod4)
+plot(data3$educ , resid4,
+     xlab = 'Education',
+     ylab = 'Residual')
+
+#Q2.28.d
+data3_male <- data3 %>% filter(female == 0)
+data3_female <- data3 %>% filter(female == 1)
+data3_white <- data3 %>% filter(black == 0)
+data3_black <- data3 %>% filter(black == 1)
+
+# 將數據集放入 list
+data_list <- list(
+  male = data3_male,
+  female = data3_female,
+  white = data3_white,
+  black = data3_black
+)
+
+# 用 lapply() 進行回歸
+models <- lapply(data_list, function(df) lm(wage ~ educ, data = df))
+
+# 查看回歸結果
+lapply(models, summary)
+
+par(mfrow=c(2,2))
+plot(data3_male$educ,data3_male$wage, xlab = 'male educ',ylab = 'male wage',ylim = c(0,max(data3_male$wage)))
+plot(data3_female$educ,data3_female$wage, xlab = 'female educ',ylab = 'female wage',ylim = c(0,max(data3_male$wage)))
+plot(data3_white$educ,data3_white$wage, xlab = 'white educ',ylab = 'white wage',ylim = c(0,max(data3_male$wage)))
+plot(data3_black$educ,data3_black$wage, xlab = 'black educ',ylab = 'black wage',ylim = c(0,max(data3_male$wage)))
+par(mfrow=c(1,1))
+
+#2.28.e
+mod5 <- lm(wage ~ I(educ^2),data = data3)
+summary(mod5)
+
+#2.28.f
+plot(data3$educ , data3$wage,
+     xlab = 'educ',
+     ylab = 'wage')
+abline(coef(mod4)[1],coef(mod4)[2],col = 'red',lwd = 2)
+curve(coef(mod5)[1] + coef(mod5)[2]*x^2,
+      add = TRUE, col = "blue", lwd = 2)
+
+summary(mod4)$r.squared
+summary(mod5)$r.squared
