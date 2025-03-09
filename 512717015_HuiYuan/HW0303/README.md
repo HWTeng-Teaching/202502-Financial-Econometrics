@@ -13,6 +13,7 @@
 ## (e)
 
 ## (f)
+![image](https://github.com/user-attachments/assets/a98f85d0-7fa2-429c-9113-9e6aef0e41ec)
 
 ## (g)
 
