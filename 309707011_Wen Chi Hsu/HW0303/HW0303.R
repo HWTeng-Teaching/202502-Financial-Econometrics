@@ -79,9 +79,6 @@ ggplot(cex5_small, aes(x = foodaway, y = after_stat(count) / sum(after_stat(coun
 
 summary(foodaway)
 
-
-
-
 #b
 num_adv <- sum(cex5_small$advanced == 1, na.rm = TRUE)
 mean_adv <- mean(cex5_small$foodaway[cex5_small$advanced == 1], na.rm = TRUE)
