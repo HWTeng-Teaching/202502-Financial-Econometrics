@@ -45,6 +45,22 @@ Median of ln(foodaway): 3.68649879556308
 ![image](https://github.com/user-attachments/assets/ce247092-1574-467d-bb3a-a2c3ca70f0f1)  
 看起來殘差為隨機，同質變異數假設為合理假設
 # 2.28
+# (a)
+![image](https://github.com/user-attachments/assets/62e6a6fc-59b3-4d25-8db9-5ac4cbc8edc5)
+![image](https://github.com/user-attachments/assets/f649f0b2-7428-444a-bd45-0e3674a280ca)  
+薪資的部分可以看出明顯的右尾分布，且具有極端的離群值。教育程度呈現左尾分布，大部分的數據集中在10年~15年之間
+
+# (b)
+![image](https://github.com/user-attachments/assets/b459af70-aa3a-412d-9ca5-967518e67856)  
+根據結果，回歸截距及斜率皆在統計上顯著。教育每增加一年，平均每小時薪資增加2.3968元
+# (c)
+![image](https://github.com/user-attachments/assets/572083fb-bc04-487f-b9d9-266f25255900)  
+可以看出當教育年限增加，薪資的變異程度會變大。若SR1~SR5的假設成立，殘差圖不應該呈現特定的模式，應該呈現隨機的狀態。
+# (d)
+
+
+
+
 
 
 
