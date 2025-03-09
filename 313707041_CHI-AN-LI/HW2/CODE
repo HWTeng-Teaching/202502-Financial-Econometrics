@@ -6,6 +6,8 @@ plot(collegetown$sqft, collegetown$price,
      ylab = "Price (thousands of dollars)",
      pch = 19,    
      col = "blue" )
-abline(lm(price ~ sqft, data = collegetown), col = "red")
+model <- lm(price ~ sqft, data = collegetown)
+coef(model)  # 只顯示 β₁ 和 β₂
+print(coef(model))
 
 (c)
