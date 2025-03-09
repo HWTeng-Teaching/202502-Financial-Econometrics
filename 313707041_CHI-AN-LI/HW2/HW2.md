@@ -14,7 +14,8 @@ SSE for Linear Model: 5262846.94710885, SSE for Quadratic Model: 4207791.3887695
 Quadratic Model的SSE較小，因為 Quadratic Model捕捉到更多房價的變異性，也就是房價更能夠以Quadratic Model解釋，代表Quadratic Model為 “better-fitting” model。
 # 2.25
 ## (a)
-![image](https://github.com/user-attachments/assets/cc230d98-f5ba-46af-9c32-8c8067665864)
+![image](https://github.com/user-attachments/assets/cc230d98-f5ba-46af-9c32-8c8067665864)  
+
 Mean of foodaway: 49.27085  
 Median of foodaway: 32.555  
 25th Percentile: 12.04  
@@ -26,3 +27,25 @@ Mean foodaway (College Degree only): 48.5971815718157
 Median foodaway (College Degree only): 36.11  
 Mean foodaway (No College/Advanced Degree): 39.010174216027 
 Median foodaway (No College/Advanced Degree): 26.0
+## (c)
+![image](https://github.com/user-attachments/assets/199be332-afaf-48bd-a211-29227ffe2017)  
+
+Mean of ln(foodaway): 3.65080360893854  
+Median of ln(foodaway): 3.68649879556308  
+25th Percentile of ln(foodaway): 3.07592881554827  
+75th Percentile of ln(foodaway): 4.27971701584931  
+當觀察值為0時，無法取對數，因此取對數後的觀察值會比較少
+
+## (d)
+![image](https://github.com/user-attachments/assets/c64c052a-a232-45f5-a60a-61034b6c37e6)  
+根據回歸結果，當家庭月收入增加 100 美元，則外食支出 (foodaway) 平均增加約 0.69%
+## (e)
+![image](https://github.com/user-attachments/assets/87fa2e15-ce1d-4423-bd57-33f1aa682756)
+## (f)
+![image](https://github.com/user-attachments/assets/ce247092-1574-467d-bb3a-a2c3ca70f0f1)  
+看起來殘差為隨機，同質變異數假設為合理假設
+
+
+
+
+
