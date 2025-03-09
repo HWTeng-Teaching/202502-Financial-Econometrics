@@ -1,7 +1,19 @@
-## Allen 鄭凱鴻 313652013
+# Allen   鄭凱鴻 313652013
 
-## MAP
+[My website](https://KaihongZheng.github.io/)
 
-## FOOD
+## Map
 
-## SMILES
+I was born in Taichung and later moved to Taoyuan, where I grew up.
+
+I studied Applied Mathematics at NYCU during my undergraduate years and am currently pursuing a master's degree in Applied Mathematics at NYCU.
+
+![image](https://github.com/user-attachments/assets/636ef334-89b7-4faa-84bf-485288cb226e)
+
+## Food
+
+
+## Smile
+
+
+```
