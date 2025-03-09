@@ -1,0 +1,145 @@
+# 2.17
+(a)
+if (!requireNamespace("remotes", quietly = TRUE)) install.packages("remotes")
+remotes::install_github("ccolonescu/POE5Rdata", force = TRUE)
+library(POE5Rdata)
+
+collegetown <- na.omit(collegetown)
+plot(collegetown$sqft, collegetown$price,
+      main="House Price vs. House Size",
+      xlab="House Size (hundreds of square feet)",
+      ylab="House Price (in thousands of dollars)",
+      pch=16, col="blue")
+
+(b)
+# 執行線性回歸
+linear_model <- lm(price ~ sqft, data = collegetown)
+
+# 顯示回歸結果
+summary(linear_model)
+
+# 繪製散點圖
+> plot(collegetown$sqft, collegetown$price,
++      main="House Price vs. House Size",
++      xlab="House Size (hundreds of square feet)",
++      ylab="House Price (in thousands of dollars)",
++      pch=16, col="blue")
+> 
+> # 加上回歸線
+> abline(linear_model, col="red", lwd=2)
+
+(c)
+# 擬合僅有平方項的回歸模型
+quadratic_model <- lm(price ~ I(sqft^2), data = collegetown)
+ 
+# 顯示回歸結果
+summary(quadratic_model)
+
+# 提取平方項回歸係數
+alpha_2 <- coef(quadratic_model)["I(sqft^2)"]
+
+# 設定房屋面積為 2000 平方英尺（20 百平方英尺）
+sqft_value <- 20  
+ 
+# 計算邊際影響
+marginal_effect <- 2 * alpha_2 * sqft_value
+ 
+# 顯示結果
+print(paste("當房屋面積為 2000 平方英尺時，額外 100 平方英尺對房價的影響為：", round(marginal_effect, 4)))
+
+(d)
+# 設定 X 軸範圍
+sqft_range <- seq(min(collegetown$sqft), max(collegetown$sqft), length.out=100)
+
+# 計算對應的預測房價
+predicted_price <- coef(quadratic_model)[1] + coef(quadratic_model)[2] * sqft_range^2
+
+# 繪製散點圖
+plot(collegetown$sqft, collegetown$price,
+     main="Quadratic Regression: House Price vs. Size",
+     xlab="House Size (hundreds of square feet)",
+     ylab="House Price (in thousands of dollars)",
+     pch=16, col="blue")
+
+# 繪製回歸曲線
+lines(sqft_range, predicted_price, col="red", lwd=2)
+
+# 取得 2000 平方英尺對應的價格 y0
+sqft_0 <- 20  # 2000 平方英尺
+y0 <- coef(quadratic_model)[1] + coef(quadratic_model)[2] * sqft_0^2
+
+# 計算斜率 m
+m <- 2 * coef(quadratic_model)[2] * sqft_0
+
+# 產生切線的 x 值範圍
+tangent_x <- seq(sqft_0 - 5, sqft_0 + 5, length.out=50)
+
+# 計算切線上的 y 值
+tangent_y <- m * (tangent_x - sqft_0) + y0
+
+# 加上切線
+lines(tangent_x, tangent_y, col="green", lwd=2, lty=2)
+
+# 在 2000 平方英尺處標記點
+points(sqft_0, y0, col="black", pch=19, cex=1.5)
+
+# 讓切線往右側延伸
+tangent_x <- seq(sqft_0, max(collegetown$sqft) + 20, length.out=200)  
+
+# 計算延長後的切線上的 y 值
+tangent_y <- m * (tangent_x - sqft_0) + y0
+
+# 繪製更長的切線
+lines(tangent_x, tangent_y, col="green", lwd=2, lty=2)
+
+(e)
+# 取得回歸係數
+alpha_2 <- coef(quadratic_model)["I(sqft^2)"]
+ 
+# 設定 2000 平方英尺（20 百平方英尺）
+sqft_value <- 20  
+ 
+# 計算價格對應的預測值
+price_2000 <- coef(quadratic_model)[1] + alpha_2 * sqft_value^2
+ 
+# 計算價格對面積的彈性
+elasticity <- (2 * alpha_2 * sqft_value) * (sqft_value / price_2000)
+ 
+# 顯示彈性結果
+print(paste("當房屋面積為 2000 平方英尺時，價格對面積的彈性為：", round(elasticity, 4)))
+
+(f)
+# 計算線性回歸模型的殘差
+linear_residuals <- residuals(linear_model)
+
+# 計算二次回歸模型的殘差
+quadratic_residuals <- residuals(quadratic_model)
+
+# 繪製線性回歸模型的殘差圖
+par(mfrow=c(1,2))  # 設定兩個並排的圖
+
+plot(collegetown$sqft, linear_residuals,
+     main="Linear Model Residuals",
+     xlab="House Size (hundreds of square feet)",
+     ylab="Residuals",
+     pch=16, col="blue")
+abline(h=0, col="red", lwd=2, lty=2)  # 水平線表示零殘差
+
+# 繪製二次回歸模型的殘差圖
+plot(collegetown$sqft, quadratic_residuals,
+     main="Quadratic Model Residuals",
+     xlab="House Size (hundreds of square feet)",
+     ylab="Residuals",
+     pch=16, col="green")
+abline(h=0, col="red", lwd=2, lty=2)  # 水平線表示零殘差
+
+(g)
+# 計算線性回歸模型的 SSE
+SSE_linear <- sum(residuals(linear_model)^2)
+
+# 計算二次回歸模型的 SSE
+SSE_quadratic <- sum(residuals(quadratic_model)^2)
+
+# 輸出結果
+print(paste("線性回歸模型的 SSE:", round(SSE_linear, 4)))
+print(paste("二次回歸模型的 SSE:", round(SSE_quadratic, 4)))
