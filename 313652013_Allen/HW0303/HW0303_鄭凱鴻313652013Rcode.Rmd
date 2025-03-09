@@ -71,9 +71,9 @@ cat("當房屋面積為 2000 平方英尺時，增加 100 平方英尺對價格�
 alpha0 <- coef(model_quad_pure)["(Intercept)"]
 alpha2 <- coef(model_quad_pure)["sqft2"]
 
-# 設定 x0（2000 平方英尺）
-x0 <- 20
-y0 <- alpha0 + alpha2 * x0^2  # 計算 y0（對應價格）
+# 計算 2000 平方英尺（20 hundred square feet）處的 y 值
+x0 <- 20 # 2000 平方英尺
+y0 <- alpha0 + alpha2 * x0^2  # 代入平方回歸方程式計算 y
 
 # 計算切線斜率
 m <- 2 * alpha2 * x0
@@ -83,65 +83,85 @@ tangent_line <- function(x) {
     m * (x - x0) + y0
 }
 
-# 繪製二次回歸曲線與切線
 ggplot(collegetown, aes(x = sqft, y = price)) +
-    geom_point(color = "blue", alpha = 0.6) +
-    geom_smooth(method = "lm", formula = y ~ poly(x, 2, raw=TRUE), color = "red", se = FALSE) +
-    stat_function(fun = tangent_line, color = "green", linetype = "dashed") +  # 添加切線
-    geom_vline(xintercept = x0, color = "black", linetype = "dotted") +  # 標示 x0 位置
-    geom_point(aes(x = x0, y = y0), color = "black", size = 3) +  # 添加切點
-    labs(title = "Quadratic Regression with Tangent Line at SQFT = 2000",
-         x = "House Size (hundreds of square feet)",
-         y = "Price (thousands of dollars)") +
-    theme_minimal()
+  geom_point(color = "blue", alpha = 0.6) +  # 散點圖
+  geom_smooth(method = "lm", formula = y ~ poly(x, 2, raw=TRUE), color = "red", se = FALSE) +  # 二次回歸曲線
+  stat_function(fun = tangent_line, color = "green", linetype = "dashed") +  # 切線
+  geom_vline(xintercept = x0, color = "black", linetype = "dotted") +  # 標記 x0 的位置
+  geom_point(x = x0, y = y0, color = "black", size = 3) +  # 切點（修正錯誤）
+  labs(title = "Quadratic Regression with Tangent Line at SQFT = 2000",
+       x = "House Size (hundreds of square feet)",
+       y = "Price (thousands of dollars)") +
+  theme_minimal()
+geom_point(aes(x = x0, y = y0), color = "black", size = 3) +  # 標記切點
 ```
 
 ## **(e) Elasticity of PRICE with Respect to SQFT at 2000 Square Feet**
 
 ```{r}
-# 計算價格預測值
+# 提取回歸係數
+alpha0 <- coef(model_quad_pure)["(Intercept)"]
+alpha2 <- coef(model_quad_pure)["sqft2"]
+
+# 設定 SQFT = 20（2000 平方英尺）
+sqft_value <- 20  
+
+# 計算邊際影響
+marginal_effect <- 2 * alpha2 * sqft_value
+
+# 計算 PRICE 預測值
 price_predicted <- alpha0 + alpha2 * sqft_value^2
 
 # 計算彈性
 elasticity <- (marginal_effect * sqft_value) / price_predicted
+
+# 顯示結果
 cat("當房屋面積為 2000 平方英尺時，PRICE 對 SQFT 的彈性為：", elasticity, "\n")
 ```
 
 ## **(f) Residual Analysis**
 
 ```{r}
-# 計算線性與二次回歸的殘差
-collegetown$resid_linear <- residuals(model)
-collegetown$resid_quad <- residuals(model_quad_pure)
+#  重新執行線性回歸（b 小題的模型）
+model1 <- lm(price ~ sqft, data = collegetown)
+
+#  確保 `model1` 存在
+print(model1)  # 確認回歸模型是否成功建立
+
+#  計算殘差
+collegetown$resid_linear <- residuals(model1)  # 線性回歸殘差
 
 # 繪製殘差圖
 
-# 線性回歸殘差圖
 ggplot(collegetown, aes(x = sqft, y = resid_linear)) +
-    geom_point(color = "blue", alpha = 0.6) +
-    geom_hline(yintercept = 0, color = "red", linetype = "dashed") +
-    labs(title = "Residuals vs. SQFT (Linear Model)",
-         x = "House Size (hundreds of square feet)",
-         y = "Residuals") +
-    theme_minimal()
+  geom_point(color = "blue", alpha = 0.6) +
+  geom_hline(yintercept = 0, color = "red", linetype = "dashed") +  # y=0 參考線
+  labs(title = "Residuals vs. SQFT (Linear Model)",
+       x = "House Size (hundreds of square feet)",
+       y = "Residuals") +
+  theme_minimal()
 
-# 二次回歸殘差圖
+# 計算二次回歸模型的殘差
+collegetown$resid_quad <- residuals(model_quad_pure)
 
+# 繪製二次回歸殘差圖
 ggplot(collegetown, aes(x = sqft, y = resid_quad)) +
-    geom_point(color = "blue", alpha = 0.6) +
-    geom_hline(yintercept = 0, color = "red", linetype = "dashed") +
-    labs(title = "Residuals vs. SQFT (Quadratic Model)",
-         x = "House Size (hundreds of square feet)",
-         y = "Residuals") +
-    theme_minimal()
+  geom_point(color = "blue", alpha = 0.6) +
+  geom_hline(yintercept = 0, color = "red", linetype = "dashed") +  # y=0 參考線
+  labs(title = "Residuals vs. SQFT (Quadratic Model)",
+       x = "House Size (hundreds of square feet)",
+       y = "Residuals") +
+  theme_minimal()
 ```
 
 ## **(g) Sum of Squared Residuals (SSE) Comparison**
 
 ```{r}
-# 計算 SSE（殘差平方和）
-SSE_linear <- sum(residuals(model)^2)
-SSE_quadratic <- sum(residuals(model_quad_pure)^2)
+# 計算 SSE (Sum of Squared Residuals)
+SSE_linear <- sum(residuals(model1)^2)       # 線性回歸
+SSE_quadratic <- sum(residuals(model_quad_pure)^2)  # 二次回歸
+
+# 輸出 SSE 結果
 cat("SSE for Linear Model:", SSE_linear, "\n")
 cat("SSE for Quadratic Model:", SSE_quadratic, "\n")
 ```
