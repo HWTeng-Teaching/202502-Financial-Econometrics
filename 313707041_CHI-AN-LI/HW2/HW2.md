@@ -12,3 +12,17 @@ Elasticity at 2000 sqft: 0.7565249452144
 根據殘差圖，殘差明顯在房屋大時較房屋小還要大，可能不滿足同質變異數假設  
 SSE for Linear Model: 5262846.94710885, SSE for Quadratic Model: 4207791.38876957  
 Quadratic Model的SSE較小，因為 Quadratic Model捕捉到更多房價的變異性，也就是房價更能夠以Quadratic Model解釋，代表Quadratic Model為 “better-fitting” model。
+# 2.25
+## (a)
+![image](https://github.com/user-attachments/assets/cc230d98-f5ba-46af-9c32-8c8067665864)
+Mean of foodaway: 49.27085  
+Median of foodaway: 32.555  
+25th Percentile: 12.04  
+75th Percentile: 67.5025  
+## (b)
+Mean foodaway (Advanced Degree): 73.1549416342412  
+Median foodaway (Advanced Degree): 48.15  
+Mean foodaway (College Degree only): 48.5971815718157  
+Median foodaway (College Degree only): 36.11  
+Mean foodaway (No College/Advanced Degree): 39.010174216027 
+Median foodaway (No College/Advanced Degree): 26.0
