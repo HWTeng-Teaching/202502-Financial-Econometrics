@@ -1,6 +1,7 @@
 library(POE5Rdata)
 data("collegetown")
-?collegetown
+summary(collegetown)
+
 #a
 plot(collegetown$sqft, collegetown$price,
 xlab="House Size(SQFT)",
