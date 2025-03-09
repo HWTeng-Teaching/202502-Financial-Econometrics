@@ -30,7 +30,7 @@ tangent_slope <- marginal_effect
 tangent_intercept <- predict(quad_model, newdata = data.frame(sqft = sqft_value))
 sqft_tangent <- seq(sqft_value - 5, sqft_value + 5, length.out = 10)
 price_tangent <- tangent_slope * (sqft_tangent - sqft_value) + tangent_intercept
-lines(sqft_tangent, price_tangent, col = "black", lty = 2, lwd = 2)
+lines(sqft_tangent, price_tangent, col = "yellow", lty = 2, lwd = 2)
 # (e) 
 predicted_price <- predict(quad_model, newdata = data.frame(sqft = sqft_value))
 elasticity <- (marginal_effect) * (sqft_value / predicted_price)
