@@ -67,7 +67,7 @@ plot(collegetown$sqft, residuals_quadratic,
      pch = 16, col = "green", cex = 0.5)
 
 
-#g
+# (g)
 SSE_linear <- sum(residuals_linear^2)
 SSE_quad <- sum(residuals_quadratic^2)
 
