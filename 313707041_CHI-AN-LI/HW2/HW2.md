@@ -9,6 +9,6 @@ Marginal Effect at 2000 sqft: 6.4480916518131
 Elasticity at 2000 sqft: 0.7565249452144
 ## (f) (g)
 ![image](https://github.com/user-attachments/assets/0d761be9-42f7-4e59-b23e-d920975366d5)
-根據殘差圖，殘差明顯在房屋大時較房屋小還要大，可能不滿足同質變異數假設
-SSE for Linear Model: 5262846.94710885, SSE for Quadratic Model: 4207791.38876957
+根據殘差圖，殘差明顯在房屋大時較房屋小還要大，可能不滿足同質變異數假設  
+SSE for Linear Model: 5262846.94710885, SSE for Quadratic Model: 4207791.38876957  
 Quadratic Model的SSE較小，因為 Quadratic Model捕捉到更多房價的變異性，也就是房價更能夠以Quadratic Model解釋，代表Quadratic Model為 “better-fitting” model。
