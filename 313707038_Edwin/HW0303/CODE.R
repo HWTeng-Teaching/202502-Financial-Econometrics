@@ -1,5 +1,6 @@
-##CH2 2.17
+#CH2 2.17
 #(a) 
+
 remotes::install_github("ccolonescu/POE5Rdata", force = TRUE)
 library(POE5Rdata)
 data("collegetown")
@@ -83,6 +84,7 @@ a <- ggplot(collegetown, aes(x = sqft, y = residuals_quadratic)) +
 print(a)
 
 #(g)
+
 linear_model <- lm(price ~ sqft, data = collegetown)
 quadratic_model <- lm(price ~ poly(sqft, 2, raw=TRUE), data = collegetown)
 residuals_linear <- resid(linear_model)
