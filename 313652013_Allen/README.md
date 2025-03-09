@@ -15,5 +15,7 @@ I studied Applied Mathematics at NYCU during my undergraduate years and am curre
 
 ## Smile
 
+![image](https://github.com/user-attachments/assets/0cda4576-3163-4686-a397-b12b34dff0d1)
+![image](https://github.com/user-attachments/assets/e18e596d-5e34-456a-9604-8bc7513e9a93)
 
 ```
