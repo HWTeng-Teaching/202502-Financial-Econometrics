@@ -1,5 +1,5 @@
-# 2.17
-(a) (b)
+## 2.17
+# (a) (b)
 plot(collegetown$sqft, collegetown$price,
      main = "Scatter Plot of House Price vs. House Size",
      xlab = "House Size (hundreds of square feet)",
@@ -9,5 +9,60 @@ plot(collegetown$sqft, collegetown$price,
 model <- lm(price ~ sqft, data = collegetown)
 coef(model)  # 只顯示 β₁ 和 β₂
 print(coef(model))
+# (c)
+quad_model <- lm(price ~ sqft + I(sqft^2), data = collegetown)
+summary(quad_model)
 
-(c)
+sqft_value <- 20  
+marginal_effect <- coef(quad_model)[2] + 2 * coef(quad_model)[3] * sqft_value
+print(paste("Marginal Effect at 2000 sqft:", marginal_effect))
+
+# (d) 
+plot(collegetown$sqft, collegetown$price,
+     main = "Quadratic Regression: House Price vs. Size",
+     xlab = "House Size (hundreds of square feet)",
+     ylab = "Price (thousands of dollars)",
+     pch = 19, col = "blue")
+sqft_range <- seq(min(collegetown$sqft), max(collegetown$sqft), length.out = 100)
+price_pred <- predict(quad_model, newdata = data.frame(sqft = sqft_range))
+lines(sqft_range, price_pred, col = "red", lwd = 2)
+tangent_slope <- marginal_effect
+tangent_intercept <- predict(quad_model, newdata = data.frame(sqft = sqft_value))
+sqft_tangent <- seq(sqft_value - 5, sqft_value + 5, length.out = 10)
+price_tangent <- tangent_slope * (sqft_tangent - sqft_value) + tangent_intercept
+lines(sqft_tangent, price_tangent, col = "black", lty = 2, lwd = 2)
+# (e) 
+predicted_price <- predict(quad_model, newdata = data.frame(sqft = sqft_value))
+elasticity <- (marginal_effect) * (sqft_value / predicted_price)
+print(paste("Elasticity at 2000 sqft:", elasticity))
+# (f) 
+linear_residuals <- resid(linear_model)
+quad_residuals <- resid(quad_model)
+par(mfrow = c(1, 2))  # 設定畫布為 1x2 佈局
+plot(collegetown$sqft, linear_residuals,
+     main = "Linear Model Residuals",
+     xlab = "House Size (hundreds of square feet)",
+     ylab = "Residuals",
+     pch = 19, col = "blue")
+abline(h = 0, col = "red", lwd = 2)
+plot(collegetown$sqft, quad_residuals,
+     main = "Quadratic Model Residuals",
+     xlab = "House Size (hundreds of square feet)",
+     ylab = "Residuals",
+     pch = 19, col = "blue")
+abline(h = 0, col = "red", lwd = 2)
+
+par(mfrow = c(1, 1))  
+
+# (g) 
+SSE_linear <- sum(linear_residuals^2)
+SSE_quad <- sum(quad_residuals^2)
+
+print(paste("SSE for Linear Model:", SSE_linear))
+print(paste("SSE for Quadratic Model:", SSE_quad))
+if (SSE_quad < SSE_linear) {
+  print("Quadratic Model has a lower SSE, indicating a better fit.")
+} else {
+  print("Linear Model has a lower SSE, indicating a better fit.")
+}
+
