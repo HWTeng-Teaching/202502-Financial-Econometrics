@@ -45,18 +45,22 @@ ggplot(collegetown, aes(x = sqft, y = price)) +
 ## **(c) Quadratic Regression Model and Marginal Effect Calculation**
 
 ```{r}
-# 創建平方項
+#  建立平方項
 collegetown$sqft2 <- collegetown$sqft^2
 
-# 執行二次回歸
+#  執行 **只有平方項** 的回歸
 model_quad_pure <- lm(price ~ sqft2, data = collegetown)
-summary(model_quad_pure)  # 顯示回歸結果
 
-# 計算邊際影響
+#  顯示回歸結果
+summary(model_quad_pure)
+
+#  計算邊際影響（微分）
 alpha2 <- coef(model_quad_pure)["sqft2"]
-sqft_value <- 20  # 2000 平方英尺（hundreds of square feet）
+
+sqft_value <- 20  # 2000 平方英尺（單位是 "hundreds of square feet"）
 marginal_effect <- 2 * alpha2 * sqft_value
 
+# 顯示邊際影響
 cat("當房屋面積為 2000 平方英尺時，增加 100 平方英尺對價格的影響為：", marginal_effect, "千美元\n")
 ```
 
