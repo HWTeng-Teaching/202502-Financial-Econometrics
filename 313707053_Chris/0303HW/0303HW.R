@@ -112,7 +112,7 @@ SSE2_round
 #In this case the quadratic model has the lower SSE.
 #The lower SSE means that the data values are closer to the fitted line for the quadratic model than for the linear model. 
 
-----------------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------
   
 #2.25(a)
 food <- POE5Rdata::cex5_small
