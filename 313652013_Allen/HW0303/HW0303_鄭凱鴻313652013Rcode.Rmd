@@ -1,1 +1,443 @@
-123
+---
+title: "HW0303 - CH2 Questions 17, 25, 28"
+author: "鄭凱鴻"
+date: "2025-03-09"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# **CH2 Question 17**
+
+## **(a) Scatter Plot of House Price vs. House Size**
+
+```{r}
+library(ggplot2)  # 載入 ggplot2 繪圖函式庫
+load("collegetown.rdata")  # 載入數據
+
+# 繪製房屋價格與房屋大小的散點圖
+ggplot(collegetown, aes(x = sqft, y = price)) +
+    geom_point(color = "blue", alpha = 0.6) +  # 添加散點，設置藍色，透明度 0.6
+    labs(title = "House Price vs House Size",
+         x = "House Size (hundreds of square feet)",
+         y = "Price (thousands of dollars)") +
+    theme_minimal()  # 設置簡潔主題
+```
+
+## **(b) Linear Regression Model and Fitted Line**
+
+```{r}
+# 執行線性回歸
+model <- lm(price ~ sqft, data = collegetown)
+summary(model)  # 顯示回歸結果
+
+# 繪製回歸線
+ggplot(collegetown, aes(x = sqft, y = price)) +
+    geom_point(color = "blue", alpha = 0.6) +  # 散點圖
+    geom_smooth(method = "lm", color = "red", se = FALSE) +  # 添加線性回歸線
+    labs(title = "Linear Regression: PRICE vs. SQFT",
+         x = "House Size (hundreds of square feet)",
+         y = "Price (thousands of dollars)") +
+    theme_minimal()
+```
+
+## **(c) Quadratic Regression Model and Marginal Effect Calculation**
+
+```{r}
+# 創建平方項
+collegetown$sqft2 <- collegetown$sqft^2
+
+# 執行二次回歸
+model_quad_pure <- lm(price ~ sqft2, data = collegetown)
+summary(model_quad_pure)  # 顯示回歸結果
+
+# 計算邊際影響
+alpha2 <- coef(model_quad_pure)["sqft2"]
+sqft_value <- 20  # 2000 平方英尺（hundreds of square feet）
+marginal_effect <- 2 * alpha2 * sqft_value
+
+cat("當房屋面積為 2000 平方英尺時，增加 100 平方英尺對價格的影響為：", marginal_effect, "千美元\n")
+```
+
+## **(d) Quadratic Regression Curve with Tangent Line at 2000 Square Feet**
+
+```{r}
+# 提取回歸係數
+alpha0 <- coef(model_quad_pure)["(Intercept)"]
+alpha2 <- coef(model_quad_pure)["sqft2"]
+
+# 設定 x0（2000 平方英尺）
+x0 <- 20
+y0 <- alpha0 + alpha2 * x0^2  # 計算 y0（對應價格）
+
+# 計算切線斜率
+m <- 2 * alpha2 * x0
+
+# 定義切線函數
+tangent_line <- function(x) {
+    m * (x - x0) + y0
+}
+
+# 繪製二次回歸曲線與切線
+ggplot(collegetown, aes(x = sqft, y = price)) +
+    geom_point(color = "blue", alpha = 0.6) +
+    geom_smooth(method = "lm", formula = y ~ poly(x, 2, raw=TRUE), color = "red", se = FALSE) +
+    stat_function(fun = tangent_line, color = "green", linetype = "dashed") +  # 添加切線
+    geom_vline(xintercept = x0, color = "black", linetype = "dotted") +  # 標示 x0 位置
+    geom_point(aes(x = x0, y = y0), color = "black", size = 3) +  # 添加切點
+    labs(title = "Quadratic Regression with Tangent Line at SQFT = 2000",
+         x = "House Size (hundreds of square feet)",
+         y = "Price (thousands of dollars)") +
+    theme_minimal()
+```
+
+## **(e) Elasticity of PRICE with Respect to SQFT at 2000 Square Feet**
+
+```{r}
+# 計算價格預測值
+price_predicted <- alpha0 + alpha2 * sqft_value^2
+
+# 計算彈性
+elasticity <- (marginal_effect * sqft_value) / price_predicted
+cat("當房屋面積為 2000 平方英尺時，PRICE 對 SQFT 的彈性為：", elasticity, "\n")
+```
+
+## **(f) Residual Analysis**
+
+```{r}
+# 計算線性與二次回歸的殘差
+collegetown$resid_linear <- residuals(model)
+collegetown$resid_quad <- residuals(model_quad_pure)
+
+# 繪製殘差圖
+
+# 線性回歸殘差圖
+ggplot(collegetown, aes(x = sqft, y = resid_linear)) +
+    geom_point(color = "blue", alpha = 0.6) +
+    geom_hline(yintercept = 0, color = "red", linetype = "dashed") +
+    labs(title = "Residuals vs. SQFT (Linear Model)",
+         x = "House Size (hundreds of square feet)",
+         y = "Residuals") +
+    theme_minimal()
+
+# 二次回歸殘差圖
+
+ggplot(collegetown, aes(x = sqft, y = resid_quad)) +
+    geom_point(color = "blue", alpha = 0.6) +
+    geom_hline(yintercept = 0, color = "red", linetype = "dashed") +
+    labs(title = "Residuals vs. SQFT (Quadratic Model)",
+         x = "House Size (hundreds of square feet)",
+         y = "Residuals") +
+    theme_minimal()
+```
+
+## **(g) Sum of Squared Residuals (SSE) Comparison**
+
+```{r}
+# 計算 SSE（殘差平方和）
+SSE_linear <- sum(residuals(model)^2)
+SSE_quadratic <- sum(residuals(model_quad_pure)^2)
+cat("SSE for Linear Model:", SSE_linear, "\n")
+cat("SSE for Quadratic Model:", SSE_quadratic, "\n")
+```
+
+# **CH2 Question 25**
+
+## **(a) Histogram and Summary Statistics of FOODAWAY**
+
+```{r}
+# 載入數據
+load("cex5_small.rdata")
+
+# 繪製 FOODAWAY 直方圖
+library(ggplot2)
+ggplot(cex5_small, aes(x = foodaway)) +
+    geom_histogram(binwidth = 5, fill = "blue", color = "black", alpha = 0.7) +
+    labs(title = "Histogram of FOODAWAY",
+         x = "Food Away from Home Expenditure (per person, per month)",
+         y = "Frequency") +
+    theme_minimal()
+
+# 計算摘要統計量
+foodaway_mean <- mean(cex5_small$foodaway, na.rm = TRUE)
+foodaway_median <- median(cex5_small$foodaway, na.rm = TRUE)
+foodaway_q1 <- quantile(cex5_small$foodaway, 0.25, na.rm = TRUE)
+foodaway_q3 <- quantile(cex5_small$foodaway, 0.75, na.rm = TRUE)
+
+# 顯示統計結果
+cat("Mean of FOODAWAY:", foodaway_mean, "\n")
+cat("Median of FOODAWAY:", foodaway_median, "\n")
+cat("25th Percentile of FOODAWAY:", foodaway_q1, "\n")
+cat("75th Percentile of FOODAWAY:", foodaway_q3, "\n")
+```
+## **(b) Mean and Median of FOODAWAY by Household Education Level**
+
+```{r}
+# 計算有高等學位者的 FOODAWAY 統計數據
+subset_advanced <- cex5_small[cex5_small$advanced == 1, ]
+mean_advanced <- mean(subset_advanced$foodaway, na.rm = TRUE)
+median_advanced <- median(subset_advanced$foodaway, na.rm = TRUE)
+
+# 計算有大學學位者的 FOODAWAY 統計數據
+subset_college <- cex5_small[cex5_small$college == 1, ]
+mean_college <- mean(subset_college$foodaway, na.rm = TRUE)
+median_college <- median(subset_college$foodaway, na.rm = TRUE)
+
+# 計算無大學或高等學位者的 FOODAWAY 統計數據
+subset_no_degree <- cex5_small[cex5_small$advanced == 0 & cex5_small$college == 0, ]
+mean_no_degree <- mean(subset_no_degree$foodaway, na.rm = TRUE)
+median_no_degree <- median(subset_no_degree$foodaway, na.rm = TRUE)
+
+# 輸出結果
+cat("\nHousehold with Advanced Degree:\n")
+cat("Mean FOODAWAY:", mean_advanced, "\n")
+cat("Median FOODAWAY:", median_advanced, "\n")
+
+cat("\nHousehold with College Degree:\n")
+cat("Mean FOODAWAY:", mean_college, "\n")
+cat("Median FOODAWAY:", median_college, "\n")
+
+cat("\nHousehold with No College or Advanced Degree:\n")
+cat("Mean FOODAWAY:", mean_no_degree, "\n")
+cat("Median FOODAWAY:", median_no_degree, "\n")
+```
+
+## **(c) Histogram and Summary Statistics of ln(FOODAWAY)**
+
+```{r}
+# 確保 foodaway 變數存在
+summary(cex5_small$foodaway)
+
+# 檢查 FOODAWAY 是否有 0 值或 NA
+cat("Number of FOODAWAY = 0:", sum(cex5_small$foodaway == 0, na.rm = TRUE), "\n")
+cat("Number of missing FOODAWAY values:", sum(is.na(cex5_small$foodaway)), "\n")
+
+# 只保留 foodaway > 0 的數據，避免 log(0) 出現 -Inf
+cex5_small <- cex5_small[cex5_small$foodaway > 0, ]
+
+# 計算 ln(FOODAWAY)
+cex5_small$log_foodaway <- log(cex5_small$foodaway)
+
+# 繪製 ln(FOODAWAY) 的直方圖
+hist(cex5_small$log_foodaway, 
+     main = "Histogram of ln(FOODAWAY)", 
+     xlab = "ln(FOODAWAY)", 
+     col = "lightblue", 
+     border = "black")
+
+# 計算 ln(FOODAWAY) 的統計數據
+mean_log_foodaway <- mean(cex5_small$log_foodaway, na.rm = TRUE)
+median_log_foodaway <- median(cex5_small$log_foodaway, na.rm = TRUE)
+percentile_25_log <- quantile(cex5_small$log_foodaway, 0.25, na.rm = TRUE)
+percentile_75_log <- quantile(cex5_small$log_foodaway, 0.75, na.rm = TRUE)
+
+# 顯示結果
+cat("\nSummary statistics for ln(FOODAWAY):\n")
+cat("Mean ln(FOODAWAY):", mean_log_foodaway, "\n")
+cat("Median ln(FOODAWAY):", median_log_foodaway, "\n")
+cat("25th Percentile ln(FOODAWAY):", percentile_25_log, "\n")
+cat("75th Percentile ln(FOODAWAY):", percentile_75_log, "\n")
+
+# 檢查 ln(FOODAWAY) 是否有 NA
+cat("Number of missing ln(FOODAWAY) values:", sum(is.na(cex5_small$log_foodaway)), "\n")
+```
+
+## **(d) Quadratic Regression Curve with Tangent Line at 2000 Square Feet**
+
+```{r}
+# 確保 foodaway > 0，因為要取 log
+cex5_small <- cex5_small[cex5_small$foodaway > 0, ]
+
+# 取 ln(FOODAWAY)
+cex5_small$log_foodaway <- log(cex5_small$foodaway)
+
+# 執行線性回歸 ln(FOODAWAY) ~ INCOME
+model <- lm(log_foodaway ~ income, data = cex5_small)
+
+# 顯示回歸結果
+summary(model)
+```
+
+## **(e) Scatter Plot of ln(FOODAWAY) vs. INCOME with Fitted Line**
+
+```{r}
+# 繪製散佈圖
+plot(cex5_small$income, cex5_small$log_foodaway, 
+     main = "Scatterplot of ln(FOODAWAY) vs. INCOME", 
+     xlab = "INCOME (in $100 units)", 
+     ylab = "ln(FOODAWAY)", 
+     col = "blue", 
+     pch = 16, 
+     cex = 0.7)
+
+# 加入回歸線
+abline(model, col = "red", lwd = 2)
+```
+
+## **(f) Residual Plot from ln(FOODAWAY) Regression**
+
+```{r}
+# 計算殘差（實際值 - 預測值）
+cex5_small$residuals <- residuals(model)
+
+# 繪製殘差對 INCOME 的散佈圖
+plot(cex5_small$income, cex5_small$residuals, 
+     main = "Residuals vs. INCOME", 
+     xlab = "INCOME (in $100 units)", 
+     ylab = "Residuals", 
+     col = "blue", 
+     pch = 16, 
+     cex = 0.7)
+
+# 加入 y=0 的參考線
+abline(h = 0, col = "red", lwd = 2)
+```
+
+# **CH2 Question 28**
+
+## **(a) Summary Statistics and Histograms of WAGE and EDUC**
+
+```{r}
+# 1. 載入數據
+load("cps5_small.RData")  # 確保 .RData 檔案名稱正確
+
+# 2. 確認數據框的名稱
+ls()  # 檢查載入的變數名稱
+str(cps5_small)  # 確認數據結構，檢查 WAGE 和 EDUC 是否存在
+
+# 3. 獲取 WAGE 和 EDUC 的摘要統計量
+summary(cps5_small$wage)
+summary(cps5_small$educ)
+
+# 4. 計算平均值、中位數、標準差
+mean_wage <- mean(cps5_small$wage, na.rm = TRUE)
+median_wage <- median(cps5_small$wage, na.rm = TRUE)
+sd_wage <- sd(cps5_small$wage, na.rm = TRUE)
+
+mean_educ <- mean(cps5_small$educ, na.rm = TRUE)
+median_educ <- median(cps5_small$educ, na.rm = TRUE)
+sd_educ <- sd(cps5_small$educ, na.rm = TRUE)
+
+# 5. 顯示統計結果
+cat("WAGE Summary:\n")
+cat("Mean:", mean_wage, " Median:", median_wage, " SD:", sd_wage, "\n\n")
+
+cat("EDUC Summary:\n")
+cat("Mean:", mean_educ, " Median:", median_educ, " SD:", sd_educ, "\n\n")
+
+# 6. 繪製 WAGE 的直方圖
+hist(cps5_small$wage, 
+     main = "Histogram of Hourly Wage Rates", 
+     xlab = "Hourly Wage", 
+     col = "lightblue", 
+     border = "black")
+
+# 7. 繪製 EDUC 的直方圖
+hist(cps5_small$educ, 
+     main = "Histogram of Years of Education", 
+     xlab = "Years of Education", 
+     col = "lightgreen", 
+     border = "black")
+```
+
+## **(b) Linear Regression of WAGE on EDUC**
+
+```{r}
+# 1. 執行線性回歸：WAGE ~ EDUC
+model_wage <- lm(wage ~ educ, data = cps5_small)
+
+# 2. 顯示回歸結果
+summary(model_wage)
+```
+
+## **(c) Residual Analysis of the Linear Regression Model**
+
+```{r}
+# 1. 計算殘差（實際值 - 預測值）
+cps5_small$residuals <- residuals(model_wage)
+
+# 2. 繪製殘差對 EDUC 的散佈圖
+plot(cps5_small$educ, cps5_small$residuals, 
+     main = "Residuals vs. EDUC", 
+     xlab = "Years of Education", 
+     ylab = "Residuals", 
+     col = "blue", 
+     pch = 16, 
+     cex = 0.7)
+
+# 3. 加入 y = 0 的基準線
+abline(h = 0, col = "red", lwd = 2)
+```
+
+## **(d) Separate Regressions by Gender and Race**
+
+```{r}
+# 1. 針對男性進行回歸
+model_male <- lm(wage ~ educ, data = cps5_small, subset = (female == 0))
+summary(model_male)
+
+# 2. 針對女性進行回歸
+model_female <- lm(wage ~ educ, data = cps5_small, subset = (female == 1))
+summary(model_female)
+
+# 3. 針對黑人 (black == 1) 進行回歸
+model_black <- lm(wage ~ educ, data = cps5_small, subset = (black == 1))
+summary(model_black)
+
+# 4. 針對白人 (black == 0) 進行回歸
+model_white <- lm(wage ~ educ, data = cps5_small, subset = (black == 0))
+summary(model_white)
+```
+
+## **(e) Quadratic Regression of WAGE on EDUC**
+
+```{r}
+# 1. 執行只有 EDUC² 的回歸
+model_quad_only <- lm(wage ~ I(educ^2), data = cps5_small)
+
+# 2. 顯示回歸結果
+summary(model_quad_only)
+
+# 3. 計算邊際效果
+coef_quad_only <- coef(model_quad_only)  # 提取係數
+alpha2_only <- coef_quad_only["I(educ^2)"]
+
+# 4. 邊際效果 (Marginal Effect) 計算
+# d(WAGE)/d(EDUC) = 2 * alpha2 * EDUC
+marginal_effect_12_only <- 2 * alpha2_only * 12
+marginal_effect_16_only <- 2 * alpha2_only * 16
+
+# 5. 顯示結果
+cat("Marginal Effect at EDUC = 12:", marginal_effect_12_only, "\n")
+cat("Marginal Effect at EDUC = 16:", marginal_effect_16_only, "\n")
+```
+## **(f) Comparison of Linear and Quadratic Regression Models**
+
+```{r}
+# 1. 生成擬合值 (Fitted Values)
+cps5_small$fitted_linear <- fitted(model_wage)        # 線性回歸擬合值
+cps5_small$fitted_quad_only <- fitted(model_quad_only)  # 只有 EDUC² 的回歸擬合值
+
+# 2. 繪製散點圖 (原始數據)
+plot(cps5_small$educ, cps5_small$wage, 
+     main = "Comparison of Linear vs. Quadratic (EDUC²) Fit",
+     xlab = "Years of Education", 
+     ylab = "Hourly Wage", 
+     col = "gray", 
+     pch = 16, 
+     cex = 0.7)
+
+# 3. 繪製線性回歸擬合線
+lines(sort(cps5_small$educ), sort(cps5_small$fitted_linear), 
+      col = "blue", lwd = 2, lty = 2)  # 藍色虛線
+
+# 4. 繪製只有 EDUC² 回歸擬合線
+lines(sort(cps5_small$educ), sort(cps5_small$fitted_quad_only), 
+      col = "red", lwd = 2)  # 紅色實線
+
+# 5. 添加圖例
+legend("topleft", legend = c("Linear Fit", "Quadratic (EDUC²) Fit"),
+       col = c("blue", "red"), lty = c(2,1), lwd = 2)
+```
+
