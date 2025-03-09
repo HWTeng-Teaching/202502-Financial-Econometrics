@@ -1,9 +1,11 @@
 # 2.17
-(a)
+(a) (b)
 plot(collegetown$sqft, collegetown$price,
      main = "Scatter Plot of House Price vs. House Size",
      xlab = "House Size (hundreds of square feet)",
      ylab = "Price (thousands of dollars)",
      pch = 19,    
      col = "blue" )
-(b)
+abline(lm(price ~ sqft, data = collegetown), col = "red")
+
+(c)
