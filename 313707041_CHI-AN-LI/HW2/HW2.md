@@ -44,6 +44,7 @@ Median of ln(foodaway): 3.68649879556308
 ## (f)
 ![image](https://github.com/user-attachments/assets/ce247092-1574-467d-bb3a-a2c3ca70f0f1)  
 看起來殘差為隨機，同質變異數假設為合理假設
+# 2.28
 
 
 
