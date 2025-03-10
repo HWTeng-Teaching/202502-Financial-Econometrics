@@ -48,6 +48,17 @@ abline(h = 0, col = "red", lwd = 2)
 
 
 
+male_model <- lm(wage ~ educ, data = subset(cps5_small, female == 0))
+female_model <- lm(wage ~ educ, data = subset(cps5_small, female == 1))
+
+black_model <- lm(wage ~ educ, data = subset(cps5_small, black == 1))
+white_model <- lm(wage ~ educ, data = subset(cps5_small, black == 0))
+
+summary(male_model)
+summary(female_model)
+summary(black_model)
+summary(white_model)
+
 
 
 # 產生 EDUC² 變數
