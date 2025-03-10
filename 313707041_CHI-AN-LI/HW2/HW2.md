@@ -57,6 +57,20 @@ Median of ln(foodaway): 3.68649879556308
 ![image](https://github.com/user-attachments/assets/572083fb-bc04-487f-b9d9-266f25255900)  
 可以看出當教育年限增加，薪資的變異程度會變大。若SR1~SR5的假設成立，殘差圖不應該呈現特定的模式，應該呈現隨機的狀態。
 # (d)
+![image](https://github.com/user-attachments/assets/9713ed95-4479-488f-875b-947fbe8068b0)  
+![image](https://github.com/user-attachments/assets/c3d9e22d-b176-4220-80c6-53c5658f0cec)
+![image](https://github.com/user-attachments/assets/56c997db-5e0a-48b0-86f1-0e0193c725a3)
+![image](https://github.com/user-attachments/assets/a5b05a1a-2769-44fc-b079-ed1d2c545286)  
+女性增加一年的教育年限，相對其他類別來說對於每小時平均薪資影響最大。
+
+# (e)
+![image](https://github.com/user-attachments/assets/b3965171-84a1-4506-9269-a7bb80a98382)  
+educ的係數不顯著，educ^2則在統計上顯著，可以推測薪資與教育的關係為非線性，且薪資的成長是遞增的。  
+Marginal effect at 12 years of education: 2.07469785028062  
+Marginal effect at 16 years of education: 2.90943443835772
+
+
+
 
 
 
