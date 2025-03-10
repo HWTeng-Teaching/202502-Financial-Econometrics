@@ -113,7 +113,7 @@ plot(collegetown$sqft, linear_residuals,
      main="Linear Model Residuals",
      xlab="House Size (hundreds of square feet)",
      ylab="Residuals",
-     pch=16, col="blue")
+     pch=19, col="green")
 abline(h=0, col="red", lwd=2, lty=2)  # 水平線表示零殘差
 
 # 繪製二次回歸模型的殘差圖
@@ -121,7 +121,7 @@ plot(collegetown$sqft, quadratic_residuals,
      main="Quadratic Model Residuals",
      xlab="House Size (hundreds of square feet)",
      ylab="Residuals",
-     pch=16, col="green")
+     pch=19, col="blue")
 abline(h=0, col="red", lwd=2, lty=2)  # 水平線表示零殘差
 
 (g)
