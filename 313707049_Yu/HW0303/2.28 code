@@ -79,7 +79,7 @@ model_quad <- lm(wage ~ educ + I(educ^2), data = cps5_small)
 plot(cps5_small$educ, cps5_small$wage,
      main="WAGE vs EDUC with Linear and Quadratic Fits",
      xlab="Years of Education", ylab="Hourly Wage",
-     col="gray", pch=19, cex=0.7)
+     col="black", pch=19, cex=0.7)
 
 # 線性回歸
 abline(model_linear, col="red", lwd=2, lty=2)
