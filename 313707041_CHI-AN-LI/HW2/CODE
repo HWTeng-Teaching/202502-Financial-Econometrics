@@ -163,5 +163,51 @@ plot(cps5_small$educ, residuals_linear,
      ylab = "Residuals", 
      pch = 19, col = "blue")
 abline(h = 0, col = "red", lwd = 2)
+#(d)
+# 針對男性 (female = 0) 進行回歸
+male_model <- lm(wage ~ educ, data = cps5_small[cps5_small$female == 0,])
+summary(male_model)
+
+# 針對女性 (female = 1) 進行回歸
+female_model <- lm(wage ~ educ, data = cps5_small[cps5_small$female == 1,])
+summary(female_model)
+
+# 針對白人 (black = 0) 進行回歸
+white_model <- lm(wage ~ educ, data = cps5_small[cps5_small$black == 0,])
+summary(white_model)
+
+# 針對黑人 (black = 1) 進行回歸
+black_model <- lm(wage ~ educ, data = cps5_small[cps5_small$black == 1,])
+summary(black_model)
+#(e)
+# 執行二次回歸
+quad_model <- lm(wage ~ educ + I(educ^2), data = cps5_small)
+summary(quad_model)
+
+# 計算邊際影響 (Marginal Effect)
+educ_value_12 <- 12  # 12 年教育
+educ_value_16 <- 16  # 16 年教育
+marginal_effect_12 <- coef(quad_model)[2] + 2 * coef(quad_model)[3] * educ_value_12
+marginal_effect_16 <- coef(quad_model)[2] + 2 * coef(quad_model)[3] * educ_value_16
+
+# 輸出結果
+print(paste("Marginal effect at 12 years of education:", marginal_effect_12))
+print(paste("Marginal effect at 16 years of education:", marginal_effect_16))
+#(f)
+# 繪製散佈圖
+plot(cps5_small$educ, cps5_small$wage, 
+     main = "WAGE vs. EDUC with Linear and Quadratic Fit",
+     xlab = "Years of Education", 
+     ylab = "Hourly Wage",
+     pch = 19, col = "blue")
+
+# 加上線性回歸線
+abline(linear_model, col = "red", lwd = 2)
+
+# 繪製二次回歸曲線
+educ_range <- seq(min(cps5_small$educ), max(cps5_small$educ), length.out = 100)
+wage_pred <- predict(quad_model, newdata = data.frame(educ = educ_range))
+lines(educ_range, wage_pred, col = "green", lwd = 2)
+
 
 
