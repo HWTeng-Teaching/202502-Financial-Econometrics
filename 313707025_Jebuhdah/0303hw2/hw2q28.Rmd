@@ -1,0 +1,86 @@
+---
+title: "hw2q28"
+author: "313707025 jebuhdah"
+date: "2025-03-10"
+output: 
+  pdf_document:
+    latex_engine: xelatex
+---
+```{r load_library, echo=FALSE, message=FALSE, warning=FALSE }
+# Load libraries
+library(ggplot2)
+library(dplyr)
+
+# Load dataset
+data <- read.csv("cps5_small.csv")
+```
+
+
+```{r qa, echo=FALSE, message=FALSE, warning=FALSE }
+# a: Summary statistics and histograms for WAGE and EDUC
+summary(data$wage)
+summary(data$educ)
+
+hist(data$wage, main="Histogram of WAGE", xlab="WAGE", breaks=30)
+hist(data$educ, main="Histogram of EDUC", xlab="EDUC", breaks=30)
+```
+a: there is a left skew for wage and right skew for educ. there is a decline before 15 years and after 15 years, assuming thats after high school and uni which individuals seek jobs?
+
+```{r qb, echo=FALSE, message=FALSE, warning=FALSE }
+# b: linearregression for wage = b1 + b2EDUC + e
+linear_model <- lm(wage ~ educ, data=data)
+summary(linear_model)
+```
+b: the beta is 2.40, so every increase in education year increase income by 2.40.
+
+```{r qc, echo=FALSE, message=FALSE, warning=FALSE }
+# c: get least squares residuals and plot against EDUC
+residuals <- residuals(linear_model)
+plot(data$educ, residuals, main="Residuals vs EDUC", xlab="EDUC", ylab="Residuals")
+abline(h=0, col="red")
+```
+c: it seems like there is a pattern and it doesnt seem random, thus violating homoskedasticity.
+
+```{r qd, echo=FALSE, message=FALSE, warning=FALSE }
+# d: separate regressions for males, females, blacks, and whites
+male_data <- filter(data, female == 0)
+female_data <- filter(data, female == 1)
+black_data <- filter(data, black == 1)
+white_data <- filter(data, black == 0)
+
+male_model <- lm(wage ~ educ, data=male_data)
+female_model <- lm(wage ~ educ, data=female_data)
+black_model <- lm(wage ~ educ, data=black_data)
+white_model <- lm(wage ~ educ, data=white_data)
+
+summary(male_model)
+summary(female_model)
+summary(black_model)
+summary(white_model)
+```
+d: analyzing on beta educ, it seems like the male female comparasion only differents by minor margin while showing that females has higher growth rates with levels of educaution, while female have lower starting wage than males. but in terms of white black comparasion, whites have much higher increase in wage when education level increases.
+
+```{r qe, echo=FALSE, message=FALSE, warning=FALSE }
+# e: quadratic regression for WAGE = a1 + a2EDUC^2 + e
+data$educ_squared <- data$educ^2
+quadratic_model <- lm(wage ~ educ_squared, data=data)
+summary(quadratic_model)
+```
+e: marginal effect = ∂wage/∂educ = 2(a2)educ = 2(0.09)educ
+which we have 12yr=2.16, and 16yr=2.88
+marginal effect of the linear model would be ∂wage/∂educ = a2 = 2.40.
+so in comparasion, it tells us that quac model have smaller me 12 years of educ, and larger me for 16 years of educ than linear model.
+
+```{r qf, echo=FALSE, message=FALSE, warning=FALSE }
+# f: plot fitted linear model & quadratic model
+data$fitted_linear <- fitted(linear_model)
+data$fitted_quadratic <- fitted(quadratic_model)
+
+ggplot(data, aes(x=educ)) +
+  geom_point(aes(y=wage), alpha=0.5) +
+  geom_line(aes(y=fitted_linear), color="blue", size=1) +
+  geom_line(aes(y=fitted_quadratic), color="red", size=1) +
+  labs(title="Fitted Linear and Quadratic Models", x="EDUC", y="WAGE") +
+  theme_minimal()
+```
+f: it seems like quadratic model would fit better for the data provided.
