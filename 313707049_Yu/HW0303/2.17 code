@@ -1,1 +1,51 @@
+(a)
+# 安裝並載入 POE5Rdata 資料庫
+if (!requireNamespace("remotes", quietly = TRUE)) install.packages("remotes")
+remotes::install_github("ccolonescu/POE5Rdata", force = TRUE)
+library(POE5Rdata)
+
+# 載入 cex5_small 資料集
+data("cex5_small")
+collegetown <- na.omit(collegetown)
+
+(b)
+# 假設我們想用 x 為 sqft，y 為 price 畫散佈圖（根據你的資料調整變數名稱）
+plot(collegetown$sqft, collegetown$price,
+     xlab="House Size (hundreds of square feet)",
+     ylab="House Price (in thousands of dollars)",
+     main = "Scatter Plot of house price vs house size",
+     pch = 19,              # 點的形狀
+     col = "blue")          # 點的顏色
+
+collegetown <- na.omit(collegetown)
+# 執行線性回歸
+linear_model <- lm(price ~ sqft, data = collegetown)
+
+# 檢視回歸結果摘要
+summary(linear_model)
+# 畫散佈圖
+plot(collegetown$sqft, collegetown$price,
+     xlab = "house size",                 # X 軸標籤
+     ylab = "house price",            # Y 軸標籤
+     main = "house size vs house price",  # 圖的標題
+     pch = 19,                        # 實心圓點
+     col = "blue")                    # 點的顏色
+
+# 加上回歸線
+abline(linear_model, col = "red", lwd = 2)  # 回歸線顏色和線條粗細
+(c)
+# 擬合僅有平方項的回歸模型
+quadratic_model <- lm(price ~ I(sqft^2), data = collegetown)
+summary(quadratic_model)
+alpha_2 <- coef(quadratic_model)["I(sqft^2)"]
+
+# 設定房屋面積為 2000 平方英尺（20 百平方英尺）
+sqft_value <- 20  
+
+# 計算邊際影響
+marginal_effect <- 2 * alpha_2 * sqft_value
+
+# 顯示結果
+print(paste("當房屋面積為 2000 平方英尺時，額外 100 平方英尺對房價的影響為：", round(marginal_effect, 4)))
+(d)
 
