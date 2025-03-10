@@ -1,1 +1,94 @@
 
+(a)
+if (!requireNamespace("remotes", quietly = TRUE)) install.packages("remotes")
+remotes::install_github("ccolonescu/POE5Rdata", force = TRUE)
+library(POE5Rdata)
+
+data("cps5_small")
+
+# 取得 WAGE 和 EDUC 的摘要統計
+summary(cps5_small$wage)
+summary(cps5_small$educ)
+
+# 繪製 WAGE 直方圖
+hist(cps5_small$wage, 
+     main="Histogram of WAGE", 
+     xlab="Hourly Wage", 
+     col="blue", 
+     border="black")
+
+# 繪製 EDUC 直方圖
+hist(cps5_small$educ, 
+     main="Histogram of EDUC", 
+     xlab="Years of Education", 
+     col="green", 
+     border="black")
+
+(b)
+# 執行線性回歸
+model <- lm(wage ~ educ, data = cps5_small)
+# 顯示回歸結果
+summary(model)
+
+(c)
+# 執行線性回歸
+model <- lm(wage ~ educ, data = cps5_small) 
+# 計算殘差 
+residuals <- resid(model) 
+# 繪製殘差與 EDUC 之間的散點圖 
+plot(cps5_small$educ, residuals, 
+main="Residuals vs. EDUC", 
+xlab="Years of Education", 
+ylab="Residuals", col="blue", pch=16) 
+abline(h=0, col="red", lwd=2) 
+
+(d)
+model_male <- lm(wage ~ educ, data = cps5_small, subset = (female == 0)) 
+model_female <- lm(wage ~ educ, data = cps5_small, subset = (female == 1)) 
+model_black <- lm(wage ~ educ, data = cps5_small, subset = (black == 1)) 
+model_white <- lm(wage ~ educ, data = cps5_small, subset = (black == 0)) 
+
+summary(model_male) 
+summary(model_female) 
+summary(model_black) 
+summary(model_white)
+
+(e)
+
+model_full_quad <- lm(wage ~ I(educ^2), data = cps5_small)
+
+summary(model_full_quad)
+
+# 提取二次回歸模型的 educ^2 係數
+alpha2 <- coef(model_full_quad)["I(educ^2)"]
+
+# 計算邊際影響（Marginal Effect）在 12 年與 16 年教育時
+ME_12 <- 2 * alpha2 * 12
+ME_16 <- 2 * alpha2 * 16
+
+# 顯示結果
+cat("Marginal Effect at 12 years of education:", ME_12, "\n")
+cat("Marginal Effect at 16 years of education:", ME_16, "\n")
+
+(f)
+# 執行線性回歸與二次回歸
+model_linear <- lm(wage ~ educ, data = cps5_small)
+model_quad <- lm(wage ~ educ + I(educ^2), data = cps5_small)
+
+# 散點圖
+plot(cps5_small$educ, cps5_small$wage,
+     main="WAGE vs EDUC with Linear and Quadratic Fits",
+     xlab="Years of Education", ylab="Hourly Wage",
+     col="gray", pch=19, cex=0.7)
+
+# 線性回歸
+abline(model_linear, col="red", lwd=2, lty=2)
+
+# 二次回歸曲線
+educ_range <- seq(min(cps5_small$educ), max(cps5_small$educ), length.out=100)
+quad_pred <- predict(model_quad, newdata=data.frame(educ=educ_range))
+lines(educ_range, quad_pred, col="red", lwd=2)  
+
+# 圖例
+legend("topleft", legend=c("Linear Fit", "Quadratic Fit", "Actual Data"),
+       col=c("blue", "red", "gray"), lty=c(2, 1, NA), pch=c(NA, NA, 16), lwd=2)
