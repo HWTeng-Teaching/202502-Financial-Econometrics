@@ -71,7 +71,13 @@ Median of ln(foodaway): 3.68649879556308
 ![image](https://github.com/user-attachments/assets/b3965171-84a1-4506-9269-a7bb80a98382)  
 educ的係數不顯著，educ^2則在統計上顯著，可以推測薪資與教育的關係為非線性，且薪資的成長是遞增的。  
 Marginal effect at 12 years of education: 2.07469785028062  
-Marginal effect at 16 years of education: 2.90943443835772
+Marginal effect at 16 years of education: 2.90943443835772  
+與線性回歸比較，二次方模型可以看出薪資對於平均工資的影響隨著教育年限增加是遞增的，而一般的簡單回歸僅能看出固定的邊際影響。  
+# (f)
+![image](https://github.com/user-attachments/assets/f17b1c41-2cdd-46ad-b476-f65197b65df6)  
+根據結果，quadratic model能更好擬合數據
+
+
 
 
 
