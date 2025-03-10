@@ -1,0 +1,80 @@
+---
+title: "hw2q25"
+author: "313707025 jebuhdah"
+date: "2025-03-10"
+output: 
+  pdf_document:
+    latex_engine: xelatex
+---
+```{r load_library, echo=FALSE, message=FALSE, warning=FALSE }
+library(ggplot2)
+library(dplyr)
+
+# Load data
+df <- read.csv("cex5_small.csv")
+```
+'######################################################################################################
+```{r qa, echo=FALSE, message=FALSE, warning=FALSE }
+# a. histogram and summary statistics
+ggplot(df, aes(x = foodaway)) +
+  geom_histogram(binwidth = 10, fill = "blue", alpha = 0.5, color = "black") +
+  labs(title = "Histogram of FOODAWAY", x = "Foodaway ($)", y = "Count")
+
+summary(df$foodaway)
+quantile(df$foodaway, probs = c(0.25, 0.75))
+
+```
+```{r qb, echo=FALSE, message=FALSE, warning=FALSE }
+# b. mean and median by education level
+df %>%
+  mutate(no_degree = as.integer(college == FALSE & advanced == FALSE)) %>%  # new column
+  group_by(advanced = as.integer(advanced), college = as.integer(college), no_degree) %>%
+  summarise(
+    mean_foodaway = mean(foodaway, na.rm = TRUE),
+    median_foodaway = median(foodaway, na.rm = TRUE),
+    .groups = "drop"
+  )
+```
+
+
+```{r qc, echo=FALSE, message=FALSE, warning=FALSE }
+# c. histogram, ln(FOODAWAY) and summary statistics
+df <- df %>% filter(foodaway > 0)  # no zeros for taking log
+df <- df %>% mutate(log_foodaway = log(foodaway))
+
+ggplot(df, aes(x = log_foodaway)) +
+  geom_histogram(binwidth = 0.5, fill = "red", alpha = 0.5, color = "black") +
+  labs(title = "Histogram of ln(FOODAWAY)", x = "ln(FOODAWAY)", y = "Count")
+
+summary(df$log_foodaway)
+```
+c: ln(FOODAWAY) is only defined for positive values. If FOODAWAY = 0, taking logarithm log(0) is an undefined value. so all observations that FOODAWAY = 0 must be removed, making the dataset smaller.
+
+```{r qd, echo=FALSE, message=FALSE, warning=FALSE }
+# d. Linear regression of ln(FOODAWAY) on INCOME
+model <- lm(log_foodaway ~ income, data = df)
+summary(model)
+```
+the beta is 0.69% and we can interpret it as the increase in income for 100 will change foodway by 0.69%
+
+```{r qe, echo=FALSE, message=FALSE, warning=FALSE }
+# e. ln(FOODAWAY) vs INCOME + regression line
+ggplot(df, aes(x = income, y = log_foodaway)) +
+  geom_point(alpha = 0.5) +
+  geom_smooth(method = "lm", color = "blue") +
+  labs(title = "Scatter plot of ln(FOODAWAY) vs INCOME",
+       x = "Income ($100 units)",
+       y = "ln(FOODAWAY)")
+```
+
+```{r qf, echo=FALSE, message=FALSE, warning=FALSE }
+# f. plot
+df$residuals <- model$residuals
+
+ggplot(df, aes(x = income, y = residuals)) +
+  geom_point(alpha = 0.5) +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "red") +
+  labs(title = "residuals vs income", x = "Income ($100 units)", y = "Residuals")
+```
+
+the plot appears randomly distributed along 0 at glance.

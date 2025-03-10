@@ -1,0 +1,116 @@
+---
+title: "hw2 q17"
+author: "313707025 jebuhdah"
+date: "2025-03-09"
+output: 
+  pdf_document:
+    latex_engine: xelatex
+
+---
+```{r load_library, echo=FALSE, message=FALSE, warning=FALSE }
+library(ggplot2)
+library(readr)
+
+# load data
+data <- read_csv("collegetown.csv")
+```
+'######################################################################################################
+qn17:
+a:
+```{r qa, echo=FALSE, message=FALSE, warning=FALSE }
+# plot PRICE vs SQFT
+ggplot(data, aes(x = sqft, y = price)) +
+  geom_point(color = "blue", alpha = 0.6) +
+  labs(title = "Scatter Plot of House Price vs House Size",
+       x = "House Size (SQFT)",
+       y = "House Price (PRICE)") +
+  theme_minimal()
+```
+the trend is upward... implying larger houses tends to have higher prices, not a surprise
+
+```{r qb, echo=FALSE, message=FALSE, warning=FALSE }
+# fit the linear regression model
+linear_model <- lm(price ~ sqft, data = data)
+
+# the model
+summary(linear_model)
+##########################################
+ggplot(data, aes(x = sqft, y = price)) +
+  geom_point(color = "blue", alpha = 0.6) +
+  geom_smooth(method = "lm", color = "red", se = FALSE) +
+  labs(title = "Linear Regression Line",
+       x = "House Size (SQFT)",
+       y = "House Price (PRICE)") +
+  theme_minimal()
+
+# Fit quadratic regression model
+quadratic_model <- lm(price ~ I(sqft^2), data = data)
+```
+b:as per beta by above summary, the linear regression model price=B1+B2sqft+e: price=-115.42+13.40sqft. which implies that a house the size of 0sqft... will start off at -115423.6 dollars, and when everything is constant, 100 sqft increase in house size will cause the price to raise by 13402 dollars.
+
+```{r qc, echo=FALSE, message=FALSE, warning=FALSE }
+# the model
+summary(quadratic_model)
+
+# plot the quadratic curve
+ggplot(data, aes(x = sqft, y = price)) +
+  geom_point(color = "blue", alpha = 0.6) +
+  geom_smooth(method = "lm", formula = y ~ I(x^2), color = "red", se = FALSE) +
+  labs(title = "Fitted Quadratic Regression Curve",
+       x = "House Size (SQFT)",
+       y = "House Price (PRICE)") +
+  theme_minimal()
+```
+c:for price=a1+a2(sqft^2)+e, price=93.57+0.185(sqft^2)
+the marginal effect for 20k sqft is 2(a2)sqft = 2(0.185)20^2 = 7.4 (about)
+
+```{r qd, echo=FALSE, message=FALSE, warning=FALSE }
+# plot the quadratic curve
+ggplot(data, aes(x = sqft, y = price)) +
+  geom_point(color = "blue", alpha = 0.6) +
+  geom_smooth(method = "lm", formula = y ~ I(x^2), color = "red", se = FALSE) +
+  labs(title = "Fitted Quadratic Regression Curve",
+       x = "House Size (SQFT)",
+       y = "House Price (PRICE)") +
+  theme_minimal()
+```
+d: as shown above
+e: elasticity = (∂price/∂sqft)(sqft/price) = 2(0.185)(20)(20)/(93.57+0.185(20^2))=0.8832
+
+```{r qf, echo=FALSE, message=FALSE, warning=FALSE }
+# residuals for linear model
+data$linear_residuals <- residuals(linear_model)
+
+# residuals for quadratic model
+data$quadratic_residuals <- residuals(quadratic_model)
+
+# plot residuals for linear 
+ggplot(data, aes(x = sqft, y = linear_residuals)) +
+  geom_point(color = "blue", alpha = 0.6) +
+  labs(title = "Residuals from Linear Model",
+       x = "House Size (SQFT)",
+       y = "Residuals") +
+  theme_minimal()
+
+# plot residuals for quadratic 
+ggplot(data, aes(x = sqft, y = quadratic_residuals)) +
+  geom_point(color = "red", alpha = 0.6) +
+  labs(title = "Residuals from Quadratic Model",
+       x = "House Size (SQFT)",
+       y = "Residuals") +
+  theme_minimal()
+```
+f:it seems like in the plots the residual variation increases with the x axis for both the models which likely violates homoskedasticity.
+
+```{r qg, echo=FALSE, message=FALSE, warning=FALSE }
+# SSE linear model
+linear_SSE <- sum(residuals(linear_model)^2)
+
+# SSE quadratic model
+quadratic_SSE <- sum(residuals(quadratic_model)^2)
+
+# show me
+cat("Linear Model SSE:", linear_SSE, "\n")
+cat("Quadratic Model SSE:", quadratic_SSE, "\n")
+```
+g:the modle from c has a lower sse, and this implies the data is closer to the fitted line of the quadratic model in this case.
