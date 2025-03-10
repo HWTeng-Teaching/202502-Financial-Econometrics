@@ -85,19 +85,19 @@ list(SSE_Linear = sse_linear, SSE_Quadratic = sse_quadratic)
 data(cex5_small)
 
 # (a) 繪製 FOODAWAY 的直方圖並計算摘要統計
-ggplot(cex5, aes(x = foodaway)) +
+ggplot(cex5_small, aes(x = foodaway)) +
   geom_histogram(binwidth = 5, fill = "blue", alpha = 0.5) +
   labs(title = "Histogram of FOODAWAY",
        x = "FOODAWAY (dollars)",
        y = "Income")
 
-summary(cex5$foodaway)
-quantile(cex5$foodaway, probs = c(0.25, 0.75))
+summary(cex5_small$foodaway)
+quantile(cex5_small$foodaway, probs = c(0.25, 0.75))
 
 # (b) 計算不同學歷家庭的 FOODAWAY 平均值與中位數
-advanced_degree <- cex5$foodaway[cex5$advanced == 1]
-college_degree <- cex5$foodaway[cex5$college == 1]
-no_degree <- cex5$foodaway[cex5$advanced == 0 & cex5$college == 0]
+advanced_degree <- cex5_small$foodaway[cex5_small$advanced == 1]
+college_degree <- cex5_small$foodaway[cex5_small$college == 1]
+no_degree <- cex5_small$foodaway[cex5_small$advanced == 0 & cex5_small$college == 0]
 
 mean(advanced_degree, na.rm = TRUE)
 median(advanced_degree, na.rm = TRUE)
@@ -107,23 +107,23 @@ mean(no_degree, na.rm = TRUE)
 median(no_degree, na.rm = TRUE)
 
 # (c) 繪製 ln(FOODAWAY) 的直方圖
-cex5 <- cex5[cex5$foodaway > 0, ]  # 只保留 foodaway > 0 的觀察值
-cex5$ln_foodaway <- log(cex5$foodaway)
+cex5_small <- cex5_small[cex5_small$foodaway > 0, ]  # 只保留 foodaway > 0 的觀察值
+cex5_small$ln_foodaway <- log(cex5_small$foodaway)
 
-ggplot(cex5, aes(x = ln_foodaway)) +
+ggplot(cex5_small, aes(x = ln_foodaway)) +
   geom_histogram(binwidth = 0.5, fill = "red", alpha = 0.5) +
   labs(title = "Histogram of ln(FOODAWAY)",
        x = "ln(FOODAWAY)",
        y = "Income")
 
-summary(cex5$ln_foodaway)
+summary(cex5_small$ln_foodaway)
 
 # (d) 執行線性回歸 ln(FOODAWAY) ~ INCOME
-reg_model <- lm(ln_foodaway ~ income, data = cex5)
+reg_model <- lm(ln_foodaway ~ income, data = cex5_small)
 summary(reg_model)
 
 # (e) 繪製 ln(FOODAWAY) 對 INCOME 的散點圖，並加入回歸線
-ggplot(cex5, aes(x = income, y = ln_foodaway)) +
+ggplot(cex5_small, aes(x = income, y = ln_foodaway)) +
   geom_point() +
   geom_smooth(method = "lm", se = FALSE, col = "blue") +
   labs(title = "Regression of ln(FOODAWAY) on INCOME",
@@ -131,7 +131,7 @@ ggplot(cex5, aes(x = income, y = ln_foodaway)) +
        y = "ln(FOODAWAY)")
 
 # (f) 計算殘差並繪製殘差圖
-residuals_data <- data.frame(income = cex5$income, Residuals = residuals(reg_model))
+residuals_data <- data.frame(income = cex5_small$income, Residuals = residuals(reg_model))
 ggplot(residuals_data, aes(x = income, y = Residuals)) +
   geom_point() +
   geom_hline(yintercept = 0, linetype = "dashed", color = "red") +
