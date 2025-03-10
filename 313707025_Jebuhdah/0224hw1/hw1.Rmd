@@ -1,0 +1,129 @@
+---
+title: "hw1 qn16"
+date: "2025-03-01"
+output: 
+  pdf_document:
+    latex_engine: xelatex
+
+---
+'######################################################################################################
+qn16:
+```{r load_library, echo=FALSE}
+#get libraries & data loaded
+suppressPackageStartupMessages({
+  library(dplyr)
+  library(ggplot2)
+  library(readr)
+})
+data <- read_csv("capm5.csv", show_col_types = FALSE)
+```
+a. Explain why the econometric model above is a simple regression model like those discussed in this chapter.
+
+the model : rj −rf = αj + βj(rm −rf) + ej
+This is a simple regression model because it has a single independent variable, which is (rm −rf).
+and also a dependent variable, which is rj −rf. The coefficient βj represents the slope, indicating the stock’s sensitivity to the market. The intercept is αj captures deviations from CAPM. There is also the error term ej to account for the variability not explained in the dependent variable.
+
+
+'######################################################################################################
+b.Which firm appears most aggressive? Which firm appears most defensive?
+```{r qnb, echo=FALSE}
+# calculate excess returns for each firm and the market
+data <- data %>%
+  mutate(ge_excess = ge - riskfree,
+         ibm_excess = ibm - riskfree,
+         ford_excess = ford - riskfree,
+         msft_excess = msft - riskfree,
+         dis_excess = dis - riskfree,
+         xom_excess = xom - riskfree,
+         mkt_excess = mkt - riskfree)
+# fn to estimate CAPM model
+estimate_capm <- function(excess_return, mkt_excess) {
+  model <- lm(excess_return ~ mkt_excess)
+  return(model)
+}
+# estimate CAPM
+ge_model <- estimate_capm(data$ge_excess, data$mkt_excess)
+ibm_model <- estimate_capm(data$ibm_excess, data$mkt_excess)
+ford_model <- estimate_capm(data$ford_excess, data$mkt_excess)
+ms_model <- estimate_capm(data$msft_excess, data$mkt_excess)
+dis_model <- estimate_capm(data$dis_excess, data$mkt_excess)
+xom_model <- estimate_capm(data$xom_excess, data$mkt_excess)
+# get beta values
+betas <- c(
+  GE = coef(ge_model)["mkt_excess"],
+  IBM = coef(ibm_model)["mkt_excess"],
+  Ford = coef(ford_model)["mkt_excess"],
+  Microsoft = coef(ms_model)["mkt_excess"],
+  Disney = coef(dis_model)["mkt_excess"],
+  ExxonMobil = coef(xom_model)["mkt_excess"]
+)
+#peek
+#betas
+```
+From betas printed above, we can conclude that:
+The firm with the highest beta value, which is Ford with a beta of 1.5 appears most aggressive.
+And the firm with the lowest beta value, which is ExxonMobil with a beta of 0.7 appears most defensive.
+
+
+'######################################################################################################
+c.Finance theory says that the intercept parameter αj should be zero. Does this seem correct given your estimates? For the Microsoft stock, plot the fitted regression line along with the data scatter.
+```{r qnc, echo=FALSE, message=FALSE, warning=FALSE }
+# if intercepts are close to zero
+intercepts <- c(
+  GE = coef(ge_model)["(Intercept)"],
+  IBM = coef(ibm_model)["(Intercept)"],
+  Ford = coef(ford_model)["(Intercept)"],
+  Microsoft = coef(ms_model)["(Intercept)"],
+  Disney = coef(dis_model)["(Intercept)"],
+  ExxonMobil = coef(xom_model)["(Intercept)"]
+)
+# peek
+intercepts
+# plot for microsoft
+ggplot(data, aes(x = mkt_excess, y = msft_excess)) +
+  geom_point() +
+  geom_smooth(method = "lm", col = "blue") +
+  labs(title = "CAPM for Microsoft",
+       x = "Market Excess Return",
+       y = "Microsoft Excess Return")
+```
+
+The printed intercepts, are quite close to zero, it seems to support the finance theory.
+
+
+'######################################################################################################
+d.Estimate the beta for each firm under the assumption that αj = 0, do the estimates of the beta values change much?
+```{r qnd, echo=FALSE}
+# function to estimate CAPM model with zero intercept
+estimate_capm_zero_intercept <- function(excess_return, mkt_excess) {
+  model <- lm(excess_return ~ 0 + mkt_excess)
+  return(model)
+}
+# CAPM with zero intercept for each firm
+ge_model_zero <- estimate_capm_zero_intercept(data$ge_excess, data$mkt_excess)
+ibm_model_zero <- estimate_capm_zero_intercept(data$ibm_excess, data$mkt_excess)
+ford_model_zero <- estimate_capm_zero_intercept(data$ford_excess, data$mkt_excess)
+ms_model_zero <- estimate_capm_zero_intercept(data$msft_excess, data$mkt_excess)
+dis_model_zero <- estimate_capm_zero_intercept(data$dis_excess, data$mkt_excess)
+xom_model_zero <- estimate_capm_zero_intercept(data$xom_excess, data$mkt_excess)
+# beta values with zero intercept
+betas_zero <- c(
+  GE = coef(ge_model_zero)["mkt_excess"],
+  IBM = coef(ibm_model_zero)["mkt_excess"],
+  Ford = coef(ford_model_zero)["mkt_excess"],
+  Microsoft = coef(ms_model_zero)["mkt_excess"],
+  Disney = coef(dis_model_zero)["mkt_excess"],
+  ExxonMobil = coef(xom_model_zero)["mkt_excess"]
+)
+# peek
+# betas_zero
+# compare beta values
+diecomparison <- data.frame(
+  Firm = names(betas),
+  Beta = betas,
+  Beta_Zero_Int = betas_zero
+)
+
+diecomparison
+```
+After comparing the beta values with and without the intercept, it deems like the values did not change much.(the intercept term does not significantly affect the estimation of beta)
