@@ -57,10 +57,14 @@ Median of ln(foodaway): 3.68649879556308
 ![image](https://github.com/user-attachments/assets/572083fb-bc04-487f-b9d9-266f25255900)  
 可以看出當教育年限增加，薪資的變異程度會變大。若SR1~SR5的假設成立，殘差圖不應該呈現特定的模式，應該呈現隨機的狀態。
 # (d)
-![image](https://github.com/user-attachments/assets/9713ed95-4479-488f-875b-947fbe8068b0)  
-![image](https://github.com/user-attachments/assets/c3d9e22d-b176-4220-80c6-53c5658f0cec)
-![image](https://github.com/user-attachments/assets/56c997db-5e0a-48b0-86f1-0e0193c725a3)
-![image](https://github.com/user-attachments/assets/a5b05a1a-2769-44fc-b079-ed1d2c545286)  
+![image](https://github.com/user-attachments/assets/6ede794d-ee97-4421-bf9d-191d5139d1f1)  
+男性  
+![image](https://github.com/user-attachments/assets/475f6e7c-c0ea-4c51-bc49-a430a5523a25)  
+女性  
+![image](https://github.com/user-attachments/assets/335c847e-d997-4237-83f9-6572dbfc42ae)  
+白人  
+![image](https://github.com/user-attachments/assets/0b184584-b1fb-4510-8cbf-a81668a44a40)  
+黑人  
 女性增加一年的教育年限，相對其他類別來說對於每小時平均薪資影響最大。
 
 # (e)
