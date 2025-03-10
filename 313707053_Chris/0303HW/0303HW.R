@@ -145,7 +145,7 @@ summary_table
 
 
 #2.25(c)
-hist_data <- hist(log(food$foodaway), breaks=40, plot=FALSE)
+hist_data <- hist(log(food$foodaway), breaks=20, plot=FALSE)
 hist_data$counts <- hist_data$counts / sum(hist_data$counts) * 100  # 轉換為百分比
 plot(hist_data, col="tan",
      ylab="Percent", main = paste("Histogram of ln(Foodway)"))
@@ -285,6 +285,10 @@ a
 
 #2.28(f)
 
+edu <- POE5Rdata::cps5_small
+mod4 = lm(wage ~ educ,data = edu)
+mod9 <- lm(wage ~ I(educ^2),data = edu)
+
 b1 <- coef(mod4)[[1]]
 b2 <- coef(mod4)[[2]]
 b3 <- coef(mod9)[[1]]
@@ -296,5 +300,11 @@ plot(edu$educ,edu$wage,col = "darkblue",pch = 16,
      xlab = "Education Years", ylab = "Wage")
 abline(b1,b2,col = "darkred",lwd = 5)
 curve(b3+b4*x^2,col = "darkgreen" ,lwd = 6,add = TRUE)
+
+summary(mod4)$r.squared
+summary(mod9)$r.squared
+
+#ANS:If EDUC only includes only 12 and 16, quadratic regression (the green line) would be a more stable choice because it's R square is bigger than Linear model's R square. 
+
 
 #ANS:If EDUC only includes only 12 and 16, linear regression (the red line) would be a more stable choice because it can reasonably explain the trend between these two points without overfitting.
