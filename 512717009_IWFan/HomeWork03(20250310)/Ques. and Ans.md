@@ -4,6 +4,7 @@
 
 ## Ans:
 **(a)**
+
 Null and Alternative Hypotheses
 
 Null Hypothesis (H₀): β₂ = 0 (GDPB has no effect on MEDALS)
@@ -13,6 +14,7 @@ Alternative Hypothesis (H₁): β₂ > 0 (GDPB has a positive effect on MEDALS)
 --------------------------------------------------------------
 
 **(b)**
+
 Test Statistic Calculation
 
 t = (b₂ - 0) / se(b₂)
@@ -24,6 +26,7 @@ If H₀ is true, t follows a t-distribution with df = 62.
 --------------------------------------------------------------
 
 **(c)**
+
 Distribution Shift Under H₁
 
 When H₀ is true, E(b₂) = 0. When H₁ is true, E(b₂) > 0, so the distribution shifts to the right.
@@ -39,20 +42,28 @@ If t > 2.39, we reject H₀.
 
 --------------------------------------------------------------
 **(e)**
+
 Conducting the t-Test and Economic Interpretation
+
 Since t = 6.09 > 2.39, we reject H₀, supporting H₁. GDP positively influences Olympic medal counts.
 
 --------------------------------------------------------------
 
 **Conclusion**
+
 Based on the regression analysis and hypothesis test, we conclude that GDP has a significant positive impact on the number of Olympic medals won by a country. The computed t-statistic (6.09) is much greater than the critical value (2.39) at the 1% significance level, leading us to reject the null hypothesis (H₀: β₂ = 0) in favor of the alternative hypothesis (H₁: β₂ > 0).
+
 Economic Interpretation
 Countries with higher GDP tend to win more Olympic medals.
+
 This could be attributed to better sports infrastructure, higher investments in athlete training, and improved access to resources.
+
 The 1% significance level means that we are 99% confident in our conclusion, with only a 1% chance of making a Type I error (incorrectly rejecting H₀).
+
 Thus, economic strength (measured by GDP) appears to be a key factor influencing Olympic success.
 
 
+--------------------------------------------------------------
 
 ## Q.07
 
