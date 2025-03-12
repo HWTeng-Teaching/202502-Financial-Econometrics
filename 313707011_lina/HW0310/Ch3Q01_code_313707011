@@ -20,10 +20,13 @@ if (t_stat > tcr) {
     cat("不拒絕虛無假設，GDP 與獎牌數之間的關係不顯著。\n")
 }
 
-
 # 繪製 t 分佈圖
-curve(dt(x, df), from = -4, to = 4, lwd = 2, col = "black",
-      xlab = "t", ylab = "", main = "Right-tail test: the rejection region is to the right of tcr")
+curve(dt(x, df), from = -8, to = 8, lwd = 2, col = "black",
+      xlab = "t", ylab = "", main = "Right-tail test: the rejection region is to the right of tcr",
+      xaxt = "n") # 關閉自動 x 軸刻度
+
+# 手動設定 x 軸的刻度
+axis(1, at = seq(-6, 6, by = 2)) # 設定刻度為 -6, -4, -2, 0, 2, 4, 6
 
 # 加上臨界值 (紅色虛線)
 abline(v = tcr, col = "red", lty = 2, lwd = 2)
