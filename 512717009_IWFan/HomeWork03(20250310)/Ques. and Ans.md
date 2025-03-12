@@ -143,12 +143,52 @@ Based on the regression analysis, we conclude that the percentage of the populat
 
 ## Ans:
 **(a)**
-Null and Alternative Hypotheses
-Null Hypothesis (H₀): β₂ = 0 (GDPB has no effect on MEDALS)
-Alternative Hypothesis (H₁): β₂ > 0 (GDPB has a positive effect on MEDALS)
+Testing if the Urban Slope Equals 1.80
+
+H₀: β₂ = 1.80, H₁: β₂ > 1.80
+
+t = (2.46 - 1.80) / 0.16 = 4.125
+
+t_{0.05, 985} ≈ 1.645, 4.125 > 1.645, reject H₀
 
 --------------------------------------------------------------
 
+**(b)**
+Computing the 95% Confidence Interval for WAGE at EDUC = 16 in Rural Areas
+
+WAGE = -4.88 + 1.80(16) = 23.92
+
+CI = 23.92 ± (1.97 × 0.833) = (22.279, 25.561)
+
+--------------------------------------------------------------
+
+**(c)**
+Computing the 95% Confidence Interval for WAGE at EDUC = 16 in Urban Areas
+
+WAGE = -10.76 + 2.46(16) = 28.6
+
+CI = 28.6 ± (1.96 × 0.833) = (26.967, 30.233)
+
+--------------------------------------------------------------
+
+**(d)**
+Testing if the Rural Intercept is Less Than 4
+
+H₀: β₁ ≥ 4, H₁: β₁ < 4
+
+t = (-4.88 - 4) / 3.29 = -2.7
+
+t_{0.01, 213} ≈ -2.33, -2.7 < -2.33, reject H₀
+
+--------------------------------------------------------------
+
+**Conclusion**
+
+Based on the regression analysis, we conclude that education has a significant positive effect on wages, with different impacts in urban and rural areas. The computed t-statistics, confidence intervals, and hypothesis tests confirm that schooling is an important determinant of income.
+
+--------------------------------------------------------------
+
+## Q.19
 
 ![image](https://github.com/user-attachments/assets/a33ba53b-1bdc-4f4e-990a-d0bccf8e3052)
 
