@@ -3,30 +3,36 @@
 b2 <- 0.01309  # 迴歸係數 β2
 se_b2 <- 0.00215  # 標準誤 se(b2)
 
-t_value <- b2 / se_b2  # 計算 t 統計量
+t_stat <- b2 / se_b2  # 計算 t 統計量
 df <- 64 - 2  # 計算自由度 (樣本數 n = 64, 變數數 k = 2)
 
 # 計算 1% 顯著水準的臨界值 (單尾檢定)
-t_critical_1pct <- qt(0.99, df)  # 右尾 1% 臨界值
+tcr <- qt(0.99, df)  # 右尾 1% 臨界值
 
 # 輸出結果
-cat("t 值: ", t_value, "\n")
-cat("1% 顯著水準的 t 臨界值: ", t_critical_1pct, "\n")
+cat("t 值: ", t_stat, "\n")
+cat("1% 顯著水準的 t 臨界值: ", tcr, "\n")
 
 # t 檢定判斷顯著性
-if (t_value > t_critical_1pct) {
+if (t_stat > tcr) {
     cat("在 1% 顯著水準下，拒絕虛無假設，GDP 與獲得的獎牌數存在顯著關係。\n")
 } else {
     cat("不拒絕虛無假設，GDP 與獎牌數之間的關係不顯著。\n")
 }
 
-# Plot the density function and the values of t:
-curve(dt(x, df), -2.5*se_b2, 2.5*se_b2, ylab=" ", xlab="t")
-abline(v=c(-t_critical_1pct, t_critical_1pct, t_value), col=c("red", "red", "blue"), 
-       lty=c(2,2,3))
-legend("topleft", legend=c("-t_critical_1pct", "t_critical_1pct", "t_value"), col=
-         c("red", "red", "blue"), lty=c(2, 2, 3))
-curve(dt(x, df), -2.5*se_b2, 2.5*se_b2, ylab=" ", xlab="t")
-abline(v=c(t_critical_1pct, t_value), col=c("red", "blue"), lty=c(2, 3))
-legend("topleft", legend=c("t_critical_1pct", "t_value"), 
-       col=c("red", "blue"), lty=c(2, 3))
+
+# 繪製 t 分佈圖
+curve(dt(x, df), from = -4, to = 4, lwd = 2, col = "black",
+      xlab = "t", ylab = "", main = "Right-tail test: the rejection region is to the right of tcr")
+
+# 加上臨界值 (紅色虛線)
+abline(v = tcr, col = "red", lty = 2, lwd = 2)
+text(tcr, 0.02, "tcr", col = "red", pos = 4)
+
+# 加上檢定統計量 (藍色虛線)
+abline(v = t_stat, col = "blue", lty = 3, lwd = 2)
+text(t_stat, 0.02, "t", col = "blue", pos = 4)
+
+# 加上圖例
+legend("topright", legend = c("tcr", "t"), col = c("red", "blue"), lty = c(2, 3), lwd = 2)
+
