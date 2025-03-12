@@ -84,6 +84,8 @@ Given t = 4.31, se(a) = 2.672, so a = 4.31 × 2.672 ≈ 11.52
 
 **(b)**
 
+![image](https://github.com/user-attachments/assets/fd9c78f4-4753-47e0-ac26-b77278398b56)
+
 Relationship and Trend
 
 BACHELOR and INCOME are positively correlated. Each 1% increase in BACHELOR raises INCOME by 1.029 thousand dollars.
