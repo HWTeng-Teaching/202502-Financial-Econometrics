@@ -71,13 +71,66 @@ Thus, economic strength (measured by GDP) appears to be a key factor influencing
 
 ## Ans:
 **(a)**
-Null and Alternative Hypotheses
-Null Hypothesis (H₀): β₂ = 0 (GDPB has no effect on MEDALS)
-Alternative Hypothesis (H₁): β₂ > 0 (GDPB has a positive effect on MEDALS)
+
+Estimating the Intercept
+
+Given model: INCOME = a + 1.029BACHELOR
+
+t = a / se(a)
+
+Given t = 4.31, se(a) = 2.672, so a = 4.31 × 2.672 ≈ 11.52
 
 --------------------------------------------------------------
 
+**(b)**
 
+Relationship and Trend
+
+BACHELOR and INCOME are positively correlated. Each 1% increase in BACHELOR raises INCOME by 1.029 thousand dollars.
+
+--------------------------------------------------------------
+
+**(c)**
+
+Standard Error of the Slope
+
+se(b₂) = 1.029 / 10.75 ≈ 0.0958
+
+--------------------------------------------------------------
+
+**(d)**
+
+t-statistic for Intercept (H₀: a = 10)
+
+t = (11.52 - 10) / 2.672 ≈ 0.569
+
+--------------------------------------------------------------
+
+**(e)**
+
+p-value and Rejection Region
+
+p-value = 0.572, greater than 0.05, so we fail to reject H₀
+
+--------------------------------------------------------------
+
+**(f)**
+
+99% Confidence Interval for Slope
+
+CI = 1.029 ± (2.68 × 0.0958) ≈ (0.773, 1.285)
+
+--------------------------------------------------------------
+
+**(g)**
+
+Hypothesis Test for Slope (H₀: β₂ = 1)
+
+t = (1.029 - 1) / 0.0958 ≈ 0.303, so we fail to reject H₀
+
+--------------------------------------------------------------
+
+## Q.17
 
 ![image](https://github.com/user-attachments/assets/e6afebd7-9f03-42a6-8e82-88c30bb45c63)
 
