@@ -1,3 +1,4 @@
+# 3.01
 # 設定給定的回歸係數與標準誤
 b2 <- 0.01309  # 迴歸係數 β2
 se_b2 <- 0.00215  # 標準誤 se(b2)
@@ -18,3 +19,14 @@ if (t_value > t_critical_1pct) {
 } else {
     cat("不拒絕虛無假設，GDP 與獎牌數之間的關係不顯著。\n")
 }
+
+# Plot the density function and the values of t:
+curve(dt(x, df), -2.5*se_b2, 2.5*se_b2, ylab=" ", xlab="t")
+abline(v=c(-t_critical_1pct, t_critical_1pct, t_value), col=c("red", "red", "blue"), 
+       lty=c(2,2,3))
+legend("topleft", legend=c("-t_critical_1pct", "t_critical_1pct", "t_value"), col=
+         c("red", "red", "blue"), lty=c(2, 2, 3))
+curve(dt(x, df), -2.5*se_b2, 2.5*se_b2, ylab=" ", xlab="t")
+abline(v=c(t_critical_1pct, t_value), col=c("red", "blue"), lty=c(2, 3))
+legend("topleft", legend=c("t_critical_1pct", "t_value"), 
+       col=c("red", "blue"), lty=c(2, 3))
