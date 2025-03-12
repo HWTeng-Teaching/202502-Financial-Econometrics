@@ -194,10 +194,54 @@ Based on the regression analysis, we conclude that education has a significant p
 
 ## Ans:
 **(a)**
-Null and Alternative Hypotheses
-Null Hypothesis (H₀): β₂ = 0 (GDPB has no effect on MEDALS)
-Alternative Hypothesis (H₁): β₂ > 0 (GDPB has a positive effect on MEDALS)
+Plot MOTEL_PCT and COMP_PCT and Analyze Trends
+
+Analyze the trends: Do they move together? Which has higher occupancy rates?
+
+Regression model: MOTEL_PCT = β₁ + β₂ COMP_PCT + e
+
+95% Confidence Interval: CI = β₂ ± t_{α/2, df} × SE(β₂)
 
 --------------------------------------------------------------
+
+**(b)**
+Compute the 90% Confidence Interval for MOTEL_PCT when COMP_PCT = 70
+
+CI = \hat{MOTEL_PCT} ± t_{α/2, df} × SE(\hat{MOTEL_PCT})
+
+Predicted value: \hat{MOTEL_PCT} = β₁ + β₂(70)
+
+--------------------------------------------------------------
+
+**(c)**
+Hypothesis Test H₀: β₂ ≤ 0, H₁: β₂ > 0
+
+t = β₂ / SE(β₂)
+
+Rejection region: t_{0.01, df}
+
+--------------------------------------------------------------
+
+**(d)**
+Hypothesis Test H₀: β₂ = 1, H₁: β₂ ≠ 1
+
+t = (β₂ - 1) / SE(β₂)
+
+Two-tailed test: t_{0.005, df}
+
+--------------------------------------------------------------
+
+**(e)**
+Plot Residuals and Identify Anomalies
+
+Compute residuals: e_i = MOTEL_PCT - \hat{MOTEL_PCT}
+
+Check anomalies in residuals from July 2004 to January 2005
+
+--------------------------------------------------------------
+
+**Conclusion**
+
+Based on the regression analysis, we conclude that the occupancy rate of the motel (MOTEL_PCT) is positively associated with the competitor’s occupancy rate (COMP_PCT). The computed t-statistics, confidence intervals, and hypothesis tests confirm that competition plays a significant role in determining the motel’s occupancy.
 
 
