@@ -130,6 +130,13 @@ t = (1.029 - 1) / 0.0958 ≈ 0.303, so we fail to reject H₀
 
 --------------------------------------------------------------
 
+**Conclusion**
+
+Based on the regression analysis, we conclude that the percentage of the population with a bachelor's degree (BACHELOR) has a significant positive impact on income per capita (INCOME). The computed t-statistics and confidence intervals confirm that the relationship between education and income is statistically significant.
+
+--------------------------------------------------------------
+
+
 ## Q.17
 
 ![image](https://github.com/user-attachments/assets/e6afebd7-9f03-42a6-8e82-88c30bb45c63)
