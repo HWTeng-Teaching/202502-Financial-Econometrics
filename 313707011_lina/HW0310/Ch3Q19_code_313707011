@@ -25,3 +25,11 @@ summary(model)
 
 # 計算 β2 的 95% 信賴區間
 confint(model, "comp_pct", level = 0.95)
+
+
+# 3.19b
+# 設定 COMP_PCT = 70
+new_data <- data.frame(comp_pct = 70)
+
+# 預測 MOTEL_PCT 的 90% 置信區間
+predict(model, newdata = new_data, interval = "confidence", level = 0.90)
