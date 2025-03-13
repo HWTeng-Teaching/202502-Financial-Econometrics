@@ -31,5 +31,23 @@ confint(model, "comp_pct", level = 0.95)
 # 設定 COMP_PCT = 70
 new_data <- data.frame(comp_pct = 70)
 
-# 預測 MOTEL_PCT 的 90% 置信區間
+# 預測 MOTEL_PCT 的 90% 信賴區間
 predict(model, newdata = new_data, interval = "confidence", level = 0.90)
+
+# 3.19e
+# 計算殘差
+motel$residuals <- residuals(model)
+
+# 繪製殘差與時間的散佈圖
+plot(motel$time, motel$residuals, type = "o", col = "blue",
+     xlab = "Time", ylab = "Residuals", main = "Residuals vs Time")
+abline(h = 0, col = "red", lty = 2)  # 添加零軸基準線
+
+# 標出時間區間 17–23
+highlight_time <- motel$time >= 17 & motel$time <= 23
+points(motel$time[highlight_time], motel$residuals[highlight_time], col = "red", pch = 19)
+
+# 添加區間標記
+legend("topright", legend = c("Other Periods", "Time 17-23"),
+       col = c("blue", "red"), pch = c(1, 19))
+
