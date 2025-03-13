@@ -196,54 +196,141 @@ Based on the regression analysis, we conclude that education has a significant p
 
 ## Ans:
 **(a)**
-Plot MOTEL_PCT and COMP_PCT and Analyze Trends
+(a) Plotting MOTEL_PCT and COMP_PCT and Analyzing Trends
 
-Analyze the trends: Do they move together? Which has higher occupancy rates?
+We first plot MOTEL_PCT (motel occupancy rate) and COMP_PCT (competitor occupancy rate) on the same time series graph to observe their trends.
 
-Regression model: MOTEL_PCT = β₁ + β₂ COMP_PCT + e
+![image](https://github.com/user-attachments/assets/f6463636-dcc6-43fa-ba59-99ca93e846cc)
 
-95% Confidence Interval: CI = β₂ ± t_{α/2, df} × SE(β₂)
+Observations:
+
+Synchronized movement: The graph shows that MOTEL_PCT and COMP_PCT exhibit a degree of correlation over time. When the competitor’s occupancy rate rises, the motel’s occupancy rate tends to increase as well.
+
+Higher competitor occupancy: COMP_PCT is consistently higher than MOTEL_PCT, suggesting that the competitor may have brand advantages, a better location, or more competitive pricing.
+
+Time-based variations:
+Around period 10: MOTEL_PCT exhibits noticeable fluctuations, possibly due to seasonal effects, holidays, promotions, or changes in market demand.
+
+Periods 17-23 (July 2004 - January 2005): A sharp decline in occupancy rates is observed, which may be related to economic downturns or motel-specific issues such as repairs.
+Economic Interpretation:
+
+The observed synchronization suggests that the competitor’s occupancy rate influences motel demand, possibly indicating:
+
+A weak substitution effect, meaning customers do not necessarily switch away from the motel when the competitor's occupancy rate increases.
+Changes in overall market demand, implying that when competitors perform well, the entire market may be experiencing higher demand rather than just competitive shifts.
 
 --------------------------------------------------------------
 
 **(b)**
-Compute the 90% Confidence Interval for MOTEL_PCT when COMP_PCT = 70
+Calculating the 90% Confidence Interval for MOTEL_PCT when COMP_PCT = 70Using the regression model:
 
-CI = \hat{MOTEL_PCT} ± t_{α/2, df} × SE(\hat{MOTEL_PCT})
+![image](https://github.com/user-attachments/assets/f38de687-3b13-494f-b7bb-a5dc6979ddcb)
 
-Predicted value: \hat{MOTEL_PCT} = β₁ + β₂(70)
+we predict the expected motel occupancy rate when the competitor's occupancy rate is 70%.
+
+Results:
+
+Point Estimate (Predicted Value):
+
+![image](https://github.com/user-attachments/assets/a55d7c3f-03fb-4809-8f9b-03b6d97ed1e1)
+
+90% Confidence Interval Calculation:
+
+![image](https://github.com/user-attachments/assets/cc5fea71-1ea0-4b6d-bb27-e20c77afd489)
+
+Numerical Example： CI=(77.38%,86.47%)
+
+Economic Interpretation:
+
+We are 90% confident that when the competitor’s occupancy rate is 70%, the motel’s occupancy rate will be between 77.38% and 86.47%.
+This implies:
+
+Market demand stability: Despite a higher competitor occupancy rate, the motel maintains a significant share of demand.
+Competitive influence: If COMP_PCT declines, MOTEL_PCT may also drop, highlighting the interdependence between market competitors.
 
 --------------------------------------------------------------
 
 **(c)**
-Hypothesis Test H₀: β₂ ≤ 0, H₁: β₂ > 0
+Hypothesis Test: H₀: β₂ ≤ 0, H₁: β₂ > 0
 
-t = β₂ / SE(β₂)
+We conduct a one-tailed test to examine whether the competitor’s occupancy rate significantly influences the motel’s occupancy rate.
 
-Rejection region: t_{0.01, df}
+Testing Steps:
+
+Hypotheses:
+
+Null Hypothesis (H₀): β₂ ≤ 0 (The competitor’s occupancy rate has no effect on the motel’s occupancy rate)
+Alternative Hypothesis (H₁): β₂ > 0 (The competitor’s occupancy rate positively influences the motel’s occupancy rate)
+
+Calculate the t-statistic:
+
+![image](https://github.com/user-attachments/assets/5e8998ea-c17a-4efb-ad0b-2c019d3e9dc0)
+
+Compare with critical value (α = 0.01). If t is greater than the critical value, we reject H₀.
+
+Results:
+
+t = 4.265
+
+Critical Value = 2.499867
+
+Conclusion: Since 4.265 > 2.499867, we reject H₀, indicating that β₂ is significantly greater than 0.
+
+Economic Interpretation:
+
+The competitor’s occupancy rate significantly affects the motel’s occupancy rate, showing strong market interdependence.
+Weak substitution effect: Customers do not completely switch away from the motel when the competitor's occupancy rate rises, suggesting overall market demand changes rather than pure competition effects.
 
 --------------------------------------------------------------
 
 **(d)**
-Hypothesis Test H₀: β₂ = 1, H₁: β₂ ≠ 1
+Hypothesis Test: H₀: β₂ = 1, H₁: β₂ ≠ 1
 
-t = (β₂ - 1) / SE(β₂)
+We conduct a two-tailed test to determine whether β₂ is equal to 1, meaning whether the motel's occupancy rate changes at the same rate as the competitor’s.
 
-Two-tailed test: t_{0.005, df}
+Results:
+
+t = -0.6677491
+
+Critical Value = ±2.807336
+
+Since t falls within (-2.807336, 2.807336), we fail to reject H₀.
+
+Economic Interpretation:
+
+This suggests that a 1% increase in the competitor’s occupancy rate results in a nearly 1% increase in the motel’s occupancy rate.
+This indicates:
+
+Market-wide demand fluctuations affect all competitors similarly, rather than substitution effects.
+The motel's market share remains stable relative to the competitor’s performance.
 
 --------------------------------------------------------------
 
 **(e)**
-Plot Residuals and Identify Anomalies
+Residual Analysis
 
-Compute residuals: e_i = MOTEL_PCT - \hat{MOTEL_PCT}
+We compute the residuals:
 
-Check anomalies in residuals from July 2004 to January 2005
+![image](https://github.com/user-attachments/assets/a30e3e50-ebe2-4ce9-96f8-3d64db774a49)
+
+and analyze their time-series pattern.
+
+![image](https://github.com/user-attachments/assets/653d2c57-8141-415c-b8c7-d0ac967001aa)
+
+Findings:
+
+Periods 17-23 (July 2004 - January 2005):
+
+Residuals are predominantly negative, indicating that the regression model overestimated the motel's occupancy rate.
+This could be linked to market disruptions such as economic downturns, external shocks, or motel repairs.
+
+Economic Interpretation:
+
+Model overestimation suggests that market demand was unusually weak during these periods.
+Price fluctuations were not accounted for: Including price variables might improve the model’s predictive power.
 
 --------------------------------------------------------------
 
-**Conclusion**
 
-Based on the regression analysis, we conclude that the occupancy rate of the motel (MOTEL_PCT) is positively associated with the competitor’s occupancy rate (COMP_PCT). The computed t-statistics, confidence intervals, and hypothesis tests confirm that competition plays a significant role in determining the motel’s occupancy.
 
 
