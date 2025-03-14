@@ -21,7 +21,7 @@ $$
 估計的關係式為：
 
 $$
-\ \text{MEDALS} = \b_1 + \b_2 \text{GDPB} \ = 7.61733 + 0.01309 \text{GDPB} \]
+\ \text{MEDALS} = b_1 + b_2 \text{GDPB} \ = 7.61733 + 0.01309 \text{GDPB} \]
 $$
 
 (se)      (2.38994)      (0.00215)      (XR3.1)
