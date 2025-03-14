@@ -15,13 +15,13 @@ C03Q01 a ~ e (Problems)
 1992 年有 64 個國家參加奧運並至少獲得一面獎牌。設 **MEDALS** 為該國家獲得的獎牌總數，**GDPB** 為該國家的 GDP（以 1995 年美元的十億單位計算）。用於解釋獎牌數量的線性回歸模型為：
 
 $$
-\[ \text{MEDALS} = \beta_1 + \beta_2 \text{GDPB} + e \]
+\ \text{MEDALS} = \beta_1 + \beta_2 \text{GDPB} + e \
 $$
 
 估計的關係式為：
 
 $$
-\[ \text{MEDALS} = \b_1 + \b_2 \text{GDPB} + e \] = 7.61733 + 0.01309 \text{GDPB} \]
+\ \text{MEDALS} = \b_1 + \b_2 \text{GDPB} \ = 7.61733 + 0.01309 \text{GDPB} \]
 $$
 (se)      (2.38994)      (0.00215)      (XR3.1)
 
