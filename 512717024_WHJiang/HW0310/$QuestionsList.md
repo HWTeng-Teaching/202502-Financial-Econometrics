@@ -7,6 +7,10 @@
 ## C03Q17 a ~ d (Problems)
 ![C03Q17](https://github.com/user-attachments/assets/c8b47113-c1eb-443c-a3e5-7965a106d4dd)
 
+## C03Q19 a ~ e (Computer Exercise)
+![C03Q19](https://github.com/user-attachments/assets/a17051f0-deba-45f8-8753-9d6d255ae49b)
+
+---
 C03Q01 a ~ e (Problems)
 1992 年有 64 個國家參加奧運並至少獲得一面獎牌。設 **MEDALS** 為該國家獲得的獎牌總數，**GDPB** 為該國家的 GDP（以 1995 年美元的十億單位計算）。用於解釋獎牌數量的線性回歸模型為：
 
@@ -15,8 +19,11 @@ $$
 $$
 
 估計的關係式為：
+
+$$
 \[ \text{MEDALS} = 7.61733 + 0.01309 \text{GDPB} \]
 (se)      (2.38994)      (0.00215)      (XR3.1)
+$$
 
 **a.** 我們希望檢驗獎牌數與 GDP 之間是否沒有關係，對立假設為兩者之間存在正向關係。請根據模型參數陳述虛無假設與對立假設。
 
@@ -27,6 +34,3 @@ $$
 **d.** 在 1% 顯著性水準下，在哪些 t-統計量的值範圍內我們會拒絕 (a) 的虛無假設？在哪些值範圍內我們不會拒絕虛無假設？
 
 **e.** 以 1% 顯著性水準進行 (a) 的 t-檢定，並得出經濟結論。1% 顯著性水準在這個例子中代表什麼意義？
-
-## C03Q19 a ~ e (Computer Exercise)
-![C03Q19](https://github.com/user-attachments/assets/a17051f0-deba-45f8-8753-9d6d255ae49b)
