@@ -30,9 +30,153 @@ p_value <- 1 - pt(t_statistic, df)
 t_statistic
 t_critical
 p_value
-
 ```
 
 # **CH3 Question 7**
 
 ## **(a) **
+
+```{r}
+# 已知數值
+se_intercept <- 2.672  # 截距的標準誤
+t_intercept <- 4.31    # 截距的 t 統計量
+
+# 計算截距 (a) 的估計值
+intercept_estimate <- t_intercept * se_intercept
+
+# 顯示結果
+intercept_estimate
+```
+
+## **(b) **
+
+```{r}
+# 設定 BACHELOR 變數範圍
+bachelor_pct <- seq(0, 50, length.out = 100)  # 假設 0% ~ 50%
+
+# 計算預測的 INCOME
+intercept_estimate <- 11.516
+slope_estimate <- 1.029
+income <- intercept_estimate + slope_estimate * bachelor_pct
+
+# 繪製回歸線
+plot(bachelor_pct, income, type="l", col="blue", lwd=2, 
+     xlab="Percentage of Population with a Bachelor's Degree (%)", 
+     ylab="Income per Capita (in $1000)", 
+     main="Estimated Relationship between Education and Income")
+grid()
+```
+
+## **(c) **
+
+```{r}
+# 已知數值
+slope_coefficient <- 1.029  # 斜率估計值
+t_slope <- 10.75  # 斜率的 t 統計量
+
+# 計算斜率的標準誤
+se_slope <- slope_coefficient / t_slope
+
+# 顯示結果
+se_slope
+```
+
+## **(d) **
+
+```{r}
+# 已知數值
+intercept_estimate <- 11.516  # 估計的截距
+null_hypothesis_intercept <- 10  # 虛無假設的截距值
+se_intercept <- 2.672  # 截距的標準誤
+
+# 計算 t-統計量
+t_statistic_new <- (intercept_estimate - null_hypothesis_intercept) / se_intercept
+
+# 顯示結果
+t_statistic_new
+```
+
+## **(e) **
+
+```{r}
+# 設定已知數值
+t_statistic_new <- 0.567  # t 統計量
+df <- 50  # 自由度 (N-1 = 51-1)
+alpha <- 0.05  # 顯著水準
+
+# 計算 p-value (雙尾檢定)
+p_value <- 2 * (1 - pt(abs(t_statistic_new), df))
+
+# 計算雙尾檢定的臨界值
+t_critical <- qt(1 - alpha/2, df)
+
+# 繪製 t-分佈
+curve(dt(x, df), from=-4, to=4, col="blue", lwd=2, 
+      xlab="t-Value", ylab="Density", main="t-Distribution with Rejection Region (α=0.05)")
+
+# 修正：確保紅色區域緊貼 x 軸
+x_left <- seq(-4, -t_critical, length=100)
+y_left <- dt(x_left, df)
+polygon(c(x_left, rev(x_left)), c(y_left, rep(0, length(y_left))), col=rgb(1,0,0,0.5))
+
+x_right <- seq(t_critical, 4, length=100)
+y_right <- dt(x_right, df)
+polygon(c(x_right, rev(x_right)), c(y_right, rep(0, length(y_right))), col=rgb(1,0,0,0.5))
+
+# 畫出 t-統計量的位置
+abline(v = c(t_statistic_new, -t_statistic_new), col="black", lty=2)
+
+# 顯示結果
+p_value
+t_critical
+```
+
+## **(f) **
+
+```{r}
+# 已知數值
+slope_estimate <- 1.029  # 斜率估計值
+se_slope <- 0.0957  # 斜率標準誤
+df <- 50  # 自由度
+confidence_level <- 0.99  # 99% 信賴區間
+
+# 計算 t 臨界值 (99% 信賴區間，雙尾)
+t_critical_99 <- qt(1 - (1 - confidence_level) / 2, df)
+
+# 計算信賴區間
+lower_bound <- slope_estimate - t_critical_99 * se_slope
+upper_bound <- slope_estimate + t_critical_99 * se_slope
+
+# 顯示結果
+c(lower_bound, upper_bound)
+```
+
+## **(g) **
+
+```{r}
+# 已知數值
+slope_estimate <- 1.029  # 斜率估計值
+null_hypothesis_slope <- 1  # H0: 斜率 = 1
+se_slope <- 0.0957  # 斜率標準誤
+df <- 50  # 自由度
+alpha <- 0.05  # 顯著水準
+
+# 計算 t-統計量
+t_statistic_slope <- (slope_estimate - null_hypothesis_slope) / se_slope
+
+# 計算 p-value (雙尾檢定)
+p_value_slope <- 2 * (1 - pt(abs(t_statistic_slope), df))
+
+# 計算 5% 顯著水準的 t-臨界值
+t_critical_95 <- qt(1 - alpha/2, df)
+
+# 檢查是否拒絕 H0
+reject_null <- abs(t_statistic_slope) > t_critical_95
+
+# 顯示結果
+c(t_statistic_slope, p_value_slope, t_critical_95, reject_null)
+```
+
+
+
+
