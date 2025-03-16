@@ -10,8 +10,6 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # **CH3 Question 1**
 
-## **(a) Scatter Plot of House Price vs. House Size**
-
 ```{r}
 # 已知數據
 beta_2_hat <- 0.01309  # 估計的回歸係數
@@ -34,3 +32,7 @@ t_critical
 p_value
 
 ```
+
+# **CH3 Question 7**
+
+## **(a) **
