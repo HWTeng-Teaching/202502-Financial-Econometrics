@@ -1,1 +1,46 @@
+#(a)
+library(ggplot2)
+ggplot(motel, aes(x = time)) +
+  geom_line(aes(y = motel_pct, color = "Motel Occupancy")) +
+  geom_line(aes(y = comp_pct, color = "Competitor Occupancy")) +
+  labs(title = "Occupancy Rates Over Time",
+       x = "Time", y = "Occupancy Rate (%)",
+       color = "Legend") +
+  theme_minimal()
+model <- lm(motel_pct ~ comp_pct, data = motel)
+summary(model)
+confint(model, level = 0.95)
+
+##兩者入住率有明顯同向變動的趨勢，競爭對手在大部分時間有較高的入住率。根據comp_pct係數的信賴區間，該系數並不穩定。
+
+#(b)
+new_data <- data.frame(comp_pct = 70)
+predict(model, new_data, interval = "confidence", level = 0.90)
+
+#(c)
+b2 <- coef(summary(model))["comp_pct", "Estimate"]
+se_b2 <- coef(summary(model))["comp_pct", "Std. Error"]
+t_stat <- b2 / se_b2
+p_value <- pt(t_stat, df = df.residual(model), lower.tail = FALSE)
+t_stat
+p_value
+##此檢定為右尾檢定，檢定統計量服從t分配。根據結果p_value小於0.01，統計上有顯著證據拒絕虛無假設
+
+#(d)
+t_stat_b2_1 <- (b2 - 1) / se_b2
+p_value_b2_1 <- 2 * pt(abs(t_stat_b2_1), df = df.residual(model), lower.tail = FALSE)
+t_stat_b2_1
+p_value_b2_1
+##假設虛無假設為真，表示競爭對手住房率上升1%，自己motel的住房率平均也上升1%。此檢定為雙尾檢定，檢定統計量服從t分配，根
+##據結果，p_value大於0.01，不拒絕虛無假設。
+
+#(e)
+motel$residuals <- residuals(model)
+ggplot(motel, aes(x = time, y = residuals)) +
+  geom_line() +
+  labs(title = "Residuals Over Time",
+       x = "Time", y = "Residuals") +
+  theme_minimal()
+##隨時間推移，殘差呈現逐漸下降的趨勢，且後期變化較大，能推測此殘差可能並非隨機分布
+
 
