@@ -1,3 +1,4 @@
+#3.19
 #(a)
 library(ggplot2)
 ggplot(motel, aes(x = time)) +
