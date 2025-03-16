@@ -13,7 +13,7 @@ names(motel)
 # 3.19a
 # 繪製 motel_pct 和 comp_pct 隨時間變化的圖表
 plot(motel$time, motel$motel_pct, type = "l", col = "blue", ylim = range(c(motel$motel_pct, motel$comp_pct)),
-     xlab = "時間", ylab = "入住率 (%)", main = "motel_pct 和 comp_pct 隨時間變化")
+     xlab = "Time", ylab = "Occupancy Rate (%)", main = "Motel vs Competitor Occupancy Rate")
 lines(motel$time, motel$comp_pct, col = "red")
 legend("topright", legend = c("motel_pct", "comp_pct"), col = c("blue", "red"), lty = 1)
 
