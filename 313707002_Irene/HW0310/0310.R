@@ -15,6 +15,10 @@ ggplot(motel, aes(x = time)) +
        color = "Legend") +
   theme_minimal()
 
+model <- lm(motel_pct ~ comp_pct, data = motel)
+summary(model)
+confint(model, level = 0.95)
+
 #3.19 b
 model <- lm(motel_pct ~ comp_pct, data = motel)
 new_data <- data.frame(comp_pct = 70)
