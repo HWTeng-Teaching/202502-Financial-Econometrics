@@ -1,1 +1,13 @@
+---
+title: "HW0310 - CH3 Questions 1, 7, 17, 19"
+author: "鄭凱鴻"
+date: "2025-03-16"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# **CH3 Question 1**
+
 
