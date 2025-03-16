@@ -1,0 +1,264 @@
+#-----------------------------3.1---------------------------------------
+(d) 
+qt(0.99, df = 62)
+  
+#-----------------------------3.7---------------------------------------
+(a)
+# 已知數據
+t_intercept <- 4.31   # 截距的 t 值
+se_intercept <- 2.672 # 截距的標準誤差
+
+# 計算截距
+intercept_hat <- t_intercept * se_intercept
+intercept_hat
+(b)
+# 假設有一些 BACHELOR 數據（0% 到 50%）
+BACHELOR <- seq(0, 50, by = 1)
+
+# 使用回歸方程計算預測 INCOME
+INCOME_hat <- intercept_hat + slope_hat * BACHELOR
+
+# 繪圖
+plot(BACHELOR, INCOME_hat, type = "l", col = "blue", lwd = 2,
+     xlab = "Percentage of Population with Bachelor's Degree",
+     ylab = "Income per Capita (in $1000)",
+     main = "Estimated Relationship between Income and Education")
+
+# 加上點
+points(BACHELOR, INCOME_hat, pch = 16, col = "red")
+(c)
+# 已知數據
+t_slope <- 10.75    # 斜率的 t 值
+slope_hat <- 1.029  # 斜率係數
+
+# 計算標準誤
+se_slope <- slope_hat / t_slope
+se_slope
+
+(e)
+# 設定自由度
+df <- 49  
+
+# 設定雙尾檢定的臨界值（精確到小數點第四位）
+t_critical <- round(qt(0.975, df), 4)
+
+# 設定 t 值與 p 值
+t_value <- 0.569
+p_value <- 0.572  # 題目給的 p 值
+
+# 生成 t 分布數據
+x <- seq(-4, 4, length = 1000)
+y <- dt(x, df)
+
+# 繪製 t 分布曲線
+plot(x, y, type = "l", lwd = 2, col = "blue",
+     xlab = "t 值", ylab = "機率密度",
+     main = expression(bold("t 分布與拒絕區域")))
+
+# 填充拒絕區域（紅色陰影）
+polygon(c(x[x >= t_critical], t_critical), 
+        c(y[x >= t_critical], 0), col = "red", border = NA)
+polygon(c(x[x <= -t_critical], -t_critical), 
+        c(y[x <= -t_critical], 0), col = "red", border = NA)
+
+# 填充 p 值區域（藍色填充，顯示 p = 0.572 的範圍）
+polygon(c(x[x >= t_value], t_value), 
+        c(y[x >= t_value], 0), col = "blue", border = NA)
+polygon(c(x[x <= -t_value], -t_value), 
+        c(y[x <= -t_value], 0), col = "blue", border = NA)
+
+# 標示拒絕區域（雙尾檢定）
+abline(v = t_critical, col = "red", lwd = 2, lty = 2)   # 右側臨界值
+abline(v = -t_critical, col = "red", lwd = 2, lty = 2)  # 左側臨界值
+text(t_critical + 0.2, 0.05, paste("拒絕區域\n(", t_critical, ")"), col = "red", cex = 0.9)
+text(-t_critical - 0.2, 0.05, paste("拒絕區域\n(", -t_critical, ")"), col = "red", cex = 0.9)
+
+# 標示實際的 t 值 (正負對應)
+abline(v = t_value, col = "green", lwd = 2)   # 正的 t 值
+abline(v = -t_value, col = "green", lwd = 2)  # 負的 t 值
+text(t_value + 0.2, 0.1, paste("t =", t_value), col = "green", cex = 0.9)
+text(-t_value - 0.2, 0.1, paste("t =", -t_value), col = "green", cex = 0.9)
+
+# 顯示 p 值
+legend("topright", legend = paste("p 值 =", p_value), text.col = "black", bty = "n", cex = 1.2)
+
+(f)
+# 已知數據
+beta_hat <- 1.029     # 斜率估計值
+se_beta <- 0.0958     # 斜率標準誤
+df <- 49              # 自由度
+alpha <- 0.01         # 99% 置信區間，α = 0.01
+null_value <- 1       # H0: beta1 = 1
+
+# 計算 99% 置信區間的 t 臨界值
+t_critical <- qt(1 - alpha / 2, df)
+t_critical
+
+# 計算置信區間
+margin_error <- t_critical * se_beta
+ci_lower <- beta_hat - margin_error
+ci_upper <- beta_hat + margin_error
+c(ci_lower, ci_upper)  # 應輸出 (0.7723, 1.2857)
+
+(g)
+# 計算 t 統計量
+t_value <- (beta_hat - null_value) / se_beta
+t_value  # 應輸出 0.3029
+
+# 計算 p 值（雙尾檢定）
+p_value <- 2 * (1 - pt(abs(t_value), df))
+p_value  # 應輸出 0.764
+
+#-----------------------------3.17---------------------------------------
+(a)
+qt(0.95,984)
+
+# 安裝並載入 ggplot2 套件（若尚未安裝）
+if (!require(ggplot2)) install.packages("ggplot2", dependencies=TRUE)
+library(ggplot2)
+
+# 設定參數
+df <- 984  # 自由度
+alpha <- 0.05  # 顯著水準
+t_critical <- qt(1 - alpha, df)  # 右尾臨界值
+t_stat <- 4.125  # 計算出的 t 值
+
+# 建立 t 分佈數據
+x <- seq(-4, 5, length=1000)  # x 軸範圍
+y <- dt(x, df)  # t 分佈密度函數
+
+# 建立資料框
+data <- data.frame(x, y)
+
+# 繪製 t 分佈曲線
+p <- ggplot(data, aes(x, y)) +
+  geom_line(color="blue", size=1) +  # t 分佈曲線
+  geom_area(data=subset(data, x > t_critical), aes(y=y), fill="red", alpha=0.5) +  # 拒絕區域
+  geom_vline(xintercept=t_critical, linetype="dashed", color="red", size=1) +  # 臨界值線
+  geom_vline(xintercept=t_stat, linetype="dashed", color="black", size=1) +  # t 統計量線
+  labs(title="One-Tailed Hypothesis Test (Right Tail)",
+       x="t-value",
+       y="Density") +
+  annotate("text", x=t_critical + 0.3, y=0.1, label=paste("Critical Value =", round(t_critical, 3)), color="red") +
+  annotate("text", x=t_stat + 0.3, y=0.15, label=paste("t-statistic =", round(t_stat, 3)), color="black") +
+  theme_minimal()
+
+# 顯示圖形
+print(p)
+
+#----------------------------3.19------------------------------------
+(a)
+# 安裝並載入必要的套件
+if (!requireNamespace("remotes", quietly = TRUE)) install.packages("remotes")
+remotes::install_github("ccolonescu/POE5Rdata", force = TRUE)
+library(POE5Rdata)
+library(ggplot2)
+
+# 載入 motel 資料集
+data("motel")
+
+# 查看前幾筆數據
+head(motel)
+
+# 1. 繪製 motel_pct 和 comp_pct 隨時間變化的趨勢圖
+ggplot(motel, aes(x = time)) +
+  geom_line(aes(y = motel_pct, color = "Motel Occupancy")) +
+  geom_line(aes(y = comp_pct, color = "Competitor Occupancy")) +
+  labs(title = "Occupancy Rate Over Time",
+       x = "Time",
+       y = "Occupancy Percentage") +
+  scale_color_manual(values = c("blue", "red")) +
+  theme_minimal()
+
+# 2. 建立線性回歸模型
+model <- lm(motel_pct ~ comp_pct, data = motel)
+summary(model)
+
+# 3. 計算 β₂ 的 95% 信賴區間
+confint(model, level = 0.95)
+
+(b)
+# 設定新的 COMP_PCT 值
+new_data <- data.frame(comp_pct = 70)
+
+# 計算 90% 信賴區間
+prediction <- predict(model, newdata = new_data, interval = "confidence", level = 0.90)
+print(prediction)
+
+(c)
+# 顯示回歸模型的摘要
+summary(model)
+
+# 提取 beta2（comp_pct 變數的係數）和其標準誤差
+beta2 <- coef(summary(model))["comp_pct", "Estimate"]
+se_beta2 <- coef(summary(model))["comp_pct", "Std. Error"]
+
+# 計算 t 統計量
+t_value <- beta2 / se_beta2
+print(paste("t 統計量:", t_value))
+
+# 計算臨界值（自由度 = n - 2）
+df <- nrow(motel) - 2
+t_critical <- qt(0.99, df)
+print(paste("臨界值 t_critical:", t_critical))
+
+# 計算 p 值（單尾檢定）
+p_value <- 1 - pt(t_value, df)
+print(paste("p 值:", p_value))
+
+# 檢查是否拒絕 H0
+if (t_value > t_critical) {
+  print("拒絕 H0，競爭者入住率對汽車旅館入住率有顯著正向影響。")
+} else {
+  print("無法拒絕 H0，競爭者入住率可能無顯著影響。")
+}
+
+(d)
+# 顯示回歸模型摘要
+summary(model)
+
+# 提取 beta2（comp_pct 變數的係數）和標準誤差
+beta2 <- coef(summary(model))["comp_pct", "Estimate"]
+se_beta2 <- coef(summary(model))["comp_pct", "Std. Error"]
+
+# 計算 t 統計量（測試 β2 是否顯著不同於 1）
+t_value <- (beta2 - 1) / se_beta2
+print(paste("t 統計量:", t_value))
+
+# 計算 t 臨界值（雙尾檢定，自由度 = n - 2）
+df <- nrow(motel) - 2
+t_critical <- qt(0.995, df)
+print(paste("臨界值 t_critical:", t_critical))
+
+# 計算 p 值（雙尾檢定）
+p_value <- 2 * (1 - pt(abs(t_value), df))
+print(paste("p 值:", p_value))
+
+# 檢查是否拒絕 H0
+if (abs(t_value) > t_critical) {
+  print("拒絕 H0，競爭者入住率與汽車旅館入住率的變動模式不同。")
+} else {
+  print("無法拒絕 H0，汽車旅館入住率可能與競爭者入住率變動一致（β2 約為 1）。")
+}
+
+(e)
+# 計算殘差
+motel$residuals <- residuals(model)
+
+# 檢查時間 17-23（2004年7月至2005年1月）的殘差
+subset_residuals <- motel[motel$time >= 17 & motel$time <= 23, c("time", "residuals")]
+print(subset_residuals)
+
+# 繪製殘差對時間的折線圖，並標示 2004年7月(時間=17) 和 2005年1月(時間=23)
+library(ggplot2)
+
+ggplot(motel, aes(x = time, y = residuals)) +
+  geom_line(color = "blue") +  # 用藍色線連接殘差點
+  geom_point(color = "blue") + # 在每個點上加點標示
+  geom_hline(yintercept = 0, linetype = "dashed", color = "red") +  # 水平基準線
+  geom_vline(xintercept = c(17, 23), color = "red", linetype = "solid", size = 1) +  
+# 標示 2004年7月 & 2005年1月
+  labs(title = "Residuals vs Time",
+       x = "Time",
+       y = "Residuals") +
+  theme_minimal()
