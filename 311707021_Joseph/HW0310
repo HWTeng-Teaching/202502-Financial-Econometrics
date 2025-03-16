@@ -1,0 +1,158 @@
+#Q1d
+b2 <- 0.0139  #b2的估計
+se_b2 <- 0.00215 # b2標準誤
+t_stat <- b2 / se_b2               # 計算 t 值
+
+# 取得 t 臨界值（df = 62, 1% 顯著水準）
+t_crit <- qt(0.99, df = 62)
+
+print(paste("b2t值",t_stat))
+print(paste("臨界值",t_crit))
+# 判斷是否拒絕 H0
+if (t_stat > t_crit) {
+  print("拒絕 H0：GDP 和獎牌數量有顯著正相關")
+} else {
+  print("無法拒絕 H0：沒有足夠證據顯示 GDP 和獎牌數量有關聯")
+}
+
+#Q7e
+library(ggplot2)
+
+# Define parameters
+df <- 49  # Degrees of freedom
+x <- seq(-4, 4, length = 1000)  # Range of t-values
+y <- dt(x, df)  # t-distribution density
+
+# Given p-value
+p_value <- 0.572  
+
+# Compute critical values for α = 0.05
+t_crit <- qt(0.025, df, lower.tail = FALSE)  # 2.009
+# Compute test statistic from part (d)
+# Since we only have p-value, we use qt to find approximate t-statistic
+t_stat <- qt(p_value / 2, df, lower.tail = FALSE)  # Approximating from p-value
+
+# Plot
+ggplot(data.frame(x, y), aes(x, y)) +
+  geom_line(color = "blue") +  # t-distribution curve
+  geom_vline(xintercept = c(-t_crit, t_crit), color = "red", linetype = "dashed") +  # Critical values
+  geom_vline(xintercept = c(-t_stat, t_stat), color = "purple", linetype = "solid") +  # Test statistic
+  geom_area(data = subset(data.frame(x, y), x <= -t_stat | x >= t_stat),
+            aes(x = x, y = y), fill = "purple", alpha = 0.4) +  # Shade p-value area
+  geom_area(data = subset(data.frame(x, y), x <= -t_crit | x >= t_crit),
+            aes(x = x, y = y), fill = "red", alpha = 0.2) +  # Shade rejection region
+  labs(title = "Two-Tailed t-Test for Intercept",
+       x = "t-value",
+       y = "Density") +
+  theme_minimal()
+
+#Q7f
+t_crit <- qt(0.005, df = 49, lower.tail = FALSE)
+print(t_crit)
+
+#Q7g
+t_crit <- qt(0.025, df = 49, lower.tail = FALSE)
+print(t_crit)
+
+#Q17a
+library(ggplot2)
+
+# Generate t-distribution
+x <- seq(-4, 4, length = 100)
+y <- dt(x, df = 984)
+
+# Plot the t-distribution
+ggplot(data = data.frame(x, y), aes(x, y)) +
+  geom_line(color = "blue") +
+  geom_area(data = subset(data.frame(x, y), x > 1.645), aes(x, y), fill = "red", alpha = 0.5) +
+  geom_vline(xintercept = 4.125, color = "black", linetype = "dashed") +
+  ggtitle("Right-Tailed t-Test: Critical Region") +
+  xlab("t-statistic") +
+  ylab("Density") +
+  theme_minimal()
+#Q17b
+t_crit <- qt(0.975, df = 212)
+print(t_crit)
+
+#Q19a
+library(POE5Rdata)
+data("motel")
+ggplot(motel, aes(x = time)) +
+  geom_line(aes(y = motel_pct, color = "Motel")) +
+  geom_line(aes(y = comp_pct, color = "Competitor")) +
+  labs(title = "Occupancy Rates Over Time",
+       x = "Time",
+       y = "Occupancy Percentage",
+       color = "Legend") +
+  theme_minimal()
+
+# Run regression
+model <- lm(motel_pct ~ comp_pct, data = motel_data)
+
+# Display summary
+summary(model)
+
+confint(model, level = 0.95)
+
+#Q19b
+model <- lm(motel_pct ~ comp_pct, data = motel_data)
+
+# Display the regression summary
+summary(model)
+new_data <- data.frame(comp_pct = 70)
+
+# Predict MOTEL_PCT with confidence interval
+pred <-predict(model, new_data, interval = "confidence", level = 0.90)
+pred
+
+#Q19c
+b2_hat <- summary_model$coefficients["comp_pct", "Estimate"]
+se_b2 <- summary_model$coefficients["comp_pct", "Std. Error"]
+df <- nrow(motel_data) - 2 
+t_critical <- qt(0.99, df)
+# Compute t-statistic
+t_stat <- b2_hat / se_b2
+
+# Print values
+t_stat
+t_critical
+
+# Compare with critical value
+if (t_stat > t_critical) {
+  print("Reject the null hypothesis: β2 is significantly greater than 0.")
+} else {
+  print("Fail to reject the null hypothesis: Insufficient evidence that β2 > 0.")
+}
+
+#Q19d
+beta2_hat <- coef(summary(model))["comp_pct", "Estimate"]
+se_beta2 <- coef(summary(model))["comp_pct", "Std. Error"]
+t_value <- coef(summary(model))["comp_pct", "t value"]
+
+# 設定自由度 df = n - 2
+df <- nrow(motel) - 2
+
+# 計算臨界值 (alpha = 0.01，右尾檢定)
+t_critical <- qt(0.99, df)
+
+# 顯示 t 值與臨界值
+cat("t-value:", t_value, "\n")
+cat("Critical t-value at alpha = 0.01:", t_critical, "\n")
+
+#Q19e
+motel$residuals <- residuals(model)
+
+# 繪製殘差對時間的圖
+ggplot(motel, aes(x = time, y = residuals)) +
+  geom_point() +
+  geom_line() +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "red") +
+  labs(title = "Residuals vs. Time",
+       x = "Time",
+       y = "Residuals") +
+  theme_minimal()
+
+subset_residuals <- motel$residuals[motel$time %in% 17:23]
+subset_residuals
+mean(subset_residuals > 0)  # 計算正殘差比例
+

@@ -1,0 +1,38 @@
+---
+title: "HW0310 - CH3 Questions 1, 7, 17, 19"
+author: "鄭凱鴻"
+date: "2025-03-16"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# **CH3 Question 1**
+
+```{r}
+# 已知數據
+beta_2_hat <- 0.01309  # 估計的回歸係數
+se_beta_2_hat <- 0.00215  # 係數的標準誤
+df <- 62  # 自由度 (n-2 = 64-2 = 62)
+alpha <- 0.01  # 顯著水準
+
+# 計算 t-統計量
+t_statistic <- beta_2_hat / se_beta_2_hat
+
+# 計算 t 臨界值 (右尾檢定)
+t_critical <- qt(1 - alpha, df)
+
+# 計算 p-value (右尾檢定)
+p_value <- 1 - pt(t_statistic, df)
+
+# 顯示結果
+t_statistic
+t_critical
+p_value
+
+```
+
+# **CH3 Question 7**
+
+## **(a) **
