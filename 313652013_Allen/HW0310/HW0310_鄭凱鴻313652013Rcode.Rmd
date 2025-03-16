@@ -10,4 +10,17 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # **CH3 Question 1**
 
+## **(a) Scatter Plot of House Price vs. House Size**
 
+```{r}
+library(ggplot2)  # 載入 ggplot2 繪圖函式庫
+load("collegetown.rdata")  # 載入數據
+
+# 繪製房屋價格與房屋大小的散點圖
+ggplot(collegetown, aes(x = sqft, y = price)) +
+    geom_point(color = "blue", alpha = 0.6) +  # 添加散點，設置藍色，透明度 0.6
+    labs(title = "House Price vs House Size",
+         x = "House Size (hundreds of square feet)",
+         y = "Price (thousands of dollars)") +
+    theme_minimal()  # 設置簡潔主題
+```
