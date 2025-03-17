@@ -242,3 +242,223 @@ upper_bound <- wage_estimate + t_critical_95_rural * se_wage
 # 顯示結果
 c(lower_bound, upper_bound)
 ```
+
+## **(c) **
+
+```{r}
+# 已知數值
+intercept_urban <- -10.76  # 截距
+slope_urban <- 2.46  # 斜率
+educ_value <- 16  # EDUC = 16
+se_intercept_urban <- 2.27  # 截距標準誤
+se_slope_urban <- 0.16  # 斜率標準誤
+cov_intercept_slope_urban <- -0.345  # 截距與斜率共變異數
+df_urban <- 986 - 2  # 自由度
+alpha <- 0.05  # 顯著水準
+
+# 計算預測工資
+wage_estimate_urban <- intercept_urban + slope_urban * educ_value
+
+# 計算標準誤
+se_wage_urban <- sqrt(se_intercept_urban^2 + (educ_value^2) * (se_slope_urban^2) + 2 * educ_value * cov_intercept_slope_urban)
+
+# 計算 95% 信賴區間
+t_critical_95_urban <- qt(1 - alpha / 2, df_urban)
+lower_bound_urban <- wage_estimate_urban - t_critical_95_urban * se_wage_urban
+upper_bound_urban <- wage_estimate_urban + t_critical_95_urban * se_wage_urban
+
+# 顯示結果
+c(wage_estimate_urban, se_wage_urban, lower_bound_urban, upper_bound_urban)
+```
+
+## **(d) **
+
+```{r}
+# 已知數值
+intercept_rural <- -4.88  # 截距估計值
+null_hypothesis_intercept <- 4  # H0: 截距 = 4
+se_intercept_rural <- 3.29  # 截距標準誤
+df_rural <- 214 - 2  # 自由度
+alpha <- 0.01  # 顯著水準 (1%)
+
+# 計算 t-統計量
+t_statistic_intercept_rural <- (intercept_rural - null_hypothesis_intercept) / se_intercept_rural
+
+# 計算 p-value (左尾檢定)
+p_value_intercept_rural <- pt(t_statistic_intercept_rural, df_rural)
+
+# 計算 1% 顯著水準的 t-臨界值 (左尾檢定)
+t_critical_99_rural <- qt(alpha, df_rural)
+
+# 檢查是否拒絕 H0
+reject_null_intercept_rural <- t_statistic_intercept_rural < t_critical_99_rural
+
+# 顯示結果
+c(t_statistic_intercept_rural, p_value_intercept_rural, t_critical_99_rural, reject_null_intercept_rural)
+```
+
+# **CH3 Question 19**
+
+## **(a) **
+
+```{r}
+#  設定工作目錄（請確認路徑正確）
+setwd("C:/Users/User/Downloads/poe5rdata")  # Windows 用雙斜線 \\ 或斜線 /
+
+#  確保檔案存在
+if (!file.exists("motel.rdata")) {
+  stop("錯誤: 找不到 'motel.rdata'，請確認檔案名稱與工作目錄是否正確。")
+}
+
+#  載入 .rdata 檔案
+load("motel.rdata")
+
+#  確認變數是否正確載入
+ls()  # 查看所有載入的變數
+str(motel)  # 檢查資料結構
+summary(motel)  # 查看統計摘要
+names(motel)  # 查看變數名稱
+
+#  檢查變數名稱是否正確（避免大小寫錯誤）
+if (!all(c("motel_pct", "comp_pct", "time") %in% names(motel))) {
+  stop("錯誤: 變數名稱不符，請確認 'motel_pct', 'comp_pct', 'time' 是否存在於 motel 資料框中。")
+}
+
+#  繪製 motel_pct 和 comp_pct 隨時間變化的趨勢圖
+library(ggplot2)
+
+ggplot(motel, aes(x = time)) +
+  geom_line(aes(y = motel_pct, color = "Motel Occupancy"), linewidth = 1) +
+  geom_line(aes(y = comp_pct, color = "Competitor Occupancy"), linewidth = 1) +
+  labs(title = "Occupancy Rates Over Time",
+       x = "Time",
+       y = "Occupancy Percentage (%)") +
+  scale_color_manual(values = c("blue", "red")) +
+  theme_minimal()
+
+#  進行回歸分析 motel_pct ~ comp_pct
+model <- lm(motel_pct ~ comp_pct, data = motel)
+
+#  顯示回歸結果
+summary(model)
+
+#  提取斜率估計值和標準誤
+beta2_hat <- coef(model)[2]  # 斜率估計值
+se_beta2 <- summary(model)$coefficients[2, 2]  # 斜率標準誤
+
+#  計算 95% 信賴區間
+alpha <- 0.05
+df <- nrow(motel) - 2  # 自由度
+t_critical <- qt(1 - alpha/2, df)  # 95% 臨界值
+lower_bound <- beta2_hat - t_critical * se_beta2
+upper_bound <- beta2_hat + t_critical * se_beta2
+
+#  顯示 95% 信賴區間
+c(lower_bound, upper_bound)
+```
+
+## **(b) **
+
+```{r}
+# Given COMP_PCT = 70
+comp_pct_value <- 70
+
+#  Predict the expected occupancy rate (MOTEL_PCT) at COMP_PCT = 70
+predicted_motel_pct <- coef(model)[1] + coef(model)[2] * comp_pct_value
+
+#  Calculate the standard error of the estimate (SE_Yhat)
+n <- nrow(motel)  # Number of observations
+df <- n - 2  # Degrees of freedom
+t_critical_90 <- qt(1 - 0.10 / 2, df)  # t-value for 90% confidence level
+
+# Extract residual standard error (sigma hat)
+sigma_hat <- summary(model)$sigma
+
+# Compute SE_Yhat (Standard Error of the Prediction)
+x_mean <- mean(motel$comp_pct)
+se_Yhat <- sigma_hat * sqrt(1/n + (comp_pct_value - x_mean)^2 / sum((motel$comp_pct - x_mean)^2))
+
+#  Compute the confidence interval
+lower_bound <- predicted_motel_pct - t_critical_90 * se_Yhat
+upper_bound <- predicted_motel_pct + t_critical_90 * se_Yhat
+
+# Display the results
+cat("90% Confidence Interval for MOTEL_PCT when COMP_PCT = 70:\n")
+c(lower_bound, upper_bound)
+```
+
+## **(c) **
+
+```{r}
+# 提取回歸係數與標準誤
+beta2_hat <- coef(model)[2]  # 估計的斜率
+se_beta2 <- summary(model)$coefficients[2, 2]  # 斜率的標準誤
+
+# 計算 t 統計量
+t_stat <- beta2_hat / se_beta2
+
+# 計算臨界值（α = 0.01，右尾檢定）
+alpha <- 0.01
+df <- nrow(motel) - 2  # 自由度
+t_critical <- qt(1 - alpha, df)  # 右尾臨界值
+
+# 顯示結果
+cat("檢定統計量 (t):", t_stat, "\n")
+cat("臨界值 (t_alpha=0.01):", t_critical, "\n")
+
+# 判斷是否拒絕 H0
+if (t_stat > t_critical) {
+  cat("結論：拒絕 H0，表示 COMP_PCT 顯著影響 MOTEL_PCT。\n")
+} else {
+  cat("結論：無法拒絕 H0，無法確認 COMP_PCT 對 MOTEL_PCT 有顯著影響。\n")
+}
+```
+
+## **(d) **
+
+```{r}
+# 提取回歸係數與標準誤
+beta2_hat <- coef(model)[2]  # 估計的斜率
+se_beta2 <- summary(model)$coefficients[2, 2]  # 斜率的標準誤
+
+# 計算 t 統計量（假設 H0: β2 = 1）
+t_stat <- (beta2_hat - 1) / se_beta2
+
+# 計算臨界值（α = 0.01，雙尾檢定）
+alpha <- 0.01
+df <- nrow(motel) - 2  # 自由度
+t_critical <- qt(1 - alpha/2, df)  # 雙尾檢定的臨界值
+
+# 顯示結果
+cat("檢定統計量 (t):", t_stat, "\n")
+cat("臨界值 (t_alpha=0.01, 雙尾):", t_critical, "\n")
+
+# 判斷是否拒絕 H0
+if (abs(t_stat) > t_critical) {
+  cat("結論：拒絕 H0，表示 β2 不等於 1，競爭者入住率與旅館入住率變動幅度不同。\n")
+} else {
+  cat("結論：無法拒絕 H0，表示 β2 可能等於 1，競爭者入住率與旅館入住率變動幅度相同。\n")
+}
+```
+
+## **(e) **
+
+```{r}
+#  計算 OLS 殘差
+motel$residuals <- residuals(model)  # 從回歸模型提取殘差
+
+#  繪製殘差圖
+library(ggplot2)
+
+ggplot(motel, aes(x = time, y = residuals)) +
+  geom_point(color = "blue") +  # 繪製殘差點
+  geom_hline(yintercept = 0, linetype = "dashed", color = "red") +  # 水平線表示殘差 = 0
+  labs(title = "Residuals vs Time",
+       x = "Time",
+       y = "Residuals") +
+  theme_minimal()
+
+#  檢查時間區間 17-23 內的殘差符號
+subset_residuals <- motel$residuals[motel$time >= 17 & motel$time <= 23]
+table(sign(subset_residuals))  # 統計正負殘差的數量
+```
