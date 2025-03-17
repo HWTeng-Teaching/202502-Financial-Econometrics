@@ -2,12 +2,11 @@
 
 ## 20250310
 
-### Q1
+### 1
 
 <img width="762" alt="image" src="https://github.com/user-attachments/assets/99c9959d-7229-4d2d-af22-12442c8b8ad3" />
 
-### Q2
+### 2
 
-Can we teach in Chinese?
-
-Sorry, no. This course is designed as an EMI course. 
+Can this course be taught in Chinese?
+Response: Sorry, but no. This course is specifically designed as an EMI (English-Medium Instruction) course.
