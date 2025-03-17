@@ -41,7 +41,5 @@ Since our computed test statistic is:
 
 which is much greater than the critical value of 2.39, we reject the null hypothesis at the 1% level.
 
-**Economic Conclusion:** There is strong statistical evidence to suggest that a country’s GDP is positively related to the number of Olympic medals won. Economically, this implies that wealthier countries tend to win more medals.
-
 **Interpretation of 1% Significance Level:** The 1% significance level means that there is only a 1% probability of rejecting the null hypothesis when it is actually true. In other words, there is a very low chance that our conclusion is due to random chance.
 
