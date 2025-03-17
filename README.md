@@ -2,9 +2,11 @@
 
 *Created by Huei-Wen Teng on 20250217 Last updated on 20250217*
 
-## 20250224 In-class Exercise link
+## 20250317 In-class Exercise link
 
-[https://forms.gle/fUqXFv4rAMys2K9d6](https://forms.gle/fUqXFv4rAMys2K9d6)
+[https://forms.gle/5i2sFP9rp1mPsX9F6](https://forms.gle/5i2sFP9rp1mPsX9F6)
+
+<img width="571" alt="image" src="https://github.com/user-attachments/assets/cf0fe786-cdd2-4896-925a-9d3e87cd8f9e" />
 
 
 
