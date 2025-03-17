@@ -177,6 +177,68 @@ reject_null <- abs(t_statistic_slope) > t_critical_95
 c(t_statistic_slope, p_value_slope, t_critical_95, reject_null)
 ```
 
+# **CH3 Question 17**
 
+## **(a) **
 
+```{r}
+# 載入必要的套件
+library(ggplot2)
 
+# 已知數值
+slope_estimate_urban <- 2.46  # 斜率估計值
+null_hypothesis_slope <- 1.80  # H0: 斜率 = 1.80
+se_slope_urban <- 0.16  # 斜率標準誤
+df_urban <- 986 - 2  # 自由度 (N-2)
+alpha <- 0.05  # 顯著水準
+
+# 計算 t-統計量
+t_statistic_urban <- (slope_estimate_urban - null_hypothesis_slope) / se_slope_urban
+
+# 計算 p-value (右尾檢定)
+p_value_urban <- 1 - pt(t_statistic_urban, df_urban)
+
+# 計算 5% 顯著水準的 t-臨界值 (右尾檢定)
+t_critical_95_urban <- qt(1 - alpha, df_urban)
+
+# 建立 t-分佈數據
+x_vals <- seq(-4, 6, length.out = 1000)
+y_vals <- dt(x_vals, df_urban)
+
+# 建立 DataFrame
+data <- data.frame(x = x_vals, y = y_vals)
+
+# 繪製 t-分佈曲線
+p <- ggplot(data, aes(x, y)) +
+  geom_line(color = "blue", linewidth = 1) +  # 修正這裡
+  geom_area(data = subset(data, x >= t_critical_95_urban), 
+            aes(x, y), fill = "red", alpha = 0.5) +  # 拒絕區域
+  geom_vline(xintercept = t_statistic_urban, color = "black", linetype = "dashed") +  # 標示 t-統計量
+  labs(title = "t-Distribution with Rejection Region (α=0.05) for Urban Regression",
+       x = "t-Value", y = "Density") +
+  theme_minimal()
+
+# 顯示圖表
+print(p)
+
+# 顯示檢定結果
+c(t_statistic_urban, p_value_urban, t_critical_95_urban, t_statistic_urban > t_critical_95_urban)
+```
+
+## **(b) **
+
+```{r}
+# 已知數值
+wage_estimate <- 23.92  # 預測時薪
+se_wage <- 0.833  # 題目提供的標準誤
+df_rural <- 214 - 2  # 自由度
+alpha <- 0.05  # 顯著水準
+
+# 計算 95% 信賴區間
+t_critical_95_rural <- qt(1 - alpha / 2, df_rural)
+lower_bound <- wage_estimate - t_critical_95_rural * se_wage
+upper_bound <- wage_estimate + t_critical_95_rural * se_wage
+
+# 顯示結果
+c(lower_bound, upper_bound)
+```
