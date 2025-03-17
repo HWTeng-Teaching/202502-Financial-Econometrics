@@ -1,4 +1,4 @@
 
 $
-\frac{dy}{d x/x}
+frac{dy}{d x/x}
 $
