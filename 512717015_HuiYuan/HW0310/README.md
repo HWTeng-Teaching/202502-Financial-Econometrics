@@ -18,7 +18,12 @@
 ## (e) 進行 t 檢定/說明經濟含義與顯著水準(1%)
 - t = 6.086 > 臨界點(critical value) = 2.39；拒絕虛無假設(H<sub>0</sub>)
 - 經濟含義：GDP 較高的國家往往能贏得較多的獎牌，可能是因為這些國家擁有更多的運動資源、良好的基礎設施、更完善的運動訓練體系等
-- 顯著水準(1%)：拒絕虛無解假設(H<sub>0</sub>)的錯誤率只有 1%
+- 顯著水準(1%)：拒絕虛無解假設(H<sub>0</sub>)的錯誤率只有 1%  
+## *R code*
+<img width="356" alt="image" src="https://github.com/user-attachments/assets/0fe72546-ef36-48ce-aa2f-d4829a67959b" />
+
+
+
 ---
 # 3.7
 ![image](https://github.com/user-attachments/assets/ec549157-f45c-4138-a631-4a597a546c92)
