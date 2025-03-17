@@ -1,6 +1,4 @@
 
 $
-
-/frac{dy}{dx/x}
-
+/frac {dy}{dx/x}
 $
