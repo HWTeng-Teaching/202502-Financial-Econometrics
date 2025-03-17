@@ -26,14 +26,69 @@
 # 3.7
 ![image](https://github.com/user-attachments/assets/ec549157-f45c-4138-a631-4a597a546c92)
 ## (a)
+The regression equation is:
 
+  INCOME = (a) + 1.029 × BACHELOR  
+The provided t-value for the intercept is 4.31 with a standard error of 2.672.  
+Using the formula:  
+  t = (estimated intercept − 0) / standard error  
+Thus, estimated intercept = t × standard error = 4.31 × 2.672 ≈ 11.51632  
 
+* The estimated intercept is approximately 11.53.
 ## (b)
+The estimated regression is:
+
+  INCOME = 11.53 + 1.029 × BACHELOR  
+<img src="https://github.com/user-attachments/assets/6ed35ff5-b685-4bc7-b0c2-2d2ac9d9410a" alt="圖片描述" width="400" height="250" />
+
+**Interpretation:**  
+Since the slope (1.029) is positive, as BACHELOR increases, INCOME increases.  
+This indicates a positive relationship. Being a linear model, the rate of increase is constant.
+
+**Sketch Concept:**  
+Plot a straight line with the horizontal axis representing BACHELOR and the vertical axis representing INCOME, starting at approximately 11.53 and rising by about 1.029 units for every one-unit increase in BACHELOR.
 ## (c)
+Given slope = 1.029 and its t-value = 10.75, use the formula:  
+
+  t = (slope − 0) / standard error  
+Thus, standard error = slope / t = 1.029 / 10.75 ≈ 0.0957  
+
+* The standard error of the slope is approximately 0.0958.
 ## (d)
+Under the null hypothesis, intercept = 10. The estimated intercept is approximately 11.53 with a standard error of 2.672.  
+Calculation:  
+  t = (11.5163 − 10) / 2.672 ≈ 0.567 
+
+*The t-statistic is approximately 0.567.
 ## (e)
+<img src="https://github.com/user-attachments/assets/5e093594-4029-46b0-8627-ab84365703ac" alt="圖片描述" width="400" height="250" />
+
+* the rejection regions are for t < −2.01 or t > 2.01, the observed t-value falls well within the acceptance region.
 ## (f)
+The 99.5 Percentile of t(49) distribution: 2.68
+
+The 99% interval estimated for the slope :
+
+$$
+\ b_2 ± t_c se(b_2) = 1.029 ± 2.68(0.0957) = [0.7725,1.2855].\
+$$
 ## (g)
+**Hypotheses:**
+* Null Hypothesis H0: β₂ = 1
+* Alternative Hypothesis H1: β₂ ≠ 1
+* 
+**Test Statistic:**
+
+$$
+t = \frac{b_2 - 1}{\mathrm{SE}(b_2)}    ,t(n-2)
+$$
+
+if the null hypothesis is true. The 97.5 percentile of the t(49) distribution  is 2.009, so we reject the null hypothesis of the t-value is greater than or equal to 2.0096 or if t is less than or equal to −2.009. The calculated t-value is 
+
+* t = (1.029 - 1) / (0.0957) = 0.303
+
+Therefore, we fail to reject the null hypothesis H0: β₂ = 1. We cannot reject the null hypothesis that each additional 1% percentage of the population with a bachelor’s degree increases per capita income by $1000.
+
 ---
 # 3.17
 ![image](https://github.com/user-attachments/assets/95bb8fb4-12ff-40a9-984b-96a75a51008f)
@@ -82,7 +137,112 @@
 # 3.19
 ![image](https://github.com/user-attachments/assets/68121018-af9b-484e-a7d7-558db45047b2)
 ## (a)
+<img src="https://github.com/user-attachments/assets/64955f9d-a75c-49b8-902d-52d48edca613" alt="圖片描述" width="400" height="250" />
+
+### Plotting and Trend Analysis
+- **Plot the Data:**  
+  Plot the two variables, **MOTEL_PCT** and **COMP_PCT**, against **TIME** on the same graph.
+- **Visual Comparison:**  
+  By visually comparing the curves, you can determine whether the occupancy rates move together over time.  
+  - If both series follow a similar pattern (for example, both rising or falling simultaneously), it suggests that external factors (such as seasonality) affect them similarly.
+  - Observe which series tends to have higher occupancy; for instance, the competitor’s occupancy might consistently be higher than the motel’s.
+
+  Estimate the regression model:
+MOTEL_PCT = β₁ + β₂ COMP_PCT + e
+
+- **Parameter Estimates:**  
+Obtain the estimates **β̂₁** and **β̂₂** along with the standard error for **β̂₂**.
+
+### 95% Confidence Interval for β₂
+- **Interval Formula:**  
+The confidence interval is given by:
+
+β̂₂ ± t(0.975, df) × SE(β̂₂)
+
+
+- **Interpretation:**  
+A narrow confidence interval indicates that the association between **MOTEL_PCT** and **COMP_PCT** has been estimated precisely, whereas a wide interval suggests a high level of uncertainty in the estimate.
+
 ## (b)
+### Prediction
+- **Calculate the Predicted Value:**  
+Use the estimated regression model to predict **MOTEL_PCT** when **COMP_PCT = 70**:
+
+MOTEL_PCT^ = β̂₁ + β̂₂ × 70
+
+### Constructing the Interval
+- **Confidence Interval Formula:**  
+The 90% confidence interval for the expected value is:
+
+MOTEL_PCT^ ± t(0.95, df) × SE(MOTEL_PCT^)
+
+
+where **SE(MOTEL_PCT^)** is the standard error of the prediction.
+- **Interpretation:**  
+This interval provides the range within which we are 90% confident that the true mean occupancy rate will fall when **COMP_PCT** is 70.
+
 ## (c)
+### Hypotheses
+- **Null Hypothesis (H₀):** β₂ ≤ 0  
+- **Alternative Hypothesis (Hₐ):** β₂ > 0
+
+### Test Statistic
+- **Calculation:**  
+Compute the t-statistic as:
+
+t = (β̂₂ − 0) / SE(β̂₂)
+
+
+### Rejection Region
+- For a one-tailed test at **α = 0.01**, reject H₀ if:
+
+t > t(0.99, df)
+
+
+### Conclusion
+- If the computed t-statistic exceeds the critical value, you reject H₀ and conclude that there is statistically significant evidence at the 1% level that the association between **COMP_PCT** and **MOTEL_PCT** is positive.
+
 ## (d)
+### Hypotheses
+- **Null Hypothesis (H₀):** β₂ = 1  
+- **Alternative Hypothesis (Hₐ):** β₂ ≠ 1
+
+### Test Statistic
+- **Calculation:**  
+Compute the t-statistic as:
+
+t = (β̂₂ − 1) / SE(β̂₂)
+
+
+### Rejection Region
+- For a two-tailed test at **α = 0.01**, reject H₀ if:
+
+|t| > t(0.995, df)
+
+
+### Interpretation
+- If H₀ were true (β₂ = 1), it would imply a one-for-one relationship between competitor occupancy and the motel’s occupancy (i.e., a 1 percentage point increase in **COMP_PCT** would lead to a 1 percentage point increase in **MOTEL_PCT**).
+- If the t-statistic falls in the rejection region, conclude that the relationship deviates significantly from one-for-one.
+
 ## (e)
+<img src="https://github.com/user-attachments/assets/f8b45775-c411-45ae-a1fc-2aa9384a4c72" alt="圖片描述" width="400" height="250" />
+
+### Calculation of Residuals
+- **Residual Formula:**  
+For each observation, calculate the residual as:
+
+eᵢ = MOTEL_PCTᵢ − (β̂₁ + β̂₂ COMP_PCTᵢ)
+
+
+### Plotting vs. TIME
+- **Purpose:**  
+Plot these residuals against **TIME** to check for any systematic patterns.
+- **Ideal Pattern:**  
+Ideally, the residuals should be randomly scattered around zero, indicating a good model fit.
+
+### Examination of Time Periods 17–23
+- **Focus Period:**  
+Analyze the residuals from **TIME periods 17–23** (from July 2004 to January 2005).
+- **Interpretation:**  
+Determine whether the majority of the residuals in this period are positive or negative.  
+- For example, if most residuals are negative, it suggests that the actual motel occupancy was lower than predicted by the regression model during these months—possibly due to disruptions such as construction defect corrections.
