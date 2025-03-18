@@ -1,19 +1,38 @@
 # 載入 ggplot2 套件
 library(ggplot2)
 
+# 3.04(a)
 # 定義經驗年數 (EXPER) 範圍
-EXPER <- seq(0, 30, by = 1)
+EXPER_model1 <- seq(0, 30, by = 1)
 
 # 計算 Model 1 的預測 RATING 值
-RATING_Model1 <- 64.289 + 0.990 * EXPER
+RATING_Model1 <- 64.289 + 0.990 * EXPER_model1
 
 # 建立資料框 (Data Frame)
-data <- data.frame(EXPER, RATING_Model1)
+data_model1 <- data.frame(EXPER_model1, RATING_Model1)
 
 # 繪製擬合線圖
-ggplot(data, aes(x = EXPER, y = RATING_Model1)) +
+ggplot(data_model1, aes(x = EXPER_model1, y = RATING_Model1)) +
   geom_line(color = "blue") +  # 繪製線條
   labs(title = "Fitted Values from Model 1",
+       x = "Years of Experience (EXPER)",
+       y = "Predicted Performance Rating (RATING)") +
+  theme_minimal()  # 設定簡潔的圖表風格
+
+# 3.04(b)
+# 定義經驗年數 (EXPER) 範圍，從 1 到 30 (因為 ln(0) 不存在)
+EXPER_model2 <- seq(1, 30, by = 1)
+
+# 計算 Model 2 的預測 RATING 值
+RATING_Model2 <- 39.464 + 15.312 * log(EXPER_model2)
+
+# 建立資料框 (Data Frame)
+data_model2 <- data.frame(EXPER_model2, RATING_Model2)
+
+# 繪製擬合線圖
+ggplot(data_model2, aes(x = EXPER_model2, y = RATING_Model2)) +
+  geom_line(color = "red") +  # 繪製紅色線條
+  labs(title = "Fitted Values from Model 2",
        x = "Years of Experience (EXPER)",
        y = "Predicted Performance Rating (RATING)") +
   theme_minimal()  # 設定簡潔的圖表風格
