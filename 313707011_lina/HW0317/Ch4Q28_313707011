@@ -1,0 +1,11 @@
+# 設定資料集的 URL
+url <- "https://www.principlesofeconometrics.com/poe5/data/rdata/wa_wheat.rdata"
+
+# 下載資料集並儲存為本地檔案
+download.file(url, destfile = "wa_wheat.rdata")
+
+# 載入資料集
+load("wa_wheat.rdata")
+
+# 確認變數名稱
+names(wa_wheat)
