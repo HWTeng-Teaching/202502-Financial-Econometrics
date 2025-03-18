@@ -9,3 +9,106 @@ load("wa_wheat.rdata")
 
 # 確認變數名稱
 names(wa_wheat)
+
+# 設定資料集的 URL
+url <- "https://www.principlesofeconometrics.com/poe5/data/rdata/wa_wheat.rdata"
+
+# 下載資料集並儲存為本地檔案
+download.file(url, destfile = "wa_wheat.rdata")
+
+# 載入資料集
+load("wa_wheat.rdata")
+
+# 確認變數名稱
+names(wa_wheat)
+
+# 安裝 tseries 套件（若尚未安裝）
+if (!require(tseries)) install.packages("tseries")
+library(tseries)
+
+# 建立 Northampton 區的數據框
+northampton_data <- data.frame(
+  YIELD = wa_wheat$northampton, 
+  TIME = wa_wheat$time
+)
+
+# 模型 1: 線性回歸 YIELD = β0 + β1TIME + e
+model1 <- lm(YIELD ~ TIME, data = northampton_data)
+
+# 模型 2: 線性-對數回歸 YIELD = α0 + α1 ln(TIME) + e
+northampton_data$ln_TIME <- log(northampton_data$TIME)
+model2 <- lm(YIELD ~ ln_TIME, data = northampton_data)
+
+# 模型 3: 二次回歸 YIELD = γ0 + γ1TIME^2 + e
+northampton_data$TIME2 <- northampton_data$TIME^2
+model3 <- lm(YIELD ~ TIME2, data = northampton_data)
+
+# 模型 4: 對數-線性回歸 ln(YIELD) = ϕ0 + ϕ1TIME + e
+northampton_data$ln_YIELD <- log(northampton_data$YIELD)
+model4 <- lm(ln_YIELD ~ TIME, data = northampton_data)
+
+# 顯示回歸結果摘要
+summary(model1)
+summary(model2)
+summary(model3)
+summary(model4)
+
+# 繪製回歸擬合圖
+par(mfrow = c(2, 2))  # 設定 2x2 圖形排列
+
+# 線性回歸圖
+plot(northampton_data$TIME, northampton_data$YIELD, main = "Linear Model",
+     xlab = "TIME", ylab = "YIELD", col = "blue", pch = 16)
+lines(northampton_data$TIME, fitted(model1), col = "red", lwd = 2)
+
+# 線性-對數回歸圖
+plot(northampton_data$TIME, northampton_data$YIELD, main = "Linear-Log Model",
+     xlab = "TIME", ylab = "YIELD", col = "blue", pch = 16)
+lines(northampton_data$TIME, fitted(model2), col = "red", lwd = 2)
+
+# 二次回歸圖
+plot(northampton_data$TIME, northampton_data$YIELD, main = "Quadratic Model",
+     xlab = "TIME", ylab = "YIELD", col = "blue", pch = 16)
+lines(northampton_data$TIME, fitted(model3), col = "red", lwd = 2)
+
+# 對數-線性回歸圖（擬合值轉回 YIELD）
+plot(northampton_data$TIME, northampton_data$YIELD, main = "Log-Linear Model",
+     xlab = "TIME", ylab = "YIELD", col = "blue", pch = 16)
+lines(northampton_data$TIME, exp(fitted(model4)), col = "red", lwd = 2)  # 轉回 YIELD
+
+# 殘差分析
+par(mfrow = c(2, 2))
+
+plot(model1$residuals, main = "Residuals: Linear Model", ylab = "Residuals", xlab = "Index", col = "blue", pch = 16)
+plot(model2$residuals, main = "Residuals: Linear-Log Model", ylab = "Residuals", xlab = "Index", col = "blue", pch = 16)
+plot(model3$residuals, main = "Residuals: Quadratic Model", ylab = "Residuals", xlab = "Index", col = "blue", pch = 16)
+plot(model4$residuals, main = "Residuals: Log-Linear Model", ylab = "Residuals", xlab = "Index", col = "blue", pch = 16)
+
+# **使用 Jarque-Bera 檢定來檢查殘差是否符合常態分布**
+jb_test1 <- jarque.bera.test(model1$residuals)
+jb_test2 <- jarque.bera.test(model2$residuals)
+jb_test3 <- jarque.bera.test(model3$residuals)
+jb_test4 <- jarque.bera.test(model4$residuals)
+
+# **整理 Jarque-Bera 檢定結果**
+jb_values <- data.frame(
+  Model = c("Linear", "Linear-Log", "Quadratic", "Log-Linear"),
+  JB_p_value = c(jb_test1$p.value, jb_test2$p.value, 
+                 jb_test3$p.value, jb_test4$p.value)
+)
+
+# **計算 R² 值**
+r2_values <- data.frame(
+  Model = c("Linear", "Linear-Log", "Quadratic", "Log-Linear"),
+  R2 = c(summary(model1)$r.squared, summary(model2)$r.squared, 
+         summary(model3)$r.squared, summary(model4)$r.squared)
+)
+
+# **輸出結果**
+cat("Jarque-Bera Normality Test (p-values):\n")
+print(jb_values)
+
+cat("R² Values:\n")
+print(r2_values)
+
+
