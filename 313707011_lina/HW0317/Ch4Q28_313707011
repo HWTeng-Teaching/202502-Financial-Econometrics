@@ -1,38 +1,26 @@
 # 設定資料集的 URL
 url <- "https://www.principlesofeconometrics.com/poe5/data/rdata/wa_wheat.rdata"
-
-# 下載資料集並儲存為本地檔案
-download.file(url, destfile = "wa_wheat.rdata")
-
-# 載入資料集
-load("wa_wheat.rdata")
-
-# 確認變數名稱
-names(wa_wheat)
+download.file(url, destfile = "wa_wheat.rdata")  # 下載資料集並儲存為本地檔案
+load("wa_wheat.rdata")  # 載入資料集
+names(wa_wheat)  # 確認變數名稱
 
 # 安裝 tseries 套件（若尚未安裝）
 if (!require(tseries)) install.packages("tseries")
 library(tseries)
 
+# 4.28(a)(b)
 # 建立 Northampton 區的數據框
 northampton_data <- data.frame(
   YIELD = wa_wheat$northampton, 
   TIME = wa_wheat$time
 )
 
-# 模型 1: 線性回歸 YIELD = β0 + β1TIME + e
-model1 <- lm(YIELD ~ TIME, data = northampton_data)
-
-# 模型 2: 線性-對數回歸 YIELD = α0 + α1 ln(TIME) + e
-northampton_data$ln_TIME <- log(northampton_data$TIME)
+model1 <- lm(YIELD ~ TIME, data = northampton_data)  # 模型 1: 線性回歸 YIELD = β0 + β1TIME + e
+northampton_data$ln_TIME <- log(northampton_data$TIME)  # 模型 2: 線性-對數回歸 YIELD = α0 + α1 ln(TIME) + e
 model2 <- lm(YIELD ~ ln_TIME, data = northampton_data)
-
-# 模型 3: 二次回歸 YIELD = γ0 + γ1TIME^2 + e
-northampton_data$TIME2 <- northampton_data$TIME^2
+northampton_data$TIME2 <- northampton_data$TIME^2  # 模型 3: 二次回歸 YIELD = γ0 + γ1TIME^2 + e
 model3 <- lm(YIELD ~ TIME2, data = northampton_data)
-
-# 模型 4: 對數-線性回歸 ln(YIELD) = ϕ0 + ϕ1TIME + e
-northampton_data$ln_YIELD <- log(northampton_data$YIELD)
+northampton_data$ln_YIELD <- log(northampton_data$YIELD)  # 模型 4: 對數-線性回歸 ln(YIELD) = ϕ0 + ϕ1TIME + e
 model4 <- lm(ln_YIELD ~ TIME, data = northampton_data)
 
 # 顯示回歸結果摘要
@@ -43,30 +31,21 @@ summary(model4)
 
 # 繪製回歸擬合圖
 par(mfrow = c(2, 2))  # 設定 2x2 圖形排列
-
-# 線性回歸圖
 plot(northampton_data$TIME, northampton_data$YIELD, main = "Linear Model",
      xlab = "TIME", ylab = "YIELD", col = "blue", pch = 16)
 lines(northampton_data$TIME, fitted(model1), col = "red", lwd = 2)
-
-# 線性-對數回歸圖
 plot(northampton_data$TIME, northampton_data$YIELD, main = "Linear-Log Model",
      xlab = "TIME", ylab = "YIELD", col = "blue", pch = 16)
 lines(northampton_data$TIME, fitted(model2), col = "red", lwd = 2)
-
-# 二次回歸圖
 plot(northampton_data$TIME, northampton_data$YIELD, main = "Quadratic Model",
      xlab = "TIME", ylab = "YIELD", col = "blue", pch = 16)
 lines(northampton_data$TIME, fitted(model3), col = "red", lwd = 2)
-
-# 對數-線性回歸圖（擬合值轉回 YIELD）
 plot(northampton_data$TIME, northampton_data$YIELD, main = "Log-Linear Model",
      xlab = "TIME", ylab = "YIELD", col = "blue", pch = 16)
 lines(northampton_data$TIME, exp(fitted(model4)), col = "red", lwd = 2)  # 轉回 YIELD
 
 # 殘差分析
-par(mfrow = c(2, 2))
-
+par(mfrow = c(2, 2))  # 設定 2x2 圖形排列
 plot(model1$residuals, main = "Residuals: Linear Model", ylab = "Residuals", xlab = "Index", col = "blue", pch = 16)
 plot(model2$residuals, main = "Residuals: Linear-Log Model", ylab = "Residuals", xlab = "Index", col = "blue", pch = 16)
 plot(model3$residuals, main = "Residuals: Quadratic Model", ylab = "Residuals", xlab = "Index", col = "blue", pch = 16)
@@ -117,4 +96,87 @@ print(jb_values)
 cat("R² Values:\n")
 print(r2_values)
 
+# 4.28(c)
+# 計算學生化殘差
+student_resid <- rstudent(model3)  
+outliers_resid <- which(abs(student_resid) > 2)  # 找出異常值
+
+# 建立結果表格
+student_resid_table <- data.frame(
+  Observation = 1:length(student_resid),
+  Studentized_Residual = student_resid,
+  Outlier_Residual = ifelse(abs(student_resid) > 2, "YES", "NO")
+)
+
+# 過濾異常觀測值
+library(dplyr)
+abnormal_resid_points <- student_resid_table %>%
+  filter(Outlier_Residual == "YES")
+
+# 顯示異常學生化殘差的觀測點
+print(abnormal_resid_points)
+
+# 計算 Leverage 值
+leverage_values <- hatvalues(model3)  # R 內建計算 hat matrix 的對角線值
+N <- length(northampton_data$YIELD)  # 觀測值數量
+K <- 2  # 回歸模型中的變數數量
+h_bar <- K / N  # 計算槓桿值的平均值 h_bar = 2/N
+leverage_threshold_2x <- 2 * h_bar  # 設定異常標準: 2 倍平均槓桿值
+high_leverage_2x <- which(leverage_values > leverage_threshold_2x)  # 找出高槓桿點
+
+# 建立結果表格
+leverage_table <- data.frame(
+  Observation = 1:N,
+  Leverage = leverage_values,
+  High_Leverage_2x = ifelse(leverage_values > leverage_threshold_2x, "YES", "NO")
+)
+
+# 顯示超過 2 倍標準的觀測值
+library(dplyr)
+abnormal_leverage_points <- leverage_table %>%
+  filter(High_Leverage_2x == "YES")
+
+cat("h_bar:", h_bar, "\n")
+# 印出異常槓桿值的觀測點
+print(abnormal_leverage_points)
+
+# 計算 DFBETAS
+dfbetas_values <- dfbetas(model3)  
+dfbetas_threshold <- 2 / sqrt(N)  # 計算判斷標準
+high_dfbetas <- which(abs(dfbetas_values[,2]) > dfbetas_threshold)  # 找出影響 TIME2 變數的異常值
+
+# 建立結果表格
+dfbetas_table <- data.frame(
+  Observation = 1:N,
+  DFBETAS_TIME2 = dfbetas_values[,2],  # 只查看 TIME2 變數的影響
+  Influential_DFBETAS = ifelse(abs(dfbetas_values[,2]) > dfbetas_threshold, "YES", "NO")
+)
+
+# 過濾異常觀測值
+library(dplyr)
+abnormal_dfbetas_points <- dfbetas_table %>%
+  filter(Influential_DFBETAS == "YES")
+
+# 顯示異常 DFBETAS 觀測點
+print(abnormal_dfbetas_points)
+
+# 計算 DFFITS
+dffits_values <- dffits(model3)
+dffits_threshold_2x <- 2 * sqrt(K / N)  # 設定異常標準: 2 倍標準
+high_dffits_2x <- which(abs(dffits_values) > dffits_threshold_2x) # 找出異常 DFFITS
+
+# 建立結果表格
+dffits_table <- data.frame(
+  Observation = 1:N,
+  DFFITS = dffits_values,
+  High_DFFITS_2x = ifelse(abs(dffits_values) > dffits_threshold_2x, "YES", "NO")
+)
+
+# 過濾異常值
+library(dplyr)
+abnormal_dffits_points <- dffits_table %>%
+  filter(High_DFFITS_2x == "YES")
+
+# 顯示異常 DFFITS 觀測點
+print(abnormal_dffits_points)
 
