@@ -97,20 +97,16 @@ cat("R² Values:\n")
 print(r2_values)
 
 # 4.28(c)
+library(dplyr)
 # 計算學生化殘差
 student_resid <- rstudent(model3)  
 outliers_resid <- which(abs(student_resid) > 2)  # 找出異常值
-
-# 建立結果表格
-student_resid_table <- data.frame(
+student_resid_table <- data.frame(    # 建立結果表格
   Observation = 1:length(student_resid),
   Studentized_Residual = student_resid,
   Outlier_Residual = ifelse(abs(student_resid) > 2, "YES", "NO")
 )
-
-# 過濾異常觀測值
-library(dplyr)
-abnormal_resid_points <- student_resid_table %>%
+abnormal_resid_points <- student_resid_table %>%    # 過濾異常觀測值
   filter(Outlier_Residual == "YES")
 
 # 顯示異常學生化殘差的觀測點
@@ -123,19 +119,13 @@ K <- 2  # 回歸模型中的變數數量
 h_bar <- K / N  # 計算槓桿值的平均值 h_bar = 2/N
 leverage_threshold_2x <- 2 * h_bar  # 設定異常標準: 2 倍平均槓桿值
 high_leverage_2x <- which(leverage_values > leverage_threshold_2x)  # 找出高槓桿點
-
-# 建立結果表格
-leverage_table <- data.frame(
+leverage_table <- data.frame(    # 建立結果表格
   Observation = 1:N,
   Leverage = leverage_values,
   High_Leverage_2x = ifelse(leverage_values > leverage_threshold_2x, "YES", "NO")
 )
-
-# 顯示超過 2 倍標準的觀測值
-library(dplyr)
-abnormal_leverage_points <- leverage_table %>%
+abnormal_leverage_points <- leverage_table %>%    # 過濾異常觀測值
   filter(High_Leverage_2x == "YES")
-
 cat("h_bar:", h_bar, "\n")
 # 印出異常槓桿值的觀測點
 print(abnormal_leverage_points)
@@ -144,17 +134,12 @@ print(abnormal_leverage_points)
 dfbetas_values <- dfbetas(model3)  
 dfbetas_threshold <- 2 / sqrt(N)  # 計算判斷標準
 high_dfbetas <- which(abs(dfbetas_values[,2]) > dfbetas_threshold)  # 找出影響 TIME2 變數的異常值
-
-# 建立結果表格
-dfbetas_table <- data.frame(
+dfbetas_table <- data.frame(    # 建立結果表格
   Observation = 1:N,
   DFBETAS_TIME2 = dfbetas_values[,2],  # 只查看 TIME2 變數的影響
   Influential_DFBETAS = ifelse(abs(dfbetas_values[,2]) > dfbetas_threshold, "YES", "NO")
 )
-
-# 過濾異常觀測值
-library(dplyr)
-abnormal_dfbetas_points <- dfbetas_table %>%
+abnormal_dfbetas_points <- dfbetas_table %>%    # 過濾異常觀測值
   filter(Influential_DFBETAS == "YES")
 
 # 顯示異常 DFBETAS 觀測點
@@ -164,17 +149,12 @@ print(abnormal_dfbetas_points)
 dffits_values <- dffits(model3)
 dffits_threshold_2x <- 2 * sqrt(K / N)  # 設定異常標準: 2 倍標準
 high_dffits_2x <- which(abs(dffits_values) > dffits_threshold_2x) # 找出異常 DFFITS
-
-# 建立結果表格
-dffits_table <- data.frame(
+dffits_table <- data.frame(    # 建立結果表格
   Observation = 1:N,
   DFFITS = dffits_values,
   High_DFFITS_2x = ifelse(abs(dffits_values) > dffits_threshold_2x, "YES", "NO")
 )
-
-# 過濾異常值
-library(dplyr)
-abnormal_dffits_points <- dffits_table %>%
+abnormal_dffits_points <- dffits_table %>%    # 過濾異常觀測值
   filter(High_DFFITS_2x == "YES")
 
 # 顯示異常 DFFITS 觀測點
