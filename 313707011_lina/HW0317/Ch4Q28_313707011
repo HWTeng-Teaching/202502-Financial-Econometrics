@@ -10,18 +10,6 @@ load("wa_wheat.rdata")
 # 確認變數名稱
 names(wa_wheat)
 
-# 設定資料集的 URL
-url <- "https://www.principlesofeconometrics.com/poe5/data/rdata/wa_wheat.rdata"
-
-# 下載資料集並儲存為本地檔案
-download.file(url, destfile = "wa_wheat.rdata")
-
-# 載入資料集
-load("wa_wheat.rdata")
-
-# 確認變數名稱
-names(wa_wheat)
-
 # 安裝 tseries 套件（若尚未安裝）
 if (!require(tseries)) install.packages("tseries")
 library(tseries)
@@ -83,6 +71,24 @@ plot(model1$residuals, main = "Residuals: Linear Model", ylab = "Residuals", xla
 plot(model2$residuals, main = "Residuals: Linear-Log Model", ylab = "Residuals", xlab = "Index", col = "blue", pch = 16)
 plot(model3$residuals, main = "Residuals: Quadratic Model", ylab = "Residuals", xlab = "Index", col = "blue", pch = 16)
 plot(model4$residuals, main = "Residuals: Log-Linear Model", ylab = "Residuals", xlab = "Index", col = "blue", pch = 16)
+
+# 繪製殘差直方圖
+par(mfrow = c(2, 2))  # 設定 2x2 圖形排列
+hist(model1$residuals, main = "Histogram of Residuals (Linear Model)", col = "blue")
+hist(model2$residuals, main = "Histogram of Residuals (Linear-Log Model)", col = "blue")
+hist(model3$residuals, main = "Histogram of Residuals (Quadratic Model)", col = "blue")
+hist(model4$residuals, main = "Histogram of Residuals (Log-Linear Model)", col = "blue")
+
+# 繪製QQ圖
+par(mfrow = c(2, 2))  # 設定 2x2 圖形排列
+qqnorm(model1$residuals, main = "Q-Q Plot: Linear Model")
+qqline(model1$residuals, col = "red")
+qqnorm(model2$residuals, main = "Q-Q Plot: Linear-Log Model")
+qqline(model2$residuals, col = "red")
+qqnorm(model3$residuals, main = "Q-Q Plot: Quadratic Model")
+qqline(model3$residuals, col = "red")
+qqnorm(model4$residuals, main = "Q-Q Plot: Log-Linear Model")
+qqline(model4$residuals, col = "red")
 
 # **使用 Jarque-Bera 檢定來檢查殘差是否符合常態分布**
 jb_test1 <- jarque.bera.test(model1$residuals)
