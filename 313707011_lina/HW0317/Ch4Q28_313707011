@@ -83,7 +83,7 @@ r2_values <- data.frame(
          summary(model3)$r.squared, summary(model4)$r.squared)
 )
 
-# **輸出結果**
+# 輸出結果
 cat("Jarque-Bera Normality Test (p-values):\n")
 print(jb_values)
 
