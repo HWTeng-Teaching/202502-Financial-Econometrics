@@ -1,0 +1,5 @@
+# 設定資料集的 URL
+url <- "https://www.principlesofeconometrics.com/poe5/data/rdata/cex5_small.rdata"
+download.file(url, destfile = "cex5_small.rdata")  # 下載資料集並儲存為本地檔案
+load("cex5_small.rdata")  # 載入資料集
+names(cex5_small)  # 確認變數名稱
