@@ -8,7 +8,7 @@ names(wa_wheat)  # 確認變數名稱
 if (!require(tseries)) install.packages("tseries")
 library(tseries)
 
-# 4.28(a)(b)
+# 4.28(a)
 # 建立 Northampton 區的數據框
 northampton_data <- data.frame(
   YIELD = wa_wheat$northampton, 
@@ -157,7 +157,7 @@ abnormal_dffits_points <- dffits_table %>%    # 過濾異常觀測值
 # 顯示異常 DFFITS 觀測點
 print(abnormal_dffits_points)
 
-# 4.29(e)
+# 4.28(d)
 train_data <- northampton_data %>% filter(TIME <= 47)  # 過濾 1996 年之前的數據來建立新模型
 model_restricted <- lm(YIELD ~ TIME2, data = train_data)  # 重新估計所選模型（假設為 model3，即二次回歸模型）
 new_data_1997 <- data.frame(TIME2 = 48^2)  # 設定 1997 年的預測值
