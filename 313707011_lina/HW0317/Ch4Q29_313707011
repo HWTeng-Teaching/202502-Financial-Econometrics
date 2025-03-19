@@ -79,7 +79,7 @@ print(conf_interval)
 ggplot(data, aes(x = income, y = food)) +
   geom_point(alpha = 0.5, color = "blue") +  # 繪製資料點
   geom_smooth(method = "lm", color = "red", se = FALSE) +  # 添加回歸線
-  labs(title = "Scatter Plot of FOOD vs INCOME",
+  labs(title = "Linear Model: FOOD vs INCOME",
        x = "Income", y = "Food Expenditure") +
   theme_minimal()
 
