@@ -55,6 +55,7 @@ jb_test <- function(x) {
   n <- sum(!is.na(x))
   jb_stat <- (n/6) * (skewness_x^2 + (1/4) * (kurtosis_x - 3)^2)
   p_value <- 1 - pchisq(jb_stat, df = 2)
+  
   return(c(JB_Statistic = jb_stat, P_Value = p_value))
 }
 
@@ -111,7 +112,6 @@ jb_test_residuals_linear <- function(x) {
   n <- length(x)
   jb_stat <- (n/6) * (skewness_x^2 + (1/4) * (kurtosis_x - 3)^2)
   p_value <- 1 - pchisq(jb_stat, df = 2)
-  
   return(c(JB_Statistic = jb_stat, P_Value = p_value))
 }
 
@@ -139,11 +139,11 @@ elasticity_upper <- elasticity_point + 1.96 * elasticity_se
 # 建立結果表格
 elasticity_table <- data.frame(
   INCOME = income_values$income,
-  point_estimation = round(predictions[, "fit"], 4),
+  FOOD_prediction = round(predictions[, "fit"], 4),
   ε = round(elasticity_point, 4),
   se_ε = round(elasticity_se, 5),
-  ε_LB = round(elasticity_lower, 4),
-  ε_UB = round(elasticity_upper, 4)
+  ε_lower_bound = round(elasticity_lower, 4),
+  ε_upper_bound = round(elasticity_upper, 4)
 )
 print(elasticity_table)
 
@@ -175,11 +175,29 @@ generalized_r2_corr <- function(actual, predicted) {
 # 計算 Log-Log Model 的 Generalized R²
 generalized_r2_log_log <- generalized_r2_corr(data_log$food, data_log$food_pred)  
 
-r2_linear <- summary(lm_model)$r.squared  # 取得線性模型的 R^2
-r2_log_log <- summary(log_log_model)$r.squared  # 取得Log-Log Model的 R^2
+r2_linear <- summary(lm_model)$r.squared    # 取得線性模型的 R^2
+r2_log_log <- summary(log_log_model)$r.squared    # 取得Log-Log Model的 R^2
 r2_comparison <- data.frame(    # 建立數據框做比較
   Model = c("Linear Model", "Log-Log Model"),
   R2 = c(r2_linear, r2_log_log),
-  Generalized_R2 = c(NA, generalized_r2_log_log)  # 線性模型沒有 Generalized R^2，因此填入 NA
+  Generalized_R2 = c(NA, generalized_r2_log_log)    # 線性模型沒有 Generalized R^2，因此填入 NA
 )
 print(r2_comparison)
+
+
+# 4.29(f)
+# 取得 ln(INCOME) 變數的回歸係數（即彈性估計值）
+elasticity_estimate <- coef(log_log_model)["ln_income"]
+
+# 計算 95% 信賴區間
+elasticity_ci <- confint(log_log_model, level = 0.95)["ln_income", ]
+
+# 建立彈性結果表格
+elasticity_table_loglog <- data.frame(
+  Elasticity = round(elasticity_estimate, 4),  # 彈性點估計值
+  ε_Lower_Bound = round(elasticity_ci[1], 4),  # 95% 信賴區間下界
+  ε_Upper_Bound = round(elasticity_ci[2], 4)   # 95% 信賴區間上界
+)
+
+print(elasticity_table_loglog)
+
