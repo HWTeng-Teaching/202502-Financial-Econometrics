@@ -180,6 +180,6 @@ r2_log_log <- summary(log_log_model)$r.squared  # 取得Log-Log Model的 R^2
 r2_comparison <- data.frame(    # 建立數據框做比較
   Model = c("Linear Model", "Log-Log Model"),
   R2 = c(r2_linear, r2_log_log),
-  Generalized_R2 = c(NA, generalized_r2_log_log)  # 線性模型沒有 Generalized R²，因此填入 NA
+  Generalized_R2 = c(NA, generalized_r2_log_log)  # 線性模型沒有 Generalized R^2，因此填入 NA
 )
 print(r2_comparison)
