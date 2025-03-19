@@ -63,20 +63,20 @@ qqline(model3$residuals, col = "red")
 qqnorm(model4$residuals, main = "Q-Q Plot: Log-Linear Model")
 qqline(model4$residuals, col = "red")
 
-# **使用 Jarque-Bera 檢定來檢查殘差是否符合常態分布**
+# 使用 Jarque-Bera 檢定來檢查殘差是否符合常態分布
 jb_test1 <- jarque.bera.test(model1$residuals)
 jb_test2 <- jarque.bera.test(model2$residuals)
 jb_test3 <- jarque.bera.test(model3$residuals)
 jb_test4 <- jarque.bera.test(model4$residuals)
 
-# **整理 Jarque-Bera 檢定結果**
+# 整理 Jarque-Bera 檢定結果
 jb_values <- data.frame(
   Model = c("Linear", "Linear-Log", "Quadratic", "Log-Linear"),
   JB_p_value = c(jb_test1$p.value, jb_test2$p.value, 
                  jb_test3$p.value, jb_test4$p.value)
 )
 
-# **計算 R² 值**
+# 計算 R² 值
 r2_values <- data.frame(
   Model = c("Linear", "Linear-Log", "Quadratic", "Log-Linear"),
   R2 = c(summary(model1)$r.squared, summary(model2)$r.squared, 
