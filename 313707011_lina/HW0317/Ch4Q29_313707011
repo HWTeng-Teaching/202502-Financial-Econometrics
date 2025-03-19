@@ -55,7 +55,6 @@ jb_test <- function(x) {
   n <- sum(!is.na(x))
   jb_stat <- (n/6) * (skewness_x^2 + (1/4) * (kurtosis_x - 3)^2)
   p_value <- 1 - pchisq(jb_stat, df = 2)
-  
   return(c(JB_Statistic = jb_stat, P_Value = p_value))
 }
 
