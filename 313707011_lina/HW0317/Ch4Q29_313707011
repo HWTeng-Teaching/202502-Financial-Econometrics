@@ -161,7 +161,8 @@ data_log <- subset(data, food > 0 & income > 0)  # 確保沒有 0 值
 data_log$ln_food <- log(data_log$food)
 data_log$ln_income <- log(data_log$income)
 
-log_log_model <- lm(ln_food ~ ln_income, data = data_log)  # 執行對數-對數回歸
+# 執行對數-對數回歸
+log_log_model <- lm(ln_food ~ ln_income, data = data_log)
 summary(log_log_model)  # 顯示回歸結果
 data_log$food_pred <- exp(predict(log_log_model, newdata = data_log))  # 取得預測值轉換回原始尺度
 
@@ -178,18 +179,17 @@ generalized_r2_corr <- function(actual, predicted) {
   r_g <- cor(actual, predicted)^2  # 計算相關係數平方
   return(r_g)
 }
-
 # 計算 Log-Log Model 的 Generalized R²
 generalized_r2_log_log <- generalized_r2_corr(data_log$food, data_log$food_pred)  
 
 r2_linear <- summary(lm_model)$r.squared    # 取得線性模型的 R^2
-r2_log_log <- summary(log_log_model)$r.squared    # 取得Log-Log Model的 R^2
-r2_comparison <- data.frame(    # 建立數據框做比較
+r2_log_log <- summary(log_log_model)$r.squared    # 取得 Log-Log Model 的 R^2
+r2_comparison_e <- data.frame(    # 建立數據框做比較
   Model = c("Linear Model", "Log-Log Model"),
   R2 = c(r2_linear, r2_log_log),
   Generalized_R2 = c(NA, generalized_r2_log_log)    # 線性模型沒有 Generalized R^2，因此填入 NA
 )
-print(r2_comparison)
+print(r2_comparison_e)
 
 
 # 4.29(f)
@@ -208,7 +208,7 @@ elasticity_table_loglog <- data.frame(
 print(elasticity_table_loglog)
 
 
-#4.29(g)
+# 4.29(g)
 # 計算殘差（log-log 模型的最小平方法殘差）
 data_log$residuals_loglog <- residuals(log_log_model)
 
@@ -238,3 +238,30 @@ cat("Kurtosis:", kurtosis_value_loglog, "\n")
 # Jarque-Bera 正態性檢定
 jb_test_loglog <- jarque.bera.test(data_log$residuals_loglog)
 print(jb_test_loglog)
+
+
+# 4.29(h)
+# 確保 INCOME 為正值，避免 log(0) 問題
+data_linear_log <- subset(data, income > 0)
+data_linear_log$ln_income <- log(data_linear_log$income)  # 取 INCOME 的對數
+
+# 執行線性-對數回歸
+linear_log_model <- lm(food ~ ln_income, data = data_linear_log)
+summary(linear_log_model)
+
+# 繪製線性-對數散佈圖與最小平方法回歸線
+ggplot(data_linear_log, aes(x = income, y = food)) +
+  geom_point(alpha = 0.5, color = "blue") +  # 繪製資料點
+  geom_line(aes(y = predict(linear_log_model)), color = "red", linewidth = 1) +  # 添加回歸線
+  labs(title = "Linear-Log Model: FOOD vs INCOME",
+       x = "Income", y = "Food Expenditure") +
+  theme_minimal()
+
+r2_linear_log <- summary(linear_log_model)$r.squared  # 取得 Linear-Log Model 的 R² 
+r2_comparison_h <- data.frame(  # 建立比較表
+  Model = c("Linear Model", "Log-Log Model(Generalized R²)", "Linear-Log Model"),
+  R2 = c(r2_linear, generalized_r2_log_log, r2_linear_log)
+)
+print(r2_comparison_h)
+
+
