@@ -299,3 +299,37 @@ elasticity_table_i <- data.frame(
   ε_upper_bound = elasticity_upper_i
 )
 print(elasticity_table_i)
+
+
+# 4.29(j)
+# 取得 linear-log 模型的殘差
+data_linear_log$residuals_linear_log <- residuals(linear_log_model)  # 計算殘差
+data_linear_log$ln_income <- log(data_linear_log$income)  # 計算 ln(INCOME)
+
+# 繪製殘差與 ln(INCOME) 之間的散佈圖
+ggplot(data_linear_log, aes(x = ln_income, y = residuals_linear_log)) +
+  geom_point(alpha = 0.5, color = "blue") +
+  labs(title = "Plot of Residuals (Linear-Log Model)",
+       x = "ln(INCOME)", y = "Residuals") +
+  theme_minimal()
+
+# 繪製殘差直方圖
+ggplot(data_linear_log, aes(x = residuals_linear_log)) +
+  geom_histogram(aes(y = after_stat(density)), bins = 30, fill = "blue", alpha = 0.5, color = "black") +
+  geom_vline(aes(xintercept = mean(residuals_linear_log), color = "Mean"), linetype = "dashed") +  # 平均值
+  geom_vline(aes(xintercept = median(residuals_linear_log), color = "Median"), linetype = "dashed") +  # 中位數
+  scale_color_manual(name = "Statistics", values = c("Mean" = "red", "Median" = "green")) +
+  labs(title = "Histogram of Residuals (Linear-Log Model)",
+       x = "Residuals", y = "Density") +
+  theme_minimal()
+
+# 計算 Skewness 和 Kurtosis
+skewness_value <- skewness(data_linear_log$residuals_linear_log)
+kurtosis_value <- kurtosis(data_linear_log$residuals_linear_log)
+cat("Skewness:", skewness_value, "\n")
+cat("Kurtosis:", kurtosis_value, "\n")
+
+# Jarque–Bera 正態性檢定
+jb_test_linear_log <- jarque.bera.test(data_linear_log$residuals_linear_log)
+print(jb_test_linear_log)
+
