@@ -121,3 +121,32 @@ jb_table_residuals_linear <- data.frame(Residuals = jb_residuals_linear)  # 顯�
 print(jb_table_residuals_linear)
 
 
+# 4.29(d)
+# 指定不同的 INCOME 水準
+income_values <- data.frame(income = c(19, 65, 160))
+
+# 計算預測食品支出及其信賴區間
+predictions <- predict(lm_model, newdata = income_values, interval = "confidence", level = 0.95)
+
+beta2 <- coef(lm_model)["income"]  # 取出 β2（income 的迴歸係數）
+beta2_se <- summary(lm_model)$coefficients["income", "Std. Error"]  # 取出 β2 標準誤
+elasticity_point <- beta2 * income_values$income / predictions[, "fit"]  # 計算彈性 (ε̂)
+elasticity_se <- beta2_se * income_values$income / predictions[, "fit"]  # 計算彈性標準誤 (se(ε̂))
+
+# 計算 95% 信賴區間 (LB, UB)
+elasticity_lower <- elasticity_point - 1.96 * elasticity_se
+elasticity_upper <- elasticity_point + 1.96 * elasticity_se
+
+# 建立結果表格
+elasticity_table <- data.frame(
+  INCOME = income_values$income,
+  point_estimation = round(predictions[, "fit"], 4),
+  ε = round(elasticity_point, 4),
+  se_ε = round(elasticity_se, 5),
+  ε_LB = round(elasticity_lower, 4),
+  ε_UB = round(elasticity_upper, 4)
+)
+
+# 顯示結果
+print(elasticity_table)
+
