@@ -7,6 +7,7 @@ names(cex5_small)  # 確認變數名稱
 # 載入必要的套件
 library(ggplot2)
 library(moments)
+library(tseries) 
 
 # 讀取數據 (已載入 cex5_small.rdata)
 data <- cex5_small  # 使用簡單變數名稱
@@ -91,7 +92,7 @@ residuals_lm <- resid(lm_model)  # 取得最小平方法殘差
 # 繪製線性回歸的殘差散佈圖
 ggplot(data, aes(x = income, y = residuals_lm)) +
   geom_point(alpha = 0.5, color = "blue") +  # 散佈圖
-  labs(title = "Plot of Linear Model Residuals",
+  labs(title = "Plot of Residuals (Linear Model) ",
        x = "Income", y = "Residuals") +
   theme_minimal()
 
@@ -101,9 +102,15 @@ ggplot(data.frame(residuals_lm), aes(x = residuals_lm)) +
   geom_vline(aes(xintercept = mean(residuals_lm), color = "Mean"), linetype = "dashed", linewidth = 1) +
   geom_vline(aes(xintercept = median(residuals_lm), color = "Median"), linetype = "dashed", linewidth = 1) +
   scale_color_manual(name = "Statistics", values = c("Mean" = "red", "Median" = "green")) +
-  labs(title = "Histogram of Linear Model Residuals",
+  labs(title = "Histogram of Residuals (Linear Model)",
        x = "Residuals", y = "Density") +
   theme_minimal()
+
+# 計算 Skewness（偏態）與 Kurtosis（峰度）
+skewness_value_lm <- skewness(residuals_lm)  # 偏態
+kurtosis_value_lm <- kurtosis(residuals_lm)  # 峰度
+cat("Skewness:", skewness_value_lm, "\n")
+cat("Kurtosis:", kurtosis_value_lm, "\n")
 
 # 進行 Jarque-Bera 常態性檢定
 jb_test_residuals_linear <- function(x) {
@@ -198,6 +205,36 @@ elasticity_table_loglog <- data.frame(
   ε_Lower_Bound = round(elasticity_ci[1], 4),  # 95% 信賴區間下界
   ε_Upper_Bound = round(elasticity_ci[2], 4)   # 95% 信賴區間上界
 )
-
 print(elasticity_table_loglog)
 
+
+#4.29(g)
+# 計算殘差（log-log 模型的最小平方法殘差）
+data_log$residuals_loglog <- residuals(log_log_model)
+
+# 繪製殘差對 ln(INCOME) 的散佈圖
+ggplot(data_log, aes(x = ln_income, y = residuals_loglog)) +
+  geom_point(alpha = 0.5, color = "blue") +
+  labs(title = "Plot of Residuals (Log-Log Model)",
+       x = "ln(INCOME)", y = "Residuals") +
+  theme_minimal()
+
+# 繪製殘差直方圖
+ggplot(data_log, aes(x = residuals_loglog)) +
+  geom_histogram(aes(y = after_stat(density)), bins = 30, fill = "blue", alpha = 0.5, color = "black") +
+  geom_vline(aes(xintercept = mean(residuals_loglog), color = "Mean"), linetype = "dashed") +  # 均值
+  geom_vline(aes(xintercept = median(residuals_loglog), color = "Median"), linetype = "dashed") +  # 中位數
+  scale_color_manual(name = "Statistics", values = c("Mean" = "red", "Median" = "green")) +
+  labs(title = "Histogram of Residuals (Log-Log Model)",
+       x = "Residuals", y = "Density") +
+  theme_minimal()
+
+# 計算 Skewness（偏態）與 Kurtosis（峰度）
+skewness_value_loglog <- skewness(data_log$residuals_loglog)  # 偏態
+kurtosis_value_loglog <- kurtosis(data_log$residuals_loglog)  # 峰度
+cat("Skewness:", skewness_value_loglog, "\n")
+cat("Kurtosis:", kurtosis_value_loglog, "\n")
+
+# Jarque-Bera 正態性檢定
+jb_test_loglog <- jarque.bera.test(data_log$residuals_loglog)
+print(jb_test_loglog)
