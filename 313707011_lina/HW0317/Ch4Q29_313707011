@@ -145,7 +145,41 @@ elasticity_table <- data.frame(
   ε_LB = round(elasticity_lower, 4),
   ε_UB = round(elasticity_upper, 4)
 )
-
-# 顯示結果
 print(elasticity_table)
 
+
+# 4.29(e)
+# 取對數轉換變數，並移除 FOOD 或 INCOME 為 0 的觀測值，以避免 log(0) 問題
+data_log <- subset(data, food > 0 & income > 0)  # 確保沒有 0 值
+data_log$ln_food <- log(data_log$food)
+data_log$ln_income <- log(data_log$income)
+
+log_log_model <- lm(ln_food ~ ln_income, data = data_log)  # 執行對數-對數回歸
+summary(log_log_model)  # 顯示回歸結果
+data_log$food_pred <- exp(predict(log_log_model, newdata = data_log))  # 取得預測值轉換回原始尺度
+
+# 繪製對數-對數散佈圖與最小平方法回歸線
+ggplot(data_log, aes(x = income, y = food)) +
+  geom_point(alpha = 0.5, color = "blue") +  # 繪製資料點
+  geom_line(aes(y = food_pred), color = "red", linewidth = 1) +  # 添加來自對數模型的回歸線
+  labs(title = "Log-Log Model: FOOD vs INCOME",
+       x = "Income", y = "Food Expenditure") +
+  theme_minimal()
+
+# 計算 Generalized R²
+generalized_r2_corr <- function(actual, predicted) {
+  r_g <- cor(actual, predicted)^2  # 計算相關係數平方
+  return(r_g)
+}
+
+# 計算 Log-Log Model 的 Generalized R²
+generalized_r2_log_log <- generalized_r2_corr(data_log$food, data_log$food_pred)  
+
+r2_linear <- summary(lm_model)$r.squared  # 取得線性模型的 R^2
+r2_log_log <- summary(log_log_model)$r.squared  # 取得Log-Log Model的 R^2
+r2_comparison <- data.frame(    # 建立數據框做比較
+  Model = c("Linear Model", "Log-Log Model"),
+  R2 = c(r2_linear, r2_log_log),
+  Generalized_R2 = c(NA, generalized_r2_log_log)  # 線性模型沒有 Generalized R²，因此填入 NA
+)
+print(r2_comparison)
