@@ -23,12 +23,6 @@ model3 <- lm(YIELD ~ TIME2, data = northampton_data)
 northampton_data$ln_YIELD <- log(northampton_data$YIELD)  # 模型 4: 對數-線性回歸 ln(YIELD) = ϕ0 + ϕ1TIME + e
 model4 <- lm(ln_YIELD ~ TIME, data = northampton_data)
 
-# 顯示回歸結果摘要
-summary(model1)
-summary(model2)
-summary(model3)
-summary(model4)
-
 # 繪製回歸擬合圖
 par(mfrow = c(2, 2))  # 設定 2x2 圖形排列
 plot(northampton_data$TIME, northampton_data$YIELD, main = "Linear Model",
@@ -96,6 +90,9 @@ print(jb_values)
 cat("R² Values:\n")
 print(r2_values)
 
+# 4.28(b)
+summary(model3)  # 顯示回歸結果摘要
+
 # 4.28(c)
 library(dplyr)
 # 計算學生化殘差
@@ -159,4 +156,17 @@ abnormal_dffits_points <- dffits_table %>%    # 過濾異常觀測值
 
 # 顯示異常 DFFITS 觀測點
 print(abnormal_dffits_points)
+
+# 4.29(e)
+train_data <- northampton_data %>% filter(TIME <= 47)  # 過濾 1996 年之前的數據來建立新模型
+model_restricted <- lm(YIELD ~ TIME2, data = train_data)  # 重新估計所選模型（假設為 model3，即二次回歸模型）
+new_data_1997 <- data.frame(TIME2 = 48^2)  # 設定 1997 年的預測值
+
+# 計算 95% 預測區間
+prediction_1997 <- predict(model_restricted, newdata = new_data_1997, interval = "prediction", level = 0.95)
+print(prediction_1997)  # 顯示預測結果
+
+# 檢查 1997 年的真實值是否落在預測區間內
+true_value_1997 <- northampton_data$YIELD[northampton_data$TIME == 48]
+cat("1997 年的真實值:", true_value_1997, "\n")
 
