@@ -116,8 +116,6 @@ Summary Table：
 
 ![image](https://github.com/user-attachments/assets/ef62e29f-a005-45b4-9b6a-c3753762898b)
 
-![image](https://github.com/user-attachments/assets/e39599d0-a36e-40f1-9acb-726272ca3067)
-
 顯示了四個回歸模型的擬合曲線，與實際數據進行比較：
 
 藍色虛線：線性模型（Linear Fit）適用於較長期的趨勢，但可能低估了早期或後期的變化。
