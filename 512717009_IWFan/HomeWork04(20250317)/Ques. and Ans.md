@@ -81,6 +81,150 @@ Model 2 使用對數形式，擬合數據較好，因為它解釋了 64.14% 的�
 
 因此，Model 2比 Model 1 適合度更高，更符合經濟學概念（學習曲線）。
 
+## Q.28
+
+![image](https://github.com/user-attachments/assets/5a5acfca-8a2e-41fe-bfbc-777971f0fceb)
+
+## Ans:
+**(a)**
+我們考慮以下四種回歸模型來擬合 Northampton Shire 小麥產量數據：
+
+1. 線性模型 (Linear Model): YIELD_t = β0 + β1 TIME + e_t
+2. 
+3. 對數模型 (Logarithmic Model): YIELD_t = α0 + α1 ln(TIME) + e_t
+4. 
+5. 二次模型 (Quadratic Model): YIELD_t = γ0 + γ1 TIME² + e_t
+6. 
+7. 對數線性模型 (log-linear  Model): ln(YIELD_t) = φ0 + φ1 TIME + e_t
+8. 
+模型回歸結果：
+![image](https://github.com/user-attachments/assets/9c9e407f-c7a1-49f6-8145-5de3bf6cb22a)
+
+![image](https://github.com/user-attachments/assets/21f50294-6136-42bb-8079-0ba168d60580)
+
+![image](https://github.com/user-attachments/assets/59f0317f-d35b-4ba5-86ee-39a1615b228f)
+
+![image](https://github.com/user-attachments/assets/2ced41f4-8224-4269-9635-905050b466b3)
+
+Summary Table：
+![image](https://github.com/user-attachments/assets/663534e7-1a67-4e01-9d81-b0c192c340e9)
+
+(i) 擬合曲線比較
+![image](https://github.com/user-attachments/assets/ef62e29f-a005-45b4-9b6a-c3753762898b)
+
+![image](https://github.com/user-attachments/assets/e39599d0-a36e-40f1-9acb-726272ca3067)
+
+顯示了四個回歸模型的擬合曲線，與實際數據進行比較：
+
+藍色虛線：線性模型（Linear Fit）適用於較長期的趨勢，但可能低估了早期或後期的變化。
+
+紅色虛線：對數模型（Logarithmic Fit）適用於初期增長較快的情況，但在後期可能低估變化。
+
+綠色虛線：二次模型（Quadratic Fit）具有較好的擬合效果，因為它允許加速度變化。
+
+紫色虛線：對數線性模型（Long-linear  Fit）在後期的預測能力可能較強。
+
+ii) 殘差圖
+![image](https://github.com/user-attachments/assets/6f47f002-4316-4de4-99bf-ced54bd15399)
+
+這四張殘差圖顯示了不同模型的殘差分布情況：
+
+線性模型（Linear Model）：殘差顯示出某種曲線模式，表明線性模型可能低估了某些時間段的變化。
+
+對數模型（Logarithmic Model）：在早期數據（低 TIME 值）中，殘差較大，表示該模型可能高估了早期的產量。
+
+二次模型（Quadratic Model）：殘差分布較為隨機，沒有明顯的模式，這表示該模型可能適配較好。
+
+對數線性模型（Long-linear Model）：殘差在某些區域內仍然存在系統性偏差，表明該模型可能不完全適合。
+
+基於殘差圖，我們可以初步判斷 二次模型（Quadratic Model）較適合，⼆次模型具有更⾼的R2殘差圖沒有顯⽰中⼼區域的明顯下降。
+
+(iii) 誤差的常態性檢驗
+![image](https://github.com/user-attachments/assets/955c30a7-e192-4679-98ca-eea36f225211)
+
+這些 Q-Q 圖與 Shapiro-Wilk 正態性檢驗結果顯示：
+
+線性模型（Linear Model）：殘差較接近正態分布，p-value = 0.679（未拒絕正態性）
+
+對數模型（Logarithmic Model）：殘差有些偏離正態，p-value = 0.186（未拒絕正態性）
+
+二次模型（Quadratic Model）：殘差最接近正態分布，p-value = 0.827（未拒絕正態性）
+
+對數線性模型（Long-linear Model）：殘差偏離正態分布，p-value = 0.00007（顯著拒絕正態性）
+
+(iv) R² 值
+
+綜合擬合曲線、殘差圖與正態性檢驗，我們可以選擇**二次模型（Quadratic Model）**作為最佳模型，因為：
+
+它的 𝑅2最高（0.689），表示擬合效果最佳。
+
+它的殘差分布較隨機，沒有明顯的系統性模式。
+
+它的殘差符合正態性（p-value = 0.827）。
+
+--------------------------------------------------------------
+
+**(b)**
+對於⼆次模型，估計係數為 0.0004986，邊際效應為2(0.0004986)時間。因此，斜率在每個時間點都會改變。評估邊際效應時間=10、20、30 和 40，邊際效應屈服估計為0.0099724、0.0199447、0.0299171和0.0398894。隨著時間的推移，技術的累積效應會使產量不斷增加，因此邊際效應也會隨之增加。
+
+--------------------------------------------------------------
+
+**(c)**
+使用 學生化殘差（Studentized Residuals）、Leverage, DFFITS, DFBETAS 來檢測異常觀測值
+
+![image](https://github.com/user-attachments/assets/513788ee-3b68-4fd9-96ab-c04a0e097a7d)
+
+上方圖表與表格顯示了異常觀測值分析的結果：
+
+學生化殘差（Studentized Residuals）= 2
+
+如果殘差的絕對值超過 2，則該觀測值可能是異常值。
+
+![image](https://github.com/user-attachments/assets/d656eaf7-348d-4e04-afdc-98e906bf7328)
+
+Leverage（槓桿值）= 0.0833
+
+![image](https://github.com/user-attachments/assets/322828f5-2d2d-4e71-a342-26cd685bc8a1)
+
+高槓桿值點（如 1996-1997 年）表示這些觀測值對回歸影響較大。
+
+在 TIME 變數較大的區間（40 年後），槓桿值顯著上升。
+
+DFBETAS = 0.2887 
+
+衡量個別觀測值對 TIME_SQ 變數的回歸係數影響。如果絕對值超過 2/sqrt(n)，則該觀測值可能是影響較大的異常值。
+
+![image](https://github.com/user-attachments/assets/e1fc6fcc-4f35-4ce0-9181-d5b956c8c3f4)
+
+DFFITS（影響分數）= 0.2041
+
+![image](https://github.com/user-attachments/assets/7ea83454-7a34-4541-bf5a-fed0aaf729bb)
+
+異常高的 DFFITS 表示某些點可能極大影響回歸結果。
+
+1992 年（TIME=43）的影響分數最高，顯示它可能是影響回歸的異常值。
+
+異常觀測值表：
+
+1963 年（TIME=14, YIELD=0.3024）是低產量的異常點，對回歸影響較大。
+
+1992 年（TIME=43, YIELD=2.3161）是產量異常高的點，影響回歸係數顯著。
+
+這些異常點可能是由極端天氣、政策變化或技術突破所導致的。異常值檢測顯示 1963（低產量）與 1992（高產量）影響較大
+
+--------------------------------------------------------------
+
+**(d)**
+
+我們使用二次模型來預測 1997 年的產量，並計算 95% 信賴區間。
+
+- **1997 年預測產量**: 2.2318 噸/公頃
+- 
+- **95% 信賴區間**: [1.3724, 2.3898]
+- 
+這表示我們有 95% 的信心，1997 年的預測值落在合理的 95% 信賴區間內。
+
+
 
 
 
