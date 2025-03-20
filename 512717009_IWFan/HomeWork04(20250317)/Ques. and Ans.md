@@ -144,6 +144,7 @@ ii) 殘差圖
 基於殘差圖，我們可以初步判斷 二次模型（Quadratic Model）較適合，⼆次模型具有更⾼的R2殘差圖沒有顯⽰中⼼區域的明顯下降。
 
 (iii) 誤差的常態性檢驗
+
 ![image](https://github.com/user-attachments/assets/955c30a7-e192-4679-98ca-eea36f225211)
 
 這些 Q-Q 圖與 Shapiro-Wilk 正態性檢驗結果顯示：
