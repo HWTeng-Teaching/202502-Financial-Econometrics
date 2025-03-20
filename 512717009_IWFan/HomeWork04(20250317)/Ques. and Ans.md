@@ -100,6 +100,7 @@ Model 2 使用對數形式，擬合數據較好，因為它解釋了 64.14% 的�
 4. 對數線性模型 (log-linear  Model): ln(YIELD_t) = φ0 + φ1 TIME + e_t
  
 模型回歸結果：
+
 ![image](https://github.com/user-attachments/assets/9c9e407f-c7a1-49f6-8145-5de3bf6cb22a)
 
 ![image](https://github.com/user-attachments/assets/21f50294-6136-42bb-8079-0ba168d60580)
@@ -112,6 +113,7 @@ Summary Table：
 ![image](https://github.com/user-attachments/assets/663534e7-1a67-4e01-9d81-b0c192c340e9)
 
 (i) 擬合曲線比較
+
 ![image](https://github.com/user-attachments/assets/ef62e29f-a005-45b4-9b6a-c3753762898b)
 
 ![image](https://github.com/user-attachments/assets/e39599d0-a36e-40f1-9acb-726272ca3067)
@@ -127,6 +129,7 @@ Summary Table：
 紫色虛線：對數線性模型（Long-linear  Fit）在後期的預測能力可能較強。
 
 ii) 殘差圖
+
 ![image](https://github.com/user-attachments/assets/6f47f002-4316-4de4-99bf-ced54bd15399)
 
 這四張殘差圖顯示了不同模型的殘差分布情況：
