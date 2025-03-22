@@ -1,0 +1,59 @@
+# 載入套件
+library(POE5Rdata)
+
+# 載入 motel 數據集
+data("motel")
+
+# 檢查數據框名稱和結構
+ls()  # 列出當前環境中的物件，應該能看到 "motel"
+str(motel)  # 檢查 motel 數據框的結構
+# 載入套件並數據
+library(POE5Rdata)
+data("motel")
+
+# 小題 a: 繪製圖形並分析
+plot(motel$time, motel$motel_pct, type="o", col="blue", ylim=c(0, 100), 
+     xlab="TIME (Months)", ylab="Occupancy Rate (%)", 
+     main="MOTEL_PCT and COMP_PCT vs TIME")
+lines(motel$time, motel$comp_pct, type="o", col="red")
+legend("topright", legend=c("MOTEL_PCT", "COMP_PCT"), col=c("blue", "red"), lty=1)
+
+# 小題 b: 計算 90% 置信區間
+model <- lm(motel_pct ~ comp_pct, data=motel)
+new_data <- data.frame(comp_pct = 70)
+pred <- predict(model, newdata=new_data, interval="confidence", level=0.90)
+print(pred)
+
+# 小題 c: 檢驗 H_0: beta_2 < 0 對 H_a: beta_2 > 0, alpha = 0.01
+summary_model <- summary(model)
+t_stat <- summary_model$coefficients["comp_pct", "t value"]
+p_value <- summary_model$coefficients["comp_pct", "Pr(>|t|)"]
+p_value_one_tail <- p_value / 2
+if (t_stat < 0) p_value_one_tail <- 1 - p_value_one_tail
+t_critical <- qt(0.99, df=23)
+if (t_stat > t_critical) {
+  print("拒絕 H_0")
+} else {
+  print("不拒絕 H_0")
+}
+
+# 小題 d: 檢驗 H_0: beta_2 = 1 對 H_a: beta_2 != 1, alpha = 0.01
+t_stat_beta_2_1 <- (coef(model)["comp_pct"] - 1) / summary_model$coefficients["comp_pct", "Std. Error"]
+p_value_beta_2_1 <- 2 * (1 - pt(abs(t_stat_beta_2_1), df=23))
+t_critical_double <- qt(0.995, df=23)
+if (abs(t_stat_beta_2_1) > t_critical_double) {
+  print("拒絕 H_0")
+} else {
+  print("不拒絕 H_0")
+}
+
+# 小題 e: 計算殘差並繪圖
+residuals <- resid(model)
+plot(motel$time, residuals, type="o", col="black", 
+     xlab="Time (Months)", ylab="Residuals", main="Residuals vs TIME")
+abline(h=0, lty=2)
+residuals_17_23 <- residuals[17:23]
+signs <- sign(residuals_17_23)
+predominant_sign <- ifelse(sum(signs > 0) > sum(signs < 0), "positive", "negative")
+print(predominant_sign)
+

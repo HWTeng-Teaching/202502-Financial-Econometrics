@@ -148,11 +148,14 @@ std_error <- 0.833  # Given standard error
 covariance <- -0.761  # Given covariance
 std_error_rural <- sqrt((rural_se_beta1^2) + 16^2*(rural_se_beta2^2) + (2 * 16 * covariance))
 std_error_rural
+critical_value_b <- qt(1-alpha/2, df = N_rural - 2) 
 # Confidence interval calculation
 margin_of_error <- critical_value_b * std_error
+#margin_of_error <- critical_value_b * std_error_rural
 ci_lower <- expected_WAGE - margin_of_error
 ci_upper <- expected_WAGE + margin_of_error
 cat("b. 95% CI for expected WAGE if EDUC = 16: [", round(ci_lower, 2), ",", round(ci_upper, 2), "]\n\n")
+
 
 # c. 95% confidence interval for expected WAGE using urban regression
 expected_WAGE_urban <- urban_beta1 + urban_beta2 * 16

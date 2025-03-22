@@ -1,0 +1,464 @@
+---
+title: "HW0310 - CH3 Questions 1, 7, 17, 19"
+author: "鄭凱鴻"
+date: "2025-03-16"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# **CH3 Question 1**
+
+```{r}
+# 已知數據
+beta_2_hat <- 0.01309  # 估計的回歸係數
+se_beta_2_hat <- 0.00215  # 係數的標準誤
+df <- 62  # 自由度 (n-2 = 64-2 = 62)
+alpha <- 0.01  # 顯著水準
+
+# 計算 t-統計量
+t_statistic <- beta_2_hat / se_beta_2_hat
+
+# 計算 t 臨界值 (右尾檢定)
+t_critical <- qt(1 - alpha, df)
+
+# 計算 p-value (右尾檢定)
+p_value <- 1 - pt(t_statistic, df)
+
+# 顯示結果
+t_statistic
+t_critical
+p_value
+```
+
+# **CH3 Question 7**
+
+## **(a) **
+
+```{r}
+# 已知數值
+se_intercept <- 2.672  # 截距的標準誤
+t_intercept <- 4.31    # 截距的 t 統計量
+
+# 計算截距 (a) 的估計值
+intercept_estimate <- t_intercept * se_intercept
+
+# 顯示結果
+intercept_estimate
+```
+
+## **(b) **
+
+```{r}
+# 設定 BACHELOR 變數範圍
+bachelor_pct <- seq(0, 50, length.out = 100)  # 假設 0% ~ 50%
+
+# 計算預測的 INCOME
+intercept_estimate <- 11.516
+slope_estimate <- 1.029
+income <- intercept_estimate + slope_estimate * bachelor_pct
+
+# 繪製回歸線
+plot(bachelor_pct, income, type="l", col="blue", lwd=2, 
+     xlab="Percentage of Population with a Bachelor's Degree (%)", 
+     ylab="Income per Capita (in $1000)", 
+     main="Estimated Relationship between Education and Income")
+grid()
+```
+
+## **(c) **
+
+```{r}
+# 已知數值
+slope_coefficient <- 1.029  # 斜率估計值
+t_slope <- 10.75  # 斜率的 t 統計量
+
+# 計算斜率的標準誤
+se_slope <- slope_coefficient / t_slope
+
+# 顯示結果
+se_slope
+```
+
+## **(d) **
+
+```{r}
+# 已知數值
+intercept_estimate <- 11.516  # 估計的截距
+null_hypothesis_intercept <- 10  # 虛無假設的截距值
+se_intercept <- 2.672  # 截距的標準誤
+
+# 計算 t-統計量
+t_statistic_new <- (intercept_estimate - null_hypothesis_intercept) / se_intercept
+
+# 顯示結果
+t_statistic_new
+```
+
+## **(e) **
+
+```{r}
+# 設定已知數值
+t_statistic_new <- 0.567  # t 統計量
+df <- 50  # 自由度 (N-1 = 51-1)
+alpha <- 0.05  # 顯著水準
+
+# 計算 p-value (雙尾檢定)
+p_value <- 2 * (1 - pt(abs(t_statistic_new), df))
+
+# 計算雙尾檢定的臨界值
+t_critical <- qt(1 - alpha/2, df)
+
+# 繪製 t-分佈
+curve(dt(x, df), from=-4, to=4, col="blue", lwd=2, 
+      xlab="t-Value", ylab="Density", main="t-Distribution with Rejection Region (α=0.05)")
+
+# 修正：確保紅色區域緊貼 x 軸
+x_left <- seq(-4, -t_critical, length=100)
+y_left <- dt(x_left, df)
+polygon(c(x_left, rev(x_left)), c(y_left, rep(0, length(y_left))), col=rgb(1,0,0,0.5))
+
+x_right <- seq(t_critical, 4, length=100)
+y_right <- dt(x_right, df)
+polygon(c(x_right, rev(x_right)), c(y_right, rep(0, length(y_right))), col=rgb(1,0,0,0.5))
+
+# 畫出 t-統計量的位置
+abline(v = c(t_statistic_new, -t_statistic_new), col="black", lty=2)
+
+# 顯示結果
+p_value
+t_critical
+```
+
+## **(f) **
+
+```{r}
+# 已知數值
+slope_estimate <- 1.029  # 斜率估計值
+se_slope <- 0.0957  # 斜率標準誤
+df <- 50  # 自由度
+confidence_level <- 0.99  # 99% 信賴區間
+
+# 計算 t 臨界值 (99% 信賴區間，雙尾)
+t_critical_99 <- qt(1 - (1 - confidence_level) / 2, df)
+
+# 計算信賴區間
+lower_bound <- slope_estimate - t_critical_99 * se_slope
+upper_bound <- slope_estimate + t_critical_99 * se_slope
+
+# 顯示結果
+c(lower_bound, upper_bound)
+```
+
+## **(g) **
+
+```{r}
+# 已知數值
+slope_estimate <- 1.029  # 斜率估計值
+null_hypothesis_slope <- 1  # H0: 斜率 = 1
+se_slope <- 0.0957  # 斜率標準誤
+df <- 50  # 自由度
+alpha <- 0.05  # 顯著水準
+
+# 計算 t-統計量
+t_statistic_slope <- (slope_estimate - null_hypothesis_slope) / se_slope
+
+# 計算 p-value (雙尾檢定)
+p_value_slope <- 2 * (1 - pt(abs(t_statistic_slope), df))
+
+# 計算 5% 顯著水準的 t-臨界值
+t_critical_95 <- qt(1 - alpha/2, df)
+
+# 檢查是否拒絕 H0
+reject_null <- abs(t_statistic_slope) > t_critical_95
+
+# 顯示結果
+c(t_statistic_slope, p_value_slope, t_critical_95, reject_null)
+```
+
+# **CH3 Question 17**
+
+## **(a) **
+
+```{r}
+# 載入必要的套件
+library(ggplot2)
+
+# 已知數值
+slope_estimate_urban <- 2.46  # 斜率估計值
+null_hypothesis_slope <- 1.80  # H0: 斜率 = 1.80
+se_slope_urban <- 0.16  # 斜率標準誤
+df_urban <- 986 - 2  # 自由度 (N-2)
+alpha <- 0.05  # 顯著水準
+
+# 計算 t-統計量
+t_statistic_urban <- (slope_estimate_urban - null_hypothesis_slope) / se_slope_urban
+
+# 計算 p-value (右尾檢定)
+p_value_urban <- 1 - pt(t_statistic_urban, df_urban)
+
+# 計算 5% 顯著水準的 t-臨界值 (右尾檢定)
+t_critical_95_urban <- qt(1 - alpha, df_urban)
+
+# 建立 t-分佈數據
+x_vals <- seq(-4, 6, length.out = 1000)
+y_vals <- dt(x_vals, df_urban)
+
+# 建立 DataFrame
+data <- data.frame(x = x_vals, y = y_vals)
+
+# 繪製 t-分佈曲線
+p <- ggplot(data, aes(x, y)) +
+  geom_line(color = "blue", linewidth = 1) +  # 修正這裡
+  geom_area(data = subset(data, x >= t_critical_95_urban), 
+            aes(x, y), fill = "red", alpha = 0.5) +  # 拒絕區域
+  geom_vline(xintercept = t_statistic_urban, color = "black", linetype = "dashed") +  # 標示 t-統計量
+  labs(title = "t-Distribution with Rejection Region (α=0.05) for Urban Regression",
+       x = "t-Value", y = "Density") +
+  theme_minimal()
+
+# 顯示圖表
+print(p)
+
+# 顯示檢定結果
+c(t_statistic_urban, p_value_urban, t_critical_95_urban, t_statistic_urban > t_critical_95_urban)
+```
+
+## **(b) **
+
+```{r}
+# 已知數值
+wage_estimate <- 23.92  # 預測時薪
+se_wage <- 0.833  # 題目提供的標準誤
+df_rural <- 214 - 2  # 自由度
+alpha <- 0.05  # 顯著水準
+
+# 計算 95% 信賴區間
+t_critical_95_rural <- qt(1 - alpha / 2, df_rural)
+lower_bound <- wage_estimate - t_critical_95_rural * se_wage
+upper_bound <- wage_estimate + t_critical_95_rural * se_wage
+
+# 顯示結果
+c(lower_bound, upper_bound)
+```
+
+## **(c) **
+
+```{r}
+# 已知數值
+intercept_urban <- -10.76  # 截距
+slope_urban <- 2.46  # 斜率
+educ_value <- 16  # EDUC = 16
+se_intercept_urban <- 2.27  # 截距標準誤
+se_slope_urban <- 0.16  # 斜率標準誤
+cov_intercept_slope_urban <- -0.345  # 截距與斜率共變異數
+df_urban <- 986 - 2  # 自由度
+alpha <- 0.05  # 顯著水準
+
+# 計算預測工資
+wage_estimate_urban <- intercept_urban + slope_urban * educ_value
+
+# 計算標準誤
+se_wage_urban <- sqrt(se_intercept_urban^2 + (educ_value^2) * (se_slope_urban^2) + 2 * educ_value * cov_intercept_slope_urban)
+
+# 計算 95% 信賴區間
+t_critical_95_urban <- qt(1 - alpha / 2, df_urban)
+lower_bound_urban <- wage_estimate_urban - t_critical_95_urban * se_wage_urban
+upper_bound_urban <- wage_estimate_urban + t_critical_95_urban * se_wage_urban
+
+# 顯示結果
+c(wage_estimate_urban, se_wage_urban, lower_bound_urban, upper_bound_urban)
+```
+
+## **(d) **
+
+```{r}
+# 已知數值
+intercept_rural <- -4.88  # 截距估計值
+null_hypothesis_intercept <- 4  # H0: 截距 = 4
+se_intercept_rural <- 3.29  # 截距標準誤
+df_rural <- 214 - 2  # 自由度
+alpha <- 0.01  # 顯著水準 (1%)
+
+# 計算 t-統計量
+t_statistic_intercept_rural <- (intercept_rural - null_hypothesis_intercept) / se_intercept_rural
+
+# 計算 p-value (左尾檢定)
+p_value_intercept_rural <- pt(t_statistic_intercept_rural, df_rural)
+
+# 計算 1% 顯著水準的 t-臨界值 (左尾檢定)
+t_critical_99_rural <- qt(alpha, df_rural)
+
+# 檢查是否拒絕 H0
+reject_null_intercept_rural <- t_statistic_intercept_rural < t_critical_99_rural
+
+# 顯示結果
+c(t_statistic_intercept_rural, p_value_intercept_rural, t_critical_99_rural, reject_null_intercept_rural)
+```
+
+# **CH3 Question 19**
+
+## **(a) **
+
+```{r}
+#  設定工作目錄（請確認路徑正確）
+setwd("C:/Users/User/Downloads/poe5rdata")  # Windows 用雙斜線 \\ 或斜線 /
+
+#  確保檔案存在
+if (!file.exists("motel.rdata")) {
+  stop("錯誤: 找不到 'motel.rdata'，請確認檔案名稱與工作目錄是否正確。")
+}
+
+#  載入 .rdata 檔案
+load("motel.rdata")
+
+#  確認變數是否正確載入
+ls()  # 查看所有載入的變數
+str(motel)  # 檢查資料結構
+summary(motel)  # 查看統計摘要
+names(motel)  # 查看變數名稱
+
+#  檢查變數名稱是否正確（避免大小寫錯誤）
+if (!all(c("motel_pct", "comp_pct", "time") %in% names(motel))) {
+  stop("錯誤: 變數名稱不符，請確認 'motel_pct', 'comp_pct', 'time' 是否存在於 motel 資料框中。")
+}
+
+#  繪製 motel_pct 和 comp_pct 隨時間變化的趨勢圖
+library(ggplot2)
+
+ggplot(motel, aes(x = time)) +
+  geom_line(aes(y = motel_pct, color = "Motel Occupancy"), linewidth = 1) +
+  geom_line(aes(y = comp_pct, color = "Competitor Occupancy"), linewidth = 1) +
+  labs(title = "Occupancy Rates Over Time",
+       x = "Time",
+       y = "Occupancy Percentage (%)") +
+  scale_color_manual(values = c("blue", "red")) +
+  theme_minimal()
+
+#  進行回歸分析 motel_pct ~ comp_pct
+model <- lm(motel_pct ~ comp_pct, data = motel)
+
+#  顯示回歸結果
+summary(model)
+
+#  提取斜率估計值和標準誤
+beta2_hat <- coef(model)[2]  # 斜率估計值
+se_beta2 <- summary(model)$coefficients[2, 2]  # 斜率標準誤
+
+#  計算 95% 信賴區間
+alpha <- 0.05
+df <- nrow(motel) - 2  # 自由度
+t_critical <- qt(1 - alpha/2, df)  # 95% 臨界值
+lower_bound <- beta2_hat - t_critical * se_beta2
+upper_bound <- beta2_hat + t_critical * se_beta2
+
+#  顯示 95% 信賴區間
+c(lower_bound, upper_bound)
+```
+
+## **(b) **
+
+```{r}
+# Given COMP_PCT = 70
+comp_pct_value <- 70
+
+#  Predict the expected occupancy rate (MOTEL_PCT) at COMP_PCT = 70
+predicted_motel_pct <- coef(model)[1] + coef(model)[2] * comp_pct_value
+
+#  Calculate the standard error of the estimate (SE_Yhat)
+n <- nrow(motel)  # Number of observations
+df <- n - 2  # Degrees of freedom
+t_critical_90 <- qt(1 - 0.10 / 2, df)  # t-value for 90% confidence level
+
+# Extract residual standard error (sigma hat)
+sigma_hat <- summary(model)$sigma
+
+# Compute SE_Yhat (Standard Error of the Prediction)
+x_mean <- mean(motel$comp_pct)
+se_Yhat <- sigma_hat * sqrt(1/n + (comp_pct_value - x_mean)^2 / sum((motel$comp_pct - x_mean)^2))
+
+#  Compute the confidence interval
+lower_bound <- predicted_motel_pct - t_critical_90 * se_Yhat
+upper_bound <- predicted_motel_pct + t_critical_90 * se_Yhat
+
+# Display the results
+cat("90% Confidence Interval for MOTEL_PCT when COMP_PCT = 70:\n")
+c(lower_bound, upper_bound)
+```
+
+## **(c) **
+
+```{r}
+# 提取回歸係數與標準誤
+beta2_hat <- coef(model)[2]  # 估計的斜率
+se_beta2 <- summary(model)$coefficients[2, 2]  # 斜率的標準誤
+
+# 計算 t 統計量
+t_stat <- beta2_hat / se_beta2
+
+# 計算臨界值（α = 0.01，右尾檢定）
+alpha <- 0.01
+df <- nrow(motel) - 2  # 自由度
+t_critical <- qt(1 - alpha, df)  # 右尾臨界值
+
+# 顯示結果
+cat("檢定統計量 (t):", t_stat, "\n")
+cat("臨界值 (t_alpha=0.01):", t_critical, "\n")
+
+# 判斷是否拒絕 H0
+if (t_stat > t_critical) {
+  cat("結論：拒絕 H0，表示 COMP_PCT 顯著影響 MOTEL_PCT。\n")
+} else {
+  cat("結論：無法拒絕 H0，無法確認 COMP_PCT 對 MOTEL_PCT 有顯著影響。\n")
+}
+```
+
+## **(d) **
+
+```{r}
+# 提取回歸係數與標準誤
+beta2_hat <- coef(model)[2]  # 估計的斜率
+se_beta2 <- summary(model)$coefficients[2, 2]  # 斜率的標準誤
+
+# 計算 t 統計量（假設 H0: β2 = 1）
+t_stat <- (beta2_hat - 1) / se_beta2
+
+# 計算臨界值（α = 0.01，雙尾檢定）
+alpha <- 0.01
+df <- nrow(motel) - 2  # 自由度
+t_critical <- qt(1 - alpha/2, df)  # 雙尾檢定的臨界值
+
+# 顯示結果
+cat("檢定統計量 (t):", t_stat, "\n")
+cat("臨界值 (t_alpha=0.01, 雙尾):", t_critical, "\n")
+
+# 判斷是否拒絕 H0
+if (abs(t_stat) > t_critical) {
+  cat("結論：拒絕 H0，表示 β2 不等於 1，競爭者入住率與旅館入住率變動幅度不同。\n")
+} else {
+  cat("結論：無法拒絕 H0，表示 β2 可能等於 1，競爭者入住率與旅館入住率變動幅度相同。\n")
+}
+```
+
+## **(e) **
+
+```{r}
+#  計算 OLS 殘差
+motel$residuals <- residuals(model)  # 從回歸模型提取殘差
+
+#  繪製殘差圖
+library(ggplot2)
+
+ggplot(motel, aes(x = time, y = residuals)) +
+  geom_point(color = "blue") +  # 繪製殘差點
+  geom_hline(yintercept = 0, linetype = "dashed", color = "red") +  # 水平線表示殘差 = 0
+  labs(title = "Residuals vs Time",
+       x = "Time",
+       y = "Residuals") +
+  theme_minimal()
+
+#  檢查時間區間 17-23 內的殘差符號
+subset_residuals <- motel$residuals[motel$time >= 17 & motel$time <= 23]
+table(sign(subset_residuals))  # 統計正負殘差的數量
+```

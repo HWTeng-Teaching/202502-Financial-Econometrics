@@ -1,0 +1,309 @@
+---
+title: "hw3"
+author: "313707025 jebuhdah"
+date: "2025-03-15"
+output: 
+  pdf_document:
+    latex_engine: xelatex
+
+---
+'######################################################################################################
+qn1:
+a. State the null and alternative hypotheses in terms of the model parameters.
+Null Hypothesis (H₀): There is no relationship between the number of medals won and GDP. In terms of the model parameters, this means ß2 = 0. 
+Alternative Hypothesis (H₁): There is a positive relationship between the number of medals won and GDP. In terms of the model parameters, this means ß2 > 0.
+
+b. What is the test statistic for part (a) and what is its distribution if the null hypothesis is true?
+
+Test statistic for testing hypothesis β2 is given by:
+t= (b2-ß2)/(se(b2))
+
+For the null hypothesis (ß2=0), the test statistic would be:
+t= b2/(se(ß2))
+
+c. What happens to the distribution of the test statistic for part (a) if the alternative hypothesis is true?
+
+the centre of the distribution will be shifted to the right relative to the usual t-distribution due to the expected value of b2 would be positive, leading to a larger t-statistic.
+
+d. For a test at the 1% level of significance, for what values of the t-statistic will we reject the null hypothesis in part (a)? For what values will we fail to reject the null hypothesis?
+
+```{r q1d, echo=FALSE}
+#die critical t value
+critical_t <- qt(0.99, df = 62)
+critical_t
+```
+so when the t-statistics is larger than 2.39, we will reject the null hypothesis, and we will fail to reject when its smaller than 2.39.
+
+e. Carry out the t-test for the null hypothesis in part (a) at the 1% level of significance. What is your economic conclusion? What does 1% level of significance mean in this example?
+
+from above 2.39 is the critical t value.
+
+```{r q1e, echo=FALSE}
+# Given
+b2 <- 0.01309
+se_b2 <- 0.00215
+
+# Calculate die t-statistic
+t_stat <- b2 / se_b2
+t_stat
+```
+since 6.09 > 2.39, so we reject the null hypothesis. so there is a positive relationship between gdp and medals.
+
+'######################################################################################################
+
+qn.7
+a. Using the information provided calculate the estimated intercept.
+
+a/2.672 = 4.31, a = 11.52
+
+b. Sketch the estimated relationship. Is it increasing or decreasing? Is it a positive or inverse relationship? Is it increasing or decreasing at a constant rate or is it increasing or decreasing at an increasing rate?
+
+```{r q2b, echo=FALSE}
+# die range
+BACHELOR <- seq(0, 100, by = 1)
+
+INCOME <- 11.51 + 0.029 * BACHELOR
+
+# Plot the relationship
+plot(BACHELOR, INCOME, type = "l", col = "blue", xlab = "BACHELOR (%)", ylab = "INCOME (k)", main = "INCOME vs BACHELOR")
+```
+it would be increasing since the slope coefficient 0.029 is positive. 
+
+c. Using the information provided calculate the standard error of the slope coefficient. Show your work.
+
+t = b/(se(b)), se(b) = b/t
+se(b) = 0.029/10.75 = 0.0027
+
+d. What is the value of the t-statistic for the null hypothesis that the intercept parameter equals 10?
+
+t = (11.52 - 10) / 2.7 = 0.56
+
+e. The p-value for a two-tail test that the intercept parameter equals 10, from part (d), is 0.572. Show the 
+p-value in a sketch. On the sketch, show the rejection region if a = 0.05
+
+```{r q2e, echo=FALSE}
+# die parameters
+df <- 49
+t_val <- 0.57
+alpha <- 0.05
+t_crit <- qt(1 - alpha/2, df)
+
+# Plot
+curve(dt(x, df), from=-4, to=4, col="blue", lwd=2, ylab="density", xlab="t-value", main="Rejection Region")
+
+# rejection regions
+x_reject <- seq(t_crit, 4, length=100)
+polygon(c(x_reject, rev(x_reject)), c(dt(x_reject, df), rep(0, length(x_reject))), col=rgb(1,0,0,0.5), border=NA)
+
+x_reject <- seq(-4, -t_crit, length=100)
+polygon(c(x_reject, rev(x_reject)), c(dt(x_reject, df), rep(0, length(x_reject))), col=rgb(1,0,0,0.5), border=NA)
+
+# test statistic
+abline(v=t_val, col="black", lwd=2, lty=2)
+text(t_val, 0.05, labels=paste("t =", round(t_val, 2)), pos=4)
+
+# critical values
+text(t_crit, 0.02, labels=paste("t_crit =", round(t_crit, 2)), pos=4)
+text(-t_crit, 0.02, labels=paste("t_crit =", round(-t_crit, 2)), pos=2)
+```
+f. Construct a 99% interval estimate of the slope. Interpret the interval estimate.
+```{r q2f, echo=FALSE}
+t_critical <- qt(0.995, df = 49)
+CI_lower <- 0.029 - t_critical * 0.0027
+CI_upper <- 0.029 + t_critical * 0.0027
+CI_lower #show
+CI_upper
+```
+g. Test the null hypothesis that the slope coefficient is one against the alternative that it is not one at the 5% level of significance. State the economic result of the test, in the context of this problem.
+```{r q2g, echo=FALSE}
+# t-statistics
+t_stat <- (0.029 - 1) / 0.0027
+t_stat
+
+# critical t at 5%
+critical_t <- qt(0.975, df = 49)
+critical_t
+
+```
+t statistics > critical t value, so we reject.
+
+
+'######################################################################################################
+qn17,
+a. Using the urban regression, test the null hypothesis that the regression slope equals 1.80 against the alternative that it is greater than 1.80. Use the a = 0.05 level of significance. Show all steps, including a graph of the critical region and state your conclusion.
+
+t = (t2-1.8)/se(b2) = (2.46 - 1.8)/0.16 = 4.125
+```{r q2a1, echo=FALSE}
+critical_t <- qt(0.95, df = 984)
+critical_t
+```
+since the t statistics is greater than critical, null hypothesis is rejected.
+
+```{r q3A, echo=FALSE}
+#plot it
+# t-statistic
+t_stat <- (2.46 - 1.80) / 0.16
+# Find critical t-value at 5% significance level
+critical_t <- qt(0.95, df = 984)
+
+# Plot the critical region
+x <- seq(-4, 6, length.out = 1000)
+y <- dt(x, df = 984)
+plot(x, y, type = "l", col = "black", xlab = "t", ylab = "Density", main = "t-Distribution with Critical Region")
+
+# critical region
+abline(v = critical_t, col = "red", lty = 2)
+x_reject <- seq(critical_t, 6, length.out = 100)
+y_reject <- dt(x_reject, df = 984)
+polygon(c(critical_t, x_reject, 6), c(0, y_reject, 0), col = "red")
+
+# the t-statistic
+abline(v = t_stat, col = "blue", lty = 2)
+text(t_stat, 0.2, "t = 4.125", col = "blue", pos = 4)
+```
+
+b. Using the rural regression, compute a 95% interval estimate for expected WAGE if EDUC=16. The required standard error is 0.833. Show how it is calculated using the fact that the estimated covariance between the intercept and slope coefficients is −0.761.
+
+```{r q3b, echo=FALSE}
+# die expected WAGE
+WAGE_hat <- -4.88 + 1.80 * 16
+WAGE_hat
+
+# die critical t-value at 5% significance level
+t_critical <- qt(0.975, df = 212)
+t_critical
+
+# confidence interval
+CI_lower <- WAGE_hat - t_critical * 0.833
+CI_upper <- WAGE_hat + t_critical * 0.833
+CI_lower
+CI_upper
+```
+
+
+c. Using the urban regression, compute a 95% interval estimate for expected WAGE if EDUC=16. The estimated covariance between the intercept and slope coefficients is
+−0.345. Is the interval estimate for the urban regression wider or narrower than that for the rural regression in (b). Do you find this plausible? Explain.
+
+```{r q3c, echo=FALSE}
+# die expected WAGE
+WAGE_hat <- -10.76 + 2.46 * 16
+WAGE_hat
+
+# die standard error of WAGE_hat
+se_WAGE_hat <- sqrt(2.27^2 + 16^2 * 0.16^2 + 2 * 16 * (-0.345))
+se_WAGE_hat
+
+# critical t-value at 5% significance level
+t_critical <- qt(0.975, df = 984)
+t_critical
+
+# die confidence interval
+CI_lower <- WAGE_hat - t_critical * se_WAGE_hat
+CI_upper <- WAGE_hat + t_critical * se_WAGE_hat
+CI_lower
+CI_upper
+```
+it is narrowier.
+
+d. Using the rural regression, test the hypothesis that the intercept parameter ß1 equals four, or more, against the alternative that it is less than four, at the 1% level of significance.
+
+t=(-4.88-4)/3.29= -2.7
+
+```{r q3d, echo=FALSE}
+critical_t <- qt(0.01, df = 212)
+critical_t
+```
+
+the t statistics is smaller than the critical value, thus we reject the null
+
+'######################################################################################################
+qn19,
+a. Plot MOTEL_PCT and COMP_PCT versus TIME on the same graph. What can you say about the occupancy rates over time? Do they tend to move together? Which seems to have the higher occupancy rates? Estimate the regression model......
+
+```{r q4a, echo=FALSE}
+# Load necessary libraries
+library(ggplot2)
+
+# Load data
+motel_data <- read.csv("motel.csv")
+
+# Plot MOTEL_PCT and COMP_PCT vs TIME
+ggplot(motel_data, aes(x = time)) +
+  geom_line(aes(y = motel_pct, color = "MOTEL_PCT")) +
+  geom_line(aes(y = comp_pct, color = "COMP_PCT")) +
+  labs(title = "Occupancy Rates Over Time",
+       x = "Time",
+       y = "Occupancy Rate (%)",
+       color = "Legend") +
+  theme_minimal()
+
+# die the regression model
+model <- lm(motel_pct ~ comp_pct, data = motel_data)
+summary(model)
+# 95% confidence interval for ß2
+conf_int <- confint(model, level = 0.95)
+conf_int
+```
+PCT of Motel is larger than Comp and they move in unison. 
+
+b. Construct a 90% interval estimate of the expected occupancy rate of the motel in question, MOTEL_PCT, given that COMP_PCT = 70.
+
+```{r q4b, echo=FALSE}
+# ein new data frame with COMP_PCT = 70
+new_data <- data.frame(comp_pct = 70)
+
+# MOTEL_PCT + 90% confidence interval
+prediction <- predict(model, newdata = new_data, interval = "confidence", level = 0.90)
+prediction
+```
+c. In the linear regression model MOTEL_PCT = ß1 + ß2_COMP_PCT_ + e, test the null hypothesis H0:ß2<=0 against the alternative hypothesis H0:ß2>0 at the a = 0.01 level of significance. Discuss your conclusion. Clearly define the test statistic used and the rejection region.
+
+```{r q4c, echo=FALSE}
+# die coefficient and standard error for ß2
+beta2 <- coef(model)["comp_pct"]
+se_beta2 <- summary(model)$coefficients["comp_pct", "Std. Error"]
+
+# die the t-statistic
+t_stat <- (beta2 - 0) / se_beta2
+t_stat
+# die critical t-value for a = 0.01
+critical_t <- qt(0.99, df = nrow(motel_data) - 2)
+critical_t
+```
+since t_stat is larger than critical, we reject the null hypothesis.
+
+d. In the linear regression model MOTEL_PCT = ß1 + ß2_COMP_PCT_ + e, test the null hypothesis H0:ß2=1 against the alternative hypothesis H0:ß2=/=1 at the a = 0.01 level of significance. If the null hypothesis were true, what would that imply about the motel’s occupancy rate versus their competitor’s occupancy rate? Discuss your conclusion. Clearly define the test statistic used and the rejection region.
+```{r q4d, echo=FALSE}
+# Calculate the t-statistic
+t_stat <- (beta2 - 1) / se_beta2
+t_stat
+
+# Find the critical t-value for α = 0.01 (two-tailed)
+critical_t <- qt(0.995, df = nrow(motel_data) - 2)
+critical_t
+```
+since the t stat is smaller than the critical value, we failed to reject the null hypothesis.
+
+e. Calculate the least squares residuals from the regression of MOTEL_PCT on COMP_PCT and plot them against TIME. Are there any unusual features to the plot? What is the predominant sign of the residuals during time periods 17–23
+
+```{r q4e, echo=FALSE}
+# die residuals
+residuals <- resid(model)
+
+# residuals + data frame
+motel_data$residuals <- residuals
+
+# Plot
+ggplot(motel_data, aes(x = time, y = residuals)) +
+  geom_line() +
+  labs(title = "Residuals vs Time",
+       x = "Time",
+       y = "Residuals") +
+  theme_minimal()
+
+# die predominant sign für die time periods 17–23
+residuals_17_23 <- motel_data$residuals[17:23]
+predominant_sign <- ifelse(mean(residuals_17_23) > 0, "Positive", "Negative")
+predominant_sign
+```
+it seems like the motel's occupancy rate was consistently lower than expected based on the competitor's occupancy rate.

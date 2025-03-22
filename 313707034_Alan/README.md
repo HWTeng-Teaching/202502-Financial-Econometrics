@@ -4,8 +4,8 @@
 
 ## Map
 
-<img width="300" alt="image" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcShdbv0ZsIIFSpWHfKSnJGDiyD9-ML6jXza5w&s" />
-<img width="300" alt="image" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ0DGcwQT4MAO15bPOYalAkHQZ7zzTuJ6RJqQ&s" />
+![image](https://github.com/user-attachments/assets/737f491a-8f9d-4fa1-ba8e-e761a6791c83)
+
 
 ## Food
 
