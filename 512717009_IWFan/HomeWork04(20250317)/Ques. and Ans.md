@@ -111,9 +111,11 @@ Model 2 使用對數形式，擬合數據較好，因為它解釋了 64.14% 的�
 
 Summary Table：
 
-![image](https://github.com/user-attachments/assets/663534e7-1a67-4e01-9d81-b0c192c340e9)
+![image](https://github.com/user-attachments/assets/d18a9f53-9d21-440a-8172-25a8b153203d)
 
 (i) 擬合曲線比較
+
+![image](https://github.com/user-attachments/assets/099706c7-9b0c-4f54-92a7-3cdf7d0ae55c)
 
 ![image](https://github.com/user-attachments/assets/ef62e29f-a005-45b4-9b6a-c3753762898b)
 
