@@ -25,4 +25,3 @@ ggplot(data=data_2,aes(x=exper,y=rating))+
   geom_smooth(method = 'lm',formula = y~log(x),se=FALSE)+
   labs(title="Model 2")
 
-4
