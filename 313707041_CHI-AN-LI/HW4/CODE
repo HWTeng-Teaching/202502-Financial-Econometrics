@@ -1,0 +1,185 @@
+#4.28
+#(a)
+# 四種模型
+m1 <- lm(northampton ~ time, data=wa_wheat)
+m2 <- lm(northampton ~ log(time), data=wa_wheat)
+m3 <- lm(northampton ~ I(time^2), data=wa_wheat)
+m4 <- lm(log(northampton) ~ time, data=wa_wheat)
+par(mfrow = c(2, 2))
+plot(wa_wheat$time, wa_wheat$northampton, main="Linear", xlab="TIME", ylab="YIELD")
+abline(model1, col="blue")
+
+plot(wa_wheat$time, wa_wheat$northampton, main="Linear-Log", xlab="TIME", ylab="YIELD")
+lines(wa_wheat$time, fitted(m2), col="blue")
+
+plot(wa_wheat$time, wa_wheat$northampton, main="Quadratic", xlab="TIME", ylab="YIELD")
+lines(wa_wheat$time, fitted(m3), col="blue")
+
+plot(wa_wheat$time, log(wa_wheat$northampton), main="Log-Linear", xlab="TIME", ylab="ln(YIELD)")
+lines(wa_wheat$time, fitted(m4), col="blue")
+# 模型摘要（含係數、R平方等）
+summary(m1)
+summary(m2)
+summary(m3)
+summary(m4)
+
+# 殘差圖
+par(mfrow=c(2,2))
+plot(m1, which=1, main="Model 1: Y~time")
+plot(m2, which=1, main="Model 2: Y~log(time)")
+plot(m3, which=1, main="Model 3: Y~time^2")
+plot(m4, which=1, main="Model 4: log(Y)~time")
+
+# 常態性檢定（Shapiro-Wilk）
+shapiro.test(resid(m1))
+shapiro.test(resid(m2))
+shapiro.test(resid(m3))
+shapiro.test(resid(m4))
+
+# R-squared values
+cat("R^2 for each model:\n")
+c(model1 = summary(m1)$r.squared,
+  model2 = summary(m2)$r.squared,
+  model3 = summary(m3)$r.squared,
+  model4 = summary(m4)$r.squared)
+##選擇模型四，因為能解釋成平均成長率。殘差圖的部分也能觀察到隨機分布
+
+#(b)
+summary(m4)
+##時間每經過一年，產出平均成長1.8632%
+
+(c)
+# leverage
+lev <- hatvalues(m4)
+which(lev > 2*mean(lev))
+
+# studentized residuals
+studres <- rstudent(m4)
+which(abs(studres) > 2)
+
+# DFBETAs
+dfb <- dfbetas(m4)
+which(abs(dfb) > 2/sqrt(nrow(wa_wheat)), arr.ind = TRUE)
+
+# DFFITS
+dff <- dffits(m4)
+which(abs(dff) > 2*sqrt(ncol(model.matrix(m4))/nrow(wa_wheat)))
+
+#(d)
+# ----- STEP 1: 建立訓練資料 (1950–1996 年 = time 1~47)
+train <- wa_wheat[wa_wheat$time <= 47, ]
+
+# ----- STEP 2: 建立模型（log(YIELD) ~ time）
+model <- lm(log(northampton) ~ time, data = train)
+
+# ----- STEP 3: 預測資料（1997 年 = time = 48）
+newdata <- data.frame(time = 48)
+
+# ----- STEP 4: 預測 log(YIELD) 並轉換回原單位
+pred_log <- predict(model, newdata, interval = "prediction", level = 0.95)
+pred_yield <- exp(pred_log)  # 預測值還原成 YIELD 單位
+
+# ----- STEP 5: 取得 1997 年實際觀察值
+actual <- wa_wheat$northampton[wa_wheat$time == 48]
+
+# ----- STEP 6: 印出預測結果與實際值
+cat("95% Prediction Interval for YIELD (1997):\n")
+print(pred_yield)
+cat("Actual yield in 1997:", actual, "\n")
+
+# ----- STEP 7: 判斷是否落在預測區間內
+if (!is.na(actual) &&
+    actual >= pred_yield[1, "lwr"] &&
+    actual <= pred_yield[1, "upr"]) {
+  cat("✅ True value is within the 95% prediction interval.\n")
+} else {
+  cat("❌ True value is NOT within the 95% prediction interval.\n")
+}
+
+##True value is within the 95% prediction interval.
+#4.29
+#(a)
+summary(cex5_small$food)
+summary(cex5_small$income)
+
+hist(cex5_small$food, main = "Histogram of FOOD", col = "skyblue")
+hist(cex5_small$income, main = "Histogram of INCOME", col = "salmon")
+
+# Bell-shaped 判斷 + 常態性檢定
+library(tseries)
+jarque.bera.test(cex5_small$food)
+jarque.bera.test(cex5_small$income)
+##FOOD和INCOME的直方圖並不對稱，且平均數皆大於中位數，根據檢定兩者皆不符合常態分配
+#(b)
+model_b <- lm(food ~ income, data = cex5_small)
+summary(model_b)
+confint(model_b, level = 0.95)  # 95% CI for β2
+
+# 繪圖：含回歸線
+plot(cex5_small$income, cex5_small$food, main = "food vs income with Linear Fit")
+abline(model_b, col = "blue", lwd = 2)
+##根據B2 95%信賴區間，估計並不穩定
+#(c)
+resid_b <- resid(model_b)
+plot(cex5_small$income, resid_b, main = "Residuals vs Income", col = "gray")
+abline(h = 0, lty = 2)
+
+hist(resid_b, main = "Histogram of Residuals")
+jarque.bera.test(resid_b)
+##根據殘差圖，當收入越多時，殘差的變異性越大，另外有些殘差大於200，或許存在極端值
+
+#(d)
+b1 <- coef(model_b)[1]
+b2 <- coef(model_b)[2]
+
+income_vals <- c(19, 65, 160)
+elasticity <- b2 * income_vals / (b1 + b2 * income_vals)
+elasticity
+
+for (val in income_vals) {
+  cat("\nElasticity at income =", val, ":\n")
+  print(deltaMethod(model_b, paste0("income * ", val, " / (Intercept + income * ", val, ")")))
+}
+##不同收入水準彈性也不同，信賴區間也沒有重疊，收入上升彈性也會上升。
+#(e)
+model_e <- lm(log(food) ~ log(income), data = cex5_small)
+summary(model_e)
+
+plot(log(cex5_small$income), log(cex5_small$food),
+     main = "log(food) vs log(income)", col = "darkgreen")
+abline(model_e, col = "red", lwd = 2)
+# 建立 log-log 模型
+model_loglog <- lm(log(food) ~ log(income), data = cex5_small)
+
+# SSR：residual sum of squares
+SSR <- sum(resid(model_loglog)^2)
+
+# SST：total sum of squares for log(food)
+log_y <- log(cex5_small$food)
+SST <- sum((log_y - mean(log_y))^2)
+
+# Generalized R^2
+R2_generalized <- 1 - SSR / SST
+cat("Generalized R^2 for log-log model:", R2_generalized, "\n")
+model_linear <- lm(food ~ income, data = cex5_small)
+summary(model_linear)$r.squared
+##相較(b)，該模型趨勢較明顯，且高收入族群的估計更加穩定。雖然線性模型的判定係數大於log-log模型，但判定係數並非判斷模型好壞唯一標準，應該參考其他指標。
+
+#(f)
+confint(model_e, level = 0.95)  # β2 是 constant elasticity
+##彈性不同於(d)，log-log屬於固定彈性
+#(g)
+resid_e <- resid(model_e)
+plot(log(cex5_small$income), resid_e, main = "Residuals (log-log) vs log(income)")
+abline(h = 0, lty = 2)
+hist(resid_e, main = "Histogram of Residuals (log-log)")
+jarque.bera.test(resid_e)
+##殘差圖並無明顯趨勢，然而根據統計檢定，並不服從常態分配
+#(h)
+model_h <- lm(food ~ log(income),  data= cex5_small)
+summary(model_h)
+
+plot(log(cex5_small$income), cex5_small$food, main = "food vs log(income)")
+abline(model_h, col = "blue", lwd = 2)
+
+

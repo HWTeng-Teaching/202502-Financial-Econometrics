@@ -1,0 +1,93 @@
+#題目中已直接給出模型係數與 𝑅 squeal值，因此以下程式碼主要用於「繪圖與計算」示範。若您有實際資料 (EXP, RATING)，
+#可將下方「自定義模型」部分改為 lm(RATING ~ EXP, data = ...) 與 lm(RATING ~ log(EXP), data = ...) 取得真實估計結果。
+
+# 載入繪圖套件
+library(ggplot2)
+
+#--------------------------------
+# 1. 定義模型參數（依題目給定）
+#--------------------------------
+# Model 1: RATING = 64.289 + 0.990 * EXP, R^2 = 0.3793
+beta1_0  <- 64.289  # 截距
+beta1_1  <- 0.990   # 斜率
+R2_m1    <- 0.3793  # R^2
+
+# Model 2: RATING = 39.464 + 15.312 * ln(EXP), R^2 = 0.6414
+beta2_0  <- 39.464
+beta2_1  <- 15.312
+R2_m2    <- 0.6414
+
+#--------------------------------
+# 2. 在 EXP = 1 ~ 30 間繪製預測值
+#--------------------------------
+exp_values <- 1:30
+
+# Model 1 預測
+rating_m1 <- beta1_0 + beta1_1 * exp_values
+
+# Model 2 預測 (log)
+rating_m2 <- beta2_0 + beta2_1 * log(exp_values)
+
+# 建立資料框以便 ggplot2 繪圖
+df_plot <- data.frame(
+  EXP       = exp_values,
+  RATING_M1 = rating_m1,
+  RATING_M2 = rating_m2
+)
+
+# 將兩模型的預測值轉為長格式，便於同一張圖呈現
+df_long <- reshape(
+  df_plot,
+  varying   = c("RATING_M1", "RATING_M2"),
+  v.names   = "RATING",
+  timevar   = "Model",
+  times     = c("Model 1", "Model 2"),
+  direction = "long"
+)
+
+# 繪製兩條預測曲線
+ggplot(df_long, aes(x = EXP, y = RATING, color = Model)) +
+  geom_line(size = 1) +
+  scale_color_manual(values = c("Model 1" = "blue", "Model 2" = "red")) +
+  labs(title = "Fitted Values from Model 1 and Model 2",
+       x = "Years of Experience (EXP)",
+       y = "Predicted RATING") +
+  theme_minimal()
+
+#--------------------------------
+# 3. 計算邊際影響 (c) & (d)
+#--------------------------------
+# (c) Model 1 的邊際影響 = beta1_1 (固定)
+marginal_m1_10 <- beta1_1  # EXP=10
+marginal_m1_20 <- beta1_1  # EXP=20
+cat("Model 1 marginal effect at EXP=10:", marginal_m1_10, "\n")
+cat("Model 1 marginal effect at EXP=20:", marginal_m1_20, "\n\n")
+
+# (d) Model 2 的邊際影響 = beta2_1 / EXP
+# EXP=10
+marginal_m2_10 <- beta2_1 / 10
+# EXP=20
+marginal_m2_20 <- beta2_1 / 20
+cat("Model 2 marginal effect at EXP=10:", marginal_m2_10, "\n")
+cat("Model 2 marginal effect at EXP=20:", marginal_m2_20, "\n\n")
+
+#--------------------------------
+# 4. 比較兩個模型的 R^2
+#--------------------------------
+cat("Model 1 R^2 =", R2_m1, "\n")
+cat("Model 2 R^2 =", R2_m2, "\n")
+
+#--------------------------------
+# (若有實際資料，可用下列方式進行迴歸並獲取真實 R^2)
+#--------------------------------
+# 假設我們有資料框 df_data，其中包含變數 RATING 與 EXP
+# # 線性模型 (Model 1)
+# lm_m1 <- lm(RATING ~ EXP, data = df_data)
+# summary(lm_m1)$r.squared
+#
+# # 對數模型 (Model 2)
+# # 注意要排除 EXP=0 的觀測值，或改用 ln(EXP+1) 視情況而定
+# df_data_nonzero <- subset(df_data, EXP > 0)
+# lm_m2 <- lm(RATING ~ log(EXP), data = df_data_nonzero)
+# summary(lm_m2)$r.squared
+

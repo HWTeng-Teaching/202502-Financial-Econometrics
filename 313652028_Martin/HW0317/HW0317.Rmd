@@ -1,0 +1,832 @@
+---
+title: "HW0317"
+author: "Yung-Jung Cheng"
+date: "2025-03-23"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(POE5Rdata)
+library(ggplot2)
+library(gridExtra)
+library(tseries) 
+library(lmtest)
+
+```
+
+# Q4
+The general manager of a large engineering firm wants to know whether the experience of technical artists influences their work quality. A random sample of 50 artists is selected. Using years of work experience (EXPER) and a performance rating (RATING, on a 100-point scale), two models are estimated by least squares. The estimates and standard errors are as follows:
+Model 1:
+$$\hat{RATING}= 64.289 + 0.990EXPER,\,\,\,\, N = 50,\,\,\,\, R^2 = 0.3793
+$$
+Model 2:
+$$
+\hat{RATING}= 39.464 + 15.312 \ln(EXPER),\,\,\, N = 46,\,\,\, R^2 = 0.6414
+$$
+
+
+## Q4(a)
+Sketch the fitted values from Model 1 for EXPER = 0 to 30 years.
+
+### Ans
+```{r Q4a}
+# 定義經驗年數範圍
+exper <- 0:30
+
+# 根據模型 1 計算預測的表現評分
+rating <- 64.289 + 0.990 * exper
+
+# 繪製圖形
+plot(exper, rating, type = 'l', col = 'blue',
+     main = "Model 1 Fitted Values",
+     xlab = "Years of Experience (EXPER)",
+     ylab = "Performance Rating (RATING)",
+     lwd = 2)
+
+# 添加網格
+grid(nx = NULL, ny = NULL, col = "gray", lty = "dotted")
+
+
+```
+
+## Q4(b)
+Sketch the fitted values from Model 2 against EXPER = 1 to 30 years. Explain why the four artists with no experience are not used in the estimation of Model 2.
+
+### Ans
+```{r Q4b}
+# 定義經驗年數範圍（從 1 到 30）
+exper <- 1:30
+
+# 根據模型 2 計算預測的表現評分，使用自然對數
+rating <- 39.464 + 15.312 * log(exper)
+
+# 繪製圖形
+plot(exper, rating, type = 'l', col = 'green',
+     main = "Model 2 Fitted Values",
+     xlab = "Years of Experience (EXPER)",
+     ylab = "Performance Rating (RATING)",
+     lwd = 2)
+
+# 添加網格
+grid(nx = NULL, ny = NULL, col = "gray", lty = "dotted")
+
+
+```
+
+Since $\ln(0)$ is undefined, we can not use model2 to pridict those four astist with no experience.
+
+## Q4(c)
+Using Model 1, compute the marginal effect on RATING of another year of experience for (i) an artist with 10 years of experience and (ii) an artist with 20 years of experience.
+
+### Ans
+Marge effect of model 1 is fitted and is 0.990. Also the model is linear, such that marginal effect on RATING of another year of experience for both 10 years of experience and 20 years of experience will be 0.990.
+
+
+## Q4(d)
+Using Model 2, compute the marginal effect on RATING of another year of experience for (i) an artist with 10 years of experience and (ii) an artist with 20 years of experience.
+
+### Ans
+
+$ \frac{\partial\text{RATING}}{\partial\text{EXPER}}=15.312\times\frac{1}{\text{EXPER}}$
+
+1) for a 10 years experience, $15.312\times\frac{1}{10}=1.5312$
+2) for a 20 years experience, $15.312\times\frac{1}{20}=0.7656$
+
+## Q4(e)
+Which of the two models fits the data better? Estimation of Model 1 using just the technical artists with some experience yields R2 = 0.4858.
+
+### Ans
+Model 2 fits the data better, since $0.6414>0.4858$
+
+## Q4(f)
+Do you find Model 1 or Model 2 more reasonable, or plausible, based on economic reasoning? Explain.
+
+### Ans
+**Model 2 is more reasonable** based on economic reasoning because it accounts for diminishing returns on experience. This model uses the logarithm of experience, reflecting a decrease in the impact of each additional year of experience as an artist becomes more skilled. This approach aligns better with real-world scenarios where improvements in performance tend to be greater at the beginning of a career and diminish over time.
+
+# Q28
+The file wa-wheat.dat contains observations on wheat yield in Western Australian shires. There are 48 annual observations for the years 1950–1997. For the Northampton shire, consider the following four equations:
+$$
+\begin{align}
+YIELD_t &= β_0 + β_1 TIME + e_t\\
+YIELD_t &= α_0 + α_1 \ln(TIME) + e_t\\
+YIELD_t &= γ_0 + γ_1 TIME2 + e_t\\
+\ln(YIELD_t) &= ϕ_0 + ϕ_1 TIME + e_t
+
+\end{align}
+$$
+
+
+## Q28(a)
+Estimate each of the four equations. Taking into consideration (i) plots of the fitted equations, (ii) plots of the residuals, (iii) error normality tests, and (iii) values for R2, which equation do you think is preferable? Explain.
+
+### Ans
+```{r Q28a}
+# 數據準備
+time_data <- wa_wheat$time
+yield_data <- wa_wheat$northampton
+
+# 模型擬合
+model_linear <- lm(yield_data ~ time_data, data = wa_wheat)
+model_log_time <- lm(yield_data ~ log(time_data), data = wa_wheat)
+model_quadratic <- lm(yield_data ~ I(time_data^2), data = wa_wheat)
+model_log_yield <- lm(log(yield_data) ~ time_data, data = wa_wheat)
+
+# 檢視模型摘要，獲取R^2和殘差檢驗
+summary(model_linear)
+summary(model_log_time)
+summary(model_quadratic)
+summary(model_log_yield)
+
+# 正態性檢測
+shapiro.test(residuals(model_linear))
+shapiro.test(residuals(model_log_time))
+shapiro.test(residuals(model_quadratic))
+shapiro.test(residuals(model_log_yield))
+
+```
+Based on the analysis, the **Quadratic Model (Model 3)** is the preferred choice. It has the highest \(R^2\) value of 0.689, indicating it explains the variability in the data better than the other models. The residuals are closest to a normal distribution, as confirmed by the Shapiro-Wilk test (\(p = 0.8266\)), which supports the model's assumptions. Therefore, the quadratic model provides the best fit and most reliable statistical inferences for the data on wheat yield in Northampton.
+
+## Q28(b)
+Interpret the coefficient of the time-related variable in your chosen specification.
+
+### Ans
+In the chosen Quadratic Model (Model 3), the coefficient of the time-squared variable (\(\beta_1 = 0.0004986\)) represents the accelerating effect of time on wheat yield. Specifically, this coefficient indicates that as time progresses, the rate of increase in wheat yield accelerates. This suggests that wheat yield does not simply increase linearly over time but grows faster as time squares, reflecting potential improvements in technology, farming practices, or environmental factors.
+
+## Q28(c)
+Using your chosen specification, identify any unusual observations, based on the studentized residuals, LEVERAGE, DFBETAS, and DFFITS.
+
+### Ans
+```{r 28c}
+# 設定模型
+model_quadratic <- lm(northampton ~ I(time^2), data = wa_wheat)
+
+# 學生化殘差
+student_resids <- rstudent(model_quadratic)
+leverage_threshold <- 2 * mean(hatvalues(model_quadratic))
+dffits_values <- dffits(model_quadratic)
+dffits_threshold <- 2 * sqrt(2/nrow(wa_wheat))
+
+# 繪製學生化殘差
+plot(wa_wheat$time, student_resids, ylab="Studentized Residuals", xlab="Time", main="Plot of Studentized Residuals")
+abline(h = c(-2, 2), col = "red")
+# 標記異常值
+outliers_resids <- which(abs(student_resids) > 2)
+points(wa_wheat$time[outliers_resids], student_resids[outliers_resids], col = "blue", pch = 19)
+
+# 繪製杠桿值
+plot(wa_wheat$time, hatvalues(model_quadratic), ylab="Leverages", xlab="Time", main="Plot of Leverages")
+abline(h = leverage_threshold, col = "red")
+# 標記異常值
+outliers_leverage <- which(hatvalues(model_quadratic) > leverage_threshold)
+points(wa_wheat$time[outliers_leverage], hatvalues(model_quadratic)[outliers_leverage], col = "blue", pch = 19)
+
+# 繪製DFFITS
+plot(wa_wheat$time, dffits_values, ylab="DFFITS", xlab="Time", main="DFFITS Values")
+abline(h = c(-dffits_threshold, dffits_threshold), col = "red")
+# 標記異常值
+outliers_dffits <- which(abs(dffits_values) > dffits_threshold)
+points(wa_wheat$time[outliers_dffits], dffits_values[outliers_dffits], col = "blue", pch = 19)
+
+# 打印出所有異常值的時間和北安普敦產量
+wa_wheat[unique(c(outliers_resids, outliers_leverage, outliers_dffits)), ]
+
+
+```
+
+
+## Q28(d)
+Using your chosen specification, use the observations up to 1996 to estimate the model. Construct a 95% prediction interval for YIELD in 1997. Does your interval contain the true value?
+
+### Ans
+
+```{r Q28d}
+# 過濾1996年及以前的數據（從1950年開始，對應到1996年為 time = 47）
+data_train <- wa_wheat[wa_wheat$time <= 47, ]
+
+# 擬合二次模型
+model_train <- lm(northampton ~ I(time^2), data = data_train)
+
+# 進行1997年的預測（對應到 time = 48）
+data_1997 <- wa_wheat[wa_wheat$time == 48, ]
+predict_1997 <- predict(model_train, newdata = data_1997, interval = "prediction", level = 0.95)
+
+# 輸出預測結果和95%預測區間
+print(predict_1997)
+
+# 檢查1997年實際產量是否在預測區間內
+actual_1997 <- data_1997$northampton
+print(actual_1997)
+within_interval <- actual_1997 >= predict_1997[1, "lwr"] & actual_1997 <= predict_1997[1, "upr"]
+print(within_interval)
+
+# 建立預測資料框
+df_pred <- data.frame(
+  time = 48,
+  fit = predict_1997[1, "fit"],
+  lwr = predict_1997[1, "lwr"],
+  upr = predict_1997[1, "upr"],
+  actual = actual_1997
+)
+
+# 過去觀測資料 (1950–1996)
+plot_data <- wa_wheat[wa_wheat$time <= 47, ]
+
+
+# 繪圖
+ggplot() +
+  # 觀測資料點
+  geom_point(data = plot_data, aes(x = time, y = northampton), color = "black") +
+  
+  # 擬合的二次曲線
+  geom_smooth(data = plot_data, aes(x = time, y = northampton), method = "lm",
+              formula = y ~ I(x^2), se = FALSE, color = "blue") +
+  
+  # 1997 預測點
+  geom_point(data = df_pred, aes(x = time, y = fit), color = "blue", shape = 17, size = 3) +
+  
+  # 95% 預測區間
+  geom_errorbar(data = df_pred, aes(x = time, ymin = lwr, ymax = upr), width = 0.5, color = "blue") +
+  
+  # 實際觀測值
+  geom_point(data = df_pred, aes(x = time, y = actual), color = "red", shape = 19, size = 3) +
+  
+  labs(title = "Prediction for 1997 with 95% Prediction Interval",
+       x = "Time (1950 = 1, ..., 1997 = 48)",
+       y = "Yield (Northampton)") +
+  theme_minimal()
+
+```
+
+**Yes, the interval contain true value**
+
+
+# Q29
+Consider a model for household expenditure as a function of household income using the 2013 data from the Consumer Expenditure Survey, cex5_small. The data file cex5 contains more observations. Our attention is restricted to three-person households, consisting of a husband, a wife, plus one other. In this exercise, we examine expenditures on a staple item, food. In this extended example, you are asked to compare the linear, log-log, and linear-log specifications.
+
+## Q29(a)
+Calculate summary statistics for the variables: FOOD and INCOME. Report for each the sample mean, median, minimum, maximum, and standard deviation. Construct histograms for both variables. Locate the variable mean and median on each histogram. Are the histograms symmetrical and “bell-shaped” curves? Is the sample mean larger than the median, or vice versa? Carry out the Jarque–Bera test for the normality of each variable.
+
+### Ans
+```{r Q29a}
+library(ggplot2)
+library(tseries)  # Jarque-Bera test 用
+
+# 抽取變數
+food <- cex5_small$food
+income <- cex5_small$income
+
+# ===== 敘述統計 =====
+food_stats <- c(
+  mean = mean(food),
+  median = median(food),
+  min = min(food),
+  max = max(food),
+  sd = sd(food)
+)
+
+income_stats <- c(
+  mean = mean(income),
+  median = median(income),
+  min = min(income),
+  max = max(income),
+  sd = sd(income)
+)
+
+print(round(food_stats, 4))
+print(round(income_stats, 4))
+
+# ===== 繪製直方圖 =====
+
+# food histogram
+ggplot(cex5_small, aes(x = food)) +
+  geom_histogram(binwidth = 20, fill = "lightblue", color = "black") +
+  geom_vline(aes(xintercept = mean(food)), color = "blue", linetype = "dashed", linewidth = 1) +
+  geom_vline(aes(xintercept = median(food)), color = "red", linetype = "dotted", linewidth = 1) +
+  labs(title = "Histogram of FOOD", x = "FOOD", y = "Frequency")
+
+# income histogram
+ggplot(cex5_small, aes(x = income)) +
+  geom_histogram(binwidth = 10, fill = "lightgreen", color = "black") +
+  geom_vline(aes(xintercept = mean(income)), color = "blue", linetype = "dashed", linewidth = 1) +
+  geom_vline(aes(xintercept = median(income)), color = "red", linetype = "dotted", linewidth = 1) +
+  labs(title = "Histogram of INCOME", x = "INCOME", y = "Frequency")
+
+# ===== Jarque-Bera 常態性檢定 =====
+jb_food <- jarque.bera.test(food)
+jb_income <- jarque.bera.test(income)
+
+print(jb_food)
+print(jb_income)
+
+
+```
+
+#### Summary Statistics
+
+- **FOOD**:  
+  - Mean = 114.44  
+  - Median = 99.80  
+  - Minimum = 9.63  
+  - Maximum = 476.67  
+  - Standard Deviation = 72.66  
+
+- **INCOME**:  
+  - Mean = 72.14  
+  - Median = 65.29  
+  - Minimum = 10.00  
+  - Maximum = 200.00  
+  - Standard Deviation = 41.65  
+
+---
+
+#### Histograms
+
+- Both histograms are **right-skewed**, not symmetrical or bell-shaped.  
+- In both cases, the **mean is greater than the median**.
+
+---
+
+#### Jarque–Bera Normality Test
+
+- **FOOD**:  
+  - JB = 648.65, *p* < 2.2e-16 → **Not normally distributed**
+
+- **INCOME**:  
+  - JB = 148.21, *p* < 2.2e-16 → **Not normally distributed**
+
+## Q29(b)
+
+Estimate the linear relationship $FOOD = β_1 + β_2 INCOME + e$. Create a scatter plot FOOD versus INCOME and include the fitted least squares line. Construct a 95% interval estimate for $β_2$. Have we estimated the effect of changing income on average FOOD relatively precisely, or not?
+
+
+### Ans
+```{r Q29b}
+# 建立線性模型
+model_lm <- lm(food ~ income, data = cex5_small)
+
+# 顯示模型摘要（包含估計值、t 值與 p 值）
+summary(model_lm)
+
+# 畫出散佈圖與回歸線
+ggplot(cex5_small, aes(x = income, y = food)) +
+  geom_point(alpha = 0.6) +
+  geom_smooth(method = "lm", se = TRUE , color = "blue") +
+  labs(title = "Scatter Plot of FOOD vs INCOME",
+       x = "INCOME", y = "FOOD")
+
+# 建立 β2 的 95% 信賴區間
+confint(model_lm, level = 0.95)
+
+```
+
+
+We estimated the model:  
+$$
+FOOD = \beta_1 + \beta_2 \cdot INCOME + e
+$$
+
+**Estimated regression equation:**
+$$
+\widehat{FOOD} = 88.5665 + 0.3587 \cdot INCOME
+$$
+
+**95% Confidence Interval for** $\beta_2$:
+
+- [0.2619, 0.4555]
+
+**Interpretation:**
+
+- On average, for each additional unit of income, food expenditure increases by **approximately 0.36 units**.
+- Since the confidence interval does **not include 0** and the p-value is very small (*p* < 0.0001), income has a **statistically significant** positive effect on food spending.
+- The narrow confidence interval indicates a **precise estimate** of the slope.
+
+**Scatter plot observation:**
+
+- The confidence band around the regression line shows the uncertainty in estimating the **mean** response.
+- It is expected that many actual data points fall outside this band, since it is **not a prediction interval**.
+- Therefore, the presence of many points outside the band does **not imply a poor fit**.
+
+
+## Q29 (c)
+Obtain the least squares residuals from the regression in (b) and plot them against INCOME. Do you observe any patterns? Construct a residual histogram and carry out the Jarque–Bera test for normality. Is it more important for the variables FOOD and INCOME to be normally distributed, or that the random error $e$ be normally distributed? Explain your reasoning.
+
+### Ans
+
+```{r Q29c}
+# 提取殘差
+residuals_lm <- residuals(model_lm)
+
+# 殘差 vs INCOME
+ggplot(data = cex5_small, aes(x = income, y = residuals_lm)) +
+  geom_point(alpha = 0.6) +
+  geom_hline(yintercept = 0, color = "blue", linetype = "dashed") +
+  labs(title = "Residuals vs INCOME", x = "INCOME", y = "Residuals")
+
+# 殘差直方圖
+ggplot(data.frame(residuals = residuals_lm), aes(x = residuals)) +
+  geom_histogram(binwidth = 20, fill = "lightgray", color = "black") +
+  labs(title = "Histogram of Residuals", x = "Residuals", y = "Frequency")
+
+# Jarque–Bera test for residuals
+jarque.bera.test(residuals_lm)
+
+
+# 執行 Breusch-Pagan test
+bptest(model_lm)
+
+```
+**Breusch–Pagan Test for Heteroskedasticity:**
+
+- BP statistic = 14.086  
+- Degrees of freedom = 1  
+- p-value = 0.00017
+
+**Conclusion:**
+
+- We reject the null hypothesis of constant variance.
+- There is statistical evidence of **heteroskedasticity** in the residuals.
+- This supports the earlier visual observation that residual spread increases with income.
+- As a result, standard errors from the OLS regression may be **biased**, and inference should be interpreted with caution or corrected using robust methods.
+
+
+
+## Q29(d)
+Calculate both a point estimate and a 95% interval estimate of the elasticity of food expenditure with respect to income at INCOME = 19, 65, and 160, and the corresponding points on the fitted line, which you may treat as not random. Are the estimated elasticities similar or dissimilar? Do the interval estimates overlap or not? As INCOME increases should the income elasticity for food increase or decrease, based on Economics principles?
+
+### Ans
+```{r Q29d}
+# 目標點
+income_points <- c(19, 65, 160)
+
+# 預測 food（回歸線上的點，不是隨機）
+food_hat <- predict(model_lm, newdata = data.frame(income = income_points))
+
+# 斜率估計值與標準誤
+b2 <- coef(model_lm)["income"]
+se_b2 <- summary(model_lm)$coefficients["income", "Std. Error"]
+
+# 建立彈性點估計
+elasticity_point <- b2 * income_points / food_hat
+
+# delta method approximation for SE of elasticity
+# Var(E) ≈ (INCOME / FOOD)^2 * Var(b2)
+elasticity_se <- (income_points / food_hat)^2 * se_b2^2
+elasticity_ci_lower <- elasticity_point - 1.96 * sqrt(elasticity_se)
+elasticity_ci_upper <- elasticity_point + 1.96 * sqrt(elasticity_se)
+
+# 結果整理
+elasticity_table <- data.frame(
+  INCOME = income_points,
+  FOOD_hat = round(food_hat, 4),
+  Elasticity = round(elasticity_point, 4),
+  Lower_95CI = round(elasticity_ci_lower, 4),
+  Upper_95CI = round(elasticity_ci_upper, 4)
+)
+
+print(elasticity_table)
+
+```
+
+We computed the point and 95% confidence interval estimates of the elasticity of food expenditure at different income levels, based on the linear model:
+
+$$
+\text{Elasticity} = \hat{\beta}_2 \cdot \frac{INCOME}{\widehat{FOOD}}
+$$
+
+| INCOME | Predicted FOOD | Elasticity | 95% CI              |
+|--------|----------------|------------|---------------------|
+| 19     | 95.3815        | 0.0715     | [0.0522, 0.0907]    |
+| 65     | 111.8811       | 0.2084     | [0.1522, 0.2645]    |
+| 160    | 145.9564       | 0.3932     | [0.2872, 0.4992]    |
+
+**Observations:**
+
+- Elasticity increases with income, indicating greater responsiveness of food expenditure at higher income levels.
+- The confidence intervals do not significantly overlap, suggesting the differences are statistically meaningful.
+- All elasticity values are below 1, consistent with food being a **necessity good** in economic theory.
+
+
+
+## Q29(e)
+For expenditures on food, estimate the log-log relationship $\ln(FOOD)=γ_1 + γ_2\ln(INCOME) + e$. Create a scatter plot for $\ln(FOOD)$ versus $\ln(INCOME)$ and include the fitted least squares line. Compare this to the plot in (b). Is the relationship more or less well-defined for the log-log model relative to the linear specification? Calculate the generalized R2 for the log-log model and compare it to the R2 from the linear model. Which of the models seems to fit the data better?
+
+### Ans
+```{r Q29e}
+# 取 log 變數
+cex5_small$log_food <- log(cex5_small$food)
+cex5_small$log_income <- log(cex5_small$income)
+
+# 建立 log-log 模型
+model_loglog <- lm(log_food ~ log_income, data = cex5_small)
+
+# 顯示模型摘要
+summary(model_loglog)
+
+# 畫圖：ln(FOOD) vs ln(INCOME)
+ggplot(cex5_small, aes(x = log_income, y = log_food)) +
+  geom_point(alpha = 0.6) +
+  geom_smooth(method = "lm", se = TRUE, color = "blue", fill = "lightblue") +
+  labs(title = "Scatter Plot of log(FOOD) vs log(INCOME)",
+       x = "log(INCOME)", y = "log(FOOD)")
+
+
+
+```
+
+
+We estimated the model:
+$$
+\ln(FOOD) = \gamma_1 + \gamma_2 \cdot \ln(INCOME) + e
+$$
+
+- Estimated elasticity ($\gamma_2$): **0.1863**  
+- R² = **0.0332**, slightly lower than the linear model R² = **0.0423**
+
+**Visual comparison:**
+
+- The log-log scatter plot shows a clearer linear trend.
+- Points are more symmetrically distributed around the line.
+
+**Conclusion:**
+
+- The log-log model gives a more well-defined visual relationship.
+- However, it explains slightly **less variation** in the data than the linear model.
+
+## Q29(f)
+Construct a point and 95% interval estimate of the elasticity for the log-log model. Is the elasticity of food expenditure from the log-log model similar to that in part (d), or dissimilar? Provide statistical evidence for your claim.
+
+### Ans
+```{r Q29f}
+# 提取彈性與標準誤
+gamma2 <- coef(model_loglog)["log_income"]
+se_gamma2 <- summary(model_loglog)$coefficients["log_income", "Std. Error"]
+
+# 建立 95% 信賴區間
+gamma2_ci <- c(
+  lower = gamma2 - 1.96 * se_gamma2,
+  upper = gamma2 + 1.96 * se_gamma2
+)
+
+# 顯示結果
+round(c(Elasticity = gamma2, gamma2_ci), 4)
+
+
+```
+
+
+- Estimated elasticity ($\gamma_2$) = **0.1863**
+- 95% confidence interval: **[0.1294, 0.2432]**
+
+**Comparison with part (d):**
+
+| INCOME | Elasticity (d) | 95% CI (d)         | Inside log-log CI? |
+|--------|----------------|--------------------|---------------------|
+| 19     | 0.0715         | [0.0522, 0.0907]   | ❌ No               |
+| 65     | 0.2084         | [0.1522, 0.2645]   | ✅ Yes              |
+| 160    | 0.3932         | [0.2872, 0.4992]   | ❌ No               |
+
+**Conclusion:**
+
+- The elasticity from the log-log model is close to that at income = 65 in part (d), but differs from those at income = 19 and 160.
+- This shows that the log-log model assumes a constant elasticity, while the linear model reveals that elasticity **increases with income**, which may better reflect economic behavior.
+
+## Q29(g)
+Obtain the least squares residuals from the log-log model and plot them against ln(INCOME). Do you observe any patterns? Construct a residual histogram and carry out the Jarque–Bera test for normality. What do you conclude about the normality of the regression errors in this model?
+
+### Ans
+```{r Q29g}
+# 取出 log-log 模型的殘差
+residuals_loglog <- residuals(model_loglog)
+
+# 殘差 vs ln(INCOME)
+ggplot(cex5_small, aes(x = log_income, y = residuals_loglog)) +
+  geom_point(alpha = 0.5) +
+  geom_hline(yintercept = 0, color = "blue", linetype = "dashed") +
+  labs(title = "Residuals vs log(INCOME)",
+       x = "log(INCOME)", y = "Residuals")
+
+# 殘差直方圖
+ggplot(data.frame(residuals = residuals_loglog), aes(x = residuals)) +
+  geom_histogram(binwidth = 0.25, fill = "lightgray", color = "black") +
+  labs(title = "Histogram of Residuals (log-log model)",
+       x = "Residuals", y = "Frequency")
+
+# Jarque–Bera 檢定
+jarque.bera.test(residuals_loglog)
+
+```
+
+**Residuals vs log(INCOME):**
+
+- The residuals are randomly scattered around zero, with no clear pattern.
+- No evidence of heteroskedasticity or model misfit.
+
+**Histogram of residuals:**
+
+- Roughly bell-shaped, slightly left-skewed.
+- More symmetric than in the linear model.
+
+**Jarque–Bera test:**
+
+- JB = 25.85, p-value = 2.44e-06 → Reject normality.
+- However, this is a **major improvement** compared to the linear model (JB = 624).
+
+**Conclusion:**
+
+- The residuals from the log-log model are **not perfectly normal**, but much closer to normality.
+- The log-log model shows a better error structure and improves model assumptions.
+
+
+## Q29(h)
+For expenditures on food, estimate the linear-log relationship $FOOD = α_1 + α_2\ln(INCOME) + e$. Create a scatter plot for $FOOD$ versus $\ln(INCOME)$ and include the fitted least squares line. Compare this to the plots in (b) and (e). Is this relationship more well-defined compared to the others? Compare the R2 values. Which of the models seems to fit the data better?
+
+### Ans
+```{r Q29h}
+# 建立 linear-log 模型
+model_linlog <- lm(food ~ log_income, data = cex5_small)
+
+# 顯示模型摘要（含 R²）
+summary(model_linlog)
+
+# 畫出 FOOD vs log(INCOME)
+ggplot(cex5_small, aes(x = log_income, y = food)) +
+  geom_point(alpha = 0.5) +
+  geom_smooth(method = "lm", se = TRUE, color = "blue", fill = "lightblue") +
+  labs(title = "Scatter Plot of FOOD vs log(INCOME)",
+       x = "log(INCOME)", y = "FOOD")
+
+```
+
+
+We estimated the model:
+$$
+FOOD = \alpha_1 + \alpha_2 \cdot \log(INCOME) + e
+$$
+
+**Estimated coefficients:**
+
+- Intercept = 23.568  
+- Slope = 22.187  
+- R² = 0.038  
+
+**Visual comparison:**
+
+- The scatter plot shows a clearer trend than the linear model in (b), but still with substantial spread.
+- It is more linear than the original model but less symmetric than the log-log model in (e).
+
+**Conclusion:**
+
+- The linear-log model slightly improves over the log-log model in terms of R² (0.038 vs 0.0332).
+- However, it still performs slightly worse than the original linear model (R² = 0.0423).
+- None of the models fit particularly well, but each has different strengths.
+
+## Q29(i)
+Construct a point and 95% interval estimate of the elasticity for the linear-log model at INCOME = 19, 65, and 160, and the corresponding points on the fitted line, which you may treat as not random. Is the elasticity of food expenditure similar to those from the other models, or dissimilar? Provide statistical evidence for your claim.
+
+### Ans
+```{r Q29i}
+# 資料點
+income_vals <- c(19, 65, 160)
+
+# 預測對應的 food（模型 fitted 值）
+food_hat_linlog <- predict(model_linlog, newdata = data.frame(log_income = log(income_vals)))
+
+# 係數與標準誤
+alpha2 <- coef(model_linlog)["log_income"]
+se_alpha2 <- summary(model_linlog)$coefficients["log_income", "Std. Error"]
+
+# 彈性估計與信賴區間（Delta method）
+elasticity_point <- (alpha2 / food_hat_linlog) * income_vals
+elasticity_se <- ((income_vals / food_hat_linlog)^2) * se_alpha2^2
+elasticity_ci_lower <- elasticity_point - 1.96 * sqrt(elasticity_se)
+elasticity_ci_upper <- elasticity_point + 1.96 * sqrt(elasticity_se)
+
+# 結果整理
+elasticity_table_i <- data.frame(
+  INCOME = income_vals,
+  FOOD_hat = round(food_hat_linlog, 4),
+  Elasticity = round(elasticity_point, 4),
+  Lower_95CI = round(elasticity_ci_lower, 4),
+  Upper_95CI = round(elasticity_ci_upper, 4)
+)
+
+print(elasticity_table_i)
+
+```
+
+
+We estimated elasticity at three income levels using:
+$$
+\text{Elasticity} = \frac{\alpha_2}{\widehat{FOOD}} \cdot INCOME
+$$
+
+| INCOME | Predicted FOOD | Elasticity | 95% CI               |
+|--------|----------------|------------|----------------------|
+| 19     | 88.8979        | 4.7421     | [3.3910, 6.0932]     |
+| 65     | 116.1872       | 12.4126    | [8.8760, 15.9491]    |
+| 160    | 136.1733       | 26.0696    | [18.6418, 33.4974]   |
+
+**Comparison:**
+
+- Elasticity estimates are **much larger** than those from the linear and log-log models.
+- Confidence intervals do **not overlap**, indicating statistical difference.
+- This suggests the linear-log model implies **extremely high elasticity**, which is **unrealistic** for food expenditure.
+
+**Conclusion:**
+
+- The elasticity estimates from the linear-log model are statistically and economically **dissimilar** from the others.
+- This model may **overstate the responsiveness** of food expenditure to income.
+
+
+## Q29(j)
+Obtain the least squares residuals from the linear-log model and plot them against ln(INCOME). Do you observe any patterns? Construct a residual histogram and carry out the Jarque–Bera test for normality. What do you conclude about the normality of the regression errors in this model?
+
+### Ans
+```{r Q29j}
+# 取得殘差
+residuals_linlog <- residuals(model_linlog)
+
+# 殘差 vs ln(INCOME)
+ggplot(cex5_small, aes(x = log_income, y = residuals_linlog)) +
+  geom_point(alpha = 0.5) +
+  geom_hline(yintercept = 0, color = "blue", linetype = "dashed") +
+  labs(title = "Residuals vs log(INCOME) (Linear-Log Model)",
+       x = "log(INCOME)", y = "Residuals")
+
+# 殘差直方圖
+ggplot(data.frame(residuals = residuals_linlog), aes(x = residuals)) +
+  geom_histogram(binwidth = 20, fill = "lightgray", color = "black") +
+  labs(title = "Histogram of Residuals (Linear-Log Model)",
+       x = "Residuals", y = "Frequency")
+
+# Jarque–Bera test
+jarque.bera.test(residuals_linlog)
+
+```
+
+**Residuals vs log(INCOME):**
+
+- The residuals show a right-skewed pattern with increasing spread at higher income levels.
+- Suggests some heteroskedasticity.
+
+**Histogram of residuals:**
+
+- Strongly right-skewed, not bell-shaped.
+- Indicates departure from normality.
+
+**Jarque–Bera test:**
+
+- JB = 628.07, p-value < 2.2e-16 → Strong rejection of normality.
+
+**Conclusion:**
+
+- The residuals from the linear-log model are **not normally distributed**.
+- The model violates the normality assumption, and the error structure is not well-behaved.
+- Compared to the log-log model, this one performs **worse** in terms of residual normality.
+
+
+## Q29(k)
+Based on this exercise, do you prefer the linear relationship model, or the log-log model or the linear-log model? Explain your reasoning.
+
+### Ans
+
+After comparing all three models, I choose the **log-log model**:
+$$
+\log(FOOD) = \gamma_1 + \gamma_2 \cdot \log(INCOME) + e
+$$
+
+Although its R² is slightly lower than the linear model, the log-log model has the **best residual behavior**. The residuals are much closer to normal, show no strong pattern, and the Jarque–Bera test statistic is far lower than for the other models.
+
+#### 📊 Comparison of Models
+
+| Model        | Equation                                     | Elasticity        | R²      | JB Test (p-value)      | Residual Shape        |
+|--------------|----------------------------------------------|-------------------|---------|-------------------------|------------------------|
+| **Linear**   | $FOOD = \beta_1 + \beta_2 \cdot INCOME$      | Varies (small)    | 0.0423  | 624.19 (p < 2e-16) ⛔️   | Right-skewed, wide     |
+| **Log-Log**  | $\log(FOOD) = \gamma_1 + \gamma_2 \cdot \log(INCOME)$ | Constant ≈ 0.186 | 0.0332  | 25.85 (p = 2e-6) ✅     | Symmetric, centered    |
+| **Linear-Log** | $FOOD = \alpha_1 + \alpha_2 \cdot \log(INCOME)$ | Varies (too large) | 0.0380  | 628.07 (p < 2e-16) ⛔️   | Strongly right-skewed  |
+
+---
+
+### ✅ Conclusion:
+
+- The **log-log model** provides the best overall trade-off:
+  - It has **stable, approximately normal residuals**.
+  - Its elasticity estimate is constant and **economically plausible** (below 1).
+- Despite a lower R², the **model assumptions are better satisfied**.
+- Therefore, I select the log-log specification as the most appropriate model for analyzing food expenditure.
+
+
+
+
+
+
+
+
+
+
+
+
+
+

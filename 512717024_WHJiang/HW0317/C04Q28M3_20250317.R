@@ -1,0 +1,243 @@
+# C03Q28
+
+##############################################################################
+# 前置設定：清除環境、載入套件與資料、建立 yield 變數
+##############################################################################
+
+rm(list = ls())  # 清除工作環境
+# install.packages("gridExtra")  # 若尚未安裝
+# install.packages("tseries")
+
+# 載入必要套件
+library(dplyr)
+library(ggplot2)
+library(car)
+library(lmtest)
+library(sandwich)
+library(MASS)      # 提供 rstudent(), dfbetas(), dffits() 等
+library(POE5Rdata) # 內含 wa_wheat 資料
+library(gridExtra)
+library(tseries)
+
+# 載入資料
+data("wa_wheat")
+
+### 檢查資料結構 ###
+#str(wa_wheat)
+#summary(wa_wheat)
+head(wa_wheat)
+tail(wa_wheat)
+nrow(wa_wheat)
+
+# 建立 yield（定為northampton值）
+wa_wheat$yield <- wa_wheat$northampton
+
+##############################################################################
+# (a) 估計四個方程並比較：(i) 擬合圖、(ii) 殘差圖、(iii) 常態性檢定、(iv) R² 等指標
+##############################################################################
+
+# -- 建立模型 --
+model1 <- lm(yield ~ time, data = wa_wheat)         # 方程1: yield = β₀ + β₁·time + e
+model2 <- lm(yield ~ log(time), data = wa_wheat)      # 方程2: yield = α₀ + α₁·ln(time) + e
+model3 <- lm(yield ~ I(time^2), data = wa_wheat)      # 方程3: yield = φ₀ + φ₁·(time²) + e
+model4 <- lm(log(yield) ~ time, data = wa_wheat)      # 方程4: ln(yield) = γ₀ + γ₁·time + e
+
+# -- 檢視回歸結果與比較 R² --
+summary(model1)
+summary(model2)
+summary(model3)
+summary(model4)
+
+cat("Model1 R²:", summary(model1)$r.squared, "\n")
+cat("Model2 R²:", summary(model2)$r.squared, "\n")
+cat("Model3 R²:", summary(model3)$r.squared, "\n")
+cat("Model4 R²:", summary(model4)$r.squared, "\n")
+
+# 調整後的 R²
+#cat("Model1 Adjusted R²:", summary(model1)$adj.r.squared, "\n")
+#cat("Model2 Adjusted R²:", summary(model2)$adj.r.squared, "\n")
+#cat("Model3 Adjusted R²:", summary(model3)$adj.r.squared, "\n")
+#cat("Model4 Adjusted R²:", summary(model4)$adj.r.squared, "\n")
+
+# Jarque-Bera 常態性檢定
+jb1 <- jarque.bera.test(residuals(model1))
+jb2 <- jarque.bera.test(residuals(model2))
+jb3 <- jarque.bera.test(residuals(model3))
+jb4 <- jarque.bera.test(residuals(model4))
+
+# 顯示檢定結果（統計量與 p-value）
+cat("\n=== Jarque-Bera Normality Test Results ===\n")
+cat("Model1: JB =", jb1$statistic, ", p-value =", jb1$p.value, "\n")
+cat("Model2: JB =", jb2$statistic, ", p-value =", jb2$p.value, "\n")
+cat("Model3: JB =", jb3$statistic, ", p-value =", jb3$p.value, "\n")
+cat("Model4: JB =", jb4$statistic, ", p-value =", jb4$p.value, "\n")
+
+# --- AIC / BIC test
+# AIC(model1, model2, model3, model4)
+# BIC(model1, model2, model3, model4)
+
+# -- 計算各模型的預測值 --
+wa_wheat$pred1 <- fitted(model1)
+wa_wheat$pred2 <- fitted(model2)
+wa_wheat$pred3 <- fitted(model3)
+# 注意：model4 是 log(yield) 回歸，須用 exp() 還原至原尺度
+wa_wheat$pred4 <- exp(fitted(model4))
+
+# -- (i) 擬合圖：實際 vs. 預測（使用 ggplot2，各模型皆呈現） --
+
+# Model1: Actual vs Fitted
+p1 <- ggplot(wa_wheat, aes(x = time)) +
+  geom_point(aes(y = yield), color = "blue", size = 2) +
+  geom_line(aes(y = pred1), color = "red", size = 1) +
+  labs(title = "Model1: Actual vs Fitted", x = "Time", y = "Yield") +
+  theme_minimal()
+
+# Model2: Actual vs Fitted
+p2 <- ggplot(wa_wheat, aes(x = time)) +
+  geom_point(aes(y = yield), color = "blue", size = 2) +
+  geom_line(aes(y = pred2), color = "red", size = 1) +
+  labs(title = "Model2: Actual vs Fitted", x = "Time", y = "Yield") +
+  theme_minimal()
+
+# Model3: Actual vs Fitted
+p3 <- ggplot(wa_wheat, aes(x = time)) +
+  geom_point(aes(y = yield), color = "blue", size = 2) +
+  geom_line(aes(y = pred3), color = "red", size = 1) +
+  labs(title = "Model3: Actual vs Fitted", x = "Time", y = "Yield") +
+  theme_minimal()
+
+# Model4: Actual vs Fitted (用 exp() 還原後的預測值)
+p4 <- ggplot(wa_wheat, aes(x = time)) +
+  geom_point(aes(y = yield), color = "blue", size = 2) +
+  geom_line(aes(y = pred4), color = "red", size = 1) +
+  labs(title = "Model4: Actual vs Fitted", x = "Time", y = "Yield") +
+  theme_minimal()
+
+# 使用 grid.arrange 同時呈現四模型圖形
+grid.arrange(p1, p2, p3, p4, ncol = 2, nrow = 2)
+
+# -- (ii) 殘差圖：繪製各模型的殘差 (以 time 為 x 軸) --
+r1 <- ggplot(wa_wheat, aes(x = time, y = residuals(model1))) +
+  geom_point(color = "blue") +
+  geom_hline(yintercept = 0, color = "red", linetype = "dashed") +
+  labs(title = "Model1 Residuals vs Time", x = "Time", y = "Residuals") +
+  theme_minimal()
+
+r2 <- ggplot(wa_wheat, aes(x = time, y = residuals(model2))) +
+  geom_point(color = "blue") +
+  geom_hline(yintercept = 0, color = "red", linetype = "dashed") +
+  labs(title = "Model2 Residuals vs Time", x = "Time", y = "Residuals") +
+  theme_minimal()
+
+r3 <- ggplot(wa_wheat, aes(x = time, y = residuals(model3))) +
+  geom_point(color = "blue") +
+  geom_hline(yintercept = 0, color = "red", linetype = "dashed") +
+  labs(title = "Model3 Residuals vs Time", x = "Time", y = "Residuals") +
+  theme_minimal()
+
+# model4 的殘差在 log 尺度上
+r4 <- ggplot(wa_wheat, aes(x = time, y = residuals(model4))) +
+  geom_point(color = "blue") +
+  geom_hline(yintercept = 0, color = "red", linetype = "dashed") +
+  labs(title = "Model4 Residuals vs Time", x = "Time", y = "Residuals (log scale)") +
+  theme_minimal()
+
+grid.arrange(r1, r2, r3, r4, ncol = 2, nrow = 2)
+
+# -- (iii) 常態性檢驗：Q-Q 圖 (同時呈現四個模型) --
+par(mfrow = c(2, 2))
+qqnorm(residuals(model1), main = "Model1 QQ Plot")
+qqline(residuals(model1), col = "red")
+qqnorm(residuals(model2), main = "Model2 QQ Plot")
+qqline(residuals(model2), col = "blue")
+qqnorm(residuals(model3), main = "Model3 QQ Plot")
+qqline(residuals(model3), col = "green")
+qqnorm(residuals(model4), main = "Model4 QQ Plot")
+qqline(residuals(model4), col = "purple")
+par(mfrow = c(1, 1))  # 還原
+
+# Shapiro-Wilk 正態性檢定
+shapiro.test(residuals(model1))
+shapiro.test(residuals(model2))
+shapiro.test(residuals(model3))
+shapiro.test(residuals(model4))
+
+# -- (iv) 根據 R² 及其他診斷指標，判斷哪個模型較為合適 --
+# 根據上述圖形與數值結果，本範例選擇 model3 為最佳模型
+best_model <- model3
+
+##############################################################################
+# (b) 解釋所選模型中時間變數係數的意義
+##############################################################################
+# 以 best_model (model3) 為例，模型為：
+#    yield = φ₀ + φ₁ * (time²) + e
+# 因此，φ₁ 為 time² 的係數，其解釋較為複雜：
+#   - 直接解釋：每增加一單位的 time²，yield 平均改變 φ₁ 單位。
+#   - 若想知道時間 t 變化的邊際效應，可利用微分：
+#       d(yield)/d(time) = 2 * φ₁ * time
+#   也就是說，time 每增加 1 單位，其對 yield 的邊際影響為 2 * φ₁ * time，
+#   且此效果會隨時間改變。
+summary(best_model)
+
+##############################################################################
+# (c) 依所選模型，利用學生化殘差、LEVERAGE, DFBETAS, DFFITS 識別異常觀測值
+##############################################################################
+# -- (1) 計算學生化殘差
+wa_wheat$rstudent <- rstudent(best_model)
+
+# -- (2) 計算 leverage（帽子值）
+wa_wheat$leverage <- hatvalues(best_model)
+
+# -- (3) 計算 dfbetas
+dfb <- dfbetas(best_model)
+
+# -- (4) 計算 dffits
+dff <- dffits(best_model)
+
+# 合併到資料框
+wa_wheat$dfb_Intercept <- dfb[, 1]
+wa_wheat$dfb_time      <- dfb[, 2]  # best_model 為 model3，僅有截距與 time²（以 time 為唯一解釋變數）
+wa_wheat$dffits        <- dff
+
+# 建立 year 欄位：使得 time=1 對應 1950, time=48 對應 1997
+wa_wheat$year <- 1949 + wa_wheat$time
+
+# 篩選出可能的高影響力點 (例如 |rstudent| > 2 或 |dffits| > 2*sqrt(2/n))
+wa_wheat %>%
+  filter(abs(rstudent) > 2 | abs(dffits) > 2 * sqrt(2 / nrow(wa_wheat))) %>%
+  dplyr::select(year, time, yield, rstudent, leverage,
+                dfb_Intercept, dfb_time, dffits)
+
+##############################################################################
+# (d) 使用 1950～1996 的資料估計模型，並對 1997 進行預測，建立 95% 預測區間
+##############################################################################
+# -- 分割資料集 --
+train_data <- filter(wa_wheat, year <= 1996)  # 訓練集：1950～1996
+test_data  <- filter(wa_wheat, year == 1997)  # 測試集：1997 (time=48)
+
+# -- 以與所選模型相同的形式重新估計 (此處為 model3) --
+best_model_train <- lm(yield ~ I(time^2), data = train_data)
+
+# -- 對 1997 (time = 48) 預測，並產生 95% 預測區間 --
+pred_1997 <- predict(best_model_train,
+                     newdata = data.frame(time = 48),
+                     interval = "prediction",
+                     level = 0.95)
+
+cat("Prediction for yield in 1997:\n")
+print(pred_1997)
+
+# -- 比較實際值是否落在預測區間內 --
+actual_1997 <- test_data$yield
+cat("Actual 1997 yield =", actual_1997, "\n")
+cat("95% Prediction Interval = [", 
+    pred_1997[1, "lwr"], ", ", 
+    pred_1997[1, "upr"], "]\n")
+
+if (actual_1997 >= pred_1997[1, "lwr"] &&
+    actual_1997 <= pred_1997[1, "upr"]) {
+  cat("The actual 1997 yield is within the 95% prediction interval.\n")
+} else {
+  cat("The actual 1997 yield is NOT within the 95% prediction interval.\n")
+}
+
