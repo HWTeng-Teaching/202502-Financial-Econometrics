@@ -17,6 +17,9 @@ lines(density(residuals_loglog), col = "red", lwd = 2)
 
 jb_test_loglog <- jarque.test(residuals_loglog)
 print(jb_test_loglog)
+# data:  residuals_loglog
+# JB = 25.85, p-value = 2.436e-06
+# alternative hypothesis: greater
 
 # The p-value is less than 0.05, so we reject the null hypothesis, indicating that the regression errors are not normally distributed.
 
