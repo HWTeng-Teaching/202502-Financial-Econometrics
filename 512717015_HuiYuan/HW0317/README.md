@@ -3,7 +3,7 @@
 ## (a)&(b)   
 ![image](https://github.com/user-attachments/assets/657999ce-70ad-439f-9055-80416466e4e6)
 Model 1: 一條斜率為 0.990 的直線，代表每增加一年經驗，平均表現評分增加約 0.99 分。   
-Model 2: 使用了對數轉換，In(EXPERT)，因為In(0)未被定義，所以無法對沒有經驗的人進行預測。(只有46位藝術家被納入模型2的估計)
+Model 2: 使用了對數轉換，In(EXPERT)，因為In(0)未被定義，所以無法對沒有經驗的人進行預測。(只有46位藝術家被納入模型2的估計)   
 R Code:   
 ![image](https://github.com/user-attachments/assets/00fa15ca-dd0b-492b-a428-669bf8efc492)
 ## (c)
