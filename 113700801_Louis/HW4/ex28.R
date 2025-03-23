@@ -1,71 +1,86 @@
-### Charger les packages nécessaires
-library(ggplot2)
-library(lmtest)
-library(car)
-library(forecast)
+# Load necessary packages
+if (!require(tseries)) install.packages("tseries")
+library(tseries)
 
-### Charger les données (Assurez-vous d'avoir le fichier "wa-wheat.dat" dans le bon répertoire)
-data <- read.table("wa-wheat.dat", header = TRUE)
+# Load dataset
+url <- "https://www.principlesofeconometrics.com/poe5/data/rdata/wa_wheat.rdata"
+download.file(url, destfile = "wa_wheat.rdata")
+load("wa_wheat.rdata")
 
-# Extraction des données pour Northampton (supposons que la colonne YIELD est celle du rendement)
-northampton <- data[data$Shire == "Northampton", ]
+# Extract Northampton data
+northampton_data <- data.frame(YIELD = wa_wheat$northampton, TIME = wa_wheat$time)
+northampton_data$ln_YIELD <- log(northampton_data$YIELD)
+northampton_data$TIME2 <- northampton_data$TIME^2
+northampton_data$ln_TIME <- log(northampton_data$TIME)
 
-# Définir TIME comme une séquence de 1 à 48
-northampton$TIME <- 1:nrow(northampton)
+# Define models
+model1 <- lm(YIELD ~ TIME, data = northampton_data)
+model2 <- lm(YIELD ~ ln_TIME, data = northampton_data)
+model3 <- lm(YIELD ~ TIME2, data = northampton_data)
+model4 <- lm(ln_YIELD ~ TIME, data = northampton_data)
 
-# Transformation logarithmique si nécessaire
-northampton$ln_YIELD <- log(northampton$YIELD)
+# Plot fitted models
+par(mfrow = c(2, 2))
+plot(northampton_data$TIME, northampton_data$YIELD, main = "Linear Model", xlab = "TIME", ylab = "YIELD", col = "blue", pch = 16)
+lines(northampton_data$TIME, fitted(model1), col = "red", lwd = 2)
+plot(northampton_data$TIME, northampton_data$YIELD, main = "Linear-Log Model", xlab = "TIME", ylab = "YIELD", col = "blue", pch = 16)
+lines(northampton_data$TIME, fitted(model2), col = "red", lwd = 2)
+plot(northampton_data$TIME, northampton_data$YIELD, main = "Quadratic Model", xlab = "TIME", ylab = "YIELD", col = "blue", pch = 16)
+lines(northampton_data$TIME, fitted(model3), col = "red", lwd = 2)
+plot(northampton_data$TIME, northampton_data$YIELD, main = "Log-Linear Model", xlab = "TIME", ylab = "YIELD", col = "blue", pch = 16)
+lines(northampton_data$TIME, exp(fitted(model4)), col = "red", lwd = 2)
 
-definir_modeles <- function(df) {
-  mod1 <- lm(YIELD ~ TIME, data = df)
-  mod2 <- lm(YIELD ~ log(TIME), data = df)
-  mod3 <- lm(YIELD ~ I(TIME^2), data = df)
-  mod4 <- lm(log(YIELD) ~ TIME, data = df)
-  return(list(mod1, mod2, mod3, mod4))
-}
+# Residual analysis
+par(mfrow = c(2, 2))
+plot(model1$residuals, main = "Residuals: Linear Model", ylab = "Residuals", xlab = "Index", col = "blue", pch = 16)
+plot(model2$residuals, main = "Residuals: Linear-Log Model", ylab = "Residuals", xlab = "Index", col = "blue", pch = 16)
+plot(model3$residuals, main = "Residuals: Quadratic Model", ylab = "Residuals", xlab = "Index", col = "blue", pch = 16)
+plot(model4$residuals, main = "Residuals: Log-Linear Model", ylab = "Residuals", xlab = "Index", col = "blue", pch = 16)
 
-modeles <- definir_modeles(northampton)
-noms_modeles <- c("LINEAIRE", "LOGARITHMIQUE", "QUADRATIQUE", "LOG-LINEAIRE")
+# Normality test (Jarque-Bera)
+jb_values <- data.frame(
+  Model = c("Linear", "Linear-Log", "Quadratic", "Log-Linear"),
+  JB_p_value = c(jarque.bera.test(model1$residuals)$p.value, 
+                 jarque.bera.test(model2$residuals)$p.value,
+                 jarque.bera.test(model3$residuals)$p.value, 
+                 jarque.bera.test(model4$residuals)$p.value)
+)
+print(jb_values)
 
-### Évaluation des modèles
-evaluer_modeles <- function(modeles, noms) {
-  for (i in 1:length(modeles)) {
-    cat("\nModèle :", noms[i], "\n")
-    print(summary(modeles[[i]]))
-    cat("\nTest de normalité des résidus (Shapiro-Wilk) :", shapiro.test(resid(modeles[[i]]))$p.value, "\n")
-  }
-}
+# R² values
+r2_values <- data.frame(
+  Model = c("Linear", "Linear-Log", "Quadratic", "Log-Linear"),
+  R2 = c(summary(model1)$r.squared, summary(model2)$r.squared, 
+         summary(model3)$r.squared, summary(model4)$r.squared)
+)
+print(r2_values)
 
-evaluer_modeles(modeles, noms_modeles)
+# Select the best model (Quadratic in this case)
+summary(model3)
 
-### Analyse graphique des résidus
-plot_residus <- function(modele, titre) {
-  par(mfrow = c(2, 2))
-  plot(modele, main = titre)
-  par(mfrow = c(1, 1))
-}
+# Outlier detection
+northampton_data$student_resid <- rstudent(model3)
+outliers <- which(abs(northampton_data$student_resid) > 2)
+print(northampton_data[outliers, ])
 
-lapply(1:4, function(i) plot_residus(modeles[[i]], noms_modeles[i]))
+# Leverage
+leverage_values <- hatvalues(model3)
+h_bar <- 2 / nrow(northampton_data)
+high_leverage <- which(leverage_values > 2 * h_bar)
+print(northampton_data[high_leverage, ])
 
-### Diagnostic des observations influentes
-modele_choisi <- modeles[[4]]  # Supposons que le modèle log-linéaire soit le meilleur
-influence_measures <- influence.measures(modele_choisi)
-print(influence_measures)
+# DFBETAS
+dfbetas_values <- dfbetas(model3)
+dfbetas_threshold <- 2 / sqrt(nrow(northampton_data))
+high_dfbetas <- which(abs(dfbetas_values[,2]) > dfbetas_threshold)
+print(northampton_data[high_dfbetas, ])
 
-# Détection des valeurs atypiques
-northampton$studentized_residuals <- rstudent(modele_choisi)
-northampton$leverage <- hatvalues(modele_choisi)
-northampton$dfbetas <- dfbeta(modele_choisi)
-northampton$dffits <- dffits(modele_choisi)
+# Prediction for 1997
+train_data <- subset(northampton_data, TIME <= 47)
+model_restricted <- lm(YIELD ~ TIME2, data = train_data)
+pred_1997 <- predict(model_restricted, newdata = data.frame(TIME2 = 48^2), interval = "prediction", level = 0.95)
+print(pred_1997)
 
-print(northampton[northampton$studentized_residuals > 2, ])
-
-### Prédiction pour 1997
-modele_train <- lm(log(YIELD) ~ TIME, data = northampton[1:47, ])
-prevision_1997 <- predict(modele_train, newdata = data.frame(TIME = 48), interval = "prediction", level = 0.95)
-prevision_1997 <- exp(prevision_1997)
-
-print(prevision_1997)
-
-# Comparer avec la valeur réelle
-print(paste("Valeur réelle en 1997 :", northampton$YIELD[48]))
+# Compare with actual value
+actual_1997 <- northampton_data$YIELD[northampton_data$TIME == 48]
+print(actual_1997)
