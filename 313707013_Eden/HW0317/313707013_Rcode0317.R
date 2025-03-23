@@ -129,11 +129,11 @@ which(apply(abs(dfbetas_plot), 1, max) > 2/sqrt(48))
 
 #d
 (sampledate <- wa_wheat[48, 1])
-traindata <- wa_wheat[1:47, ]
-modeltrain <- lm(northamptom ~ I(TIME^2), data = traindata)
-newdata <- data.frame(TIME = 48)
-(pred <- predict(modeltrain, newdata, interval = "prediction",
-                 level = 0.95))
+datatrain <- wa_wheat[wa_wheat$time <= 47, ]  
+model_train <- lm(northampton ~ I(time^2), data = datatrain)
+data1997 <- wa_wheat[wa_wheat$time == 48, ]  
+predict_data <- predict(model_train, newdata = data1997, interval = "prediction", level = 0.95)  
+print(predict_data)
 
 #4.29
 #a
