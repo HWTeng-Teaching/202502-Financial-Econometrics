@@ -44,3 +44,32 @@ This means we are 95% confident that the actual yield in 1997 falls within this 
 ------
 # 4.29
 ![image](https://github.com/user-attachments/assets/8e310906-de2c-4fe8-a0e8-576293f1f2cf)
+## (a)
+![image](https://github.com/user-attachments/assets/8f1f9f01-bfba-4959-a831-028c9fb494e2)   
+![image](https://github.com/user-attachments/assets/0f07e47a-3cf5-417c-ac2d-19ea333ad3de)   
+![image](https://github.com/user-attachments/assets/141825aa-7518-4be6-a309-4921b7f12a3e)   
+## (b)
+![image](https://github.com/user-attachments/assets/1c65ac09-fd3a-4c91-9ec0-ecb456337e71)
+![image](https://github.com/user-attachments/assets/a3e424ed-c2c9-4f72-b39a-ed04bf7019fa)
+## (c)
+![image](https://github.com/user-attachments/assets/ddc016c8-e559-4ad5-9f14-c51cb360eef2)
+## (d)
+![image](https://github.com/user-attachments/assets/19b55e63-3d87-4bea-9c28-d1d2a93d3130)   
+## (e)
+![image](https://github.com/user-attachments/assets/59c9a6fa-36b8-4c0e-8ebc-c012a8900db2)   
+## (f)
+The 95% confidence interval for elasticity is estimated to be [0.1293, 0.2433], which is similar to the interval estimated at INCOME = 65. This value approximately represents the median of the income distribution.   
+However, the elasticity interval from the log-log model does not overlap with the interval estimates from the linear model at INCOME = 19 (approximately the 5th percentile) or INCOME = 160 (approximately the 95th percentile). This indicates that if we test whether the elasticity from the log-log model falls within the confidence interval of the linear model at either INCOME = 19 or INCOME = 160, we would reject the null hypothesis at the 5% significance level.
+## (g)
+![image](https://github.com/user-attachments/assets/63ff8119-1f32-4577-a3f4-db52fa0d4609)   
+## (h)
+![image](https://github.com/user-attachments/assets/5d8d32ef-9ef8-4461-b88f-f31bbaa78f6d)   
+## (i)
+![image](https://github.com/user-attachments/assets/ac42fd0a-6692-448e-83db-cdc8a8885051)
+## (j)
+![image](https://github.com/user-attachments/assets/df9efba5-91db-4ab5-a95b-e2b82e7bac9f)
+## (k)
+As income elasticity increases, the linear model becomes counterintuitive. While the linear-log model aligns with economic reasoning, its residual pattern does not exhibit an ideal random distribution.   
+On the other hand, the log-log model assumes constant income elasticity across all income levels—a reasonable assumption—and its residuals appear to be the most randomly dispersed. Additionally, based on skewness and kurtosis, the log-log model shows the least deviation from normality in residuals.   
+For these reasons, the log-log model appears to be a strong candidate for representing the relationship accurately.   
+
