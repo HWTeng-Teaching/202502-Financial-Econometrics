@@ -259,7 +259,6 @@ hist(residuals(mod3), breaks = 20, probability = TRUE, main = "Histogram of Resi
      xlab = "Residuals", col = "lightblue")
 lines(density(residuals(mod3)), col = "red", lwd = 2)
 
-#k.
 
 
 
