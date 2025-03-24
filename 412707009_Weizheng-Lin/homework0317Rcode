@@ -1,3 +1,6 @@
+
+
+#4.29
 library(POE5Rdata)
 library(ggplot2)
 library(tseries)
