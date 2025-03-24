@@ -8,6 +8,38 @@ date: "2025-03-24"
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+# **CH4 Question 4**
+
+## **(a) **
+
+```{r}
+# 建立經驗值從 0 到 30 年
+EXPER <- 0:30
+
+# 計算對應的預測 RATING
+fitted_rating <- 64.289 + 0.990 * EXPER
+
+# 畫圖
+plot(EXPER, fitted_rating, type = "l", col = "blue", lwd = 2,
+     xlab = "Years of Experience (EXPER)", ylab = "Fitted RATING",
+     main = "Model 1: Fitted Values for RATING vs. EXPER")
+```
+
+## **(b) **
+
+```{r}
+# 建立經驗值從 1 到 30 年（注意：ln(0) 不存在）
+EXPER <- 1:30
+
+# 計算預測值
+fitted_rating <- 39.464 + 15.312 * log(EXPER)
+
+# 畫圖
+plot(EXPER, fitted_rating, type = "l", col = "darkgreen", lwd = 2,
+     xlab = "Years of Experience (EXPER)", ylab = "Fitted RATING",
+     main = "Model 2: Fitted Values for RATING vs. ln(EXPER)")
+```
+
 # **CH4 Question 28**
 
 ## **(a) **
@@ -208,4 +240,68 @@ hist(residuals_linear,
      col = "lightblue", breaks = 30)
 
 jarque.bera.test(residuals_linear)
+```
+## **(d) **
+
+```{r}
+# beta2 point estimate and standard error
+beta2 <- coef(model_linear)["income"]
+se_beta2 <- summary(model_linear)$coefficients["income", "Std. Error"]
+
+# income values to evaluate
+x_vals <- c(19, 65, 160)
+
+# 預測 food (fitted value) at each income
+fitted_vals <- predict(model_linear, newdata = data.frame(income = x_vals))
+
+# Point estimates of elasticity
+elasticity <- beta2 * x_vals / fitted_vals
+
+# 信賴區間的上下界（近似用 β₂ 的 95% CI）
+confint_vals <- confint(model_linear)["income", ]
+lower_beta2 <- confint_vals[1]
+upper_beta2 <- confint_vals[2]
+
+# CI for elasticity
+elasticity_low <- lower_beta2 * x_vals / fitted_vals
+elasticity_high <- upper_beta2 * x_vals / fitted_vals
+
+# 整理成表格
+result <- data.frame(
+  income = x_vals,
+  fitted_food = round(fitted_vals, 2),
+  elasticity = round(elasticity, 4),
+  CI_lower = round(elasticity_low, 4),
+  CI_upper = round(elasticity_high, 4)
+)
+
+result
+```
+
+## **(ｅ) **
+
+```{r}
+# 建立 ln(food) 和 ln(income) 變數
+cex5_small$ln_food <- log(cex5_small$food)
+cex5_small$ln_income <- log(cex5_small$income)
+
+# 建立 log-log 模型
+model_loglog <- lm(ln_food ~ ln_income, data = cex5_small)
+summary(model_loglog)
+
+plot(cex5_small$ln_income, cex5_small$ln_food,
+     main = "ln(food) vs ln(income)",
+     xlab = "ln(income)", ylab = "ln(food)",
+     col = "darkgreen", pch = 20)
+
+abline(model_loglog, col = "red", lwd = 2)
+
+summary(model_linear)$r.squared      # 原本線性模型 R²
+summary(model_loglog)$r.squared      # log-log 模型 R²
+```
+
+## **(ｆ) **
+
+```{r}
+
 ```
