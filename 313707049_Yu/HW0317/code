@@ -26,3 +26,77 @@ plot(exper, rating_model2, type = "l", col = "red", lwd = 2,
      ylim = c(30, 100))
 grid()
 ##4.28
+(a)
+library(POE5Rdata)
+data(wa_wheat)
+northampton_data <- wa_wheat$northampton
+time <- wa_wheat$time
+summary(model1)$coefficients
+summary(model2)$coefficients
+summary(model3)$coefficients
+summary(model4)$coefficients
+
+par(mfrow=c(2,2)) 
+
+# 線性模型
+plot(time, northampton_data, main="Linear Model", xlab="Time", ylab="Yield")
+lines(time, predict(model1), col="orange", lwd=2)
+
+# 對數模型
+plot(time, northampton_data, main="Log Model", xlab="Time", ylab="Yield")
+lines(time, predict(model2), col="blue", lwd=2)
+
+# 二次模型
+plot(time, northampton_data, main="Quadratic Model", xlab="Time", ylab="Yield")
+lines(time, predict(model3), col="red", lwd=2)
+
+# 對數線性模型
+plot(time, northampton_data, main="Log-Linear Model", xlab="Time", ylab="Yield")
+lines(time, exp(predict(model4)), col="green", lwd=2)
+
+# Residual plots
+par(mfrow = c(2, 2))  # 2x2 grid for plots
+
+# Model 1
+plot(data$TIME, residuals(model1), main = "Residuals: Model 1 (Linear)", 
+     xlab = "Time", ylab = "Residuals", pch = 16)
+abline(h = 0, col = "red", lty = 2)
+
+# Model 2
+plot(data$TIME, residuals(model2), main = "Residuals: Model 2 (Log-linear)", 
+     xlab = "Time", ylab = "Residuals", pch = 16)
+abline(h = 0, col = "red", lty = 2)
+
+# Model 3
+plot(data$TIME, residuals(model3), main = "Residuals: Model 3 (Quadratic)", 
+     xlab = "Time", ylab = "Residuals", pch = 16)
+abline(h = 0, col = "red", lty = 2)
+
+# Model 4
+plot(data$TIME, residuals(model4), main = "Residuals: Model 4 (Log-YIELD)", 
+     xlab = "Time", ylab = "Residuals", pch = 16)
+abline(h = 0, col = "red", lty = 2)
+
+# Error Normality Tests
+shapiro.test(model1$residuals)
+shapiro.test(model2$residuals)
+shapiro.test(model3$residuals)
+shapiro.test(model4$residuals)
+
+# R^2 for Models 1, 2, and 3
+r2_model1 <- summary(model1)$r.squared
+r2_model2 <- summary(model2)$r.squared
+r2_model3 <- summary(model3)$r.squared
+
+# R^2 for Model 4 (compare exp(predicted lnYIELD) with YIELD)
+y_pred_model4 <- exp(predict(model4))
+ss_total <- sum((data$YIELD - mean(data$YIELD))^2)
+ss_residual <- sum((data$YIELD - y_pred_model4)^2)
+r2_model4 <- 1 - ss_residual / ss_total
+
+# Print R^2 values
+cat("R^2 for Model 1 (Linear):", r2_model1, "\n")
+cat("R^2 for Model 2 (Log-linear):", r2_model2, "\n")
+cat("R^2 for Model 3 (Quadratic):", r2_model3, "\n")
+cat("R^2 for Model 4 (Log-YIELD):", r2_model4, "\n")
+
