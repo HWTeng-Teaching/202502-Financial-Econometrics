@@ -6,8 +6,8 @@ names(cex5_small)  # 確認變數名稱
 
 # 載入必要的套件
 library(ggplot2)
-library(moments)
-library(tseries) 
+library(moments)  # 計算偏態（Skewness）與峰度（Kurtosis）
+library(tseries)  # 執行 Jarque–Bera 常態性檢定
 
 # 讀取數據 (已載入 cex5_small.rdata)
 data <- cex5_small  # 使用簡單變數名稱
@@ -35,7 +35,6 @@ print(stats_table)
 plot_histogram <- function(data, var_name) {
   mean_val <- mean(data, na.rm = TRUE)
   median_val <- median(data, na.rm = TRUE)
-  
   ggplot(data.frame(x = data), aes(x = x)) +
     geom_histogram(aes(y = after_stat(density)), bins = 30, fill = "blue", alpha = 0.5, color = "black") +
     geom_vline(aes(xintercept = mean_val, color = "Mean"), linetype = "dashed", linewidth = 1) +
@@ -50,22 +49,8 @@ plot_histogram(data$food, "Food")  # 繪製 food 直方圖
 plot_histogram(data$income, "Income")  # 繪製 income 直方圖
 
 # Jarque-Bera 常態性檢定
-jb_test <- function(x) {
-  skewness_x <- skewness(x, na.rm = TRUE)
-  kurtosis_x <- kurtosis(x, na.rm = TRUE)
-  n <- sum(!is.na(x))
-  jb_stat <- (n/6) * (skewness_x^2 + (1/4) * (kurtosis_x - 3)^2)
-  p_value <- 1 - pchisq(jb_stat, df = 2)
-  
-  return(c(JB_Statistic = jb_stat, P_Value = p_value))
-}
-
-food_jb <- jb_test(data$food)
-income_jb <- jb_test(data$income)
-jb_table <- data.frame(Food = food_jb,  # 顯示 Jarque-Bera 檢定結果
-                       Income = income_jb)
-print(jb_table)
-
+jarque.bera.test(cex5_small$food)
+jarque.bera.test(cex5_small$income)
 
 # 4.29(b)
 # 執行線性回歸：FOOD = β1 + β2 * INCOME + e
@@ -113,19 +98,7 @@ cat("Skewness:", skewness_value_lm, "\n")
 cat("Kurtosis:", kurtosis_value_lm, "\n")
 
 # 進行 Jarque-Bera 常態性檢定
-jb_test_residuals_linear <- function(x) {
-  skewness_x <- skewness(x, na.rm = TRUE)
-  kurtosis_x <- kurtosis(x, na.rm = TRUE)
-  n <- length(x)
-  jb_stat <- (n/6) * (skewness_x^2 + (1/4) * (kurtosis_x - 3)^2)
-  p_value <- 1 - pchisq(jb_stat, df = 2)
-  return(c(JB_Statistic = jb_stat, P_Value = p_value))
-}
-
-jb_residuals_linear <- jb_test_residuals_linear(residuals_lm)
-jb_table_residuals_linear <- data.frame(Residuals = jb_residuals_linear)  # 顯示 Jarque-Bera 檢定結果
-print(jb_table_residuals_linear)
-
+jarque.bera.test(residuals_lm)
 
 # 4.29(d)
 # 指定不同的 INCOME 水準
@@ -145,7 +118,7 @@ elasticity_lower <- elasticity_point - z_value * elasticity_se
 elasticity_upper <- elasticity_point + z_value * elasticity_se
 
 # 建立結果表格
-elasticity_table <- data.frame(
+elasticity_table_lm <- data.frame(
   INCOME = income_values$income,
   FOOD_hat = predictions_linear[, "fit"],
   ε = elasticity_point,
@@ -153,7 +126,7 @@ elasticity_table <- data.frame(
   ε_lower_bound = elasticity_lower,
   ε_upper_bound = elasticity_upper
 )
-print(elasticity_table)
+print(elasticity_table_lm)
 
 
 # 4.29(e)
@@ -237,8 +210,7 @@ cat("Skewness:", skewness_value_loglog, "\n")
 cat("Kurtosis:", kurtosis_value_loglog, "\n")
 
 # Jarque-Bera 正態性檢定
-jb_test_loglog <- jarque.bera.test(data_log$residuals_loglog)
-print(jb_test_loglog)
+jarque.bera.test(data_log$residuals_loglog)
 
 
 # 4.29(h)
@@ -330,6 +302,5 @@ cat("Skewness:", skewness_value, "\n")
 cat("Kurtosis:", kurtosis_value, "\n")
 
 # Jarque–Bera 正態性檢定
-jb_test_linear_log <- jarque.bera.test(data_linear_log$residuals_linear_log)
-print(jb_test_linear_log)
+jarque.bera.test(data_linear_log$residuals_linear_log)
 
