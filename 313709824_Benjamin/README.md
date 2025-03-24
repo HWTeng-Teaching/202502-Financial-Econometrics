@@ -1,8 +1,0 @@
-
-
-
-## Map
-
-## Food
-
-## Smiles
