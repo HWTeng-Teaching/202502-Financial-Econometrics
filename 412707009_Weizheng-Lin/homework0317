@@ -1,1 +1,17 @@
 
+# 4.4
+**Answer:**
+
+- **Model 1**: \(\text{RATING} = 64.289 + 0.990 \times \text{EXPER}\)
+- If we let **EXPER** vary from 0 to 30:
+  - At **EXPER = 0**:
+    \[
+      \text{RATING} = 64.289 + 0.990 \times 0 = 64.289
+    \]
+  - At **EXPER = 30**:
+    \[
+      \text{RATING} = 64.289 + 0.990 \times 30 = 64.289 + 29.70 = 93.989
+    \]
+- Plotting these points and connecting them with a straight line would produce a line that starts at approximately 64.289 (when EXPER=0) and goes up to about 93.989 (when EXPER=30).
+
+---
