@@ -99,4 +99,26 @@ cat("R^2 for Model 1 (Linear):", r2_model1, "\n")
 cat("R^2 for Model 2 (Log-linear):", r2_model2, "\n")
 cat("R^2 for Model 3 (Quadratic):", r2_model3, "\n")
 cat("R^2 for Model 4 (Log-YIELD):", r2_model4, "\n")
+#c
+studentized_res <- rstudent(lm428_3)
+leverage <- hatvalues(lm428_3)
+dffits_values <- dffits(lm428_3)
+dfbetas_values <- dfbetas(lm428_3)
+studentized_res
+leverage
+dffits_values
+dfbetas_values
+
+#d
+data1996 <- subset(wa_wheat,time<48)
+data1997 <- subset(wa_wheat,time==48)
+lm428_d <- lm(yield ~ I(Time^2), data = data1996)
+pred_i <- predict(lm428_d, newdata = data.frame(Time = 48), interval = "predict", level = 0.95)
+if(data1997$northampton>=pred_i[1,'lwr']&&data1997$northampton<=pred_i[1,'upr']){
+  print('Do contain the true value')
+}else{
+  print('Do not contain the true value')
+}
+pred_i
+
 
