@@ -708,20 +708,24 @@ cat("\nJarque-Bera test for residuals (Linear-Log Model):\n")
 print(jb_residuals_linear_log)
 
 # k. Model preference
+# Benchmarks: S = 0 and K = 3 for a normal distribution
 print(residual_plot_linear)
 print(hist_residuals_linear)
 moments::skewness(residuals_linear)
 moments::kurtosis(residuals_linear)
+print(jb_residuals_linear)
 
 print(residual_plot_log_log)
 print(hist_residuals_log_log)
 moments::skewness(residuals_log_log)
 moments::kurtosis(residuals_log_log)
+print(jb_residuals_log_log)
 
 print(residual_plot_linear_log)
 print(hist_residuals_linear_log)
 moments::skewness(residuals_linear_log)
 moments::kurtosis(residuals_linear_log)
+print(jb_residuals_linear_log)
 
 cat("Model Comparison and Interpretation:\n\n",
     
