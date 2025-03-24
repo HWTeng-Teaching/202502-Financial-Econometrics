@@ -68,3 +68,61 @@ lines(TIME, fitted(model3), col = "green", lwd = 2)
 plot(TIME, logYIELD, main = "Model 4: log(YIELD) ~ TIME")
 lines(TIME, fitted(model4), col = "purple", lwd = 2)
 ```
+
+## **(b) **
+
+```{r}
+summary(model3)
+```
+
+## **(c) **
+
+```{r}
+# 1. Studentized residuals
+stud_res <- rstudent(model3)
+
+# 2. Leverage
+lev <- hatvalues(model3)
+
+# 3. DFBETAs
+dfb <- dfbetas(model3)
+
+# 4. DFFITS
+dff <- dffits(model3)
+
+# 簡單畫圖觀察
+par(mfrow = c(2, 2))
+plot(stud_res, type = "h", main = "Studentized Residuals")
+abline(h = c(-2, 2), col = "red", lty = 2)
+
+plot(lev, type = "h", main = "Leverage")
+abline(h = 2 * mean(lev), col = "red", lty = 2)
+
+plot(dff, type = "h", main = "DFFITS")
+abline(h = 2 * sqrt(2 / length(YIELD)), col = "red", lty = 2)
+
+matplot(dfb, type = "h", main = "DFBETAs", col = 1:2)
+abline(h = c(-1, 1), col = "red", lty = 2)
+```
+
+## **(d) **
+
+```{r}
+# 取出前 47 筆資料（1950–1996）
+YIELD_train <- YIELD[1:47]
+TIME_train <- TIME[1:47]
+TIME2_train <- TIME_train^2
+
+# 建立模型（重新估計）
+model3_train <- lm(YIELD_train ~ TIME2_train)
+
+# 建立 1997 的預測資料（TIME = 48, TIME² = 2304）
+new_data <- data.frame(TIME2_train = 48^2)
+
+# 預測 + 95% 預測區間
+predict(model3_train, newdata = new_data, interval = "prediction", level = 0.95)
+
+# 實際觀察值（1997 年）是第 48 筆
+true_value <- YIELD[48]
+true_value
+```
