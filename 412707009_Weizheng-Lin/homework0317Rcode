@@ -1,0 +1,80 @@
+library(POE5Rdata)
+library(ggplot2)
+library(tseries)
+data("cex5_small")
+summary(cex5_small)
+
+# 對 food 變數做概要統計
+summary_food <- summary(cex5_small$food)
+
+# 對 income 變數做概要統計
+summary_income <- summary(cex5_small$income)
+
+# 計算 food 變數的標準差
+sd_food <- sd(cex5_small$food, na.rm = TRUE)
+
+# 計算 income 變數的標準差
+sd_income <- sd(cex5_small$income, na.rm = TRUE)
+
+list(
+  summary_food  = summary_food,
+  summary_income = summary_income,
+  sd_food       = sd_food,
+  sd_income     = sd_income
+)
+
+# 繪製 food 直方圖
+hist(cex5_small$food, 
+     breaks = 30, 
+     col = "lightblue", 
+     main = "Histogram of Food Expenditure",
+     xlab = "Food Expenditure", 
+     probability = TRUE)
+# 加入均值和中位數標示
+abline(v = mean(cex5_small$food, na.rm = TRUE), col = "red", lwd = 2, lty = 2)  # 均值
+abline(v = median(cex5_small$food, na.rm = TRUE), col = "blue", lwd = 2, lty = 2)  # 中位數
+legend("topright", legend = c("Mean", "Median"), col = c("red", "blue"), lwd = 2, lty = 2)
+# 繪製 income 直方圖
+hist(cex5_small$income, 
+     breaks = 30, 
+     col = "lightgreen", 
+     main = "Histogram of Income",
+     xlab = "Household Income", 
+     probability = TRUE)
+# 加入均值和中位數標示
+abline(v = mean(cex5_small$income, na.rm = TRUE), col = "red", lwd = 2, lty = 2)  # 均值
+abline(v = median(cex5_small$income, na.rm = TRUE), col = "blue", lwd = 2, lty = 2)  # 中位數
+legend("topright", legend = c("Mean", "Median"), col = c("red", "blue"), lwd = 2, lty = 2)
+
+library(tseries)  
+
+jb_food <- jarque.bera.test(cex5_small$food)
+jb_income <- jarque.bera.test(cex5_small$income)
+
+list(jb_food = jb_food, jb_income = jb_income)
+
+
+#4.29.b
+model <- lm(food ~ income, data = cex5_small)
+
+
+lm_model <- lm(food ~ income, data = cex5_small)
+summary(lm_model)
+
+library(ggplot2)
+
+# 1. 估計線性迴歸模型
+lm_model <- lm(food ~ income, data = cex5_small)
+summary(lm_model)
+
+# 2. 繪製散佈圖 + OLS 擬合線
+ggplot(cex5_small, aes(x = income, y = food)) +
+  geom_point(color = "blue") +
+  geom_smooth(method = "lm", se = FALSE, color = "red") +
+  labs(title = "Scatterplot of Food vs. Income",
+       x = "Household Income",
+       y = "Food Expenditure") +
+  theme_minimal()
+
+# 3. 計算 95% 信賴區間
+confint(lm_model, level = 0.95)
