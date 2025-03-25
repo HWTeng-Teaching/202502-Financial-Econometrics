@@ -337,12 +337,63 @@ Possible reasons: health awareness, regulatory changes, cultural shifts.
 
 ## Ans:
 
-**(f)**
+**(a)**
 
+β₂ (QUANT): Negative, due to quantity discount theory (larger quantity = lower price per gram).
+
+β₃ (QUAL): Positive, higher purity should command a premium.
+
+β₄ (TREND): Could be positive or negative depending on market trends (e.g., enforcement, demand, inflation).
+
+--------------------------------------------------------------
+
+**(b)**
+
+Run the regression using software. Interpret whether the signs match the expected ones in (a).
+
+Examples:
+• β₂ = -0.05: each additional gram reduces price by $0.05 (quantity discount).
+
+• β₃ = 0.1: 1% increase in purity increases price by $0.10 (quality premium).
+
+• β₄ = -0.2: each year, average price falls by $0.20 (time trend).
+
+
+--------------------------------------------------------------
+
+**(c)**
+
+R² measures the proportion of variation in cocaine price explained by quantity, quality, and time.
+
+Example: R² = 0.60 means 60% of variation is jointly explained.
+
+--------------------------------------------------------------
+
+**(d)**
+
+H₀: β₂ = 0 (no effect of quantity on price)
+
+H₁: β₂ < 0 (higher quantity leads to lower price per gram)
+
+Perform a one-tailed t-test. Reject H₀ if p-value < 0.05.
+
+--------------------------------------------------------------
+
+**(e)**
+
+H₀: β₃ = 0 (purity has no effect on price)
+
+H₁: β₃ > 0 (higher purity increases price)
+
+Check coefficient and p-value to test the significance.
 
 --------------------------------------------------------------
 
 **(f)**
 
+β₄ represents the annual change in price.
 
+If β₄ = –0.2, then average price dropped by $0.20 each year.
+
+Possible explanations: increased enforcement, oversupply, shifting demand.
 
