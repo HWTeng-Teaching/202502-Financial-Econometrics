@@ -303,6 +303,25 @@ Interpretation: With 95% confidence, a one-year increase in age reduces alcohol 
 
 𝐻1:𝛽3≠−2
 
+![image](https://github.com/user-attachments/assets/443c11f4-7031-42e4-9945-8d51f8dc742c)
+
+Critical value at 5% significance ≈ ±1.96
+
+Conclusion: Fail to reject H₀. Insufficient evidence to show β₃ ≠ –2.
+
+查 𝑑𝑓=1196（大樣本），臨界值為 ±1.96。因為 1.476 < 1.96，無法拒絕 𝐻0
+
+結論： 在 5% 顯著水準下，資料不足以證明下降幅度不同於 2%。
+
+
+--------------------------------------------------------------
+
+**(f)**
+
+β₄ = –0.1503: Each year, alcohol budget share decreases by ~0.15 percentage points.
+
+Possible reasons: health awareness, regulatory changes, cultural shifts.
+
 
 
 
