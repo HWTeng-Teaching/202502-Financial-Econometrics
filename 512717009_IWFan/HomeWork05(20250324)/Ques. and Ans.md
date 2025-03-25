@@ -245,8 +245,63 @@ Thus, the covariance matrix of $b$ captures how the variances of the estimates o
 
 ![image](https://github.com/user-attachments/assets/76814a2d-5147-4b9b-aadc-b06d9c0ee5a5)
 
-## Ans:
 
+**(a)**
+
+(i)  ![image](https://github.com/user-attachments/assets/cc406472-4424-44fc-bc8c-4696c71e9a6b)
+
+
+(ii) ![image](https://github.com/user-attachments/assets/ca8273a5-c8a8-4abc-a99a-3035e6ba94c7)
+
+
+(iii) Coefficient=t×Std. Error=−3.9376×0.3695≈−1.4547
+
+(iv) R²: Not provided
+
+(v) σ̂ (Standard error of regression): 6.19347
+
+
+--------------------------------------------------------------
+
+**(b)**
+
+β₂ = 2.7648: A 1% increase in total expenditure increases alcohol budget share by 2.76 percentage points.
+
+β₃ = –1.4547: Each additional child reduces alcohol budget share by 1.45 percentage points.
+
+β₄ = –0.1503: Each additional year in household head age reduces alcohol budget share by 0.15 percentage points.
+
+
+--------------------------------------------------------------
+
+**(c)**
+
+β 4±z 0.025⋅SE=−0.1503±1.96×0.0235=−0.1503±0.0461⇒[−0.1964,−0.1042]
+
+Interval: [–0.1964, –0.1042]
+
+Interpretation: With 95% confidence, a one-year increase in age reduces alcohol budget share between 0.1042 and 0.1964 percentage points.
+
+
+--------------------------------------------------------------
+
+**(d)**
+
+β₁ (p=0.5099): Not significant
+
+β₂, β₃, β₄ (p < 0.05): Statistically significant
+
+
+![image](https://github.com/user-attachments/assets/0e636bc1-1975-4dee-91af-39f87a65d0dd)
+
+
+--------------------------------------------------------------
+
+**(e)**
+
+𝐻0:𝛽3=−2
+
+𝐻1:𝛽3≠−2
 
 
 
