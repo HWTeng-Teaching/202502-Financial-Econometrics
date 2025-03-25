@@ -260,9 +260,21 @@ Thus, the covariance matrix of $b$ captures how the variances of the estimates o
 
 (iii) Coefficient=t×Std. Error=−3.9376×0.3695≈−1.4547
 
-(iv) R²: Not provided
+(iv) R²: To compute  R2 , we need SSE and SST. From the output,  SSE=5.752896  . 
 
-(v) σ̂ (Standard error of regression): 6.19347
+To find  SST, we use the result
+
+![image](https://github.com/user-attachments/assets/cfeec6e9-ad55-4d8b-884a-239abd32e5d3)
+
+which gives  SST= 1199 (6.39547)2= 49041.5   , Thus,
+
+![image](https://github.com/user-attachments/assets/b1a8d964-2e5c-4998-abd7-853fa560097c)
+
+
+(v) σ̂ (Standard error of regression): 
+
+![image](https://github.com/user-attachments/assets/a294ffbf-07b8-43f2-84c5-552aef2aa369)
+
 
 
 --------------------------------------------------------------
