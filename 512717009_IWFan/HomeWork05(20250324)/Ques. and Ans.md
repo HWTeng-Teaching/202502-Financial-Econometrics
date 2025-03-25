@@ -397,3 +397,7 @@ If β₄ = –0.2, then average price dropped by $0.20 each year.
 
 Possible explanations: increased enforcement, oversupply, shifting demand.
 
+
+![image](https://github.com/user-attachments/assets/876a1b68-762c-4b2d-a187-503edca61f23)
+
+
