@@ -398,7 +398,7 @@ We want to test H0:B3≦0  against H1: β>0 . The calculated t-value is 0.5717. 
 
 **(f)**
 
-The average annual change in the cocaine price is given by the value of b4=-2.3546 . It has a negative sign suggesting that the price decreases over time. A possible reason for a decreasing price is the development of improved technology for producing cocaine, such that suppliers can produce more at the same cost. 
+The average annual change in the cocaine price is given by the value of B4=-2.3546 . It has a negative sign suggesting that the price decreases over time. A possible reason for a decreasing price is the development of improved technology for producing cocaine, such that suppliers can produce more at the same cost. 
 
 
 
