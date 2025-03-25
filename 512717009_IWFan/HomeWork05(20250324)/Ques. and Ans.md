@@ -163,6 +163,8 @@ $$
 This gives us the two elements of $b$, where $b_1$ is the estimated intercept and $b_2$ is the estimated slope of the regression line. Each element is calculated by the respective formula, reflecting how each factor (intercept and slope) is influenced by the sums of $y_i$, $x_{i,2}$, and their products, scaled by the determinant $\Delta$ of the matrix $(X'X)^{-1}$.
 
 
+--------------------------------------------------------------
+
 
 ## Special Question: Q.02
 
@@ -246,6 +248,8 @@ Thus, the covariance matrix of $b$ captures how the variances of the estimates o
 ![image](https://github.com/user-attachments/assets/76814a2d-5147-4b9b-aadc-b06d9c0ee5a5)
 
 
+## ANS:
+
 **(a)**
 
 (i)  ![image](https://github.com/user-attachments/assets/cc406472-4424-44fc-bc8c-4696c71e9a6b)
@@ -323,6 +327,7 @@ Conclusion: Fail to reject H₀. Insufficient evidence to show β₃ ≠ –2.
 Possible reasons: health awareness, regulatory changes, cultural shifts.
 
 
+--------------------------------------------------------------
 
 
 ## C5 Q.23
@@ -332,7 +337,12 @@ Possible reasons: health awareness, regulatory changes, cultural shifts.
 
 ## Ans:
 
+**(f)**
 
+
+--------------------------------------------------------------
+
+**(f)**
 
 
 
