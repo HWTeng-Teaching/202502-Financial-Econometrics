@@ -2,6 +2,15 @@
 
 Let K=2, show that (b1, b2) in p. 29 of slides in Ch 5 reduces to the formula of (b1, b2) in (2.7) – (2.8)
 
+## CH05 P.29
+
+![image](https://github.com/user-attachments/assets/fcf94938-b886-449a-97dd-f1cfc6974630)
+
+## CH02 2.7-2.8
+
+![image](https://github.com/user-attachments/assets/bddf48e5-f129-43ad-8ea5-0d31c0e13b46)
+
+
 ## Ans:
 
 Given the vector equation $$Y = X\beta + e,$$ where $Y$ is a $N \times 1$ vector, $\beta$ is a $K \times 1$ vector, $e$ is a $N \times 1$ vector of errors, and $X$ is a $N \times K$ matrix of explanatory variables. The matrix $X$ includes a column of ones for the intercept, and considering $K = 2$, it implies that we have one intercept and one other variable. Thus, the matrix $X$ can be expressed as:
