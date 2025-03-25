@@ -1,12 +1,12 @@
 ## Special Question: Q.01
 
-Let K=2, show that (b1, b2) in p. 29 of slides in Ch 5 reduces to the formula of (b1, b2) in (2.7) – (2.8)
+## Let K=2, show that (b1, b2) in p. 29 of slides in Ch 5 reduces to the formula of (b1, b2) in (2.7) – (2.8)
 
-## CH05 P.29
+#### CH05 P.29
 
 ![image](https://github.com/user-attachments/assets/fcf94938-b886-449a-97dd-f1cfc6974630)
 
-## CH02 2.7-2.8
+#### CH02 2.7-2.8
 
 ![image](https://github.com/user-attachments/assets/bddf48e5-f129-43ad-8ea5-0d31c0e13b46)
 
@@ -166,13 +166,13 @@ This gives us the two elements of $b$, where $b_1$ is the estimated intercept an
 
 ## Special Question: Q.02
 
-Let K=2, show that cov(b1, b2) in p. 30 of slides in Ch 5 reduces to the formula of in (2.14) – (2.16).
+## Let K=2, show that cov(b1, b2) in p. 30 of slides in Ch 5 reduces to the formula of in (2.14) – (2.16).
 
-## CH05 P.30
+#### CH05 P.30
 
 ![image](https://github.com/user-attachments/assets/d85b12e6-7e20-4cf6-8d94-86888eb810d3)
 
-## CH02 2.14-2.16
+#### CH02 2.14-2.16
 
 ![image](https://github.com/user-attachments/assets/b9d74ece-7cb4-431e-9ac4-cc355265afc4)
 
