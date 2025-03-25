@@ -361,55 +361,45 @@ Possible reasons: health awareness, regulatory changes, cultural shifts.
 
 **(b)**
 
-Run the regression using software. Interpret whether the signs match the expected ones in (a).
+The estimated equation is:
 
-Examples:
-• β₂ = -0.05: each additional gram reduces price by $0.05 (quantity discount).
+PRICE = 90.8467 - 0.0600 QUANT + 0.1162 QUAL - 2.3546TREND     R2= 0.5097
 
-• β₃ = 0.1: 1% increase in purity increases price by $0.10 (quality premium).
+(se)    (8.5803)   (0.0102)       (0.2033)     (1.3861)        
 
-• β₄ = -0.2: each year, average price falls by $0.20 (time trend).
+(t )    (10.588)   ( 5.892)       (0.5717)    − ( 1.6987)  
+
+The estimated values for B2 B3 B4 are -0.0600 , 0.1162 and -2.3546  , respectively. 
+They imply that as quantity (number of grams in one sale) increases by 1 unit, the mean price will go down by 0.0600. Also, as the quality increases by 1 unit the mean price goes up by 0.1162. As time increases by 1 year, the mean price decreases by 2.3546. All the signs turn out according to our expectations, with β4 implying supply has been increasing faster than demand. 
 
 
 --------------------------------------------------------------
 
 **(c)**
 
-R² measures the proportion of variation in cocaine price explained by quantity, quality, and time.
-
-Example: R² = 0.60 means 60% of variation is jointly explained.
+The proportion of variation in cocaine price explained by the variation in quantity, quality and time is 0.5097.  
 
 --------------------------------------------------------------
 
 **(d)**
 
-H₀: β₂ = 0 (no effect of quantity on price)
-
-H₁: β₂ < 0 (higher quantity leads to lower price per gram)
-
-Perform a one-tailed t-test. Reject H₀ if p-value < 0.05.
+For this hypothesis we test H0: B2≧0 against : H1: β2 < 0 . The calculated t-value is 
+-5.892  . We reject H0 if the calculated t is less than or equal to the critical 
+t(0.95,52)= 1.675 . Since the calculated t is less than the critical t value, we reject H0 and conclude that sellers are willing to accept a lower price if they can make sales in larger quantities. 
 
 --------------------------------------------------------------
 
 **(e)**
 
-H₀: β₃ = 0 (purity has no effect on price)
-
-H₁: β₃ > 0 (higher purity increases price)
-
-Check coefficient and p-value to test the significance.
+We want to test H0:B3≦0  against H1: β>0 . The calculated t-value is 0.5717. At 
+α= 0.05 we reject H0 if the calculated t is greater than or equal to 1.675. Since for this case, the calculated t is not greater than the critical t, we do not reject H0 . We cannot conclude that a premium is paid for better quality cocaine.  
 
 --------------------------------------------------------------
 
 **(f)**
 
-β₄ represents the annual change in price.
-
-If β₄ = –0.2, then average price dropped by $0.20 each year.
-
-Possible explanations: increased enforcement, oversupply, shifting demand.
+The average annual change in the cocaine price is given by the value of b4=-2.3546 . It has a negative sign suggesting that the price decreases over time. A possible reason for a decreasing price is the development of improved technology for producing cocaine, such that suppliers can produce more at the same cost. 
 
 
-![image](https://github.com/user-attachments/assets/876a1b68-762c-4b2d-a187-503edca61f23)
 
 
