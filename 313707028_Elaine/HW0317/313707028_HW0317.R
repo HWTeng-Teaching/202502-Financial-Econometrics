@@ -87,8 +87,8 @@ abline(h=-2/sqrt(48),col='red',lwd=2)
 
 #d
 train <- wa_wheat[1:47, ]
-model_train <- lm(YIELD ~ I(TIME^2), data = train)
-newdata <- data.frame(TIME = 48)
+model_train <- lm(northampton ~ I(time^2), data=train)
+newdata <- data.frame(time = 48)
 (pred <- predict(model_train, newdata, interval = "prediction",
                  level = 0.95))
 (origin <- wa_wheat[48, 1])

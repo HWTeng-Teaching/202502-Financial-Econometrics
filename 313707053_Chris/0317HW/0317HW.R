@@ -193,32 +193,95 @@ lines(cex5_small$income, predicted_values, col = "blue", lwd = 2)
 #(f)
 mod1 <- lm(log(food)~log(income),data=cex5_small)
 confint(mod1,parm = "log(income)")
+gamma2 <- coef(loglog_model)["log(cex5_small$income)"]
+se_gamma2 <- summary(loglog_model)$coefficients["log(cex5_small$income)", "Std. Error"]
+ci_lower <- gamma2 - qt(0.975, df = nrow(cex5_small) - 2) * se_gamma2
+ci_upper <- gamma2 + qt(0.975, df = nrow(cex5_small) - 2) * se_gamma2
+
+beta1 <- coef(linear_model)["cex5_small$income"]
+mean_income <- mean(cex5_small$income)
+mean_food <- mean(cex5_small$food)
+elasticity_linear <- beta1 * (mean_income / mean_food)
+se_beta1 <- summary(linear_model)$coefficients["cex5_small$income", "Std. Error"]
+se_elasticity_linear <- se_beta1 * (mean_income / mean_food)
+ci_lower_linear <- elasticity_linear - qt(0.975, df = nrow(cex5_small) - 2) * se_elasticity_linear
+ci_upper_linear <- elasticity_linear + qt(0.975, df = nrow(cex5_small) - 2) * se_elasticity_linear
+
+cat("Point Estimate of Elasticity (Log-Log Model):", gamma2, "\n")
+cat("95% Confidence Interval for Elasticity:", ci_lower, "to", ci_upper, "\n")
+cat("Elasticity from Linear Model (at mean):", elasticity_linear, "\n")
+cat("95% Confidence Interval for Linear Model Elasticity:", ci_lower_linear, "to", ci_upper_linear, "\n")
+
+t_stat <- (gamma2 - elasticity_linear) / sqrt(se_gamma2^2 + se_elasticity_linear^2)
+p_value <- 2 * (1 - pt(abs(t_stat), df = nrow(cex5_small) - 2))
+cat("t-statistic for difference in elasticities:", t_stat, "\n")
+cat("p-value:", p_value, "\n")
+if (p_value < 0.05) {
+  cat("There's statistical evidence that the elasticities are different\n")
+} else {
+  cat("There's no statistical evidence that the elasticities are different\n")
+}
 
 #(g)
 Residuals <- mod1$residuals
 plot(log(cex5_small$income),Residuals,pch = 16 ,xlab="income",col = "red")
 hist(Residuals)
 jarque.bera.test(Residuals)
+if (jb_test$p.value < 0.05) {
+  cat("Conclusion: Reject the null hypothesis of normality (p < 0.05). The regression errors are not normally distributed.\n")
+} else {
+  cat("Conclusion: Fail to reject the null hypothesis of normality (p >= 0.05). The regression errors are approximately normally distributed.\n")
+}
 
 #(h)
-mod1 <- lm(food~log(income),data=cex5_small)
-plot(cex5_small$income,cex5_small$food,pch = 16)
-predicted_values <- predict(mod1, newdata = cex5_small)
-lines(cex5_small$income, predicted_values, col = "blue", lwd = 2)
-re <- summary(mod1)
-re
+linlog_model <- lm(cex5_small$food ~ log(cex5_small$income), data = cex5_small)
+print(summary(linlog_model))
+
+par(mfrow = c(1, 3))
+plot(cex5_small$income, cex5_small$food, pch = 20, col = "black",
+     xlab = "INCOME", ylab = "FOOD",
+     main = "Linear Model: FOOD vs INCOME")
+abline(linear_model, col = "blue", lwd = 2)
+
+plot(log(cex5_small$income), log(cex5_small$food), pch = 20, col = "black",
+     xlab = "ln(INCOME)", ylab = "ln(FOOD)",
+     main = "Log-Log Model: ln(FOOD) vs ln(INCOME)")
+abline(loglog_model, col = "blue", lwd = 2)
+
+plot(log(cex5_small$income), cex5_small$food, pch = 20, col = "black",
+     xlab = "ln(INCOME)", ylab = "FOOD",
+     main = "Linear-Log Model: FOOD vs ln(INCOME)")
+abline(linlog_model, col = "blue", lwd = 2)
+par(mfrow = c(1, 1))
+
+
+r2_linear <- summary(linear_model)$r.squared
+r2_loglog <- cor(fitted(loglog_model), log(cex5_small$food))^2
+r2_linlog <- summary(linlog_model)$r.squared
+
+cat("\nR^2 Comparison:\n")
+cat("Linear Model R^2:", r2_linear, "\n")
+cat("Log-Log Model Generalized R^2:", r2_loglog, "\n")
+cat("Linear-Log Model R^2:", r2_linlog, "\n")
 
 #(i)
-mod00 <- lm(food~log(income),data=cex5_small)
-coef(mod00)
-se <- summary(mod00)$coefficients[, 2]
-beta_1 <- coef(mod00)["log(income)"]
-incomes <- c(19, 65, 160)
-food_pred <- predict(mod00, newdata = data.frame(income = incomes))
-elasticity <- beta_1 * (incomes / food_pred)
-confidence_interval <- beta_1 + c(-1, 1) * qt(0.975, df = df.residual(mod00)) * se["log(income)"]
-elasticity
-confidence_interval
+income_values <- c(19,65, 160)
+predictions <- predict(linlog_model, newdata = data.frame(income = income_values), 
+                       interval = "confidence", level = 0.95)
+print("FOOD 的點估計和 95% 置信區間 (INCOME = 19,65 和 160):")
+print(predictions[19,])
+print(predictions[65,])
+print(predictions[160,])
+beta_1 <- coef(linlog_model)["log(cex5_small$income)"]
+elasticity_19 <- beta_1 * (19 / predictions[19, "fit"])
+elasticity_65 <- beta_1 * (65 / predictions[65, "fit"])
+elasticity_160 <- beta_1 * (160 / predictions[160, "fit"])
+print("收入彈性 (INCOME = 19):")
+print(elasticity_19)
+print("收入彈性 (INCOME = 65):")
+print(elasticity_65)
+print("收入彈性 (INCOME = 160):")
+print(elasticity_160)
 
 #(J)
 mod0 <- lm(food~log(income),data=cex5_small)

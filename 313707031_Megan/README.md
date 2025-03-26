@@ -16,5 +16,6 @@ Moving on to FOOD—one of my favorite topics! I love pasta, croffles, and sushi
 
 ## SMILES
 For the SMILES part—things that make me happy! I enjoy playing squash and biking while taking in the scenery—it really helps me relax. I’m also a huge baseball fan. I support the Rakuten Monkeys, and I always cheer for Team Taiwan in international tournaments. Besides that, I love camping and crocheting. Actually, the bag in the picture is one I made myself! I even crocheted a tiny scarf for my friend’s cat. I often make coasters and bags to share with my friends. And last but not least, I’m a big Disney fan! My dream is to visit every Disneyland around the world.
+
 <img width="600" src="https://github.com/user-attachments/assets/9fd0910a-a61a-4574-aa3b-fd157c9c640b" />
 

@@ -1,0 +1,397 @@
+---
+title: "HW0317 - CH4 Questions 4, 28, 29"
+author: "鄭凱鴻"
+date: "2025-03-24"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# **CH4 Question 4**
+
+## **(a) **
+
+```{r}
+# 建立經驗值從 0 到 30 年
+EXPER <- 0:30
+
+# 計算對應的預測 RATING
+fitted_rating <- 64.289 + 0.990 * EXPER
+
+# 畫圖
+plot(EXPER, fitted_rating, type = "l", col = "blue", lwd = 2,
+     xlab = "Years of Experience (EXPER)", ylab = "Fitted RATING",
+     main = "Model 1: Fitted Values for RATING vs. EXPER")
+```
+
+## **(b) **
+
+```{r}
+# 建立經驗值從 1 到 30 年（注意：ln(0) 不存在）
+EXPER <- 1:30
+
+# 計算預測值
+fitted_rating <- 39.464 + 15.312 * log(EXPER)
+
+# 畫圖
+plot(EXPER, fitted_rating, type = "l", col = "darkgreen", lwd = 2,
+     xlab = "Years of Experience (EXPER)", ylab = "Fitted RATING",
+     main = "Model 2: Fitted Values for RATING vs. ln(EXPER)")
+```
+
+# **CH4 Question 28**
+
+## **(a) **
+
+```{r}
+setwd("C:\\Users\\User\\Downloads\\poe5rdata")
+load("wa_wheat.rdata")
+ls()  # 看目前有哪些變數
+
+str(wa_wheat)
+head(wa_wheat)
+
+# 重新命名方便處理
+YIELD <- wa_wheat$northampton
+TIME <- wa_wheat$time
+
+# 衍生變數
+TIME2 <- TIME^2
+logTIME <- log(TIME)
+logYIELD <- log(YIELD)
+
+# 四個模型
+model1 <- lm(YIELD ~ TIME)
+model2 <- lm(YIELD ~ logTIME)
+model3 <- lm(YIELD ~ TIME2)
+model4 <- lm(logYIELD ~ TIME)
+
+# 模型比較用 R²
+summary(model1)$r.squared
+summary(model2)$r.squared
+summary(model3)$r.squared
+summary(model4)$r.squared
+
+# 常態性檢定
+shapiro.test(resid(model1))
+shapiro.test(resid(model2))
+shapiro.test(resid(model3))
+shapiro.test(resid(model4))
+
+# 殘差圖
+par(mfrow = c(2, 2))
+plot(resid(model1), type = "l", main = "Residuals - Model 1")
+plot(resid(model2), type = "l", main = "Residuals - Model 2")
+plot(resid(model3), type = "l", main = "Residuals - Model 3")
+plot(resid(model4), type = "l", main = "Residuals - Model 4")
+
+# 擬合圖
+par(mfrow = c(2, 2))
+plot(TIME, YIELD, main = "Model 1: YIELD ~ TIME")
+lines(TIME, fitted(model1), col = "red", lwd = 2)
+
+plot(TIME, YIELD, main = "Model 2: YIELD ~ log(TIME)")
+lines(TIME, fitted(model2), col = "blue", lwd = 2)
+
+plot(TIME, YIELD, main = "Model 3: YIELD ~ TIME²")
+lines(TIME, fitted(model3), col = "green", lwd = 2)
+
+plot(TIME, logYIELD, main = "Model 4: log(YIELD) ~ TIME")
+lines(TIME, fitted(model4), col = "purple", lwd = 2)
+```
+
+## **(b) **
+
+```{r}
+summary(model3)
+```
+
+## **(c) **
+
+```{r}
+# 1. Studentized residuals
+stud_res <- rstudent(model3)
+
+# 2. Leverage
+lev <- hatvalues(model3)
+
+# 3. DFBETAs
+dfb <- dfbetas(model3)
+
+# 4. DFFITS
+dff <- dffits(model3)
+
+# 簡單畫圖觀察
+par(mfrow = c(2, 2))
+plot(stud_res, type = "h", main = "Studentized Residuals")
+abline(h = c(-2, 2), col = "red", lty = 2)
+
+plot(lev, type = "h", main = "Leverage")
+abline(h = 2 * mean(lev), col = "red", lty = 2)
+
+plot(dff, type = "h", main = "DFFITS")
+abline(h = 2 * sqrt(2 / length(YIELD)), col = "red", lty = 2)
+
+matplot(dfb, type = "h", main = "DFBETAs", col = 1:2)
+abline(h = c(-1, 1), col = "red", lty = 2)
+```
+
+## **(d) **
+
+```{r}
+# 取出前 47 筆資料（1950–1996）
+YIELD_train <- YIELD[1:47]
+TIME_train <- TIME[1:47]
+TIME2_train <- TIME_train^2
+
+# 建立模型（重新估計）
+model3_train <- lm(YIELD_train ~ TIME2_train)
+
+# 建立 1997 的預測資料（TIME = 48, TIME² = 2304）
+new_data <- data.frame(TIME2_train = 48^2)
+
+# 預測 + 95% 預測區間
+predict(model3_train, newdata = new_data, interval = "prediction", level = 0.95)
+
+# 實際觀察值（1997 年）是第 48 筆
+true_value <- YIELD[48]
+true_value
+```
+
+# **CH4 Question 29**
+
+## **(a) **
+
+```{r}
+# 設定工作目錄
+setwd("C:/Users/User/Downloads/poe5rdata")
+
+# 載入資料檔
+load("cex5_small.RData")
+
+# 看看資料集的名稱
+ls()  # 看看有哪些物件被載入
+
+str(cex5_small)
+summary(cex5_small)
+
+# 先安裝 psych, tseries 套件
+install.packages("psych")
+install.packages("tseries")
+
+# 安裝完後再載入
+library(psych)
+
+describe(cex5_small[, c("food", "income")])
+
+hist_with_lines <- function(x, varname) {
+  hist(x, main = paste("Histogram of", varname),
+       xlab = varname, col = "lightblue", breaks = 20)
+  abline(v = mean(x), col = "red", lwd = 2)
+  abline(v = median(x), col = "darkgreen", lwd = 2, lty = 2)
+  legend("topright", legend = c("Mean", "Median"),
+         col = c("red", "darkgreen"), lty = c(1, 2), lwd = 2)
+}
+
+hist_with_lines(cex5_small$food, "FOOD")
+hist_with_lines(cex5_small$income, "INCOME")
+
+library(tseries)
+
+# Jarque-Bera 常態性檢定
+jarque.bera.test(cex5_small$food)
+jarque.bera.test(cex5_small$income)
+```
+
+## **(b) **
+
+```{r}
+model_linear <- lm(food ~ income, data = cex5_small)
+summary(model_linear)
+
+plot(cex5_small$income, cex5_small$food,
+     main = "food vs income",
+     xlab = "Income", ylab = "Food Expenditure",
+     pch = 20, col = "steelblue")
+
+# 加上回歸線
+abline(model_linear, col = "red", lwd = 2)
+
+confint(model_linear, level = 0.95)
+```
+
+## **(c) **
+
+```{r}
+# 取得殘差
+residuals_linear <- resid(model_linear)
+
+# 散佈圖：殘差對 income
+plot(cex5_small$income, residuals_linear,
+     main = "Residuals vs Income",
+     xlab = "Income", ylab = "Residuals",
+     col = "blue", pch = 20)
+abline(h = 0, col = "red", lwd = 2)
+
+hist(residuals_linear,
+     main = "Histogram of Residuals",
+     xlab = "Residuals",
+     col = "lightblue", breaks = 30)
+
+jarque.bera.test(residuals_linear)
+```
+## **(d) **
+
+```{r}
+# beta2 point estimate and standard error
+beta2 <- coef(model_linear)["income"]
+se_beta2 <- summary(model_linear)$coefficients["income", "Std. Error"]
+
+# income values to evaluate
+x_vals <- c(19, 65, 160)
+
+# 預測 food (fitted value) at each income
+fitted_vals <- predict(model_linear, newdata = data.frame(income = x_vals))
+
+# Point estimates of elasticity
+elasticity <- beta2 * x_vals / fitted_vals
+
+# 信賴區間的上下界（近似用 β₂ 的 95% CI）
+confint_vals <- confint(model_linear)["income", ]
+lower_beta2 <- confint_vals[1]
+upper_beta2 <- confint_vals[2]
+
+# CI for elasticity
+elasticity_low <- lower_beta2 * x_vals / fitted_vals
+elasticity_high <- upper_beta2 * x_vals / fitted_vals
+
+# 整理成表格
+result <- data.frame(
+  income = x_vals,
+  fitted_food = round(fitted_vals, 2),
+  elasticity = round(elasticity, 4),
+  CI_lower = round(elasticity_low, 4),
+  CI_upper = round(elasticity_high, 4)
+)
+
+result
+```
+
+## **(ｅ) **
+
+```{r}
+# 建立 ln(food) 和 ln(income) 變數
+cex5_small$ln_food <- log(cex5_small$food)
+cex5_small$ln_income <- log(cex5_small$income)
+
+# 建立 log-log 模型
+model_loglog <- lm(ln_food ~ ln_income, data = cex5_small)
+summary(model_loglog)
+
+plot(cex5_small$ln_income, cex5_small$ln_food,
+     main = "ln(food) vs ln(income)",
+     xlab = "ln(income)", ylab = "ln(food)",
+     col = "darkgreen", pch = 20)
+
+abline(model_loglog, col = "red", lwd = 2)
+
+summary(model_linear)$r.squared      # 原本線性模型 R²
+summary(model_loglog)$r.squared      # log-log 模型 R²
+```
+
+## **(ｆ) **
+
+```{r}
+summary(model_loglog)$coefficients["ln_income", ]
+confint(model_loglog, "ln_income", level = 0.95)
+```
+
+## **(g) **
+
+```{r}
+# 殘差
+residuals_loglog <- resid(model_loglog)
+
+# 散佈圖：殘差 vs ln(income)
+plot(cex5_small$ln_income, residuals_loglog,
+     main = "Residuals vs ln(income)",
+     xlab = "ln(income)", ylab = "Residuals",
+     col = "darkgreen", pch = 20)
+abline(h = 0, col = "red", lwd = 2)
+
+hist(residuals_loglog,
+     main = "Histogram of Log-Log Model Residuals",
+     xlab = "Residuals",
+     col = "lightgreen", breaks = 30)
+
+jarque.bera.test(residuals_loglog)
+```
+
+## **(h) **
+
+```{r}
+model_linlog <- lm(food ~ ln_income, data = cex5_small)
+summary(model_linlog)
+
+plot(cex5_small$ln_income, cex5_small$food,
+     main = "food vs ln(income)",
+     xlab = "ln(income)", ylab = "food",
+     col = "blue", pch = 20)
+abline(model_linlog, col = "red", lwd = 2)
+
+summary(model_linlog)$r.squared     # linear-log R²
+summary(model_linear)$r.squared     # linear R²
+summary(model_loglog)$r.squared     # log-log R²
+```
+
+## **(ｉ) **
+
+```{r}
+# 取得係數與信賴區間
+alpha2 <- coef(model_linlog)["ln_income"]
+confint_alpha2 <- confint(model_linlog)["ln_income", ]
+
+# 評估點
+income_vals <- c(19, 65, 160)
+
+# 預測的 food 值（optional）
+fitted_vals <- predict(model_linlog, newdata = data.frame(ln_income = log(income_vals)))
+
+# 彈性估計與信賴區間
+elasticity_point <- alpha2 / income_vals
+elasticity_low <- confint_alpha2[1] / income_vals
+elasticity_high <- confint_alpha2[2] / income_vals
+
+# 表格整理
+data.frame(
+  income = income_vals,
+  fitted_food = round(fitted_vals, 2),
+  elasticity = round(elasticity_point, 4),
+  CI_lower = round(elasticity_low, 4),
+  CI_upper = round(elasticity_high, 4)
+)
+```
+
+
+## **(ｊ) **
+
+```{r}
+# 取得殘差
+residuals_linlog <- resid(model_linlog)
+
+# 殘差 vs ln(income)
+plot(cex5_small$ln_income, residuals_linlog,
+     main = "Residuals vs ln(income)",
+     xlab = "ln(income)", ylab = "Residuals",
+     pch = 20, col = "purple")
+abline(h = 0, col = "red", lwd = 2)
+
+# 殘差直方圖
+hist(residuals_linlog,
+     main = "Histogram of Residuals (Linear-Log Model)",
+     xlab = "Residuals", col = "plum", breaks = 30)
+
+# 常態性檢定
+jarque.bera.test(residuals_linlog)
+```

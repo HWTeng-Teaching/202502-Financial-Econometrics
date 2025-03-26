@@ -592,12 +592,19 @@ hist_residuals_log_log <- ggplot(data.frame(residuals = residuals_log_log), aes(
 
 print(hist_residuals_log_log)
 
-# Load the package
-library(e1071)
+# Install and load the moments package
+if (!require(moments)) install.packages("moments")
+# This line checks if the psych package is installed, and installs it only if it's not already available.
+library(moments)
+
+# Calculate skewness and kurtosis
+moments_skew <- moments::skewness(residuals_log_log)
+moments_kurt <- moments::kurtosis(residuals_log_log)
+
+cat("Moments package - Skewness:", moments_skew, "\n")
+cat("Moments package - Kurtosis:", moments_kurt, "\n")
 
 # Jarque-Bera test for residuals of log-log model
-skewness(residuals_log_log)
-kurtosis(residuals_log_log)
 jb_residuals_log_log <- jarque.bera.test(residuals_log_log)
 cat("\nJarque-Bera test for residuals (Log-Log Model):\n")
 print(jb_residuals_log_log)
@@ -701,6 +708,25 @@ cat("\nJarque-Bera test for residuals (Linear-Log Model):\n")
 print(jb_residuals_linear_log)
 
 # k. Model preference
+# Benchmarks: S = 0 and K = 3 for a normal distribution
+print(residual_plot_linear)
+print(hist_residuals_linear)
+moments::skewness(residuals_linear)
+moments::kurtosis(residuals_linear)
+print(jb_residuals_linear)
+
+print(residual_plot_log_log)
+print(hist_residuals_log_log)
+moments::skewness(residuals_log_log)
+moments::kurtosis(residuals_log_log)
+print(jb_residuals_log_log)
+
+print(residual_plot_linear_log)
+print(hist_residuals_linear_log)
+moments::skewness(residuals_linear_log)
+moments::kurtosis(residuals_linear_log)
+print(jb_residuals_linear_log)
+
 cat("Model Comparison and Interpretation:\n\n",
     
     "• The linear model is counter-intuitive, as it implies increasing income elasticity,\n",

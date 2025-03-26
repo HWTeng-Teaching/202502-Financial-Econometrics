@@ -1,0 +1,487 @@
+##4.4
+(a)
+# Define the range of EXPER
+exper <- seq(0, 30, by = 0.1)
+
+# Calculate fitted values for Model 1
+rating_model1 <- 64.289 + 0.990 * exper
+
+# Plot the fitted values
+plot(exper, rating_model1, type = "l", col = "blue", lwd = 2,
+     xlab = "Experience (Years)", ylab = "Fitted Rating",
+     main = "Fitted Values for Model 1 (EXPER = 0 to 30)",
+     ylim = c(60, 100))
+grid()
+(b)
+# Define the range of EXPER (starting from 1 to avoid ln(0))
+exper <- seq(1, 30, by = 0.1)
+
+# Calculate fitted values for Model 2
+rating_model2 <- 39.464 + 15.312 * log(exper)
+
+# Plot the fitted values
+plot(exper, rating_model2, type = "l", col = "red", lwd = 2,
+     xlab = "Experience (Years)", ylab = "Fitted Rating",
+     main = "Fitted Values for Model 2 (EXPER = 1 to 30)",
+     ylim = c(30, 100))
+grid()
+##4.28
+(a)
+library(POE5Rdata)
+data(wa_wheat)
+northampton_data <- wa_wheat$northampton
+time <- wa_wheat$time
+summary(model1)$coefficients
+summary(model2)$coefficients
+summary(model3)$coefficients
+summary(model4)$coefficients
+
+par(mfrow=c(2,2)) 
+
+# 線性模型
+plot(time, northampton_data, main="Linear Model", xlab="Time", ylab="Yield")
+lines(time, predict(model1), col="orange", lwd=2)
+
+# 對數模型
+plot(time, northampton_data, main="Log Model", xlab="Time", ylab="Yield")
+lines(time, predict(model2), col="blue", lwd=2)
+
+# 二次模型
+plot(time, northampton_data, main="Quadratic Model", xlab="Time", ylab="Yield")
+lines(time, predict(model3), col="red", lwd=2)
+
+# 對數線性模型
+plot(time, northampton_data, main="Log-Linear Model", xlab="Time", ylab="Yield")
+lines(time, exp(predict(model4)), col="green", lwd=2)
+
+# Residual plots
+par(mfrow = c(2, 2))  # 2x2 grid for plots
+
+# Model 1
+plot(data$TIME, residuals(model1), main = "Residuals: Model 1 (Linear)", 
+     xlab = "Time", ylab = "Residuals", pch = 16)
+abline(h = 0, col = "red", lty = 2)
+
+# Model 2
+plot(data$TIME, residuals(model2), main = "Residuals: Model 2 (Log-linear)", 
+     xlab = "Time", ylab = "Residuals", pch = 16)
+abline(h = 0, col = "red", lty = 2)
+
+# Model 3
+plot(data$TIME, residuals(model3), main = "Residuals: Model 3 (Quadratic)", 
+     xlab = "Time", ylab = "Residuals", pch = 16)
+abline(h = 0, col = "red", lty = 2)
+
+# Model 4
+plot(data$TIME, residuals(model4), main = "Residuals: Model 4 (Log-YIELD)", 
+     xlab = "Time", ylab = "Residuals", pch = 16)
+abline(h = 0, col = "red", lty = 2)
+
+# Error Normality Tests
+shapiro.test(model1$residuals)
+shapiro.test(model2$residuals)
+shapiro.test(model3$residuals)
+shapiro.test(model4$residuals)
+
+# R^2 for Models 1, 2, and 3
+r2_model1 <- summary(model1)$r.squared
+r2_model2 <- summary(model2)$r.squared
+r2_model3 <- summary(model3)$r.squared
+
+# R^2 for Model 4 (compare exp(predicted lnYIELD) with YIELD)
+y_pred_model4 <- exp(predict(model4))
+ss_total <- sum((data$YIELD - mean(data$YIELD))^2)
+ss_residual <- sum((data$YIELD - y_pred_model4)^2)
+r2_model4 <- 1 - ss_residual / ss_total
+
+# Print R^2 values
+cat("R^2 for Model 1 (Linear):", r2_model1, "\n")
+cat("R^2 for Model 2 (Log-linear):", r2_model2, "\n")
+cat("R^2 for Model 3 (Quadratic):", r2_model3, "\n")
+cat("R^2 for Model 4 (Log-YIELD):", r2_model4, "\n")
+#c
+studentized_res <- rstudent(lm428_3)
+leverage <- hatvalues(lm428_3)
+dffits_values <- dffits(lm428_3)
+dfbetas_values <- dfbetas(lm428_3)
+studentized_res
+leverage
+dffits_values
+dfbetas_values
+
+#d
+data1996 <- subset(wa_wheat,time<48)
+data1997 <- subset(wa_wheat,time==48)
+lm428_d <- lm(yield ~ I(Time^2), data = data1996)
+pred_i <- predict(lm428_d, newdata = data.frame(Time = 48), interval = "predict", level = 0.95)
+if(data1997$northampton>=pred_i[1,'lwr']&&data1997$northampton<=pred_i[1,'upr']){
+  print('Do contain the true value')
+}else{
+  print('Do not contain the true value')
+}
+pred_i
+##4.29
+# 載入包和數據
+library(POE5Rdata)
+data(cex5_small)
+
+# 檢查數據結構（可選，確認欄位名稱）
+str(cex5_small)
+colnames(cex5_small)
+head(cex5_small)
+
+#a.
+# 計算摘要統計量
+cat("Summary Statistics for food:\n")
+print(c(Mean = mean(cex5_small$food, na.rm = TRUE),
+        Median = median(cex5_small$food, na.rm = TRUE),
+        Minimum = min(cex5_small$food, na.rm = TRUE),
+        Maximum = max(cex5_small$food, na.rm = TRUE),
+        Std_Dev = sd(cex5_small$food, na.rm = TRUE)))
+
+cat("\nSummary Statistics for income:\n")
+print(c(Mean = mean(cex5_small$income, na.rm = TRUE),
+        Median = median(cex5_small$income, na.rm = TRUE),
+        Minimum = min(cex5_small$income, na.rm = TRUE),
+        Maximum = max(cex5_small$income, na.rm = TRUE),
+        Std_Dev = sd(cex5_small$income, na.rm = TRUE)))
+
+# 繪製直方圖
+hist(cex5_small$food, main = "Histogram of Food Expenditure", xlab = "food", 
+     col = "lightblue", breaks = 20)
+abline(v = mean(cex5_small$food, na.rm = TRUE), col = "red", lwd = 2, lty = 2)
+abline(v = median(cex5_small$food, na.rm = TRUE), col = "green", lwd = 2, lty = 2)
+legend("topright", legend = c("Mean", "Median"), col = c("red", "green"), lty = 2, lwd = 2)
+
+hist(cex5_small$income, main = "Histogram of Income", xlab = "income", 
+     col = "lightgreen", breaks = 20)
+abline(v = mean(cex5_small$income, na.rm = TRUE), col = "red", lwd = 2, lty = 2)
+abline(v = median(cex5_small$income, na.rm = TRUE), col = "green", lwd = 2, lty = 2)
+legend("topright", legend = c("Mean", "Median"), col = c("red", "green"), lty = 2, lwd = 2)
+
+# Jarque-Bera 測試，先到package那邊install tseries的套件
+library(tseries)
+cat("\nJarque-Bera Test for food:\n")
+print(jarque.bera.test(cex5_small$food))
+cat("\nJarque-Bera Test for income:\n")
+print(jarque.bera.test(cex5_small$income))
+
+#兩個結果P-value都小於0.05，皆拒絕正態性假設
+
+#b.
+# 估計線性回歸模型
+model_linear <- lm(food ~ income, data = cex5_small)
+
+# 查看回歸結果
+summary(model_linear)
+
+# 繪製散點圖
+plot(cex5_small$income, cex5_small$food, 
+     main = "Scatter Plot of Food Expenditure vs Income", 
+     xlab = "income", ylab = "food", 
+     pch = 19, col = "blue")
+
+# 添加回歸線
+abline(model_linear, col = "red", lwd = 2)
+legend("topright", legend = "Fitted Line", col = "red", lwd = 2)
+
+# 計算 95% 置信區間
+confint(model_linear, "income", level = 0.95)
+
+#c.
+# 提取殘差
+residuals <- residuals(model_linear)
+
+# 將殘差添加到數據框中（可選，便於後續使用）
+cex5_small$residuals <- residuals
+
+# 繪製殘差對 income 的散點圖
+plot(cex5_small$income, cex5_small$residuals, 
+     main = "Residuals vs Income", 
+     xlab = "income", ylab = "Residuals", 
+     pch = 19, col = "purple")
+abline(h = 0, col = "black", lty = 2) # 添加水平線 y=0
+
+# 殘差直方圖
+hist(cex5_small$residuals, main = "Histogram of Residuals", xlab = "Residuals", 
+     col = "lightgray", breaks = 20)
+# Jarque-Bera 測試
+cat("\nJarque-Bera Test for Residuals:\n")
+print(jarque.bera.test(cex5_small$residuals))
+
+# p-value也<0.05，殘差不符合正態分布
+
+#d.
+# 估計線性回歸模型
+model_linear <- lm(food ~ income, data = cex5_small)
+
+# 查看回歸結果
+summary(model_linear)
+
+# 獲取回歸係數
+beta1 <- coef(model_linear)["(Intercept)"]
+beta2 <- coef(model_linear)["income"]
+
+# 定義收入水平
+incomes <- c(19, 65, 160)
+
+# 計算預測 food 值
+predicted_food <- beta1 + beta2 * incomes
+
+# 計算點彈性
+elasticity <- beta2 * (incomes / predicted_food)
+
+# 顯示結果
+results <- data.frame(income = incomes, 
+                      predicted_food = predicted_food, 
+                      elasticity = elasticity)
+print(results)
+
+# 獲取 beta2 的標準誤
+se_beta2 <- summary(model_linear)$coefficients["income", "Std. Error"]
+
+# 計算 95% 置信區間 for 彈性
+z_value <- 1.96  # 95% 置信水平的 z 值
+elasticity_lower <- (beta2 - z_value * se_beta2) * (incomes / predicted_food)
+elasticity_upper <- (beta2 + z_value * se_beta2) * (incomes / predicted_food)
+
+# 加入置信區間到結果
+results$lower_ci <- elasticity_lower
+results$upper_ci <- elasticity_upper
+
+# 顯示詳細結果
+print(results)
+
+#結果是三個區間都不重疊，進一步支持彈性在不同收入水平下顯著不同的結論。
+#食品通常被視為必要品（necessity），其收入彈性小於 1（符合您的結果，彈性值均小於 1）。
+#根據恩格爾定律（Engel's Law），隨著收入增加，家庭在食品上的支出比例會下降。換句話說，食品支出的增長速度會低於收入的增長速度。
+#因此，收入彈性應隨收入增加而減少
+#您的結果顯示彈性隨收入增加而增加（從 0.071 到 0.208 再到 0.393），這與經濟學原理預期的趨勢相反。
+#原因可能是模型的線性假設，接續下面的e小題改成log-log model
+
+#e.
+# 估計對數-對數模型
+model_loglog <- lm(log(food) ~ log(income), data = cex5_small)
+
+# 查看回歸結果
+summary(model_loglog)
+
+# 繪製散點圖
+plot(log(cex5_small$income), log(cex5_small$food), 
+     main = "Scatter Plot of ln(food) vs ln(income)", 
+     xlab = "ln(income)", ylab = "ln(food)", 
+     pch = 19, col = "blue")
+
+# 添加回歸線
+abline(model_loglog, col = "red", lwd = 2)
+legend("topright", legend = "Fitted Line", col = "red", lwd = 2)
+
+# 線性模型（從 (b) 小題）
+model_linear <- lm(food ~ income, data = cex5_small)
+r2_linear <- summary(model_linear)$r.squared
+
+# 對數-對數模型
+r2_loglog <- summary(model_loglog)$r.squared
+
+# 比較 R^2
+cat("R^2 for Linear Model:", r2_linear, "\n")
+cat("R^2 for Log-Log Model:", r2_loglog, "\n")
+
+#問題：直接比較R-square可能不公平，因為線性模型的因變量是 food，而對數-對數模型的因變量是 
+#ln(food)我們需要計算預測值在原始尺度上的R-square
+
+# 從對數-對數模型預測 ln(food)
+predicted_log_food <- predict(model_loglog)
+
+# 轉換回原始尺度：exp(predicted_log_food)
+predicted_food_loglog <- exp(predicted_log_food)
+
+# 計算預測值與實際值的相關性的平方（作為 generalized R^2）
+generalized_r2_loglog <- cor(cex5_small$food, predicted_food_loglog)^2
+
+# 線性模型的預測值
+predicted_food_linear <- predict(model_linear)
+
+# 線性模型的 generalized R^2（實際上就是 R^2）
+generalized_r2_linear <- cor(cex5_small$food, predicted_food_linear)^2
+
+# 比較
+cat("Generalized R^2 for Linear Model:", generalized_r2_linear, "\n")
+cat("Generalized R^2 for Log-Log Model:", generalized_r2_loglog, "\n")
+
+#f.
+# 獲取回歸係數
+gamma1 <- coef(model_loglog)["(Intercept)"]
+gamma2 <- coef(model_loglog)["log(income)"]
+
+# 定義收入水平
+incomes <- c(19, 65, 160)
+
+# 計算預測 ln(food) 值並轉換回 food
+predicted_log_food_f <- gamma1 + gamma2 * log(incomes)
+predicted_food_f <- exp(predicted_log_food_f)
+
+# 彈性（gamma_2 即為彈性，常數，log-log模型斜率就是彈性）
+elasticity_loglog <- gamma2
+
+# 獲取 gamma2 的標準誤
+se_gamma2 <- summary(model_loglog)$coefficients["log(income)", "Std. Error"]
+
+# 計算 95% 置信區間 for 彈性
+z_value <- 1.96  # 95% 置信水平的 z 值
+elasticity_lower_loglog <- elasticity_loglog - z_value * se_gamma2
+elasticity_upper_loglog <- elasticity_loglog + z_value * se_gamma2
+
+# 創建結果數據框
+results_f <- data.frame(income = incomes, 
+                        predicted_food = predicted_food_f, 
+                        elasticity = elasticity_loglog,
+                        lower_ci = elasticity_lower_loglog,
+                        upper_ci = elasticity_upper_loglog)
+
+# 顯示結果
+print("Results for (f):")
+print(results_f)
+
+#Statistical Evidence:
+#Compare the log-log elasticity (a single value) with the range of elasticities from part (d).
+#Check if the 95% CI from the log-log model overlaps with the CIs from part (d).
+
+#g.
+library(tseries)
+# 提取殘差
+cex5_small$residuals_loglog <- residuals(model_loglog)
+
+# 繪製殘差對 ln(income) 的散點圖
+plot(log(cex5_small$income), cex5_small$residuals_loglog, 
+     main = "Residuals vs ln(income) (Log-Log Model)", 
+     xlab = "ln(income)", ylab = "Residuals", 
+     pch = 19, col = "purple")
+abline(h = 0, col = "black", lty = 2)
+
+# 繪製殘差直方圖
+hist(cex5_small$residuals_loglog, 
+     main = "Histogram of Residuals (Log-Log Model)", 
+     xlab = "Residuals", 
+     col = "lightgray", breaks = 20)
+
+# 進行 Jarque-Bera 測試
+cat("\nJarque-Bera Test for Residuals (Log-Log Model):\n")
+print(jarque.bera.test(cex5_small$residuals_loglog))
+
+# 結論：對數-對數模型的殘差 不正態分佈（not normally distributed）
+
+#h. 估計線性-對數模型 food = α₁ + α₂ ln(income) + e
+model_linearlog <- lm(food ~ log(income), data = cex5_small)
+summary(model_linearlog)
+
+# 繪製散點圖和回歸線
+plot(log(cex5_small$income), cex5_small$food, 
+     main = "Scatter Plot of food vs ln(income) (Linear-Log Model)", 
+     xlab = "ln(income)", ylab = "food", 
+     pch = 19, col = "blue")
+abline(model_linearlog, col = "red", lwd = 2)
+legend("topright", legend = "Fitted Line", col = "red", lwd = 2)
+
+# 比較 R^2 值
+# 線性模型 (b)
+model_linear <- lm(food ~ income, data = cex5_small)
+r2_linear <- summary(model_linear)$r.squared
+
+# 對數-對數模型 (e)
+model_loglog <- lm(log(food) ~ log(income), data = cex5_small)
+predicted_log_food <- predict(model_loglog)
+predicted_food_loglog <- exp(predicted_log_food)
+generalized_r2_loglog <- cor(cex5_small$food, predicted_food_loglog)^2
+
+# 線性-對數模型 (h)
+r2_linearlog <- summary(model_linearlog)$r.squared
+
+# 比較 R^2
+cat("\nR^2 for Linear Model (b):", r2_linear, "\n")
+cat("Generalized R^2 for Log-Log Model (e):", generalized_r2_loglog, "\n")
+cat("R^2 for Linear-Log Model (h):", r2_linearlog, "\n")
+
+#i. 計算線性-對數模型的彈性
+# 獲取回歸係數
+alpha1 <- coef(model_linearlog)["(Intercept)"]
+alpha2 <- coef(model_linearlog)["log(income)"]
+
+# 定義收入水平
+incomes <- c(19, 65, 160)
+
+# 計算預測 food 值
+predicted_food_linearlog <- alpha1 + alpha2 * log(incomes)
+
+# 計算點彈性
+elasticity_linearlog <- alpha2 / predicted_food_linearlog
+
+# 獲取 alpha2 的標準誤
+se_alpha2 <- summary(model_linearlog)$coefficients["log(income)", "Std. Error"]
+
+# 計算 95% 置信區間
+z_value <- 1.96  # 95% 置信水平的 z 值
+elasticity_lower_linearlog <- (alpha2 - z_value * se_alpha2) / predicted_food_linearlog
+elasticity_upper_linearlog <- (alpha2 + z_value * se_alpha2) / predicted_food_linearlog
+
+# 創建結果數據框
+results_i <- data.frame(income = incomes, 
+                        predicted_food = predicted_food_linearlog, 
+                        elasticity = elasticity_linearlog,
+                        lower_ci = elasticity_lower_linearlog,
+                        upper_ci = elasticity_upper_linearlog)
+print("Results for (i):")
+print(results_i)
+
+#j. 提取線性-對數模型的殘差
+cex5_small$residuals_linearlog <- residuals(model_linearlog)
+
+# 繪製殘差對 ln(income) 的散點圖
+plot(log(cex5_small$income), cex5_small$residuals_linearlog, 
+     main = "Residuals vs ln(income) (Linear-Log Model)", 
+     xlab = "ln(income)", ylab = "Residuals", 
+     pch = 19, col = "purple")
+abline(h = 0, col = "black", lty = 2)
+
+# 繪製殘差直方圖並進行 Jarque-Bera 測試
+hist(cex5_small$residuals_linearlog, 
+     main = "Histogram of Residuals (Linear-Log Model)", 
+     xlab = "Residuals", 
+     col = "lightgray", breaks = 20)
+cat("\nJarque-Bera Test for Residuals (Linear-Log Model):\n")
+print(jarque.bera.test(cex5_small$residuals_linearlog))
+
+#k.
+# 線性模型 (b, c, d)
+model_linear <- lm(food ~ income, data = cex5_small)
+r2_linear <- summary(model_linear)$r.squared
+cat("R^2 for Linear Model (b):", r2_linear, "\n")
+
+# 對數-對數模型 (e, f, g)
+model_loglog <- lm(log(food) ~ log(income), data = cex5_small)
+predicted_log_food <- predict(model_loglog)
+predicted_food_loglog <- exp(predicted_log_food)
+generalized_r2_loglog <- cor(cex5_small$food, predicted_food_loglog)^2
+cat("Generalized R^2 for Log-Log Model (e):", generalized_r2_loglog, "\n")
+
+# 線性-對數模型 (h, i, j)
+model_linearlog <- lm(food ~ log(income), data = cex5_small)
+r2_linearlog <- summary(model_linearlog)$r.squared
+cat("R^2 for Linear-Log Model (h):", r2_linearlog, "\n")
+
+# 比較殘差的 Jarque-Bera 測試結果
+# 線性模型
+cex5_small$residuals_linear <- residuals(model_linear)
+cat("\nJarque-Bera Test for Residuals (Linear Model):\n")
+print(jarque.bera.test(cex5_small$residuals_linear))
+
+# 對數-對數模型
+cex5_small$residuals_loglog <- residuals(model_loglog)
+cat("\nJarque-Bera Test for Residuals (Log-Log Model):\n")
+print(jarque.bera.test(cex5_small$residuals_loglog))
+
+# 線性-對數模型
+cex5_small$residuals_linearlog <- residuals(model_linearlog)
+cat("\nJarque-Bera Test for Residuals (Linear-Log Model):\n")
+print(jarque.bera.test(cex5_small$residuals_linearlog))
+

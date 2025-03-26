@@ -181,5 +181,44 @@ summary(model_h)
 
 plot(log(cex5_small$income), cex5_small$food, main = "food vs log(income)")
 abline(model_h, col = "blue", lwd = 2)
+##如果根據判定係數，(b)模型能更好擬和數據
+#(i)
+# 模型
+model_h <- lm(food ~ log(income), data = cex5_small)
+
+# 取出估計與標準誤
+b2 <- coef(summary(model_h))["log(income)", "Estimate"]
+se_b2 <- coef(summary(model_h))["log(income)", "Std. Error"]
+
+# 要算的 income 值
+income_vals <- c(19, 65, 160)
+
+# 計算彈性與信賴區間
+for (val in income_vals) {
+  elasticity <- b2 / val
+  se_elasticity <- se_b2 / val
+  ci_lower <- elasticity - 1.96 * se_elasticity
+  ci_upper <- elasticity + 1.96 * se_elasticity
+  
+  cat("\nIncome =", val, "\n")
+  cat("  Elasticity:", round(elasticity, 4), "\n")
+  cat("  95% CI: [", round(ci_lower, 4), ",", round(ci_upper, 4), "]\n")
+}
+#(j)
+resid_h <- resid(model_h)
+
+# 殘差 vs log(income)
+plot(log(cex5_small$income), resid_h,
+     main = "Residuals (semi-log) vs log(income)")
+abline(h = 0, lty = 2)
+
+# Histogram
+hist(resid_h, main = "Histogram of Residuals (semi-log)", col = "skyblue")
+
+# QQ plot
+qqnorm(resid_h)
+qqline(resid_h, col = "red")
+library(tseries)
+jarque.bera.test(resid_h)
 
 

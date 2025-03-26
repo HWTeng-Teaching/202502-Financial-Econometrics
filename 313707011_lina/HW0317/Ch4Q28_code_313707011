@@ -4,9 +4,9 @@ download.file(url, destfile = "wa_wheat.rdata")  # 下載資料集並儲存為�
 load("wa_wheat.rdata")  # 載入資料集
 names(wa_wheat)  # 確認變數名稱
 
-# 安裝 tseries 套件（若尚未安裝）
-if (!require(tseries)) install.packages("tseries")
-library(tseries)
+# 載入必要的套件
+library(ggplot2)
+library(tseries)  # 執行 Jarque–Bera 常態性檢定
 
 # 4.28(a)
 # 建立 Northampton 區的數據框
@@ -94,7 +94,6 @@ print(r2_values)
 summary(model3)  # 顯示回歸結果摘要
 
 # 4.28(c)
-library(dplyr)
 # 計算學生化殘差
 student_resid <- rstudent(model3)  
 outliers_resid <- which(abs(student_resid) > 2)  # 找出異常值
@@ -103,9 +102,14 @@ student_resid_table <- data.frame(    # 建立結果表格
   Studentized_Residual = student_resid,
   Outlier_Residual = ifelse(abs(student_resid) > 2, "YES", "NO")
 )
-abnormal_resid_points <- student_resid_table %>%    # 過濾異常觀測值
-  filter(Outlier_Residual == "YES")
-
+# 畫圖
+ggplot(student_resid_table, aes(x = Observation, y = Studentized_Residual)) +
+  geom_point(aes(color = Outlier_Residual)) +
+  geom_hline(yintercept = c(-2, 2), linetype = "dashed", color = "red") +
+  labs(title = "Studentized Residuals", y = "Studentized Residual", x = "Observation") +
+  theme_minimal()
+# 異常觀測值
+abnormal_resid_points <- student_resid_table[student_resid_table$Outlier_Residual == "YES", ]
 # 顯示異常學生化殘差的觀測點
 print(abnormal_resid_points)
 
@@ -121,9 +125,14 @@ leverage_table <- data.frame(    # 建立結果表格
   Leverage = leverage_values,
   High_Leverage_2x = ifelse(leverage_values > leverage_threshold_2x, "YES", "NO")
 )
-abnormal_leverage_points <- leverage_table %>%    # 過濾異常觀測值
-  filter(High_Leverage_2x == "YES")
-cat("h_bar:", h_bar, "\n")
+# 畫圖
+ggplot(leverage_table, aes(x = Observation, y = Leverage)) +
+  geom_point(aes(color = High_Leverage_2x)) +
+  geom_hline(yintercept = 2 * h_bar, linetype = "dashed", color = "red") +
+  labs(title = "LEVERAGE", y = "Leverage", x = "Observation") +
+  theme_minimal()
+# 異常觀測值
+abnormal_leverage_points <- leverage_table[leverage_table$High_Leverage_2x == "YES", ]
 # 印出異常槓桿值的觀測點
 print(abnormal_leverage_points)
 
@@ -136,9 +145,17 @@ dfbetas_table <- data.frame(    # 建立結果表格
   DFBETAS_TIME2 = dfbetas_values[,2],  # 只查看 TIME2 變數的影響
   Influential_DFBETAS = ifelse(abs(dfbetas_values[,2]) > dfbetas_threshold, "YES", "NO")
 )
-abnormal_dfbetas_points <- dfbetas_table %>%    # 過濾異常觀測值
-  filter(Influential_DFBETAS == "YES")
-
+# 畫圖
+ggplot(dfbetas_table, aes(x = Observation)) +
+  geom_segment(aes(xend = Observation, y = 0, yend = DFBETAS_TIME2,
+                   color = Influential_DFBETAS), size = 0.8) +
+  geom_hline(yintercept = c(-dfbetas_threshold, dfbetas_threshold),
+             linetype = "dashed", color = "red") +
+  labs(title = "DFBETAS",
+       y = "DFBETAS", x = "Observation") +
+  theme_minimal()
+# 異常觀測值
+abnormal_dfbetas_points <- dfbetas_table[dfbetas_table$Influential_DFBETAS == "YES", ]
 # 顯示異常 DFBETAS 觀測點
 print(abnormal_dfbetas_points)
 
@@ -151,14 +168,42 @@ dffits_table <- data.frame(    # 建立結果表格
   DFFITS = dffits_values,
   High_DFFITS_2x = ifelse(abs(dffits_values) > dffits_threshold_2x, "YES", "NO")
 )
-abnormal_dffits_points <- dffits_table %>%    # 過濾異常觀測值
-  filter(High_DFFITS_2x == "YES")
-
+# 畫圖
+ggplot(dffits_table, aes(x = Observation, y = DFFITS)) +
+  geom_point(aes(color = High_DFFITS_2x)) +
+  geom_hline(yintercept = c(-dffits_threshold_2x, dffits_threshold_2x), 
+             linetype = "dashed", color = "red") +
+  labs(title = "DFFITS", y = "DFFITS", x = "Observation") +
+  theme_minimal()
+# 過濾異常觀測值
+abnormal_dffits_points <- dffits_table[dffits_table$High_DFFITS_2x == "YES", ]
 # 顯示異常 DFFITS 觀測點
 print(abnormal_dffits_points)
 
+# 2x2 子圖排版
+par(mfrow = c(2, 2))
+# Studentized Residuals
+plot(student_resid, main = "Studentized Residuals",
+     ylab = "studentized_residuals", xlab = "INDEX", pch = 1)
+abline(h = c(-2, 2), col = "red", lwd = 2)
+# LEVERAGE
+plot(leverage_values, main = "LEVERAGE",
+     ylab = "leverage_values", xlab = "INDEX", pch = 1)
+abline(h = leverage_threshold_2x, col = "red", lwd = 2)
+# DFBETAS
+dfb_time2 <- dfbetas(model3)[, 2]
+plot(dfb_time2, type = "h", main = "DFBETAS",
+     ylab = "dfbetas_plot", xlab = "Index",
+     col = ifelse(abs(dfb_time2) > dfbetas_threshold, "red", "black"))
+abline(h = c(-dfbetas_threshold, dfbetas_threshold), col = "red", lwd = 2)
+# DFFITS
+plot(dffits_values, main = "DFFITS",
+     ylab = "dffits(model3)", xlab = "Index", pch = 1)
+abline(h = c(-dffits_threshold_2x, dffits_threshold_2x), col = "red", lwd = 2)
+
+
 # 4.28(d)
-train_data <- northampton_data %>% filter(TIME <= 47)  # 過濾 1996 年之前的數據來建立新模型
+train_data <- northampton_data[northampton_data$TIME <= 47, ] # 篩選 1996 年之前的數據來建立新模型
 model_restricted <- lm(YIELD ~ TIME2, data = train_data)  # 重新估計所選模型（假設為 model3，即二次回歸模型）
 new_data_1997 <- data.frame(TIME2 = 48^2)  # 設定 1997 年的預測值
 
