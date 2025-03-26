@@ -1,1 +1,75 @@
+---
+title: "HW0324 - CH4 Questions 3, 23"
+author: "鄭凱鴻"
+date: "2025-03-30"
+---
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# **CH5 Question 23**
+
+## **(a) **
+
+```{r}
+# 設定工作目錄為檔案所在的資料夾
+setwd("C:/Users/User/Downloads/poe5rdata")
+
+# 載入 cocaine.rdata 檔案
+load("cocaine.rdata")
+
+# 檢查有哪些物件被載入
+ls()
+
+# 查看資料前幾列
+head(cocaine)
+
+# 查看變數名稱與結構
+str(cocaine)
+
+# 建立多元線性迴歸模型
+model <- lm(price ~ quant + qual + trend, data = cocaine)
+
+# 查看結果摘要
+summary(model)
+```
+
+## **(d) **
+
+```{r}
+# 查看模型摘要
+summary(model)
+
+# 提取 quant 的係數與標準誤
+beta_hat <- coef(summary(model))["quant", "Estimate"]
+se_beta <- coef(summary(model))["quant", "Std. Error"]
+
+# 計算 t 統計量（實際上已經在 summary(model) 有了）
+t_value <- beta_hat / se_beta
+
+# 計算單尾 p-value（左尾檢定）
+p_value_one_tailed <- pt(t_value, df = model$df.residual)
+
+# 輸出檢定結果
+cat("t-value:", t_value, "\n")
+cat("One-tailed p-value:", p_value_one_tailed, "\n")
+```
+
+## **(e) **
+
+```{r}
+# 提取 qual 的係數與標準誤
+beta3_hat <- coef(summary(model))["qual", "Estimate"]
+se_beta3 <- coef(summary(model))["qual", "Std. Error"]
+
+# 計算 t 統計量
+t_qual <- beta3_hat / se_beta3
+
+# 計算右尾 p-value
+p_value_qual_one_tailed <- 1 - pt(t_qual, df = model$df.residual)
+
+# 輸出結果
+cat("t-value:", t_qual, "\n")
+cat("One-tailed p-value:", p_value_qual_one_tailed, "\n")
+```
