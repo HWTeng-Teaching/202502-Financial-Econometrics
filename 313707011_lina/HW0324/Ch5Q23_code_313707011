@@ -1,1 +1,7 @@
+# 設定資料集的 URL
+url <- "https://www.principlesofeconometrics.com/poe5/data/rdata/cocaine.rdata"
+download.file(url, destfile = "cocaine.rdata")  # 下載資料集並儲存為本地檔案
+load("cocaine")  # 載入資料集
+names(cocaine)  # 確認變數名稱
+
 
