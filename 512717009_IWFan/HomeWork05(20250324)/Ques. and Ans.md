@@ -361,6 +361,26 @@ Possible reasons: health awareness, regulatory changes, cultural shifts.
 
 **(b)**
 
+lm(formula = price ~ quant + qual + trend, data = cocaine)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-43.479 -12.014  -3.743  13.969  43.753 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept) 90.84669    8.58025  10.588 1.39e-14 ***
+quant       -0.05997    0.01018  -5.892 2.85e-07 ***
+qual         0.11621    0.20326   0.572   0.5700    
+trend       -2.35458    1.38612  -1.699   0.0954 .  
+---
+Signif. codes:  
+0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 20.06 on 52 degrees of freedom
+Multiple R-squared:  0.5097,	Adjusted R-squared:  0.4814 
+F-statistic: 18.02 on 3 and 52 DF,  p-value: 3.806e-08
+
 The estimated equation is:
 
 PRICE = 90.8467 - 0.0600 QUANT + 0.1162 QUAL - 2.3546TREND     R2= 0.5097
@@ -401,5 +421,6 @@ We want to test H0:B3≦0  against H1: β>0 . The calculated t-value is 0.5717. 
 The average annual change in the cocaine price is given by the value of B4=-2.3546 . It has a negative sign suggesting that the price decreases over time. A possible reason for a decreasing price is the development of improved technology for producing cocaine, such that suppliers can produce more at the same cost. 
 
 
+![image](https://github.com/user-attachments/assets/8c095558-e03b-401a-a57d-6539e68f036c)
 
 
