@@ -259,7 +259,11 @@ t = \frac{\text{Coefficient}}{\text{Std. Error}} = \frac{1.4515}{2.2019} \approx
 $$
 
 
-(ii) ![image](https://github.com/user-attachments/assets/ca8273a5-c8a8-4abc-a99a-3035e6ba94c7)
+(ii) 
+
+$$
+t = \frac{\text{Coefficient}}{\text{Std. Error}} \Rightarrow \text{Std. Error} = \frac{2.7648}{5.7103} \approx 0.4840
+$$
 
 
 (iii) Coefficient=t×Std. Error=−3.9376×0.3695≈−1.4547
