@@ -32,7 +32,7 @@ all coefficients are significant (except for the intercept, but we don't really 
 
 ## 5
 
-H_0 : B_3=-0,2
-H_1 : B_3≠-0,2
+H_0 : B_3=-2
+H_1 : B_3≠-2
 
-t=(-1,455-(-0,2))/0.3695=-3,396  ∣1.96∣<∣-3,396∣ --> reject H_0
+t=(-1,455-(-2))/0.3695=1,475   ∣1.96∣ > ∣1,475∣ --> accept H_0, no significant evidence that the effect is different from −2 percentage points
