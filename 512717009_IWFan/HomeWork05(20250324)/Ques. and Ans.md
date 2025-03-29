@@ -333,7 +333,9 @@ Interpretation: With 95% confidence, a one-year increase in age reduces alcohol 
 
 𝐻1:𝛽3≠−2
 
-![image](https://github.com/user-attachments/assets/443c11f4-7031-42e4-9945-8d51f8dc742c)
+$$
+t = \frac{-1.4547 - (-2)}{0.3695} \approx \frac{0.5453}{0.3695} \approx 1.476
+$$
 
 Critical value at 5% significance ≈ ±1.96
 
