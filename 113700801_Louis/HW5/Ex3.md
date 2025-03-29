@@ -25,3 +25,14 @@ if the age of the household head increases of 1 unit, the percentage of a househ
 [-0.1503+1.96*0.0235 ; -0.1503-1.96*0.0235] = [-0,3 ; -0,196]
 
 The value of B_4 has 95% chance of being in this range.
+
+## 4
+
+all coefficients are significant (except for the intercept, but we don't really care about this one). this means that all the predictors are usefull for the understanding of Y (percentage of a household’s budget spent on alcohol).
+
+## 5
+
+H_0 : B_3=-0,2
+H_1 : B_3≠-0,2
+
+t=(-1,455-(-0,2))/0.3695=-3,396  ∣1.96∣<∣-3,396∣ --> reject H_0
