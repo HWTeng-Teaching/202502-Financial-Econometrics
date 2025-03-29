@@ -6,7 +6,7 @@
 
 ---
 
-<img src="https://github.com/user-attachments/assets/39f7255e-fa76-4895-931d-b8cc25d682c6" alt="圖片描述" width="600" height="450" />
+<img src="https://github.com/user-attachments/assets/39f7255e-fa76-4895-931d-b8cc25d682c6" alt="圖片描述" width="700" height="550" />
 
 ---
 
