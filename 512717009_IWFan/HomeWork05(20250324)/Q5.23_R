@@ -1,0 +1,46 @@
+# 下載並載入資料
+load(url("http://www.principlesofeconometrics.com/poe5/data/rdata/cocaine.rdata"))
+
+# 檢查欄位名稱是否正確
+names(cocaine)
+# 結果應該是： "price" "quant" "qual" "trend"
+
+# 建立迴歸模型（注意變數要小寫）
+model <- lm(price ~ quant + qual + trend, data = cocaine)
+
+# 顯示回歸摘要
+summary(model)
+
+# (c) 模型解釋力 R²
+r_squared <- summary(model)$r.squared
+cat("\n(c) 模型解釋力 R² = ", round(r_squared, 4), "\n")
+
+# (d) 檢定 β₂ < 0：是否存在數量折扣
+beta2 <- coef(summary(model))["quant", "Estimate"]
+se2 <- coef(summary(model))["quant", "Std. Error"]
+t2 <- beta2 / se2
+pval2 <- pt(t2, df = model$df.residual)
+cat("\n(d) 數量折扣假設檢定：\nH0: β₂ >= 0 vs H1: β₂ < 0\n")
+cat("t 值 =", round(t2, 3), ", 單尾 p 值 =", round(pval2, 4), "\n")
+
+# (e) 檢定 β₃ > 0：品質是否產生溢酬
+beta3 <- coef(summary(model))["qual", "Estimate"]
+se3 <- coef(summary(model))["qual", "Std. Error"]
+t3 <- beta3 / se3
+pval3 <- 1 - pt(t3, df = model$df.residual)
+cat("\n(e) 品質溢酬假設檢定：\nH0: β₃ = 0 vs H1: β₃ > 0\n")
+cat("t 值 =", round(t3, 3), ", 單尾 p 值 =", round(pval3, 4), "\n")
+
+# (f) 年度變化
+trend_coef <- coef(model)["trend"]
+cat("\n(f) 每年平均價格變化 =", round(trend_coef, 2), "美元\n")
+plot(cocaine$quant, cocaine$price,
+     xlab = "交易克數", ylab = "每克價格",
+     main = "古柯鹼價格 vs 數量")
+abline(lm(price ~ quant, data = cocaine), col = "blue", lwd = 2)
+
+
+
+
+
+

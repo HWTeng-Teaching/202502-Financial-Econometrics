@@ -351,55 +351,86 @@ Possible reasons: health awareness, regulatory changes, cultural shifts.
 
 **(a)**
 
-β₂ (QUANT): Negative, due to quantity discount theory (larger quantity = lower price per gram).
+β₂ (QUANT): Expected to be negative. Larger transaction volumes are typically associated with lower per-unit prices due to quantity discounts.
 
-β₃ (QUAL): Positive, higher purity should command a premium.
+β₃ (QUAL): Expected to be positive. Higher purity is assumed to command a higher price, reflecting a quality premium.
 
-β₄ (TREND): Could be positive or negative depending on market trends (e.g., enforcement, demand, inflation).
+β₄ (TREND): Expected to be negative. Over time, prices may decline due to increasing supply, law enforcement pressure, or market maturity.
 
 --------------------------------------------------------------
 
 **(b)**
 
-The estimated equation is:
+![image](https://github.com/user-attachments/assets/f66d5f26-01a0-4fa6-a353-c9d5c30eb457)
 
-PRICE = 90.8467 - 0.0600 QUANT + 0.1162 QUAL - 2.3546TREND     R2= 0.5097
 
-(se)    (8.5803)   (0.0102)       (0.2033)     (1.3861)        
+PRICE=90.8467−0.0600⋅QUANT+0.1162⋅QUAL−2.3546⋅TREND
 
-(t )    (10.588)   ( 5.892)       (0.5717)    − ( 1.6987)  
+![image](https://github.com/user-attachments/assets/af9f5fb8-e8ff-41e6-9f73-3cd73d92872c)
 
-The estimated values for B2 B3 B4 are -0.0600 , 0.1162 and -2.3546  , respectively. 
-They imply that as quantity (number of grams in one sale) increases by 1 unit, the mean price will go down by 0.0600. Also, as the quality increases by 1 unit the mean price goes up by 0.1162. As time increases by 1 year, the mean price decreases by 2.3546. All the signs turn out according to our expectations, with β4 implying supply has been increasing faster than demand. 
 
+Yes — QUANT is negative (quantity discount), QUAL is positive (quality premium), TREND is negative (suggests decreasing prices).
 
 --------------------------------------------------------------
 
 **(c)**
 
-The proportion of variation in cocaine price explained by the variation in quantity, quality and time is 0.5097.  
+R² = 0.5097
+
+This means about 51% of the variation in price is explained by the model (QUANT, QUAL, and TREND).
+
+This suggests moderate explanatory power.。
+
 
 --------------------------------------------------------------
 
 **(d)**
 
-For this hypothesis we test H0: B2≧0 against : H1: β2 < 0 . The calculated t-value is 
--5.892  . We reject H0 if the calculated t is less than or equal to the critical 
-t(0.95,52)= 1.675 . Since the calculated t is less than the critical t value, we reject H0 and conclude that sellers are willing to accept a lower price if they can make sales in larger quantities. 
+Null hypothesis (H₀): β₂ ≥ 0 (no quantity discount)
+
+Alternative hypothesis (H₁): β₂ < 0 (quantity discount exists)
+
+From output:
+
+β₂ = −0.0600, t = −5.892, p = 2.85e−07
+
+Conclusion: Reject H₀ at 1% significance level.
+
+There is strong evidence of a quantity discount in the cocaine market.
+ 
 
 --------------------------------------------------------------
 
 **(e)**
 
-We want to test H0:B3≦0  against H1: β>0 . The calculated t-value is 0.5717. At 
-α= 0.05 we reject H0 if the calculated t is greater than or equal to 1.675. Since for this case, the calculated t is not greater than the critical t, we do not reject H0 . We cannot conclude that a premium is paid for better quality cocaine.  
+H₀: β₃ = 0 (purity has no effect on price)
+
+H₁: β₃ > 0 (higher purity increases price)
+
+From output:
+
+β₃ = 0.1162, t = 0.572, p = 0.5700
+
+Conclusion: Fail to reject H₀.
+
+There is no significant evidence that cocaine purity affects price in this dataset.  
 
 --------------------------------------------------------------
 
 **(f)**
 
-The average annual change in the cocaine price is given by the value of B4=-2.3546 . It has a negative sign suggesting that the price decreases over time. A possible reason for a decreasing price is the development of improved technology for producing cocaine, such that suppliers can produce more at the same cost. 
+The TREND coefficient is −2.3546, meaning the average price decreases by $2.35 per year.
 
+Possible explanations:
 
+Increased supply over time, outpacing demand.
+
+Higher law enforcement risk, pushing prices down.
+
+Market maturation, leading to price normalization.
+
+ 
+
+![image](https://github.com/user-attachments/assets/8c095558-e03b-401a-a57d-6539e68f036c)
 
 
