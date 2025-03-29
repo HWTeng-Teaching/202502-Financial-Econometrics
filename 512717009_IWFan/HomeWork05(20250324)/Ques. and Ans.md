@@ -332,15 +332,6 @@ Conclusion: Fail to reject H₀. Insufficient evidence to show β₃ ≠ –2.
 
 --------------------------------------------------------------
 
-**(f)**
-
-β₄ = –0.1503: Each year, alcohol budget share decreases by ~0.15 percentage points.
-
-Possible reasons: health awareness, regulatory changes, cultural shifts.
-
-
---------------------------------------------------------------
-
 
 ## C5 Q.23
 
