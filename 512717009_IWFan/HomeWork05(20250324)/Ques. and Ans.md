@@ -273,7 +273,9 @@ which gives  SST= 1199 (6.39547)2= 49041.5   , Thus,
 
 (v) σ̂ (Standard error of regression): 
 
-![image](https://github.com/user-attachments/assets/a294ffbf-07b8-43f2-84c5-552aef2aa369)
+$$
+\hat{\sigma} = \sqrt{\frac{SSE}{N - K}} = \sqrt{\frac{46221.62}{1200 - 4}} = 6.217
+$$
 
 
 
