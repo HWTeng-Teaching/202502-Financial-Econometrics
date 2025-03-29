@@ -1,0 +1,10 @@
+url <- "https://www.principlesofeconometrics.com/poe5/data/ascii/cocaine.dat"
+download.file(url, destfile = "cocaine.dat")
+DATA <- read.table("cocaine.dat", header = FALSE)
+colnames(DATA) <- c("PRICE","QUANT","QUAL","TREND")
+head(DATA)
+#(a)
+model<- lm(PRICE ~ QUANT + QUAL + TREND, data = DATA)
+summary(model)
+result2 <- qt(0.95, df  =52)
+print(result2)
