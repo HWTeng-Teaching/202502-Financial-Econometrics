@@ -272,7 +272,9 @@ $$
 
 To find  SST, we use the result
 
-![image](https://github.com/user-attachments/assets/cfeec6e9-ad55-4d8b-884a-239abd32e5d3)
+$$
+s_y = \sqrt{\frac{SST}{N - 1}} = 6.39547
+$$
 
 which gives  SST= 1199 (6.39547)2= 49041.5   , Thus,
 
