@@ -252,7 +252,11 @@ Thus, the covariance matrix of $b$ captures how the variances of the estimates o
 
 **(a)**
 
-(i)  ![image](https://github.com/user-attachments/assets/cc406472-4424-44fc-bc8c-4696c71e9a6b)
+(i)  
+
+$$
+t = \frac{\text{Coefficient}}{\text{Std. Error}} = \frac{1.4515}{2.2019} \approx 0.6593
+$$
 
 
 (ii) ![image](https://github.com/user-attachments/assets/ca8273a5-c8a8-4abc-a99a-3035e6ba94c7)
