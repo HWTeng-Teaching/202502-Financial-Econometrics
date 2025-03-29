@@ -278,7 +278,9 @@ $$
 
 which gives  SST= 1199 (6.39547)2= 49041.5   , Thus,
 
-![image](https://github.com/user-attachments/assets/b1a8d964-2e5c-4998-abd7-853fa560097c)
+$$
+R^2 = 1 - \frac{SSE}{SST} = 1 - \frac{46221.6}{49041.5} = 0.0575
+$$
 
 
 (v) σ̂ (Standard error of regression): 
