@@ -1,0 +1,56 @@
+library(POE5Rdata)
+data(cocaine)
+#5.23(a)
+
+#(b)
+library(ggplot2)
+
+model_cocaine <- lm(price ~ quant + qual + trend, data = cocaine)
+summary(model_cocaine)
+
+##(c)
+summary(model_cocaine)$r.squared
+
+##(d)
+library(car)
+## Ho: beta2>0, Ha:beta2<=0
+# Extract coefficient estimate and standard error for QUANT
+beta_2 <- summary(model_cocaine)$coefficients["quant", "Estimate"]
+se_beta_2 <- summary(model_cocaine)$coefficients["quant", "Std. Error"]
+
+t_stat <- beta_2 / se_beta_2
+
+p_value <- pt(t_stat, df = df.residual(model_cocaine))
+
+cat("t-statistic:", t_stat, "\n")
+cat("One-tailed p-value:", p_value, "\n")
+
+alpha <- 0.05
+if (p_value < alpha) {
+  cat("Reject H0: Larger quantity is associated with lower price.\n")
+} else {
+  cat("Fail to reject H0: No strong evidence that larger quantity lowers price.\n")
+}
+
+##(e)
+beta_3 <- summary(model_cocaine)$coefficients["qual", "Estimate"]
+se_beta_3 <- summary(model_cocaine)$coefficients["qual", "Std. Error"]
+
+t_stat <- beta_3 / se_beta_3
+
+p_value <- 1 - pt(t_stat, df = df.residual(model_cocaine))
+
+cat("t-statistic:", t_stat, "\n")
+cat("One-tailed p-value:", p_value, "\n")
+
+alpha <- 0.05
+if (p_value < alpha) {
+  cat("Reject H0: A premium is paid for higher-quality cocaine.\n")
+} else {
+  cat("Fail to reject H0: No strong evidence that quality affects price.\n")
+}
+
+##(f)
+annual_change <- summary(model_cocaine)$coefficients["trend", "Estimate"]
+cat("Estimated average annual change in price:", annual_change, "\n")
+## This might be due to a law enforcement.
