@@ -1,3 +1,6 @@
+
+*BY 范艾雯 Eva Fan (512717009)*
+
 ## Special Question: Q.02
 
 ## Let K=2, show that cov(b1, b2) in p. 30 of slides in Ch 5 reduces to the formula of in (2.14) – (2.16).
