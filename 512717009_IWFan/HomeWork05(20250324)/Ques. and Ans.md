@@ -14,154 +14,133 @@
 
 ## Ans:
 
-Given the vector equation $$Y = X\beta + e,$$ where $Y$ is a $N \times 1$ vector, $\beta$ is a $K \times 1$ vector, $e$ is a $N \times 1$ vector of errors, and $X$ is a $N \times K$ matrix of explanatory variables. The matrix $X$ includes a column of ones for the intercept, and considering $K = 2$, it implies that we have one intercept and one other variable. Thus, the matrix $X$ can be expressed as:
+# Q1：當 $K = 2$ 時，推導 $\mathbf{b} = (X'X)^{-1}X'Y$ 的結果為 (2.7) 與 (2.8)
+
+## 1. 設定 $X$, $Y$
 
 $$
-X = \begin{pmatrix}
-1 & x_{1,2} \\
-1 & x_{2,2} \\
+X = 
+\begin{bmatrix}
+1 & x_1 \\
+1 & x_2 \\
 \vdots & \vdots \\
-1 & x_{N,2}
-\end{pmatrix}
-$$
-
-To compute the explicit formula for $(X'X)^{-1}$, we first calculate $X'X$. The transpose of $X$ is:
-
-$$
-X' = \begin{pmatrix}
-1 & 1 & \cdots & 1 \\
-x_{1,2} & x_{2,2} & \cdots & x_{N,2}
-\end{pmatrix}
-$$
-
-Multiplying $X'$ and $X$ results in:
-
-$$
-X'X = \begin{pmatrix}
-1 & 1 & \cdots & 1 \\
-x_{1,2} & x_{2,2} & \cdots & x_{N,2}
-\end{pmatrix}
-\begin{pmatrix}
-1 & x_{1,2} \\
-1 & x_{2,2} \\
-\vdots & \vdots \\
-1 & x_{N,2}
-\end{pmatrix} 
-= \begin{pmatrix}
-N & \sum_{i=1}^{N} x_{i,2} \\
-\sum_{i=1}^{N} x_{i,2} & \sum_{i=1}^{N} x_{i,2}^2
-\end{pmatrix}
-$$
-
-To find the inverse of a $2 \times 2$ matrix, 
-
-$$
-A = \begin{pmatrix} a & b \\
-c & d
-\end{pmatrix}
-$$
-
-the inverse is given by:
-
-$$
-A^{-1} = \frac{1}{ad-bc} \begin{pmatrix} d & -b \\
--c & a
-\end{pmatrix}
-$$
-
-Applying this to our matrix $X'X$, where $a = N$, $b = c = \sum_{i=1}^{N} (x_{i,2})$, and $d = \sum_{i=1}^{N} (x_{i,2})^2$, we have:
-
-$$
-(X'X)^{-1} = \frac{1}{N \sum_{i=1}^{N} x_{i,2}^2 - (\sum_{i=1}^{N} x_{i,2})^2} \begin{pmatrix}
-\sum_{i=1}^{N} x_{i,2}^2 & -\sum_{i=1}^{N} x_{i,2} \\
--\sum_{i=1}^{N} x_{i,2} & N
-\end{pmatrix}
-$$
-
-This formula gives us the inverse of $X'X$, which is crucial in the calculation of the estimator for $\beta$ in the ordinary least squares regression model:
-
-$$
-b = (X'X)^{-1}(X'Y)
-$$
-
-This completes the derivation for the explicit formula of $(X'X)^{-1}$ in the case when $K = 2$.
-
-
-#### Derive $b=(X'X)^{-1}(X'Y)$ element by element for $K=2$.
-
-To derive the elements of $b = (X'X)^{-1}(X'Y)$ for $K = 2$, we first need the individual elements of $(X'X)^{-1}$ and $X'Y$.
-
-### 1. Calculate $X'X$ and $(X'X)^{-1}$
-
-As previously derived, for $K = 2$ (one intercept and one regressor):
-
-$$
-X'X = \begin{pmatrix}
-N & \sum x_{i,2} \\
-\sum x_{i,2} & \sum x_{i,2}^2
-\end{pmatrix}
-$$
-
-The inverse, $(X'X)^{-1}$, is given by:
-
-$$
-(X'X)^{-1} = \frac{1}{\Delta} \begin{pmatrix}
-\sum x_{i,2}^2 & -\sum x_{i,2} \\
--\sum x_{i,2} & N
-\end{pmatrix}
-$$
-
-where $\Delta = N \sum x_{i,2}^2 - (\sum x_{i,2})^2$.
-
-### 2. Calculate $X'Y$
-
-$$
-X'Y = \begin{pmatrix}
-1 & 1 & \cdots & 1 \\
-x_{1,2} & x_{2,2} & \cdots & x_{N,2}
-\end{pmatrix}
-\begin{pmatrix}
+1 & x_n
+\end{bmatrix}_{n \times 2}, \quad
+Y = 
+\begin{bmatrix}
 y_1 \\
-y_2 \\
 \vdots \\
-y_N
-\end{pmatrix}
-= \begin{pmatrix}
+y_n
+\end{bmatrix}_{n \times 1}
+$$
+
+---
+
+## 2. 代入公式 $\mathbf{b} = (X'X)^{-1}X'Y$
+
+$$
+X'X = 
+\begin{bmatrix}
+1 & \cdots & 1 \\
+x_1 & \cdots & x_n
+\end{bmatrix}
+\begin{bmatrix}
+1 & x_1 \\
+\vdots & \vdots \\
+1 & x_n
+\end{bmatrix}
+=
+\begin{bmatrix}
+n & \sum x_i \\
+\sum x_i & \sum x_i^2
+\end{bmatrix}
+$$
+
+$$
+X'Y = 
+\begin{bmatrix}
+1 & \cdots & 1 \\
+x_1 & \cdots & x_n
+\end{bmatrix}
+\begin{bmatrix}
+y_1 \\
+\vdots \\
+y_n
+\end{bmatrix}
+=
+\begin{bmatrix}
 \sum y_i \\
-\sum x_{i,2} y_i
-\end{pmatrix}
+\sum x_i y_i
+\end{bmatrix}
 $$
 
-### 3. Calculate $b = (X'X)^{-1}(X'Y)$
+---
 
-We now compute the product of $(X'X)^{-1}$ and $X'Y$:
+## 3. $\mathbf{b} = (X'X)^{-1}X'Y$
 
 $$
-b = \frac{1}{\Delta} \begin{pmatrix}
-\sum x_{i,2}^2 & -\sum x_{i,2} \\
--\sum x_{i,2} & N
-\end{pmatrix}
-\begin{pmatrix}
+(X'X)^{-1} = 
+\frac{1}{n \sum x_i^2 - (\sum x_i)^2}
+\begin{bmatrix}
+\sum x_i^2 & -\sum x_i \\
+-\sum x_i & n
+\end{bmatrix}
+$$
+
+---
+
+## 4. 套上 $X'Y$
+
+$$
+\mathbf{b} = (X'X)^{-1}X'Y =
+\frac{1}{n \sum x_i^2 - (\sum x_i)^2}
+\begin{bmatrix}
+\sum x_i^2 & -\sum x_i \\
+-\sum x_i & n
+\end{bmatrix}
+\begin{bmatrix}
 \sum y_i \\
-\sum x_{i,2} y_i
-\end{pmatrix}
+\sum x_i y_i
+\end{bmatrix}
 $$
 
-Let's explicitly calculate the elements of $b$:
+---
 
-**Element $b_1$** (intercept):
+## 5. 展開後：
 
-$$
-b_1 = \frac{1}{\Delta} \left( \left(\sum x_{i,2}^2\right) \left(\sum y_i\right) - \left(\sum x_{i,2}\right) \left(\sum x_{i,2} y_i\right) \right)
-$$
-
-**Element $b_2$** (slope):
+### 計算斜率項 $b_2$
 
 $$
-b_2 = \frac{1}{\Delta} \left( -\left(\sum x_{i,2}\right) \left(\sum y_i\right) + N \left(\sum x_{i,2} y_i\right) \right)
+b_2 = \frac{-\sum x_i \sum y_i + n \sum x_i y_i}{n \sum x_i^2 - (\sum x_i)^2}
 $$
 
-This gives us the two elements of $b$, where $b_1$ is the estimated intercept and $b_2$ is the estimated slope of the regression line. Each element is calculated by the respective formula, reflecting how each factor (intercept and slope) is influenced by the sums of $y_i$, $x_{i,2}$, and their products, scaled by the determinant $\Delta$ of the matrix $(X'X)^{-1}$.
+代入 $\bar{x} = \frac{1}{n} \sum x_i$, $\bar{y} = \frac{1}{n} \sum y_i$
+
+$$
+= \frac{-n \bar{x} \sum y_i + n \sum x_i y_i}{n \sum x_i^2 - n^2 \bar{x}^2}
+= \frac{n \sum x_i y_i - n^2 \bar{x} \bar{y}}{n \sum x_i^2 - n^2 \bar{x}^2}
+$$
+
+$$
+= \frac{\sum x_i y_i - n \bar{x} \bar{y}}{\sum x_i^2 - n \bar{x}^2}
+= \frac{\sum (x_i - \bar{x})(y_i - \bar{y})}{\sum (x_i - \bar{x})^2} \tag{2.7}
+$$
+
+---
+
+### 計算截距項 $b_1$
+
+$$
+b_1 = \frac{\sum x_i^2 \sum y_i - \sum x_i \sum x_i y_i}{n \sum x_i^2 - (\sum x_i)^2}
+$$
+
+$$
+= \frac{\sum x_i^2 \cdot n \bar{y} - \sum x_i \cdot \sum x_i y_i}{n \sum x_i^2 - (\sum x_i)^2}
+$$
+
+$$
+= \bar{y} - b_2 \bar{x} \tag{2.8}
+$$
 
 
 --------------------------------------------------------------
