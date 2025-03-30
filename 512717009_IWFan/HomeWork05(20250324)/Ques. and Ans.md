@@ -219,21 +219,21 @@ $$
 ---
 
 $$
-\begin{align}
-\mathrm{Var}(b_2)
+\begin{aligned}
+\mathrm{Var}(b_2) 
 &= \sigma^2 \cdot \frac{n}{n \sum x_i^2 - (\sum x_i)^2} \\
 &= \frac{\sigma^2}{\sum (x_i - \bar{x})^2} \tag{2.15}
-\end{align}
+\end{aligned}
 $$
 
 ---
 
 $$
-\begin{align}
-\mathrm{Cov}(b_1, b_2)
+\begin{aligned}
+\mathrm{Cov}(b_1, b_2) 
 &= \sigma^2 \cdot \frac{-\sum x_i}{n \sum x_i^2 - (\sum x_i)^2} \\
 &= \sigma^2 \cdot \frac{-\bar{x}}{\sum (x_i - \bar{x})^2} \tag{2.16}
-\end{align}
+\end{aligned}
 $$
 
 
