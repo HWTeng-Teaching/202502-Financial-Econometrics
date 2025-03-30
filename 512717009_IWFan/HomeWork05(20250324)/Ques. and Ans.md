@@ -16,7 +16,7 @@
 
 1. 設定 $X$, $Y$
 
-$$
+```math
 X = 
 \begin{bmatrix}
 1 & x_1 \\
@@ -30,7 +30,7 @@ y_1 \\
 \vdots \\
 y_n
 \end{bmatrix}_{n \times 1}
-$$
+```
 
 ---
 
