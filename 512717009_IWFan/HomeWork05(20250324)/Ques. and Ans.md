@@ -208,8 +208,11 @@ $$
 ## 4. 展開矩陣各元素：
 
 $$
-\mathrm{Var}(b_1) = \sigma^2 \cdot \frac{\sum x_i^2}{n \sum x_i^2 - (\sum x_i)^2}
-= \sigma^2 \left[ \frac{\sum x_i^2}{n \sum (x_i - \bar{x})^2} \right] \tag{2.14}
+\begin{aligned}
+\mathrm{Var}(b_1)
+&= \sigma^2 \cdot \frac{\sum x_i^2}{n \sum x_i^2 - (\sum x_i)^2} \\
+&= \sigma^2 \left[ \frac{\sum x_i^2}{n \sum (x_i - \bar{x})^2} \right] \tag{2.14}
+\end{aligned}
 $$
 
 ---
