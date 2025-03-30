@@ -4,7 +4,9 @@
 
 #### CH05 P.29
 
-![image](https://github.com/user-attachments/assets/fcf94938-b886-449a-97dd-f1cfc6974630)
+![image](https://github.com/user-attachments/assets/fcf94938-b886-449a-97dd-f1cfc6974630" alt="圖片描述" width="600" height="450" /)
+
+
 
 #### CH02 2.7-2.8
 
