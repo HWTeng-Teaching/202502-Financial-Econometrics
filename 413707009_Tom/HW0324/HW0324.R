@@ -1,66 +1,66 @@
 # Question 23
-# Specify the URL for the dataset
-url <- "http://www.principlesofeconometrics.com/poe5/data/rdata/cocaine.rdata"
+# Define the dataset URL
+dataset_url <- "http://www.principlesofeconometrics.com/poe5/data/rdata/cocaine.rdata"
 
-# Establish a connection to the URL
-con <- url(url, "rb")  # "rb" signifies reading in binary mode
+# Open a connection to the URL
+connection <- url(dataset_url, "rb")  # "rb" means read in binary mode
 
-# Directly load the RData file from the web
-load(con)
+# Load the RData file directly from the web
+load(connection)
 
 # Close the connection after loading the data
-close(con)
+close(connection)
 
 # Fit the regression model using the data
-model <- lm(price ~ quant + qual + trend, data = cocaine)
-summary_model <- summary(model)
+regression_model <- lm(price ~ quant + qual + trend, data = cocaine)
+model_summary <- summary(regression_model)
 
 # Extract the R-squared value from the summary
-r_squared <- summary_model$r.squared
+r_squared_value <- model_summary$r.squared
 
 # Retrieve the coefficients table from the summary
-coefs <- summary_model$coefficients
+coefficients_table <- model_summary$coefficients
 
 # Calculate the degrees of freedom (n - k)
-n <- nrow(cocaine)
-k <- ncol(coefs)
-df <- n - k
+sample_size <- nrow(cocaine)
+num_coefficients <- ncol(coefficients_table)
+degrees_of_freedom <- sample_size - num_coefficients
 
-# Compute the one-tailed critical t-value at a 5% significance level
-critical_t_one_sided <- qt(0.95, df)
+# Calculate the one-sided critical t-value at a 5% significance level
+critical_t_value <- qt(0.95, degrees_of_freedom)
 
-# Hypothesis testing for the 'quant' variable (Expecting beta2 < 0)
-beta2_est <- coefs["quant", "Estimate"]
-beta2_t <- coefs["quant", "t value"]
-beta2_p2s <- coefs["quant", "Pr(>|t|)"]
-beta2_p1s <- beta2_p2s / 2
+# Hypothesis test for the 'quant' variable (expecting beta2 < 0)
+quant_estimate <- coefficients_table["quant", "Estimate"]
+quant_t_value <- coefficients_table["quant", "t value"]
+quant_p_value_two_sided <- coefficients_table["quant", "Pr(>|t|)"]
+quant_p_value_one_sided <- quant_p_value_two_sided / 2
 
-# Hypothesis testing for the 'qual' variable (Expecting beta3 > 0)
-beta3_est <- coefs["qual", "Estimate"]
-beta3_t <- coefs["qual", "t value"]
-beta3_p2s <- coefs["qual", "Pr(>|t|)"]
-beta3_p1s <- beta3_p2s / 2
+# Hypothesis test for the 'qual' variable (expecting beta3 > 0)
+qual_estimate <- coefficients_table["qual", "Estimate"]
+qual_t_value <- coefficients_table["qual", "t value"]
+qual_p_value_two_sided <- coefficients_table["qual", "Pr(>|t|)"]
+qual_p_value_one_sided <- qual_p_value_two_sided / 2
 
 # Retrieve the trend coefficient
-beta4_est <- coefs["trend", "Estimate"]
+trend_estimate <- coefficients_table["trend", "Estimate"]
 
-# Display the regression results
+# Print the regression results
 cat("Regression Summary:\n")
-print(summary_model)
+print(model_summary)
 
-cat("\nR-squared (Explained Variation):", r_squared, "\n\n")
+cat("\nR-squared (Proportion of explained variation):", r_squared_value, "\n\n")
 
-cat("Degrees of Freedom:", df, "\n")
-cat("Critical t-value (One-sided, 5% level):", critical_t_one_sided, "\n")
+cat("Degrees of Freedom:", degrees_of_freedom, "\n")
+cat("Critical t-value (One-sided, 5% level):", critical_t_value, "\n")
 
 # Perform hypothesis test for 'quant'
 cat("Hypothesis Test for quant (Expecting beta2 < 0):\n")
-cat("  Estimated beta2 (quant):", beta2_est, "\n")
-cat("  t-value:", beta2_t, "\n")
-cat("  Two-sided p-value:", beta2_p2s, "\n")
-cat("  One-sided p-value (H1: beta2 < 0):", beta2_p1s, "\n")
-cat("  Critical t-value for one-sided test:", critical_t_one_sided, "\n")
-if (beta2_t < -critical_t_one_sided) {
+cat("  Estimate for beta2 (quant):", quant_estimate, "\n")
+cat("  t-value:", quant_t_value, "\n")
+cat("  Two-sided p-value:", quant_p_value_two_sided, "\n")
+cat("  One-sided p-value (H1: beta2 < 0):", quant_p_value_one_sided, "\n")
+cat("  Critical t-value for one-sided test:", critical_t_value, "\n")
+if (quant_t_value < -critical_t_value) {
   cat("  Result: Reject H0. There is evidence of a quantity discount.\n\n")
 } else {
   cat("  Result: Fail to reject H0. No evidence of a quantity discount.\n\n")
@@ -68,16 +68,16 @@ if (beta2_t < -critical_t_one_sided) {
 
 # Perform hypothesis test for 'qual'
 cat("Hypothesis Test for qual (Expecting beta3 > 0):\n")
-cat("  Estimated beta3 (qual):", beta3_est, "\n")
-cat("  t-value:", beta3_t, "\n")
-cat("  Two-sided p-value:", beta3_p2s, "\n")
-cat("  One-sided p-value (H1: beta3 > 0):", beta3_p1s, "\n")
-cat("  Critical t-value for one-sided test:", critical_t_one_sided, "\n")
-if (beta3_t > critical_t_one_sided) {
+cat("  Estimate for beta3 (qual):", qual_estimate, "\n")
+cat("  t-value:", qual_t_value, "\n")
+cat("  Two-sided p-value:", qual_p_value_two_sided, "\n")
+cat("  One-sided p-value (H1: beta3 > 0):", qual_p_value_one_sided, "\n")
+cat("  Critical t-value for one-sided test:", critical_t_value, "\n")
+if (qual_t_value > critical_t_value) {
   cat("  Result: Reject H0. There is evidence of a quality premium.\n\n")
 } else {
   cat("  Result: Fail to reject H0. No evidence of a quality premium.\n\n")
 }
 
 # Display the trend coefficient (average annual change in price)
-cat("Average Annual Change in Cocaine Price (trend coefficient):", beta4_est, "\n")
+cat("Average Annual Change in Cocaine Price (trend coefficient):", trend_estimate, "\n")
