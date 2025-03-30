@@ -395,17 +395,14 @@ This suggests moderate explanatory power.。
 
 **(d)**
 
-Null hypothesis (H₀): β₂ ≥ 0 (no quantity discount)
+**Set up the hypotheses:**
+- H₀: β₂ ≥ 0 (no effect of quantity on price)
+- H₁: β₂ < 0 (quantity has a negative effect on price)
+Result：
+t value = -5.892 , one-tailed p value = 1.425e-07 
 
-Alternative hypothesis (H₁): β₂ < 0 (quantity discount exists)
-
-From output:
-
-β₂ = −0.0600, t = −5.892, p = 2.85e−07
-
-Conclusion: Reject H₀ at 1% significance level.
-
-There is strong evidence of a quantity discount in the cocaine market.
+*For this hypothesis, The calculated t-value is -5.892. We reject H0.(less than or equal to the critical 
+(t-=1.675, 0.95,n-4). To conclude that sellers are willing to accept a lower price if they can make sales in larger quantities.
  
 
 --------------------------------------------------------------
