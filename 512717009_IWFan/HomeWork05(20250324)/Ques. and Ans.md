@@ -152,7 +152,7 @@ $$
 
 #### CH02 2.14-2.16
 
-<img src="https://github.com/user-attachments/assets/b9d74ece-7cb4-431e-9ac4-cc355265afc4" alt="圖片描述" width="500" height="300" />
+<img src="https://github.com/user-attachments/assets/b9d74ece-7cb4-431e-9ac4-cc355265afc4" alt="圖片描述" width="400" height="250" />
 
 ## Ans:
  
@@ -432,6 +432,6 @@ Market maturation, leading to price normalization.
 
  
 
-![image](https://github.com/user-attachments/assets/8c095558-e03b-401a-a57d-6539e68f036c)
+
 
 
