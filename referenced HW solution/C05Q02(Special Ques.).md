@@ -61,16 +61,6 @@ $$
 
 ---
 
-$$
-\begin{aligned}
-\mathrm{Var}(b_1) &= \sigma^2 \cdot \frac{\sum x_i^2}{n \sum x_i^2 - (\sum x_i)^2} \\
-\mathrm{Cov}(b_1, b_2) &= \sigma^2 \cdot \frac{-\sum x_i}{n \sum x_i^2 - (\sum x_i)^2} \\
-\mathrm{Var}(b_2) &= \sigma^2 \cdot \frac{n}{n \sum x_i^2 - (\sum x_i)^2}
-\end{aligned}
-$$
-
----
-
 ## 3. 乘上 $\sigma^2$：
 
 $$
