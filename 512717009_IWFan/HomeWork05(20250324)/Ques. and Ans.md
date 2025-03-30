@@ -138,7 +138,7 @@ $$
 
 
 ```math
-= \bar{y} - b_2 \bar{x} \tag{2.8}
+b_1 = \bar{y} - b_2 \bar{x} \tag{2.8}
 ```
 
 
