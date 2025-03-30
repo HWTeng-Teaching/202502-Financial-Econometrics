@@ -152,8 +152,7 @@ $$
 
 #### CH02 2.14-2.16
 
-![image](https://github.com/user-attachments/assets/b9d74ece-7cb4-431e-9ac4-cc355265afc4)
-
+<img src="https://github.com/user-attachments/assets/b9d74ece-7cb4-431e-9ac4-cc355265afc4" alt="圖片描述" width="500" height="300" />
 
 ## Ans:
  
@@ -240,15 +239,13 @@ $$
 
 ---
 
-![image](https://github.com/user-attachments/assets/24c712c3-eaf5-4827-8c24-ecec200e389b)
-
+<img src="https://github.com/user-attachments/assets/24c712c3-eaf5-4827-8c24-ecec200e389b" alt="圖片描述" width="500" height="300" />
 
 
 
 ## C5 Q.03
 
-![image](https://github.com/user-attachments/assets/76814a2d-5147-4b9b-aadc-b06d9c0ee5a5)
-
+<img src="https://github.com/user-attachments/assets/76814a2d-5147-4b9b-aadc-b06d9c0ee5a5" alt="圖片描述" width="500" height="300" />
 
 ## ANS:
 
@@ -324,8 +321,7 @@ Interpretation: With 95% confidence, a one-year increase in age reduces alcohol 
 β₂, β₃, β₄ (p < 0.05): Statistically significant
 
 
-![image](https://github.com/user-attachments/assets/0e636bc1-1975-4dee-91af-39f87a65d0dd)
-
+<img src="https://github.com/user-attachments/assets/0e636bc1-1975-4dee-91af-39f87a65d0dd" alt="圖片描述" width="500" height="300" />
 
 --------------------------------------------------------------
 
@@ -353,7 +349,7 @@ Conclusion: Fail to reject H₀. Insufficient evidence to show β₃ ≠ –2.
 
 ## C5 Q.23
 
-![image](https://github.com/user-attachments/assets/0b70c27c-9e3b-42b7-959e-60bdb411b6a7)
+<img src="https://github.com/user-attachments/assets/0b70c27c-9e3b-42b7-959e-60bdb411b6a7" alt="圖片描述" width="500" height="300" />
 
 
 ## Ans:
@@ -370,12 +366,12 @@ Conclusion: Fail to reject H₀. Insufficient evidence to show β₃ ≠ –2.
 
 **(b)**
 
-![image](https://github.com/user-attachments/assets/f66d5f26-01a0-4fa6-a353-c9d5c30eb457)
+<img src="https://github.com/user-attachments/assets/f66d5f26-01a0-4fa6-a353-c9d5c30eb457" alt="圖片描述" width="500" height="300" />
 
 
 PRICE=90.8467−0.0600⋅QUANT+0.1162⋅QUAL−2.3546⋅TREND
 
-![image](https://github.com/user-attachments/assets/af9f5fb8-e8ff-41e6-9f73-3cd73d92872c)
+<img src="https://github.com/user-attachments/assets/af9f5fb8-e8ff-41e6-9f73-3cd73d92872c" alt="圖片描述" width="500" height="300" />
 
 
 Yes — QUANT is negative (quantity discount), QUAL is positive (quality premium), TREND is negative (suggests decreasing prices).
