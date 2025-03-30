@@ -148,7 +148,7 @@ $$
 
 #### CH05 P.30
 
-![image](https://github.com/user-attachments/assets/d85b12e6-7e20-4cf6-8d94-86888eb810d3)
+<img src="https://github.com/user-attachments/assets/d85b12e6-7e20-4cf6-8d94-86888eb810d3" alt="圖片描述" width="500" height="300" />
 
 #### CH02 2.14-2.16
 
