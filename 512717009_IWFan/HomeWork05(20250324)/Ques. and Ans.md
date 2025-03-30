@@ -18,7 +18,7 @@ Q1：當 $K = 2$ 時，推導 $\mathbf{b} = (X'X)^{-1}X'Y$ 的結果為 (2.7) �
 
 1. 設定 $X$, $Y$
 
-$$
+...math
 X = 
 \begin{bmatrix}
 1 & x_1 \\
@@ -32,7 +32,7 @@ y_1 \\
 \vdots \\
 y_n
 \end{bmatrix}_{n \times 1}
-$$
+...math
 
 ---
 
