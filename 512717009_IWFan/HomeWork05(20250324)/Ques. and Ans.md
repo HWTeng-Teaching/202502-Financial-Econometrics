@@ -128,14 +128,13 @@ $$
 
 計算截距項 $b_1$
 
-$$
-$$
+```math
 \begin{aligned}
 b_1 &= \frac{\sum x_i^2 \sum y_i - \sum x_i \sum x_i y_i}{n \sum x_i^2 - (\sum x_i)^2} \\
     &= \frac{n \bar{y} \sum x_i^2 - \sum x_i \sum x_i y_i}{n \sum x_i^2 - (\sum x_i)^2} \\
     &= \bar{y} - b_2 \bar{x} \tag{2.8}
 \end{aligned}
-$$
+```
 
 
 
