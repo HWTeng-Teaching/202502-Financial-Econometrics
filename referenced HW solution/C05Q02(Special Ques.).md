@@ -106,6 +106,7 @@ $$
 \tag{2.16}
 $$
 
+---
 
 ![image](https://github.com/user-attachments/assets/24c712c3-eaf5-4827-8c24-ecec200e389b)
 
