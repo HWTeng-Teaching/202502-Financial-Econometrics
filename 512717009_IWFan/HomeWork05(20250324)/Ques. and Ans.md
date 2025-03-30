@@ -54,7 +54,7 @@ n & \sum x_i \\
 \end{bmatrix}
 ```
 
-$$
+```math
 X'Y = 
 \begin{bmatrix}
 1 & \cdots & 1 \\
@@ -70,7 +70,7 @@ y_n
 \sum y_i \\
 \sum x_i y_i
 \end{bmatrix}
-$$
+```
 
 ---
 
