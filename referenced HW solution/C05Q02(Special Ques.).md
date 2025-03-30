@@ -50,6 +50,25 @@ $$
 \end{bmatrix}
 $$
 
+$$
+\mathrm{Var}(\mathbf{b}) = \sigma^2 (X'X)^{-1} =
+\sigma^2 \cdot \frac{1}{n \sum x_i^2 - (\sum x_i)^2}
+\begin{bmatrix}
+\sum x_i^2 & -\sum x_i \\
+-\sum x_i & n
+\end{bmatrix}
+$$
+
+---
+
+$$
+\begin{aligned}
+\mathrm{Var}(b_1) &= \sigma^2 \cdot \frac{\sum x_i^2}{n \sum x_i^2 - (\sum x_i)^2} \\
+\mathrm{Cov}(b_1, b_2) &= \sigma^2 \cdot \frac{-\sum x_i}{n \sum x_i^2 - (\sum x_i)^2} \\
+\mathrm{Var}(b_2) &= \sigma^2 \cdot \frac{n}{n \sum x_i^2 - (\sum x_i)^2}
+\end{aligned}
+$$
+
 ---
 
 ## 3. 乘上 $\sigma^2$：
