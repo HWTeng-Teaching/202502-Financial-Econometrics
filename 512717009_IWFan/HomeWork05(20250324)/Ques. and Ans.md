@@ -14,11 +14,12 @@
 
 ## Ans:
 
-Q1：當 $K = 2$ 時，推導 $\mathbf{b} = (X'X)^{-1}X'Y$ 的結果為 (2.7) 與 (2.8)
 
-1. 設定 $X$, $Y$
+# Q1：當 $K = 2$ 時，推導 $\mathbf{b} = (X'X)^{-1}X'Y$ 的結果為 (2.7) 與 (2.8)
 
-...math
+## 1. 設定 $X$, $Y$
+
+$$
 X = 
 \begin{bmatrix}
 1 & x_1 \\
@@ -32,115 +33,8 @@ y_1 \\
 \vdots \\
 y_n
 \end{bmatrix}_{n \times 1}
-...math
-
----
-
-2. 代入公式 $\mathbf{b} = (X'X)^{-1}X'Y$
-
-$$
-X'X = 
-\begin{bmatrix}
-1 & \cdots & 1 \\
-x_1 & \cdots & x_n
-\end{bmatrix}
-\begin{bmatrix}
-1 & x_1 \\
-\vdots & \vdots \\
-1 & x_n
-\end{bmatrix}
-=
-\begin{bmatrix}
-n & \sum x_i \\
-\sum x_i & \sum x_i^2
-\end{bmatrix}
 $$
 
-$$
-X'Y = 
-\begin{bmatrix}
-1 & \cdots & 1 \\
-x_1 & \cdots & x_n
-\end{bmatrix}
-\begin{bmatrix}
-y_1 \\
-\vdots \\
-y_n
-\end{bmatrix}
-=
-\begin{bmatrix}
-\sum y_i \\
-\sum x_i y_i
-\end{bmatrix}
-$$
-
----
-
-3. $\mathbf{b} = (X'X)^{-1}X'Y$
-
-$$
-(X'X)^{-1} = 
-\frac{1}{n \sum x_i^2 - (\sum x_i)^2}
-\begin{bmatrix}
-\sum x_i^2 & -\sum x_i \\
--\sum x_i & n
-\end{bmatrix}
-$$
-
----
-
-4. 套上 $X'Y$
-
-$$
-\mathbf{b} = (X'X)^{-1}X'Y =
-\frac{1}{n \sum x_i^2 - (\sum x_i)^2}
-\begin{bmatrix}
-\sum x_i^2 & -\sum x_i \\
--\sum x_i & n
-\end{bmatrix}
-\begin{bmatrix}
-\sum y_i \\
-\sum x_i y_i
-\end{bmatrix}
-$$
-
----
-
-5. 展開後：
-
-### 計算斜率項 $b_2$
-
-$$
-b_2 = \frac{-\sum x_i \sum y_i + n \sum x_i y_i}{n \sum x_i^2 - (\sum x_i)^2}
-$$
-
-代入 $\bar{x} = \frac{1}{n} \sum x_i$, $\bar{y} = \frac{1}{n} \sum y_i$
-
-$$
-= \frac{-n \bar{x} \sum y_i + n \sum x_i y_i}{n \sum x_i^2 - n^2 \bar{x}^2}
-= \frac{n \sum x_i y_i - n^2 \bar{x} \bar{y}}{n \sum x_i^2 - n^2 \bar{x}^2}
-$$
-
-$$
-= \frac{\sum x_i y_i - n \bar{x} \bar{y}}{\sum x_i^2 - n \bar{x}^2}
-= \frac{\sum (x_i - \bar{x})(y_i - \bar{y})}{\sum (x_i - \bar{x})^2} \tag{2.7}
-$$
-
----
-
-計算截距項 $b_1$
-
-$$
-b_1 = \frac{\sum x_i^2 \sum y_i - \sum x_i \sum x_i y_i}{n \sum x_i^2 - (\sum x_i)^2}
-$$
-
-$$
-= \frac{\sum x_i^2 \cdot n \bar{y} - \sum x_i \cdot \sum x_i y_i}{n \sum x_i^2 - (\sum x_i)^2}
-$$
-
-$$
-= \bar{y} - b_2 \bar{x} \tag{2.8}
-$$
 
 
 --------------------------------------------------------------
