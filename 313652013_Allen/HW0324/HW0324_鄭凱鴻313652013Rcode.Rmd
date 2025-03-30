@@ -1,5 +1,5 @@
 ---
-title: "HW0324 - CH4 Questions 3, 23"
+title: "HW0324 - CH4 Questions 23"
 author: "鄭凱鴻"
 date: "2025-03-30"
 ---
