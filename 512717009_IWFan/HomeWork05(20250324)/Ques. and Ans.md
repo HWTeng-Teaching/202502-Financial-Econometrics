@@ -220,10 +220,11 @@ $$
 
 $$
 \begin{aligned}
-\mathrm{Var}(b_2) 
+\mathrm{Var}(b_2)
 &= \sigma^2 \cdot \frac{n}{n \sum x_i^2 - (\sum x_i)^2} \\
-&= \frac{\sigma^2}{\sum (x_i - \bar{x})^2} \tag{2.15}
+&= \frac{\sigma^2}{\sum (x_i - \bar{x})^2}
 \end{aligned}
+\tag{2.15}
 $$
 
 ---
