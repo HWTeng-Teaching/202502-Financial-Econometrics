@@ -409,17 +409,16 @@ t value = -5.892 , one-tailed p value = 1.425e-07
 
 **(e)**
 
-H₀: β₃ = 0 (purity has no effect on price)
+**Set up the Hypothesis:**
+- H₀: β₃ ≤ 0 (no effect of quality on price)
+- H₁: β₃ > 0 (higher quality leads to higher price)
+Result：
+t value = 0.572 , one-tailed p value = 0.284996
 
-H₁: β₃ > 0 (higher purity increases price)
+*The calculated t-value is 0.5717. At α=0.05, we can not reject H0 by the calculated t is less than or equal to 1.675. 
 
-From output:
+& We cannot conclude that a premium is paid for better quality cocaine. 
 
-β₃ = 0.1162, t = 0.572, p = 0.5700
-
-Conclusion: Fail to reject H₀.
-
-There is no significant evidence that cocaine purity affects price in this dataset.  
 
 --------------------------------------------------------------
 
