@@ -36,7 +36,7 @@ y_n
 
 2. 代入公式 $\mathbf{b} = (X'X)^{-1}X'Y$
 
-$$
+```math
 X'X = 
 \begin{bmatrix}
 1 & \cdots & 1 \\
@@ -52,7 +52,7 @@ x_1 & \cdots & x_n
 n & \sum x_i \\
 \sum x_i & \sum x_i^2
 \end{bmatrix}
-$$
+```
 
 $$
 X'Y = 
