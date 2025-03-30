@@ -9,7 +9,8 @@
 
 #### CH02 2.7-2.8
 
-![image](https://github.com/user-attachments/assets/bddf48e5-f129-43ad-8ea5-0d31c0e13b46)
+
+<img src="https://github.com/user-attachments/assets/bddf48e5-f129-43ad-8ea5-0d31c0e13b46" alt="圖片描述" width="500" height="300" />
 
 
 ## Ans:
