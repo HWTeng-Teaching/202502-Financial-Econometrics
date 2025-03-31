@@ -13,6 +13,9 @@ With the exception of the intercept, all coefficient estimates are significantly
 ![image](https://github.com/user-attachments/assets/4bb5ede9-58d5-400e-9ccd-26820ce4a8ec)
 
 ## e.
+<img width="516" alt="image" src="https://github.com/user-attachments/assets/bd63f2fa-6d22-437f-8de9-37b3e7777b4d" />
+
+
 
 ------
 # 5.23
