@@ -20,9 +20,9 @@ b_2 \\
 b_3
 \end{bmatrix} =
 \begin{bmatrix}
-3 & -2 & 1 \\
--2 & 4 & 0 \\
-1 & 0 & 3
+2 \\
+3 \\
+-1
 \end{bmatrix}
 $$
 
