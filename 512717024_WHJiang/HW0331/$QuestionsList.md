@@ -15,9 +15,9 @@ C05Q06
 
 $$
 \begin{bmatrix}
-3 & -2 & 1 \\
--2 & 4 & 0 \\
-1 & 0 & 3
+b_1 \\
+b_2 \\
+b_3
 \end{bmatrix} =
 \begin{bmatrix}
 3 & -2 & 1 \\
