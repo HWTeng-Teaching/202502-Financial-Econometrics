@@ -9,7 +9,9 @@
 ## c.
 
 ## d.
-|係數|顯著與否|
+With the exception of the intercept, all coefficient estimates are significantly different from zero at a 5% level because their p-values are all less than 0.05.   
+![image](https://github.com/user-attachments/assets/4bb5ede9-58d5-400e-9ccd-26820ce4a8ec)
+
 ## e.
 
 ------
