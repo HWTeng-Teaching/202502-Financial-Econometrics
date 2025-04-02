@@ -38,27 +38,11 @@ $$
 樣本數為 63，我們接下來對三個虛無假設進行檢定，使用 5% 顯著水準。
 
 
-## (a) \( H0: β2 = 0 \)
-
-- Estimate: \( b2 = 3 \)
-  
-$$
-\text{Var}(b_2) = 4
-$$
-
-- Test statistic:
+## (a) 
 
 
-$$
-t = \frac{3 - 0}{\sqrt{4}} = \frac{3}{2} = 1.5
-$$
+<img src="https://github.com/user-attachments/assets/bab10ef1-1830-4ba7-a870-ded971ec8896" alt="圖片描述" width="600" height="320" />
 
-- Critical value (two-tailed): \( t_{0.025, 60} \approx 2.000 \)
-
-**Conclusion**:  
-Since \( |t| = 1.5 < 2.000 \), we **fail to reject** \( H0 \)
-
----
 
 ## (b) \( H0: β1 + 2β2 = 5 \)
 
