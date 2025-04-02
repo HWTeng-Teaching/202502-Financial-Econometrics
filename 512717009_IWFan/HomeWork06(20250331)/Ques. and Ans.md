@@ -234,11 +234,11 @@ $$
 
 $$
 \[
-\frac{\partial \ln(WAGE)}{\partial EDUC} = \beta_2 + 2\beta_3 EDUC + \beta_6 EXPER
+\frac{\partial \ln(WAGE)}{\partial EDUC} = \ β2 + 2\ β3 EDUC + \ β6 EXPER
 \]
 $$
 
-教育和經驗同時影響教育的邊際效果。當教育增加時，\( 2\beta_3 EDUC \) 變大；當經驗增加，\( \beta_6 EXPER \) 變大。
+教育和經驗同時影響教育的邊際效果。當教育增加時，\( 2\ β3 EDUC \) 變大；當經驗增加，\( \ β6 EXPER \) 變大。
 
 ---
 
@@ -258,7 +258,7 @@ $$
 
 $$
 \[
-\frac{\partial \ln(WAGE)}{\partial EXPER} = \beta_4 + 2\beta_5 EXPER + \beta_6 EDUC
+\frac{\partial \ln(WAGE)}{\partial EXPER} = \ β4 + 2\ β5 EXPER + \ β6 EDUC
 \]
 $$
 
@@ -315,7 +315,7 @@ David (16y)、Svetlana (26y) 經驗變多後，再計算：
 
 $$
 \[
-ME_W - ME_J = 12\beta_5 - 4\beta_6 = 4(3\beta_5 - \beta_6)
+ME_W - ME_J = 12\ β5 - 4\ β6 = 4(3\ β5 - \ β6)
 \]
 $$
 
@@ -323,7 +323,7 @@ $$
 
 $$
 \[
-H_0: 3\beta_5 - \beta_6 = 0 \quad vs. \quad H_1: \ne 0
+H_0: 3\ β5 - \ β6 = 0 \quad vs. \quad H_1: \ne 0
 \]
 $$
 
@@ -337,7 +337,7 @@ F 檢定結果：p-value < 0.05 ⇒ 拒絕虛無假設，兩人經驗邊際效�
 
 $$
 \[
-ME = \beta_4 + 2\beta_5 EXPER + \beta_6 \cdot 16 = 0
+ME = \ β4 + 2\ β5 EXPER + \ β6 \cdot 16 = 0
 \Rightarrow EXPER^* = -\frac{\beta_4 + 16\beta_6}{2\beta_5}
 \]
 $$
