@@ -42,9 +42,7 @@ $$
 
 - Estimate: \( b2 = 3 \)
   
-$$
-\text{Var}(b_2) = 4
-$$
+Variance: \( \text{Var}(b_2) = 4 \)
 
 - Test statistic:
 
