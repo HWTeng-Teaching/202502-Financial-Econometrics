@@ -1,0 +1,131 @@
+# 設定資料集的 URL
+url <- "https://www.principlesofeconometrics.com/poe5/data/rdata/cps5_small.rdata"
+download.file(url, destfile = "cps5_small.rdata")  # 下載資料集並儲存為本地檔案
+load("cps5_small.rdata")  # 載入資料集
+names(cps5_small)  # 確認變數名稱
+data <- cps5_small  # 讀取數據 (已載入 cps5_small.rdata) 使用簡單變數名稱
+
+library(ggplot2)
+
+
+# 5.33(a)
+# 創建 ln(WAGE), EDUC^2, EXPER^2 和 EDUC*EXPER
+data$ln_wage <- log(data$wage)
+data$educ2 <- data$educ^2
+data$exper2 <- data$exper^2
+data$educ_exper <- data$educ * data$exper
+
+# 估計回歸模型
+model <- lm(ln_wage ~ educ + educ2 + exper + exper2 + educ_exper, data = data)  
+summary(model)    # 查看回歸結果
+
+
+# 5.33(c)
+# 取出估計係數
+beta_2 <- coef(model)["educ"]
+beta_3 <- coef(model)["educ2"]
+beta_6 <- coef(model)["educ_exper"]
+
+# 計算邊際效應
+data$marginal_effect1 <- beta_2 + 2 * beta_3 * data$educ + beta_6 * data$exper
+
+# 繪製直方圖
+ggplot(data, aes(x = marginal_effect1)) +
+  geom_histogram(binwidth = 0.004, fill = "blue", color = "black", alpha = 0.7) +
+  labs(title = "Histogram of Marginal Effects of EDUC on ln(WAGE)",
+       x = "Marginal Effect",
+       y = "Frequency") +
+  theme_minimal()
+
+# 計算統計量
+quantile(data$marginal_effect, probs = c(0.05, 0.5, 0.95))
+
+
+# 5.33(e)
+# 取出估計係數
+beta_4 <- coef(model)["exper"]
+beta_5 <- coef(model)["exper2"]
+
+# 計算邊際效應
+data$marginal_effect2 <- beta_4 + 2 * beta_5 * data$exper + beta_6 * data$educ
+
+# 繪製直方圖
+ggplot(data, aes(x = marginal_effect2)) +
+  geom_histogram(binwidth = 0.002, fill = "blue", color = "black", alpha = 0.7) +
+  labs(title = "Histogram of Marginal Effects of EXPER on ln(WAGE)",
+       x = "Marginal Effect",
+       y = "Frequency") +
+  theme_minimal()
+
+# 計算統計量
+quantile(data$marginal_effect2, probs = c(0.05, 0.5, 0.95))
+
+
+# 5.33(f)
+alpha <- 0.05
+df <- model$df.residual
+tcr1 <- qt(alpha, df)
+
+A1 <- c(0, -1, -33, 10, 260, 152)
+L1 <- as.numeric(t(A1) %*% coef(model))
+se_L1 <- as.numeric(sqrt(t(A1) %*% vcov(model) %*% A1))
+tva_L1 <- L1/se_L1
+cat("t = ", tva_L1, "\n")
+cat("critical value = ", tcr1, "\n")
+
+
+# 5.33(g)
+A2 <- c(0, -1, -33, 10, 420, 144)
+L2 <- as.numeric(t(A2) %*% coef(model))
+se_L2 <- as.numeric(sqrt(t(A2) %*% vcov(model) %*% A2))
+tva_L2 <- L2/se_L2
+cat("t = ", tva_L2, "\n")
+
+
+# 5.33(h)
+alpha <- 0.05
+df <- model$df.residual
+tcr2 <- qt(1-alpha/2, df)
+
+A3 <- c(0, 0, 0, 0, 12, -4)
+L3 <- as.numeric(t(A3) %*% coef(model))
+se_L3 <- as.numeric(sqrt(t(A3) %*% vcov(model) %*% A3))
+tva_L3 <- L3/se_L3
+cat("t = ", tva_L3, "\n")
+cat("critical value = ", tcr2, "\n")
+
+
+# 5.33(i)
+# 計算 g = -(b3 + 16*b4)/(2*b4)
+b4 <- coef(model)[4]  # beta_4
+b5 <- coef(model)[5]  # beta_5
+b6 <- coef(model)[6]  # beta_6
+g <- -(b4 + 16*b6)/(2*b5)
+cat("g:", g, "\n")
+current_exper <- 11
+extra_years <- g - current_exper    # 點估計
+
+# 計算偏導數
+g4 <- -1/(2*b5)  # 對 beta_4
+g5 <- (b4 + 16*b6)/(2*b5^2)  # 對 beta_5
+g6 <- -16/(2*b5)  # 對 beta_6
+
+# 提取協方差
+varb4 <- vcov(model)[4,4]
+varb5 <- vcov(model)[5,5]
+varb6 <- vcov(model)[6,6]
+covb4b5 <- vcov(model)[4,5]
+covb4b6 <- vcov(model)[4,6]
+covb5b6 <- vcov(model)[5,6]
+
+# 計算 Var(g)
+varg <- g4^2*varb4 + g5^2*varb5 + g6^2*varb6 + 2*g4*g5*covb4b5 + 2*g4*g6*covb4b6 + 2*g5*g6*covb5b6
+seg <- sqrt(varg)
+cat("se(g):", seg, "\n")
+
+# 計算 95% 置信區間
+lowbg <- extra_years - tcr2*seg
+upbg <- extra_years + tcr2*seg
+cat("Extra years:", extra_years, " with 95% interval estimates [", lowbg, ", ", upbg, "]\n")
+
+
