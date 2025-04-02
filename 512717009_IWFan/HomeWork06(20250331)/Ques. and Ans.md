@@ -469,26 +469,65 @@ $$
 
 **(h)** 檢定 Wendy vs. Jill 的經驗邊際效果是否相等
 
-- Wendy: educ = 12, exper = 17  
-- Jill: educ = 16, exper = 11
-
-差異公式：
+Wendy：
 
 $$
-\[
-ME_W - ME_J = 12\ β5 - 4\ β6 = 4(3\ β5 - \ β6)
-\]
+\frac{\partial E[\ln(WAGE)]}{\partial EXPER} \bigg|_{EDUC=12,\, EXPER=17}
+= \beta_4 + 2 \cdot 17 \beta_5 + 12 \beta_6
 $$
 
-檢定：
+Jill：
 
 $$
-\[
-H_0: 3\ β5 - \ β6 = 0 \quad vs. \quad H_1: \ne 0
-\]
+\frac{\partial E[\ln(WAGE)]}{\partial EXPER} \bigg|_{EDUC=16,\, EXPER=11}
+= \beta_4 + 2 \cdot 11 \beta_5 + 16 \beta_6
 $$
 
-F 檢定結果：p-value < 0.05 ⇒ 拒絕虛無假設，兩人經驗邊際效果顯著不同。
+使兩者邊際效果相等之條件
+
+令二者邊際效果相等：
+
+$$
+2(17 - 11)\beta_5 + (12 - 16)\beta_6 = 0
+\Rightarrow 12\beta_5 - 4\beta_6 = 0
+$$
+
+檢定虛無與對立假設
+
+$$
+H_0: 12\beta_5 - 4\beta_6 = 0
+\quad vs. \quad
+H_1: 12\beta_5 - 4\beta_6 \ne 0
+$$
+
+拒絕區間：若
+
+$$
+\left| t \right| = \left| \frac{12b_5 - 4b_6}{se(12b_5 - 4b_6)} \right| \geq 1.962
+$$
+
+則拒絕 \( H_0 \)
+
+實際檢定結果
+
+- 計算值：
+- 
+$$
+t = \frac{-0.001575}{0.001533} = -1.027
+$$
+
+- 臨界值（雙尾 5%）：±1.962
+
+因為：
+
+$$
+-1.962 < -1.027 < 1.962
+$$
+
+結論：
+
+我們**無法拒絕虛無假設 \( H_0 \)**  
+→ **沒有證據顯示 Wendy 與 Jill 的經驗邊際效果不同**
 
 ---
 
