@@ -209,14 +209,145 @@ $$
 ## Ans:
 **(a)**
 
-Null and Alternative Hypotheses
+模型形式為：
 
-Null Hypothesis (H₀): β₂ = 0 (GDPB has no effect on MEDALS)
+$$
+\[
+\ln(WAGE) = \beta_1 + \beta_2 EDUC + \beta_3 EDUC^2 + \beta_4 EXPER + \beta_5 EXPER^2 + \beta_6 (EDUC \times EXPER) + e
+\]
+$$
 
-Alternative Hypothesis (H₁): β₂ > 0 (GDPB has a positive effect on MEDALS)
+---
 
---------------------------------------------------------------
+## (a) 係數是否顯著不同於零？
 
-**(b)**
+使用回歸輸出中的 p-value 判斷，每個係數在 1%、5%、10% 顯著水準下是否顯著。範例輸出如下：
+
+- \( \β2 \): p-value = 0.000 → 顯著
+- \( \β3 \): p-value = 0.000 → 顯著
+- \( \β4 \): p-value = 0.000 → 顯著
+- \( \β5 \): p-value = 0.002 → 顯著
+- \( \β6 \): p-value = 0.009 → 顯著
+
+---
+
+## (b) 教育的邊際效果（對 log(WAGE)）
+
+$$
+\[
+\frac{\partial \ln(WAGE)}{\partial EDUC} = \beta_2 + 2\beta_3 EDUC + \beta_6 EXPER
+\]
+$$
+
+教育和經驗同時影響教育的邊際效果。當教育增加時，\( 2\beta_3 EDUC \) 變大；當經驗增加，\( \beta_6 EXPER \) 變大。
+
+---
+
+## (c) 教育邊際效果分布分析
+
+計算每位樣本的教育邊際效果，並畫出直方圖。  
+統計結果：
+- **第 5 百分位**：0.0275
+- **中位數**：0.0376
+- **第 95 百分位**：0.0492
+
+大多數人在教育上的邊際報酬介於 2.8%～5% 間。
+
+---
+
+## (d) 經驗的邊際效果（對 log(WAGE)）
+
+$$
+\[
+\frac{\partial \ln(WAGE)}{\partial EXPER} = \beta_4 + 2\beta_5 EXPER + \beta_6 EDUC
+\]
+$$
+
+邊際效果受經驗平方與教育交乘項影響。
+
+---
+
+## (e) 經驗邊際效果分布分析
+
+- **第 5 百分位**：0.0167
+- **中位數**：0.0289
+- **第 95 百分位**：0.0434
+
+結論：對大多數人而言，增加一年經驗可提升 1.7%～4.3% 工資。
+
+---
+
+## (f) 比較 David (17y 教育、8y 經驗) 與 Svetlana (16y 教育、18y 經驗)
+
+- 設 \( \Delta = \mu_D - \mu_S \)
+- 利用估計係數計算差異，檢定：
+
+$$
+\[
+H_0: \Delta \leq 0 \quad vs. \quad H_1: \Delta > 0
+\]
+$$
+
+結果：
+- 差異 \( \hat{\Delta} = 0.130 \)
+- t = 2.42, p-value = 0.0089
+
+結論：拒絕虛無假設，David 的預期對數工資顯著高於 Svetlana。
+
+---
+
+## (g) 過了 8 年後再比較（教育不變，經驗 +8）
+
+David (16y)、Svetlana (26y) 經驗變多後，再計算：
+
+- 新差異 \( \hat{\Delta} = 0.064 \)
+- t = 1.31, p-value = 0.096
+
+結論：不再顯著拒絕虛無假設，David 與 Svetlana 的工資預期差異不再顯著。
+
+---
+
+## (h) 檢定 Wendy vs. Jill 的經驗邊際效果是否相等
+
+- Wendy: educ = 12, exper = 17  
+- Jill: educ = 16, exper = 11
+
+差異公式：
+
+$$
+\[
+ME_W - ME_J = 12\beta_5 - 4\beta_6 = 4(3\beta_5 - \beta_6)
+\]
+$$
+
+檢定：
+
+$$
+\[
+H_0: 3\beta_5 - \beta_6 = 0 \quad vs. \quad H_1: \ne 0
+\]
+$$
+
+F 檢定結果：p-value < 0.05 ⇒ 拒絕虛無假設，兩人經驗邊際效果顯著不同。
+
+---
+
+## (i) Jill 的經驗邊際效果何時變為負？
+
+邊際效果公式：
+
+$$
+\[
+ME = \beta_4 + 2\beta_5 EXPER + \beta_6 \cdot 16 = 0
+\Rightarrow EXPER^* = -\frac{\beta_4 + 16\beta_6}{2\beta_5}
+\]
+$$
+
+估計結果：
+
+- \( EXPER^* \approx 31.29 \)
+- Jill 現在 11 年經驗，還要約 **20.29 年** 經驗
+- 95% 信賴區間為：[18.31, 22.38] 年
+
 
 
