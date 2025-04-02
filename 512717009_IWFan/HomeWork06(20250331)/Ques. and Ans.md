@@ -19,7 +19,8 @@ b_3
 2 \\
 3 \\
 -1
-\end{bmatrix}, \quad
+\end{bmatrix},
+\quad
 \widehat{\text{Cov}}(b_1, b_2, b_3) =
 \begin{bmatrix}
 3 & -2 & 1 \\
@@ -27,9 +28,6 @@ b_3
 1 & 0 & 3
 \end{bmatrix}
 $$
-
-Sample size: \( n = 63 \), degrees of freedom: \( df = 60 \).  
-Using a 5% significance level (\( \alpha = 0.05 \)), we test the following null hypotheses.
 
 ---
 
