@@ -533,20 +533,65 @@ $$
 
 **(i)** Jill 的經驗邊際效果何時變為負？
 
-邊際效果公式：
+
+邊際效果為：
 
 $$
-\[
-ME = \ β4 + 2\ β5 EXPER + \ β6 \cdot 16 = 0
-\Rightarrow EXPER^* = -\frac{\beta_4 + 16\beta_6}{2\beta_5}
-\]
+ME_{EXPER} = \frac{\partial E[\ln(WAGE)]}{\partial EXPER}
+= \beta_4 + 2\beta_5 \cdot EXPER + \beta_6 \cdot EDUC
 $$
 
-估計結果：
+對於 Jill（EDUC = 16）來說，當邊際效果為 0 時的條件為：
 
-- \( EXPER^* \approx 31.29 \)
-- Jill 現在 11 年經驗，還要約 **20.29 年** 經驗
-- 95% 信賴區間為：[18.31, 22.38] 年
+$$
+\beta_4 + 2\beta_5 \cdot EXPER + 16\beta_6 = 0
+$$
+
+解得：
+
+$$
+EXPER^* = \frac{-\beta_4 + 16\beta_6}{2\beta_5}
+$$
+
+
+點估計與標準誤
+
+代入估計值得到：
+
+$$
+\hat{EXPER}^* = \frac{-b_4 + 16b_6}{2b_5} = 30.677
+$$
+
+Jill 現在已有 11 年經驗，距離邊際效果轉為負值的年數為：
+
+$$
+30.677 - 11 = 19.677 \text{ 年}
+$$
+
+
+標準誤與 Delta Method
+
+用 Delta method 計算其標準誤為：
+
+$$
+se(\hat{EXPER}^*) = 1.8957
+$$
+
+
+95% 信賴區間估計
+
+使用公式：
+
+$$
+\hat{EXPER}^* - 11 \pm 1.962 \cdot se = 19.677 \pm 1.962 \cdot 1.8957
+= [15.96, 23.40]
+$$
+
+
+結論
+
+Jill 還需要大約 **19.68 年** 的經驗，她的邊際效果才會轉為負值。  
+在 95% 信心水準下，該年數區間為 **[15.96 年, 23.40 年]**。
 
 
 
