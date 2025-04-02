@@ -93,22 +93,6 @@ $$
 
 
 
-迴歸模型為：
-
-$$
-\[
-\text{TIME} = \beta_1 + \beta_2 \cdot \text{DEPART} + \beta_3 \cdot \text{REDS} + \beta_4 \cdot \text{TRAINS} + e
-\]
-$$
-
-- `TIME`: 上班所花時間（分鐘）
-- `DEPART`: 出發時間（6:30 AM 後經過的分鐘數）
-- `REDS`: 遇到紅燈數
-- `TRAINS`: 等待火車數
-- 樣本數：249
-
----
-
 **(a)** 估計迴歸模型與係數解釋
 
 $$
