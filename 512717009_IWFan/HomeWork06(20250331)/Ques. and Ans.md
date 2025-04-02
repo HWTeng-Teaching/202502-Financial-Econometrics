@@ -120,9 +120,9 @@ Since \( |t| = 1.5 < 2.000 \), we **fail to reject** \( H_0 \)
 
 | Hypothesis                                | Test Statistic | Critical Value | Conclusion               |
 |-------------------------------------------|----------------|----------------|--------------------------|
-| \( \β2 = 0 \)                             | 1.5            | 2.000          | Fail to reject \( H_0 \) |
-| \( \β1 + 2β = 5 \)                        | ≈ 0.9045       | 2.000          | Fail to reject \( H_0 \) |
-| \( \β1 - β2 + β3 = 4 \)                   | -1.5           | 2.000          | Fail to reject \( H_0 \) |
+| \( β2 = 0 \)                              | 1.5            | 2.000          | Fail to reject \( H0 \)  |
+| \( β1 + 2β = 5 \)                         | ≈ 0.9045       | 2.000          | Fail to reject \( H0 \)  |
+| \( β1 - β2 + β3 = 4 )                     | -1.5           | 2.000          | Fail to reject \( H0 \)  |
 
 > **Note**: All tests are two-tailed with 5% significance level and 60 degrees of freedom.
 
