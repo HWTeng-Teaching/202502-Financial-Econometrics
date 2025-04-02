@@ -113,7 +113,7 @@ $$
 **(b)**  
 
 
-<img src="https://github.com/user-attachments/assets/342447a0-258a-4b89-8e24-49d9a2fc80a1" alt="圖片描述" width="400" height="320" />
+<img src="https://github.com/user-attachments/assets/342447a0-258a-4b89-8e24-49d9a2fc80a1" alt="圖片描述" width="250" height="250" />
 
 
 The 95% confidence intervals for the coefficients are: 
