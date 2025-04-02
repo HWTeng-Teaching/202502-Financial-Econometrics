@@ -4,11 +4,11 @@
 
 ## Ans:
 
-# Problem 5.6 - Hypothesis Testing with Estimated Coefficient Covariance Matrix
+Hypothesis Testing with Estimated Coefficient Covariance Matrix
 
 From a sample of 63 observations, the least squares estimates and the estimated covariance matrix are:
 
-估計值：
+estimated：
 
 $$
 \begin{bmatrix}
@@ -24,7 +24,7 @@ b_3
 \end{bmatrix}
 $$
 
-共變異數矩陣：
+covariance  matrix：
 
 $$
 \widehat{\text{Cov}}(b_1, b_2, b_3) =
