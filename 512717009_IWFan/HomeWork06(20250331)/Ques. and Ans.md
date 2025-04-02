@@ -43,7 +43,8 @@ $$
 
 
 
-<img src="https://github.com/user-attachments/assets/b79006d9-3d31-4e36-a3c3-27cc79fc88d1" alt="圖片描述" width="600" height="320" />
+![image](https://github.com/user-attachments/assets/9456a6fc-ddd8-4161-8e36-4ee29587cf5a)
+
 
 
 ## (c) \( H0: β1 - β2 + β3 = 4 \)
