@@ -252,6 +252,11 @@ $$
 
 大多數人在教育上的邊際報酬介於 2.8%～5% 間。
 
+
+
+<img src="https://github.com/user-attachments/assets/b8d28165-cea4-4037-85b4-b3d7ff69ae88" alt="圖片描述" width="600" height="320" />
+
+
 ---
 
 **(d)** 經驗的邊際效果（對 log(WAGE)）
@@ -264,6 +269,8 @@ $$
 
 邊際效果受經驗平方與教育交乘項影響。
 
+
+
 ---
 
 **(e)** 經驗邊際效果分布分析
@@ -273,6 +280,11 @@ $$
 - **第 95 百分位**：0.0434
 
 結論：對大多數人而言，增加一年經驗可提升 1.7%～4.3% 工資。
+
+
+
+<img src="https://github.com/user-attachments/assets/c4a478b0-877d-47ab-9eb1-8dba63cc20d7" alt="圖片描述" width="600" height="320" />
+
 
 ---
 
