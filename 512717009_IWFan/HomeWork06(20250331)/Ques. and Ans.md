@@ -57,7 +57,7 @@ $$
 
 
 
-<img src="https://github.com/user-attachments/assets/bbdffcb8-a4b7-460b-972b-3741754f8800" alt="圖片描述" width="800" height="800" />
+<img src="https://github.com/user-attachments/assets/bbdffcb8-a4b7-460b-972b-3741754f8800" alt="圖片描述" width="700" height="800" />
 
 
 
