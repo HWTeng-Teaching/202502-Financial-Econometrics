@@ -1,1 +1,54 @@
+# 設定資料集的 URL
+url <- "https://www.principlesofeconometrics.com/poe5/data/rdata/commute5.rdata"
+download.file(url, destfile = "commute5.rdata")  # 下載資料集並儲存為本地檔案
+load("commute5.rdata")  # 載入資料集
+names(commute5)  # 確認變數名稱
+data <- commute5  # 讀取數據 (已載入 commute5.rdata) 使用簡單變數名稱
+
+# 5.31(a)
+model <- lm(time ~ depart + reds + trains, data = commute5)   # 建立線性回歸模型
+summary(model)    # 查看回歸結果
+
+# 5.31(b)
+confint(model, level = 0.95)    # 計算 95% 置信區間
+
+# 5.31(c)
+alpha1 <- 0.05
+df <- model$df.residual
+tcr1 <- qt(alpha1, df)
+b3 <- coef(model)["reds"]
+se_b3 <- sqrt(vcov(model)[3,3])
+t_c <- (b3-2)/se_b3
+cat("t = ", unname(t_c), "\n")
+cat("critical value = ", tcr1, "\n")
+
+# 5.31(d)
+alpha2 <- 0.1
+tcr2 <- qt(1-alpha2/2, df)
+b4 <- coef(model)["trains"]
+se_b4 <- sqrt(vcov(model)[4,4])
+t_d <- (b4-3)/se_b4
+cat("t = ", unname(t_d), "\n")
+cat("critical value = ", tcr2, "\n")
+
+# 5.31(e)
+b2 <- coef(model)["depart"]
+se_b2 <- sqrt(vcov(model)[2,2])
+t_e <- (b2-1/3)/se_b2
+cat("t = ", unname(t_e), "\n")
+cat("critical value = ", tcr1, "\n")
+
+# 5.31(f)
+A1 <- c(0, 0, -3, 1)
+L1 <- as.numeric(t(A1) %*% coef(model))
+se_L1 <- as.numeric(sqrt(t(A1) %*% vcov(model) %*% A1))
+tva_L1 <- L1/se_L1
+cat("t = ", tva_L1, "\n")
+
+# 5.31(g)
+A2 <- c(1, 30, 6, 1)
+L2 <- as.numeric(t(A2) %*% coef(model))
+se_L2 <- as.numeric(sqrt(t(A2) %*% vcov(model) %*% A2))
+tva_L2 <- (L2-45)/se_L2
+cat("t = ", tva_L2, "\n")
 
