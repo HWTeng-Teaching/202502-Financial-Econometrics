@@ -10,7 +10,7 @@ From a sample of 63 observations, the least squares estimates and the estimated 
 
 estimated：
 
-$$
+```math
 \begin{bmatrix}
 b_1 \\
 b_2 \\
@@ -22,7 +22,7 @@ b_3
 3 \\
 -1
 \end{bmatrix}
-$$
+```
 
 covariance  matrix：
 
@@ -37,11 +37,15 @@ $$
 
 樣本數為 63，我們接下來對三個虛無假設進行檢定，使用 5% 顯著水準。
 
+```math
 ## (a) \( H_0: \beta_2 = 0 \)
+```
 
+```math
 - Estimate: \( b_2 = 3 \)
 - Variance: \( \text{Var}(b_2) = 4 \)
 - Test statistic:
+```
 
 $$
 t = \frac{3 - 0}{\sqrt{4}} = \frac{3}{2} = 1.5
