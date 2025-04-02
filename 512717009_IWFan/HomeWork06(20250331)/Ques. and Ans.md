@@ -41,7 +41,9 @@ $$
 ## (a) \( H0: β2 = 0 \)
 
 - Estimate: \( b2 = 3 \)
-- Variance: \( \text{Var}(b2) = 4 \)
+$$
+\text{Var}(b_2) = 4
+$$
 - Test statistic:
 
 
