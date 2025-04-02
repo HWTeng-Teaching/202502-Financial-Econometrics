@@ -231,6 +231,12 @@ $$
 
 ---
 
+
+<img src="https://github.com/user-attachments/assets/a0ed50b2-407e-4d94-b8c7-75b59919a83c" alt="圖片描述" width="600" height="320" />
+
+
+
+
 **(a)**係數是否顯著不同於零？
 
 使用回歸輸出中的 p-value 判斷，每個係數在 1%、5%、10% 顯著水準下是否顯著。範例輸出如下：
