@@ -52,35 +52,17 @@ $$
 
 
 
-## (c) \( H0: β1 - β2 + β3 = 4 \)
+--------------------------------------------------------------
 
-Let:
 
-- \( R = \begin{bmatrix} 1 & -1 & 1 \end{bmatrix} \), \( r = 4 \)
-- Estimated linear combination:
 
-$$
-Rb = 2 - 3 - 1 = -2
-$$
 
-- Variance of linear combination:
+<img src="https://github.com/user-attachments/assets/bbdffcb8-a4b7-460b-972b-3741754f8800" alt="圖片描述" width="600" height="600" />
 
-$$
-\text{Var}(Rb) = R \cdot \text{Cov}(b) \cdot R^\top = 16
-$$
 
-- Test statistic:
 
-$$
-t = \frac{-2 - 4}{\sqrt{16}} = \frac{-6}{4} = -1.5
-$$
 
-- Critical value: \( t_{0.025, 60} \approx 2.000 \)
 
-**Conclusion**:  
-Since \( |t| = 1.5 < 2.000 \), we **fail to reject** \( H0 \)
-
----
 
 ## Summary Table
 
