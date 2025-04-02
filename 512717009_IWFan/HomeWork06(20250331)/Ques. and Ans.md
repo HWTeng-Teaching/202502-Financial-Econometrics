@@ -40,8 +40,6 @@ $$
 
 ## (a) \( H_0: \beta_2 = 0 \)
 
-
-
 - Estimate: \( b_2 = 3 \)
 - Variance: \( \text{Var}(b_2) = 4 \)
 - Test statistic:
@@ -53,7 +51,7 @@ $$
 
 - Critical value (two-tailed): \( t_{0.025, 60} \approx 2.000 \)
 
-✅ **Conclusion**:  
+**Conclusion**:  
 Since \( |t| = 1.5 < 2.000 \), we **fail to reject** \( H_0 \)
 
 ---
@@ -83,7 +81,7 @@ $$
 
 - Critical value: \( t_{0.025, 60} \approx 2.000 \)
 
-✅ **Conclusion**:  
+**Conclusion**:  
 Since \( |t| \approx 0.9045 < 2.000 \), we **fail to reject** \( H_0 \)
 
 ---
@@ -113,12 +111,12 @@ $$
 
 - Critical value: \( t_{0.025, 60} \approx 2.000 \)
 
-✅ **Conclusion**:  
+**Conclusion**:  
 Since \( |t| = 1.5 < 2.000 \), we **fail to reject** \( H_0 \)
 
 ---
 
-## 📊 Summary Table
+## Summary Table
 
 | Hypothesis                                | Test Statistic | Critical Value | Conclusion               |
 |-------------------------------------------|----------------|----------------|--------------------------|
@@ -126,7 +124,7 @@ Since \( |t| = 1.5 < 2.000 \), we **fail to reject** \( H_0 \)
 | \( \beta_1 + 2\beta_2 = 5 \)               | ≈ 0.9045       | 2.000          | Fail to reject \( H_0 \) |
 | \( \beta_1 - \beta_2 + \beta_3 = 4 \)      | -1.5           | 2.000          | Fail to reject \( H_0 \) |
 
-> 📌 **Note**: All tests are two-tailed with 5% significance level and 60 degrees of freedom.
+> **Note**: All tests are two-tailed with 5% significance level and 60 degrees of freedom.
 
 
 
