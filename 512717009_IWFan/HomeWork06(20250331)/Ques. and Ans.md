@@ -38,7 +38,7 @@ $$
 樣本數為 63，我們接下來對三個虛無假設進行檢定，使用 5% 顯著水準。
 
 
-## (a) \( H0: \ β2 = 0 \)
+## (a) \( H0: β2 = 0 \)
 
 - Estimate: \( b_2 = 3 \)
 - Variance: \( \text{Var}(b_2) = 4 \)
@@ -56,7 +56,7 @@ Since \( |t| = 1.5 < 2.000 \), we **fail to reject** \( H_0 \)
 
 ---
 
-## (b) \( H0: \ β1 + 2\ β2 = 5 \)
+## (b) \( H0: β1 + 2β2 = 5 \)
 
 Let:
 
@@ -86,7 +86,7 @@ Since \( |t| \approx 0.9045 < 2.000 \), we **fail to reject** \( H_0 \)
 
 ---
 
-## (c) \( H0: \ β1 - \ β2 + \ β3 = 4 \)
+## (c) \( H0: β1 - β2 + β3 = 4 \)
 
 Let:
 
@@ -121,8 +121,8 @@ Since \( |t| = 1.5 < 2.000 \), we **fail to reject** \( H_0 \)
 | Hypothesis                                | Test Statistic | Critical Value | Conclusion               |
 |-------------------------------------------|----------------|----------------|--------------------------|
 | \( \β2 = 0 \)                             | 1.5            | 2.000          | Fail to reject \( H_0 \) |
-| \( \β1 + 2\β = 5 \)                       | ≈ 0.9045       | 2.000          | Fail to reject \( H_0 \) |
-| \( \β1 - \β2 + \β3 = 4 \)                 | -1.5           | 2.000          | Fail to reject \( H_0 \) |
+| \( \β1 + 2β = 5 \)                        | ≈ 0.9045       | 2.000          | Fail to reject \( H_0 \) |
+| \( \β1 - β2 + β3 = 4 \)                   | -1.5           | 2.000          | Fail to reject \( H_0 \) |
 
 > **Note**: All tests are two-tailed with 5% significance level and 60 degrees of freedom.
 
