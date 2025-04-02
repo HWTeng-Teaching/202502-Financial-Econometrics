@@ -112,6 +112,10 @@ $$
 
 **(b)**  
 
+
+<img src="https://github.com/user-attachments/assets/342447a0-258a-4b89-8e24-49d9a2fc80a1" alt="圖片描述" width="600" height="320" />
+
+
 The 95% confidence intervals for the coefficients are: 
 
  β1 :   b1 ± t(0.975,245)se(b1)=20.8701 ± 1.970 × 1.6758 = (17.57,24.17) 
