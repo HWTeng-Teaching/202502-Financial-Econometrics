@@ -8,6 +8,8 @@ Problem 5.6 - Hypothesis Testing with Estimated Coefficient Covariance Matrix
 
 From a sample of 63 observations, the least squares estimates and the estimated covariance matrix are:
 
+估計值：
+
 $$
 \begin{bmatrix}
 b_1 \\
@@ -19,8 +21,12 @@ b_3
 2 \\
 3 \\
 -1
-\end{bmatrix},
-\quad
+\end{bmatrix}
+$$
+
+共變異數矩陣：
+
+$$
 \widehat{\text{Cov}}(b_1, b_2, b_3) =
 \begin{bmatrix}
 3 & -2 & 1 \\
@@ -29,7 +35,7 @@ b_3
 \end{bmatrix}
 $$
 
----
+樣本數為 63，我們接下來對三個虛無假設進行檢定，使用 5% 顯著水準。
 
 ## (a) \( H_0: \beta_2 = 0 \)
 
