@@ -38,44 +38,13 @@ $$
 樣本數為 63，我們接下來對三個虛無假設進行檢定，使用 5% 顯著水準。
 
 
-## (a) 
-
 
 <img src="https://github.com/user-attachments/assets/bab10ef1-1830-4ba7-a870-ded971ec8896" alt="圖片描述" width="600" height="320" />
 
 
-## (b) \( H0: β1 + 2β2 = 5 \)
 
-Let:
+<img src="https://github.com/user-attachments/assets/6e67a1d4-cd00-4347-9766-0f6e739e5b39" alt="圖片描述" width="600" height="320" />
 
-$$
-R = \begin{bmatrix} 1 & 2 & 0 \end{bmatrix}, \quad r = 5
-$$
-
-- Estimated linear combination:
-
-$$
-Rb = 1(2) + 2(3) = 8
-$$
-
-- Variance of linear combination:
-
-$$
-\text{Var}(Rb) = R \cdot \text{Cov}(b) \cdot R^\top = 11
-$$
-
-- Test statistic:
-
-$$
-t = \frac{8 - 5}{\sqrt{11}} = \frac{3}{\sqrt{11}} \approx 0.9045
-$$
-
-- Critical value: \( t_{0.025, 60} \approx 2.000 \)
-
-**Conclusion**:  
-Since \( |t| \approx 0.9045 < 2.000 \), we **fail to reject** \( H0 \)
-
----
 
 ## (c) \( H0: β1 - β2 + β3 = 4 \)
 
