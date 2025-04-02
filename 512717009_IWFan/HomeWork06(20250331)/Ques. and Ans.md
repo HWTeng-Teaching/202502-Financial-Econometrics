@@ -41,11 +41,11 @@ $$
 ## (a) \( H_0: \beta_2 = 0 \)
 
 
-```math
+
 - Estimate: \( b_2 = 3 \)
 - Variance: \( \text{Var}(b_2) = 4 \)
 - Test statistic:
-```
+
 
 $$
 t = \frac{3 - 0}{\sqrt{4}} = \frac{3}{2} = 1.5
