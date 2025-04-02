@@ -64,9 +64,7 @@ Since \( |t| = 1.5 < 2.000 \), we **fail to reject** \( H0 \)
 
 Let:
 
-$$
 - \( R = \begin{bmatrix} 1 & 2 & 0 \end{bmatrix} \), \( r = 5 \)
-$$
 
 - Estimated linear combination:
 
