@@ -14,13 +14,16 @@ From a sample of 63 observations, the least squares estimates and the estimated 
 
 共變異數矩陣：
 
-Cov(b₁, b₂, b₃) =
-|   3   -2    1 |
-|  -2    4    0 |
-|   1    0    3 |
+$$
+\widehat{\text{Cov}}(b_1, b_2, b_3) =
+\begin{bmatrix}
+3 & -2 & 1 \\
+-2 & 4 & 0 \\
+1 & 0 & 3
+\end{bmatrix}
+$$
 
 樣本數為 63，我們接下來對三個虛無假設進行檢定，使用 5% 顯著水準。
-
 
 ## (a) \( H_0: \beta_2 = 0 \)
 
