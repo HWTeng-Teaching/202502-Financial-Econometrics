@@ -27,7 +27,7 @@ b_3
 covariance  matrix：
 
 $$
-\widehat{\text{Cov}}(b_1, b_2, b_3) =
+\widehat{\text{Cov}}(b1, b2, b3) =
 \begin{bmatrix}
 3 & -2 & 1 \\
 -2 & 4 & 0 \\
@@ -40,8 +40,8 @@ $$
 
 ## (a) \( H0: β2 = 0 \)
 
-- Estimate: \( b_2 = 3 \)
-- Variance: \( \text{Var}(b_2) = 4 \)
+- Estimate: \( b2 = 3 \)
+- Variance: \( \text{Var}(b2) = 4 \)
 - Test statistic:
 
 
@@ -52,7 +52,7 @@ $$
 - Critical value (two-tailed): \( t_{0.025, 60} \approx 2.000 \)
 
 **Conclusion**:  
-Since \( |t| = 1.5 < 2.000 \), we **fail to reject** \( H_0 \)
+Since \( |t| = 1.5 < 2.000 \), we **fail to reject** \( H0 \)
 
 ---
 
