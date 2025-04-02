@@ -1,7 +1,6 @@
 ## Q.06
 
-![C05Q06](https://github.com/user-attachments/assets/7ce8ceae-e277-4aed-9209-8ddd3a09b0b0)
-
+<img src="https://github.com/user-attachments/assets/7ce8ceae-e277-4aed-9209-8ddd3a09b0b0" alt="圖片描述" width="500" height="300" />
 
 ## Ans:
 **(a)**
