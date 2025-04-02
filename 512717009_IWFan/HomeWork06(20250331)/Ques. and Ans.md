@@ -4,13 +4,25 @@
 
 ## Ans:
 
-Problem 5.6 - Hypothesis Testing with Estimated Coefficient Covariance Matrix
+# Problem 5.6 - Hypothesis Testing with Estimated Coefficient Covariance Matrix
 
 From a sample of 63 observations, the least squares estimates and the estimated covariance matrix are:
 
 估計值：
 
-[b₁, b₂, b₃]' = [2, 3, -1]
+$$
+\begin{bmatrix}
+b_1 \\
+b_2 \\
+b_3
+\end{bmatrix}
+=
+\begin{bmatrix}
+2 \\
+3 \\
+-1
+\end{bmatrix}
+$$
 
 共變異數矩陣：
 
@@ -109,8 +121,6 @@ Since \( |t| = 1.5 < 2.000 \), we **fail to reject** \( H_0 \)
 | \( \beta_2 = 0 \)                          | 1.5            | 2.000          | Fail to reject \( H_0 \) |
 | \( \beta_1 + 2\beta_2 = 5 \)               | ≈ 0.9045       | 2.000          | Fail to reject \( H_0 \) |
 | \( \beta_1 - \beta_2 + \beta_3 = 4 \)      | -1.5           | 2.000          | Fail to reject \( H_0 \) |
-
----
 
 > 📌 **Note**: All tests are two-tailed with 5% significance level and 60 degrees of freedom.
 
