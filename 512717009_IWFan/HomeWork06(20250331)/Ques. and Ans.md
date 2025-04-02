@@ -82,7 +82,7 @@ $$
 - Critical value: \( t_{0.025, 60} \approx 2.000 \)
 
 **Conclusion**:  
-Since \( |t| \approx 0.9045 < 2.000 \), we **fail to reject** \( H_0 \)
+Since \( |t| \approx 0.9045 < 2.000 \), we **fail to reject** \( H0 \)
 
 ---
 
@@ -112,7 +112,7 @@ $$
 - Critical value: \( t_{0.025, 60} \approx 2.000 \)
 
 **Conclusion**:  
-Since \( |t| = 1.5 < 2.000 \), we **fail to reject** \( H_0 \)
+Since \( |t| = 1.5 < 2.000 \), we **fail to reject** \( H0 \)
 
 ---
 
