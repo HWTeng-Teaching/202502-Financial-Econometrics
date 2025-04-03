@@ -42,7 +42,7 @@ $b_2 = \frac{\sum (x - \bar{x})(y - \bar{y})}{\sum (x - \bar{x})^2} = \frac{8}{1
 
 The intercept is:
 
- $b_1 = \bar{y} - b_1 \bar{x} = 2 - (0.8 \times 1) = 2 - 0.8 = 1.2$
+ $b_1 = \bar{y} - b_2 \bar{x} = 2 - (0.8 \times 1) = 2 - 0.8 = 1.2$
 
 Thus, the regression equation is:
 
