@@ -623,3 +623,12 @@ Jill 還需要大約 **19.68 年** 的經驗，她的邊際效果才會轉為負
 
 
 
+
+<img src="https://github.com/user-attachments/assets/c27dd0ff-b357-4dd1-a03a-38a78effc38c" alt="圖片描述" width="500" height="350" />
+
+
+
+
+
+
+
