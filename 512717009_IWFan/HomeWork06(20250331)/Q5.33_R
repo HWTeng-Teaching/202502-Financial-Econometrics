@@ -114,3 +114,14 @@ cat("95% CI for exper*:", CI, "\n")
 CI_additional <- CI - 11
 cat("95% CI for additional years for Jill:", CI_additional, "\n")
 
+ggplot(data, aes(x = marginal_educ, y = marginal_exper)) +
+  geom_point(alpha = 0.5, color = "#8e44ad") +
+  labs(
+    title = "教育與經驗的邊際效果交互關係",
+    x = "教育邊際效果",
+    y = "經驗邊際效果"
+  ) +
+  theme_light()
+
+
+
