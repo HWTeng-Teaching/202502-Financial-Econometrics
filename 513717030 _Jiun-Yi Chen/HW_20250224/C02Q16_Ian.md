@@ -126,6 +126,14 @@ Based on my observation, most of estimates of the α j are close to zero and are
 
 ** d
 ```
+# 從 GitHub 安裝 POE5Rdata 套件
+install.packages("remotes")
+remotes::install_github("ccolonescu/POE5Rdata")
+library(POE5Rdata)
+data(capm5)
+df <- capm5
+str(df)
+
 # Install ggplot2
 if (!require(ggplot2)) install.packages("ggplot2")
 library(ggplot2)
@@ -160,15 +168,22 @@ print(beta_comparison)
 # 計算 beta 變化程度
 beta_comparison$Beta_Change <- beta_comparison$Beta_No_Intercept - beta_comparison$Beta_With_Intercept
 
-# 繪製 Beta 變化比較圖
-ggplot(beta_comparison, aes(x = Company)) +
-  geom_bar(aes(y = Beta_With_Intercept, fill = "With Intercept"), stat = "identity", position = "dodge") +
-  geom_bar(aes(y = Beta_No_Intercept, fill = "No Intercept"), stat = "identity", position = "dodge") +
-  scale_fill_manual(values = c("With Intercept" = "goldenrod", "No Intercept" = "steelblue1")) +
+##nnnnn
+# 重新計算 Beta 差異：取絕對值，並保留 4 位小數，不進位
+beta_comparison$Beta_Change <- abs(beta_comparison$Beta_No_Intercept - beta_comparison$Beta_With_Intercept)
+beta_comparison$Beta_Change <- floor(beta_comparison$Beta_Change * 10000) / 10000  # 不進位，保留4位
+
+# 畫出 Beta 差異的柱狀圖
+ggplot(beta_comparison, aes(x = Company, y = Beta_Change, fill = Company)) +
+  geom_bar(stat = "identity") +
+  geom_text(aes(label = sprintf("%.4f", Beta_Change)), vjust = -0.5, size = 4) +
+  labs(
+    title = "各家公司 Beta 差異（|無截距 - 有截距|）",
+    x = "公司",
+    y = "Beta 差異值"
+  ) +
   theme_minimal() +
-  labs(title = "Comparison of Beta Estimates (With versus. Without Intercept)",
-       y = "Beta Value", x = "Company") +
-  geom_text(aes(y = Beta_With_Intercept, label = round(Beta_With_Intercept, 2)), vjust = -0.5, color = "goldenrod") +
-  geom_text(aes(y = Beta_No_Intercept, label = round(Beta_No_Intercept, 2)), vjust = 1, color = "steelblue1")
+  theme(legend.position = "none")
 ```
-![C02Q16 D picture](https://github.com/user-attachments/assets/f5da05e0-6c43-4b47-9fd2-c9aa7c2bf33c)
+![Rplot01](https://github.com/user-attachments/assets/b7410f6b-ffae-48e7-9aca-09045d81f826)
+
