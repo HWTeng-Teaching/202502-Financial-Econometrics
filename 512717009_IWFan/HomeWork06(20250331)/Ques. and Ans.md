@@ -140,7 +140,7 @@ The 95% confidence intervals for the coefficients are:
 結論： -2.584 ＜ -1.651，拒絕H0，每個紅燈的預期延遲時間少於2分鐘。
 
 
-<img src="https://github.com/user-attachments/assets/4325d09a-a1ea-4867-8204-2db9b38f0aa6" alt="圖片描述" width="250" height="150" />
+<img src="https://github.com/user-attachments/assets/4325d09a-a1ea-4867-8204-2db9b38f0aa6" alt="圖片描述" width="500" height="350" />
 
 
 ---
@@ -160,7 +160,7 @@ The 95% confidence intervals for the coefficients are:
 
 
 
-<img src="https://github.com/user-attachments/assets/1dab1c78-83e9-4650-9d45-ca595b2035ed" alt="圖片描述" width="250" height="150" />
+<img src="https://github.com/user-attachments/assets/1dab1c78-83e9-4650-9d45-ca595b2035ed" alt="圖片描述" width="500" height="350" />
 
 
 ---
@@ -177,7 +177,7 @@ p-value = 0.8394291
 
 
 
-<img src="https://github.com/user-attachments/assets/6e3547d1-7b6d-4bd0-8e4a-aa61af4115da" alt="圖片描述" width="250" height="150" />
+<img src="https://github.com/user-attachments/assets/6e3547d1-7b6d-4bd0-8e4a-aa61af4115da" alt="圖片描述" width="500" height="350" />
 
 
 
@@ -199,7 +199,7 @@ se(3b3-b4)= √ 9×var(b3)+var(b4)-2×3×cov(b2,b3)
 
 
 
-<img src="https://github.com/user-attachments/assets/d42627c4-8094-43d6-bf33-e194e58f37ee" alt="圖片描述" width="250" height="150" />
+<img src="https://github.com/user-attachments/assets/d42627c4-8094-43d6-bf33-e194e58f37ee" alt="圖片描述" width="500" height="350" />
 
 
 ---
@@ -222,7 +222,7 @@ se(3b3-b4)= √ 9×var(b3)+var(b4)-2×3×cov(b2,b3)
 
 
 
-<img src="https://github.com/user-attachments/assets/59d59aae-33d0-4d3d-a655-5f6a02a84719" alt="圖片描述" width="250" height="150" />
+<img src="https://github.com/user-attachments/assets/59d59aae-33d0-4d3d-a655-5f6a02a84719" alt="圖片描述" width="500" height="350" />
 
 
 
