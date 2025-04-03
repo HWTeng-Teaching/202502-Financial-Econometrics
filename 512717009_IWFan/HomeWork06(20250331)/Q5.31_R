@@ -40,6 +40,17 @@ p_value_red <- pnorm(t_stat_red)
 
 cat("檢定 (c) - 紅燈延遲：t = ", t_stat_red, ", p = ", p_value_red, "\n")
 
+ggplot(data, aes(x = reds, y = time)) +
+  geom_point(color = "#2c3e50", alpha = 0.7) +
+  geom_smooth(method = "lm", se = TRUE, color = "#e74c3c") +
+  labs(
+    title = "紅燈數與通勤時間的關係",
+    x = "紅燈數 (reds)",
+    y = "通勤時間 (minutes)"
+  ) +
+  theme_minimal()
+
+
 # (d) 檢定火車延遲是否 = 3 分鐘（雙尾檢定，10% 顯著水準） ----
 # H0: β4 = 3；H1: β4 ≠ 3
 beta4 <- coef(model)["trains"]
@@ -49,6 +60,18 @@ t_stat_train <- (beta4 - 3) / se_beta4
 p_value_train <- 2 * (1 - pnorm(abs(t_stat_train)))
 
 cat("檢定 (d) - 火車延遲：t = ", t_stat_train, ", p = ", p_value_train, "\n")
+
+ggplot(data, aes(x = trains, y = time)) +
+  geom_jitter(width = 0.2, height = 0, color = "#2980b9", alpha = 0.6) +
+  geom_smooth(method = "lm", se = TRUE, color = "#f39c12") +
+  labs(
+    title = "火車數與通勤時間的關係",
+    x = "火車次數 (trains)",
+    y = "通勤時間 (minutes)"
+  ) +
+  theme_light()
+
+
 
 # (e) 檢定出發時間是否影響時間差異 10 分鐘 ----
 # depart = 30 與 depart = 60 相差 30 分鐘，預期差異 Δtime = 30β2
@@ -61,6 +84,19 @@ p_value_depart <- pnorm(t_stat_depart)
 
 cat("檢定 (e) - 出發時間影響：t = ", t_stat_depart, ", p = ", p_value_depart, "\n")
 
+
+ggplot(data, aes(x = depart, y = time)) +
+  geom_point(alpha = 0.6, color = "#16a085") +
+  geom_smooth(method = "lm", se = TRUE, color = "#c0392b") +
+  labs(
+    title = "出發時間與通勤時間的關係",
+    x = "出發時間（距離 6:30 AM 的分鐘數）",
+    y = "通勤時間 (minutes)"
+  ) +
+  theme_classic()
+
+
+
 # (f) 檢定火車延遲是否為紅燈延遲的三倍以上 ----
 # H0: β4 >= 3β3；H1: β4 < 3β3（檢定 β4 - 3β3 < 0）
 lh_test <- linearHypothesis(
@@ -69,6 +105,18 @@ lh_test <- linearHypothesis(
   test = "F"
 )
 print(lh_test)
+
+ggplot(data, aes(x = trains, y = time)) +
+  geom_jitter(width = 0.2, height = 0, color = "#2980b9", alpha = 0.6) +
+  geom_smooth(method = "lm", se = TRUE, color = "#f39c12") +
+  labs(
+    title = "火車數與通勤時間的關係",
+    x = "火車次數 (trains)",
+    y = "通勤時間 (minutes)"
+  ) +
+  theme_light()
+
+
 
 # (g) 檢定是否能在 7:45 前到達 ----
 # depart = 30，reds = 6，trains = 1
@@ -86,6 +134,20 @@ cat("檢定 (g) - 準時到達：估計時間 = ", est_time,
     ", t = ", t_stat_time,
     ", p = ", p_value_time, "\n")
 
+data$predicted <- predict(model)
+
+ggplot(data, aes(x = predicted, y = time)) +
+  geom_point(alpha = 0.6, color = "#8e44ad") +
+  geom_abline(slope = 1, intercept = 0, linetype = "dashed", color = "gray50") +
+  labs(
+    title = "模型預測值與實際值比較",
+    x = "預測通勤時間",
+    y = "實際通勤時間"
+  ) +
+  theme_minimal()
+
 # (h) 討論：若必須保證準時，假設應反轉 ----
 # H0: 可能遲到（E(time|X) > 45） vs. H1: 能準時（E(time|X) <= 45）
+cat("檢定 (h) - 若 Bill 必須準時，應反轉假設設定，並重新評估 Type I / II 錯誤的意義。\n")
+
 cat("檢定 (h) - 若 Bill 必須準時，應反轉假設設定，並重新評估 Type I / II 錯誤的意義。\n")
