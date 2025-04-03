@@ -1,75 +1,91 @@
 
 
-# 載入資料
+# 載入套件 ----
+# 初次使用時需先安裝以下套件：
+# install.packages("devtools")
+# devtools::install_github("ccolonescu/POE5Rdata")
+# install.packages(c("dplyr", "ggplot2", "car", "msm"))
+
+library(devtools)
+library(POE5Rdata)
+library(dplyr)
+library(ggplot2)
+library(car)    # 提供 linearHypothesis 檢定
+library(msm)    # 提供 deltamethod 函數 (本題未用到)
+
+# 載入資料 ----
 data <- commute5
 
-### 檢查資料結構 ###
-#str(data)
-#summary(data)
+# 資料簡要檢查 ----
 head(data)
 tail(data)
 nrow(data)
 
-# (a) 估計模型
-# 模型： time = β1 + β2*depart + β3*reds + β4*trains + e
+# (a) 建立迴歸模型 ----
+# time = β1 + β2 * depart + β3 * reds + β4 * trains + e
 model <- lm(time ~ depart + reds + trains, data = data)
 summary(model)
 
-# (b) 計算各係數的 95% 信賴區間
+# (b) 各係數的 95% 信賴區間 ----
 ci <- confint(model)
 print(ci)
-# 若信賴區間較窄，代表估計較精確；反之則估計不精確。
 
-# (c) 檢定每個紅燈的預期延遲是否小於 2 分鐘
-# H0: β3 >= 2  vs.  H1: β3 < 2 (左尾檢定)
+# (c) 檢定紅燈延遲是否 < 2 分鐘 ----
+# H0: β3 >= 2；H1: β3 < 2（左尾檢定）
 beta3 <- coef(model)["reds"]
 se_beta3 <- summary(model)$coefficients["reds", "Std. Error"]
-t_stat_red <- (beta3 - 2) / se_beta3
-p_value_red <- pnorm(t_stat_red)  # 左尾檢定 p-value
-cat("檢定 (c) - 紅燈延遲：t-stat =", t_stat_red, "p-value =", p_value_red, "\n")
-# 若 p-value < 0.05，則拒絕虛無假設。
 
-# (d) 檢定火車延遲是否等於 3 分鐘 (雙尾檢定，顯著水準 10%)
-# H0: β4 = 3  vs.  H1: β4 ≠ 3
+t_stat_red <- (beta3 - 2) / se_beta3
+p_value_red <- pnorm(t_stat_red)
+
+cat("檢定 (c) - 紅燈延遲：t = ", t_stat_red, ", p = ", p_value_red, "\n")
+
+# (d) 檢定火車延遲是否 = 3 分鐘（雙尾檢定，10% 顯著水準） ----
+# H0: β4 = 3；H1: β4 ≠ 3
 beta4 <- coef(model)["trains"]
 se_beta4 <- summary(model)$coefficients["trains", "Std. Error"]
-t_stat_train <- (beta4 - 3) / se_beta4
-p_value_train <- 2 * (1 - pnorm(abs(t_stat_train)))  # 雙尾檢定 p-value
-cat("檢定 (d) - 火車延遲：t-stat =", t_stat_train, "p-value =", p_value_train, "\n")
-# 比較 p_value_train 與 0.10
 
-# (e) 檢定出發時間對行程時間的影響
-# Bill 若在 7:00 AM 出發則 depart = 30 (6:30 AM 後 30 分鐘)，7:30 AM 為 depart = 60，
-# 預期差異 Δtime = 30β2
-# H0: 30β2 >= 10  (即 β2 >= 10/30 = 0.3333) vs. H1: 30β2 < 10  (β2 < 0.3333)
+t_stat_train <- (beta4 - 3) / se_beta4
+p_value_train <- 2 * (1 - pnorm(abs(t_stat_train)))
+
+cat("檢定 (d) - 火車延遲：t = ", t_stat_train, ", p = ", p_value_train, "\n")
+
+# (e) 檢定出發時間是否影響時間差異 10 分鐘 ----
+# depart = 30 與 depart = 60 相差 30 分鐘，預期差異 Δtime = 30β2
+# H0: β2 >= 0.3333；H1: β2 < 0.3333（左尾檢定）
 beta2 <- coef(model)["depart"]
 se_beta2 <- summary(model)$coefficients["depart", "Std. Error"]
+
 t_stat_depart <- (beta2 - 0.3333) / se_beta2
-p_value_depart <- pnorm(t_stat_depart)  # 左尾檢定 p-value
-cat("檢定 (e) - 出發時間影響：t-stat =", t_stat_depart, "p-value =", p_value_depart, "\n")
+p_value_depart <- pnorm(t_stat_depart)
 
-# (f) 檢定火車延遲是否至少為紅燈延遲的三倍
-# H0: β4 >= 3β3  vs.  H1: β4 < 3β3  等價於檢定 (β4 - 3β3) >= 0
-# 利用 linearHypothesis 進行檢定：
-lh_test <- linearHypothesis(model, hypothesis.matrix = "trains - 3*reds = 0", test = "F")
+cat("檢定 (e) - 出發時間影響：t = ", t_stat_depart, ", p = ", p_value_depart, "\n")
+
+# (f) 檢定火車延遲是否為紅燈延遲的三倍以上 ----
+# H0: β4 >= 3β3；H1: β4 < 3β3（檢定 β4 - 3β3 < 0）
+lh_test <- linearHypothesis(
+  model,
+  hypothesis.matrix = "trains - 3*reds = 0",
+  test = "F"
+)
 print(lh_test)
-# 注意檢定結果中可檢視是否拒絕虛無假設 (若 p-value < 0.05，則支持對立假設)
 
-# (g) 檢定 7:00 AM 出發 (depart = 30) 且遇 6 紅燈與 1 火車是否能在 7:45 AM 前到達
-# 此時 E(time|X) = β1 + β2*30 + β3*6 + β4*1
-L <- c(1, 30, 6, 1)  # 對應 (Intercept, depart, reds, trains)
+# (g) 檢定是否能在 7:45 前到達 ----
+# depart = 30，reds = 6，trains = 1
+L <- c(1, 30, 6, 1)  # 對應 Intercept, depart, reds, trains
 est_time <- sum(coef(model) * L)
 cov_mat <- vcov(model)
 se_time <- sqrt(t(L) %*% cov_mat %*% L)
-# H0: E(time|X) <= 45 vs. H1: E(time|X) > 45 (右尾檢定)
+
+# H0: E(time|X) <= 45；H1: E(time|X) > 45（右尾檢定）
 t_stat_time <- (est_time - 45) / se_time
 p_value_time <- 1 - pnorm(t_stat_time)
-cat("檢定 (g) - 準時到達：估計時間 =", est_time, "SE =", se_time,
-    "t-stat =", t_stat_time, "p-value =", p_value_time, "\n")
 
-# (h) 討論：若 Bill 必須確保不遲到 7:45 AM，
-# 則目前 (g) 部分的假設設定（H0: E(time|X) <= 45 vs. H1: E(time|X) > 45）可能不完全符合決策目標。
-# 若必須確保準時，理想上應設定：
-# H0: E(time|X) > 45 (存在遲到風險) vs. H1: E(time|X) <= 45 (確保準時)。
-# 反轉假設會改變檢定中 Type I 與 Type II 錯誤的意涵，需依決策風險重新設定檢定架構。
-cat("檢定 (h) - 若 Bill 必須準時，則虛無與對立假設應反轉，並改變檢定焦點。\n")
+cat("檢定 (g) - 準時到達：估計時間 = ", est_time,
+    ", SE = ", se_time,
+    ", t = ", t_stat_time,
+    ", p = ", p_value_time, "\n")
+
+# (h) 討論：若必須保證準時，假設應反轉 ----
+# H0: 可能遲到（E(time|X) > 45） vs. H1: 能準時（E(time|X) <= 45）
+cat("檢定 (h) - 若 Bill 必須準時，應反轉假設設定，並重新評估 Type I / II 錯誤的意義。\n")
