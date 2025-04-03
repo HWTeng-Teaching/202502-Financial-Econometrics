@@ -38,15 +38,15 @@ $\sum (x - \bar{x})(y - \bar{y}) = 4 + 0 + 0 + 2 + 2 = 8$
 
 The slope of the regression line is:
 
-$b_1 = \frac{\sum (x - \bar{x})(y - \bar{y})}{\sum (x - \bar{x})^2} = \frac{8}{10} = 0.8$
+$b_2 = \frac{\sum (x - \bar{x})(y - \bar{y})}{\sum (x - \bar{x})^2} = \frac{8}{10} = 0.8$
 
 The intercept is:
 
- $b_2 = \bar{y} - b_1 \bar{x} = 2 - (0.8 \times 1) = 2 - 0.8 = 1.2$
+ $b_1 = \bar{y} - b_2 \bar{x} = 2 - (0.8 \times 1) = 2 - 0.8 = 1.2$
 
 Thus, the regression equation is:
 
-$\hat{y} = 0.8x + 1.2$
+$\hat{y} = 1.2x + 0.8$
 
 ## (d)
 ## Step 4: Compute Fitted Values of y

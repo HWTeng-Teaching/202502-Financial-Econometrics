@@ -1,0 +1,59 @@
+#5.23 (b)
+data("cocaine")
+names(cocaine)
+model <- lm(price ~ quant + qual + trend, data = cocaine)
+summary(model)
+
+#5.23 (c)
+summary(model)$r.squared
+
+#5.23 (d)
+alpha <- 0.05
+df <- nrow(cocaine) - length(coef(model)) 
+critical_value <- qt(1 - alpha, df)  # 單尾檢定
+
+cat("臨界值 (Critical Value):", critical_value, "\n")
+
+# 提取 t 統計量和 p 值
+t_stat <- summary(model)$coefficients[2, 3]  # quant 的 t 統計量
+p_value <- summary(model)$coefficients[2, 4]  # quant 的 p 值
+
+cat("t 統計量:", t_stat, "\n")
+cat("p 值:", p_value, "\n")
+
+# 判斷是否拒絕零假設
+if (p_value < alpha) {
+  cat("拒絕零假設 H0，支持 H1：隨著銷售量增加，價格會下降。\n")
+} else {
+  cat("無法拒絕零假設 H0，沒有足夠證據表明銷售量增加會降低價格。\n")
+}
+
+# 5.23 (e)
+model <- lm(price ~ quant + qual + trend, data = cocaine)
+summary(model)
+
+# 提取 t 統計量和 p 值
+t_stat <- summary(model)$coefficients[3, 3]  # qual 的 t 統計量
+p_value <- summary(model)$coefficients[3, 4]  # qual 的 p 值
+
+cat("t 統計量:", t_stat, "\n")
+cat("p 值:", p_value, "\n")
+
+# 判斷是否拒絕零假設
+if (p_value < 0.05) {
+  cat("拒絕零假設 H0，支持 H1：可卡因品質對價格有顯著影響。\n")
+} else {
+  cat("無法拒絕零假設 H0，無足夠證據表明可卡因品質對價格有顯著影響。\n")
+}
+
+#5.23 (f)
+model <- lm(price ~ quant + qual + trend, data = cocaine)
+
+# 顯示回歸結果
+summary(model)
+
+# 提取 TREND 變數的係數 (即每年的價格變動)
+beta_trend <- coef(model)["trend"]
+
+# 顯示每年價格變動
+cat("每年價格變動量:", beta_trend, "\n")
