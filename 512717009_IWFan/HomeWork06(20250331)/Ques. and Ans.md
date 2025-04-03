@@ -139,7 +139,13 @@ The 95% confidence intervals for the coefficients are:
 
 結論： -2.584 ＜ -1.651，拒絕H0，每個紅燈的預期延遲時間少於2分鐘。
 
+
+<img src="https://github.com/user-attachments/assets/4325d09a-a1ea-4867-8204-2db9b38f0aa6" alt="圖片描述" width="250" height="150" />
+
+
 ---
+
+
 
 **(d)**  火車延遲是否不等於 3 分鐘？(雙尾檢定，顯著水準 10%)
 
@@ -152,6 +158,11 @@ The 95% confidence intervals for the coefficients are:
 
 結論： -1.651＜0.037＜1.651，無法拒絕H0，每列火車的預期延誤時間為 3 分鐘的假設一致。
 
+
+
+<img src="https://github.com/user-attachments/assets/1dab1c78-83e9-4650-9d45-ca595b2035ed" alt="圖片描述" width="250" height="150" />
+
+
 ---
 
 **(e)**  7:30 出發是否會多花至少 10 分鐘？(左尾檢定)
@@ -163,6 +174,12 @@ The 95% confidence intervals for the coefficients are:
 p-value = 0.8394291 
 
 結論： 0.991 > -1.651 , 無法拒絕H0，延遲出發時間 30 分鐘會導致預期旅行時間至少增加 10 分鐘。
+
+
+
+<img src="https://github.com/user-attachments/assets/6e3547d1-7b6d-4bd0-8e4a-aa61af4115da" alt="圖片描述" width="250" height="150" />
+
+
 
 ---
 
@@ -179,6 +196,11 @@ se(3b3-b4)= √ 9×var(b3)+var(b4)-2×3×cov(b2,b3)
           =0.8450
 
 結論：-1.825＜-1.651  , 拒絕H0，火車的預期延誤小於紅燈延誤的三倍。
+
+
+
+<img src="https://github.com/user-attachments/assets/d42627c4-8094-43d6-bf33-e194e58f37ee" alt="圖片描述" width="250" height="150" />
+
 
 ---
 
@@ -197,6 +219,12 @@ se(3b3-b4)= √ 9×var(b3)+var(b4)-2×3×cov(b2,b3)
    p-value = 0.957823
   
 結論：-1.726＜-1.651  , 無法拒絕H0 ，因為 p-value = Pr(t (245))＞ -1.726) = 0.9572，大於 0.05。沒有足夠的證據證明 Bill 會在 7:45 AM 之後到達大學。
+
+
+
+<img src="https://github.com/user-attachments/assets/59d59aae-33d0-4d3d-a655-5f6a02a84719" alt="圖片描述" width="250" height="150" />
+
+
 
 ---
 
