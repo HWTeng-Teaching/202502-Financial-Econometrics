@@ -122,7 +122,7 @@ ggplot(capm5, aes(x = Market_Excess, y = Stock_Excess)) +
 ```
 ![C02Q16 C  picture](https://github.com/user-attachments/assets/623907e0-06d8-4a37-9302-2e7b56b9db96)
 
-All estimates of the α j are close to zero and are therefore consistent with finance theory. The fitted regression line and data scatter for Microsoft are plotted as below.
+Based on my observation, most of estimates of the α j are close to zero and are therefore consistent with finance theory. The fitted regression line and data scatter for Microsoft are plotted as below.
 
 ** d
 ```
