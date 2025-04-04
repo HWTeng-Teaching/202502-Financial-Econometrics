@@ -1,14 +1,13 @@
-install.packages("remotes")  # 確保 remotes 套件已安裝
-remotes::install_github("ccolonescu/POE5Rdata")  # 需確認 GitHub Repo 位置
+install.packages("remotes")
+remotes::install_github("ccolonescu/POE5Rdata")
+
 library(POE5Rdata)
 data(cps5_small)
 data <- cps5_small
 
-# 檢查數據結構
-str(data)
-summary(data)
+str(data)  # Check data
+summary(data)  
 
-#取得統計數據
 summary(data$wage)
 summary(data$educ)
 
@@ -35,20 +34,16 @@ ggplot(data, aes(x = educ)) +
   geom_histogram(binwidth = 1, fill = "lightblue", color = "black") +
   labs(title = "EDUC 直方圖", x = "受教育年數", y = "頻數") +
   theme_minimal()
-
-
-
-#b.
-
+----------------------------------------------------------------------
+#(B)
 # 建立線性回歸模型
 linear_model <- lm(wage ~ educ, data = data)
 
 # 顯示回歸結果
 summary(linear_model)
 
-
-#c.
-
+-----------------------------------
+  #(C)
 # 建立線性回歸模型 (若尚未建立)
 model <- lm(wage ~ educ, data = data)
 
@@ -69,56 +64,49 @@ ggplot(data, aes(x = educ, y = residuals)) +
        y = "Residuals") +
   theme_minimal()
 
-
-#d.
-
-
-# 安裝並載入套件 (若尚未安裝)
+---------------------------------------------------------------------
+#(D)
 install.packages("broom")
 install.packages("dplyr")
 
 library(broom)
 library(dplyr)
 
-# 原始的總體迴歸
+# original overall regression
 model_all <- lm(wage ~ educ, data = data)
 
-# 性別分組迴歸
+# Gender grouped regression
 model_male <- lm(wage ~ educ, data = subset(data, female == 0))
 model_female <- lm(wage ~ educ, data = subset(data, female == 1))
 
-# 種族分組迴歸
+# race group regression
 model_black <- lm(wage ~ educ, data = subset(data, black == 1))
 model_non_black <- lm(wage ~ educ, data = subset(data, black == 0))
 
-# 取得 tidy 格式結果
+# Get results in tidy format
 all_result <- tidy(model_all) %>% mutate(Group = "All")
 male_result <- tidy(model_male) %>% mutate(Group = "Male")
 female_result <- tidy(model_female) %>% mutate(Group = "Female")
 black_result <- tidy(model_black) %>% mutate(Group = "Black")
 non_black_result <- tidy(model_non_black) %>% mutate(Group = "Non-Black")
 
-# 合併成一個完整表格
+# Merge into a complete table
 final_table <- bind_rows(all_result, male_result, female_result, black_result, non_black_result)
 
-# 整理一下順序，方便查看
+# Organize the order 
 final_table <- final_table %>%
   select(Group, term, estimate, std.error, statistic, p.value) %>%
   arrange(term, Group)
 
-# 顯示最終表格
+# Indicate the final result
 print(final_table)
 
-
-#e.
-
+-------------------------------------------------------------------
+#(E)
 # 建立 EDUC 的平方項
 data$educ2 <- data$educ^2
 
-# 估計二次回歸模型
 quad_model <- lm(wage ~ educ2, data = data)
-
-# 顯示結果
 summary(quad_model)
 
 # 提取 α₂ 的估計值
@@ -134,30 +122,61 @@ marginal_effect_16 <- 2 * alpha2 * 16
 marginal_effect_12
 marginal_effect_16
 
-
-#e.
-
-library(ggplot2)
-
-# 建立 EDUC 平方變數（若尚未建立）
-data$educ2 <- data$educ^2
-
+--------------------------------------------------------------------
+#(f)
+  
 # 線性回歸模型（part b）
 linear_model <- lm(wage ~ educ, data = data)
-data$linear_fit <- predict(linear_model)
+data$linear_resid <- residuals(linear_model)
+linear_SSE <- sum(data$linear_resid^2)
 
 # 二次回歸模型（part e）
+data$educ2 <- data$educ^2
 quad_model <- lm(wage ~ educ2, data = data)
-data$quad_fit <- predict(quad_model)
+data$quad_resid <- residuals(quad_model)
+quad_SSE <- sum(data$quad_resid^2)
 
-# 繪圖
-ggplot(data, aes(x = educ, y = wage)) +
-  geom_point(alpha = 0.4, color = "gray") + # 原始資料點
-  geom_line(aes(y = linear_fit), color = "blue", size = 1.2, linetype = "dashed") + # 線性擬合線
-  geom_line(aes(y = quad_fit), color = "red", size = 1.2) + # 二次擬合線
-  labs(title = "Linear vs Quadratic Fit of Wage on Education",
-       x = "Years of Education",
-       y = "Hourly Wage") +
-  theme_minimal() +
-  scale_color_manual(values = c("Linear Fit" = "blue", "Quadratic Fit" = "red")) +
-  theme(legend.position = "bottom")
+# 顯示SSE結果
+linear_SSE
+quad_SSE
+
+---------------------------------------------------------
+#(補充)
+  # 建立線性回歸模型 (part b)
+  linear_model <- lm(wage ~ educ, data = data)
+
+# 建立二次回歸模型 (part e)
+# 假設已經有 data$educ2 <- data$educ^2
+quad_model <- lm(wage ~ educ2, data = data)
+
+# 取得模型的擬合值
+data$linear_fitted <- fitted(linear_model)
+data$quad_fitted   <- fitted(quad_model)
+
+# 繪製散佈圖 (wage 對 educ)
+plot(
+  data$educ, data$wage,
+  pch = 16,                   # 散點符號
+  col = "black",
+  xlab = "教育年數 (educ)",
+  ylab = "工資 (wage)",
+  main = "線性模型與二次模型的擬合比較"
+)
+
+# 在圖上加入線性回歸模型擬合線
+# abline() 適用於「wage ~ educ」形式的線性模型
+abline(linear_model, col = "blue", lwd = 2)
+
+# 在圖上加入二次回歸模型擬合曲線
+# 需要將 x 座標排序，才可畫出平滑的曲線
+sorted_educ <- sort(data$educ)
+quad_fit_sorted <- fitted(quad_model)[order(data$educ)]
+lines(sorted_educ, quad_fit_sorted, col = "red", lwd = 2)
+
+# 加入圖例
+legend(
+  "topleft",
+  legend = c("線性回歸", "二次回歸"),
+  col = c("blue", "red"),
+  lwd = 2
+)
