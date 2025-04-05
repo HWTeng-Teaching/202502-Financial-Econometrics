@@ -226,55 +226,20 @@ $$
 
 Step 2：使用 Delta Method 計算變異數 $\text{Var}(\hat{g})$
 
-共變異數矩陣為：
+計算標準誤 se(𝑔^)​
+
+Var(g^​)=Var(b1−b2+b3)
+
+Var( g^)=Var(b1)+Var(b2)+Var(b3)+2⋅Cov(b1,b3)−2⋅Cov(b1,b2)−2⋅Cov(b2,b3)
+
+Var(g^)=3+4+3+2(1)−2(−2)−2(0)=10+2+4=16
+
+計算 t 統計量
 
 $$
-\widehat{\text{Cov}}(b_1, b_2, b_3) =
-\begin{bmatrix}
-3 & -2 & 1 \\
--2 & 4 & 0 \\
-1 & 0 & 3
-\end{bmatrix}
+t = \frac{\hat{g} - 4}{\text{se}(\hat{g})} = \frac{-2 - 4}{4} = -1.5
 $$
 
-設線性組合權重向量為：
-
-$$
-\mathbf{c} =
-\begin{bmatrix}
-1 \\
--1 \\
-1
-\end{bmatrix}
-$$
-
-則：
-
-$$
-\text{Var}(\hat{g}) = \mathbf{c}^\top \cdot \text{Cov}(\hat{\beta}) \cdot \mathbf{c}
-$$
-
-
-<img src="https://github.com/user-attachments/assets/396efabc-e835-4847-863c-6ba59f5dfa1b" alt="圖片描述" width="500" height="350" />
-
-
-所以：
-
-$$
-\text{se}(\hat{g}) = \sqrt{16} = 4
-$$
-
-Step 3：計算 $t$ 統計量
-
-$$
-t = \frac{\hat{g} - 4}{\text{se}(\hat{g})} = \frac{-2 - 4}{4} = \frac{-6}{4} = -1.5
-$$
-
-Step 4：查臨界值並做決策
-
-- 自由度：df = 63 - 3 = 60
-- 
-- 使用雙尾檢定，臨界值 t_{0.025, 60} = 2.000
 
 結論
 
