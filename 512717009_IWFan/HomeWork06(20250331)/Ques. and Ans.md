@@ -51,6 +51,7 @@ $$
 
 $$
 H_0: \beta_1 + 2\beta_2 = 5 \\
+
 H_1: \beta_1 + 2\beta_2 \ne 5
 $$
 
@@ -102,13 +103,14 @@ $$
 計算 t 統計量
 
 $$
-t = \frac{\hat{g} - 5}{\text{se}(\hat{g})} = \frac{8 - 5}{3.317} \approx 0.905
+t = \frac{\hat{g} - 5}{\text{se}(\hat{g})} = \frac{8 - 5}{3.317} = 0.905
 $$
 
 查表與做決策
 
 - 自由度：$df = 63 - 3 = 60$
-- 臨界值：$t_{0.025, 60} \approx 2.000$
+  
+- 臨界值：t_{0.025, 60} \= 2.000
 
 
 結論
@@ -118,10 +120,6 @@ $$
 $$
 
 因此，在 5% 顯著水準下，**沒有足夠的證據拒絕** $\beta_1 + 2\beta_2 = 5$，結果落在接受域中。
-
-
-
-<img src="https://github.com/user-attachments/assets/9456a6fc-ddd8-4161-8e36-4ee29587cf5a" alt="圖片描述" width="600" height="600" />
 
 
 
