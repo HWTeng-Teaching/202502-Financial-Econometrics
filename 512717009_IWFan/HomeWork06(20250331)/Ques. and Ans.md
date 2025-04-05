@@ -254,45 +254,8 @@ $$
 \text{Var}(\hat{g}) = \mathbf{c}^\top \cdot \text{Cov}(\hat{\beta}) \cdot \mathbf{c}
 $$
 
-中間運算為：
 
-- 共變異數矩陣乘上 $c$ 得：
-
-  $$
-  \begin{bmatrix}
-  3 & -2 & 1 \\
-  -2 & 4 & 0 \\
-  1 & 0 & 3
-  \end{bmatrix}
-  \cdot
-  \begin{bmatrix}
-  1 \\
-  -1 \\
-  1
-  \end{bmatrix}
-  =
-  \begin{bmatrix}
-  6 \\
-  -6 \\
-  4
-  \end{bmatrix}
-  $$
-
-- 再左乘 $c^\top$ 得：
-
-  $$
-  \text{Var}(\hat{g}) =
-  \begin{bmatrix}
-  1 & -1 & 1
-  \end{bmatrix}
-  \cdot
-  \begin{bmatrix}
-  6 \\
-  -6 \\
-  4
-  \end{bmatrix}
-  = 6 + 6 + 4 = 16
-  $$
+<img src="https://github.com/user-attachments/assets/396efabc-e835-4847-863c-6ba59f5dfa1b" alt="圖片描述" width="500" height="350" />
 
 
 所以：
