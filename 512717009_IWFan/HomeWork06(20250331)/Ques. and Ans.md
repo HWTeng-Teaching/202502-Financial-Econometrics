@@ -230,6 +230,10 @@ Step 2：使用 Delta Method 計算變異數 $\text{Var}(\hat{g})$
 
 Var(g^​)=Var(b1−b2+b3)
 
+$$
+\text{Var}(\hat{g}) =  \text{Var}(b_1) + text{Var}(b_2) + text{Var}(b_3) + 2 \cdot \text{Cov}(b_1, b_3)+ 2 \cdot \text{Cov}(b_1, b_2)+ 2 \cdot \text{Cov}(b_2, b_3)
+$$
+
 Var( g^)=Var(b1)+Var(b2)+Var(b3)+2⋅Cov(b1,b3)−2⋅Cov(b1,b2)−2⋅Cov(b2,b3)
 
 Var(g^)=3+4+3+2(1)−2(−2)−2(0)=10+2+4=16
