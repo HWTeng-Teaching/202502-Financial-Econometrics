@@ -25,6 +25,8 @@ t_stat_depart
 
 # f
 
+b1 <- coef(model)[[1]]
+b2 <- coef(model)[[2]]
 b3 <- coef(model)[[3]]
 b4 <- coef(model)[[4]]
 varb3 <- vcov(model)[3,3]
