@@ -200,13 +200,112 @@ $$
 
 --------------------------------------------------------------
 
+**(c)**
 
+檢定以下虛無假設：
 
+$$
+H_0: \beta_1 - \beta_2 + \beta_3 = 4 \\
+H_1: \beta_1 - \beta_2 + \beta_3 \ne 4
+$$
 
-<img src="https://github.com/user-attachments/assets/bbdffcb8-a4b7-460b-972b-3741754f8800" alt="圖片描述" width="900" height="700" />
+Step 1：計算線性組合估計值 $\hat{g}$
 
+已知估計值為：
 
+$$
+b_1 = 2,\quad b_2 = 3,\quad b_3 = -1
+$$
 
+線性組合為：
+
+$$
+\hat{g} = b_1 - b_2 + b_3 = 2 - 3 + (-1) = -2
+$$
+
+Step 2：使用 Delta Method 計算變異數 $\text{Var}(\hat{g})$
+
+共變異數矩陣為：
+
+$$
+\widehat{\text{Cov}}(b_1, b_2, b_3) =
+\begin{bmatrix}
+3 & -2 & 1 \\
+-2 & 4 & 0 \\
+1 & 0 & 3
+\end{bmatrix}
+$$
+
+設線性組合權重向量為：
+
+$$
+\mathbf{c} =
+\begin{bmatrix}
+1 \\
+-1 \\
+1
+\end{bmatrix}
+$$
+
+則：
+
+$$
+\text{Var}(\hat{g}) = \mathbf{c}^\top \cdot \text{Cov}(\hat{\beta}) \cdot \mathbf{c}
+$$
+
+中間運算為：
+
+- 共變異數矩陣 × $\mathbf{c}$ 得：
+
+  $$
+  \begin{bmatrix}
+  6 \\
+  -6 \\
+  4
+  \end{bmatrix}
+  $$
+
+- 再左乘 $\mathbf{c}^\top$：
+
+  $$
+  \text{Var}(\hat{g}) = [1, -1, 1] \cdot
+  \begin{bmatrix}
+  6 \\
+  -6 \\
+  4
+  \end{bmatrix}
+  = 6 + 6 + 4 = 16
+  $$
+
+所以：
+
+$$
+\text{se}(\hat{g}) = \sqrt{16} = 4
+$$
+
+Step 3：計算 $t$ 統計量
+
+$$
+t = \frac{\hat{g} - 4}{\text{se}(\hat{g})} = \frac{-2 - 4}{4} = \frac{-6}{4} = -1.5
+$$
+
+Step 4：查臨界值並做決策
+
+- 自由度：$df = 63 - 3 = 60$
+- 
+- 使用雙尾檢定，臨界值 $t_{0.025, 60} = 2.000
+
+結論
+
+$$
+|t| = 1.5 < 2.000 \Rightarrow \text{無法拒絕 } H_0
+$$
+
+在 5% 顯著水準下，沒有足夠證據認為：
+
+$$
+\beta_1 - \beta_2 + \beta_3 \ne 4
+$$
 
 
 
