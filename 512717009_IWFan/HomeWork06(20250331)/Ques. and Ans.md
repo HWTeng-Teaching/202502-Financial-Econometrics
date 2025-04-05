@@ -256,10 +256,10 @@ $$
 
 中間運算為：
 
-- 共變異數矩陣乘上 $\mathbf{c}$ 得：
+- 共變異數矩陣乘上 $c$ 得：
 
- $$
- \begin{bmatrix}
+  $$
+  \begin{bmatrix}
   3 & -2 & 1 \\
   -2 & 4 & 0 \\
   1 & 0 & 3
@@ -278,7 +278,7 @@ $$
   \end{bmatrix}
   $$
 
-- 再左乘 $\mathbf{c}^\top$ 得：
+- 再左乘 $c^\top$ 得：
 
   $$
   \text{Var}(\hat{g}) =
