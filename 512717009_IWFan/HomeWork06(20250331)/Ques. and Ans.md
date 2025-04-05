@@ -481,13 +481,6 @@ $$
 
 **(b)**教育的邊際效果
 
-Obtain an expression for the marginal effect 
-
-$$
-\frac{\partial E[\ln(WAGE) \mid EDUC, EXPER]}{\partial EDUC}
-$$  
-Comment on how the estimate of this marginal effect changes as `EDUC` and `EXPER` increase.
-
 模型為：
 
 $$
