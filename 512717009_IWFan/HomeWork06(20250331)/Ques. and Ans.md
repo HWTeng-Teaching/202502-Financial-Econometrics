@@ -278,7 +278,7 @@ $$
   \end{bmatrix}
   $$
 
-- 再左乘 $\mathbf{c}^\top$：
+- 再左乘 $\mathbf{c}^\top$ 得：
 
   $$
   \text{Var}(\hat{g}) =
@@ -293,6 +293,12 @@ $$
   \end{bmatrix}
   = 6 + 6 + 4 = 16
   $$
+
+因此，標準誤為：
+
+$$
+\text{se}(\hat{g}) = \sqrt{16} = 4
+$$
 
 
 所以：
