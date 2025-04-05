@@ -234,8 +234,12 @@ $$
 \text{Var}(\hat{g}) =  \text{Var}(b_1) + \text{Var}(b_2) + \text{Var}(b_3) + 2 \cdot \text{Cov}(b_1, b_3)+ 2 \cdot \text{Cov}(b_1, b_2)+ 2 \cdot \text{Cov}(b_2, b_3)
 $$
 
+代入計算：
 
-Var(g^)=3+4+3+2(1)−2(−2)−2(0)=10+2+4=16
+$$
+\text{Var}(\hat{g}) = 3 + 4 + 3 + 2 \cdot (1) - 2 \cdot (-2) - 2 \cdot (0) =  16
+$$
+
 
 因此標準誤為：
 
