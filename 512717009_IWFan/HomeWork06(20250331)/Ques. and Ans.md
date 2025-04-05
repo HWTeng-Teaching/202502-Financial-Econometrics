@@ -256,9 +256,21 @@ $$
 
 中間運算為：
 
-- 共變異數矩陣 × $\mathbf{c}$ 得：
+共變異數矩陣乘上 $\mathbf{c}$ 得：
 
   $$
+  \begin{bmatrix}
+  3 & -2 & 1 \\
+  -2 & 4 & 0 \\
+  1 & 0 & 3
+  \end{bmatrix}
+  \cdot
+  \begin{bmatrix}
+  1 \\
+  -1 \\
+  1
+  \end{bmatrix}
+  =
   \begin{bmatrix}
   6 \\
   -6 \\
@@ -269,7 +281,11 @@ $$
 - 再左乘 $\mathbf{c}^\top$：
 
   $$
-  \text{Var}(\hat{g}) = [1, -1, 1] \cdot
+  \text{Var}(\hat{g}) =
+  \begin{bmatrix}
+  1 & -1 & 1
+  \end{bmatrix}
+  \cdot
   \begin{bmatrix}
   6 \\
   -6 \\
