@@ -47,9 +47,9 @@ The marginal effect of education varies with years of education and years of exp
 ## c. Estimate the marginal effect of education for each observation
 
 Use the above formula to calculate the marginal effect of education for each data and draw a histogram. The results are summarized as follows:
+d80-9a7a-78387011f9ff)
 
-![5 33 c](https://github.com/user-attachments/assets/0f02eab8-c73f-4d80-9a7a-78387011f9ff)
-
+![5](https://github.com/user-attachments/assets/59861d46-b952-4106-8e48-e3d1e1194486)
 
 
 - 5th percentile (5%)：0.0801
