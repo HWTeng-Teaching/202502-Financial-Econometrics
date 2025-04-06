@@ -3,15 +3,15 @@
 
 ![圖片](https://github.com/user-attachments/assets/bece6810-2a6b-43da-b63c-2d52f2ba9f2b)
 
-## a. 檢定每個迴歸係數是否顯著不為零
+## a. Test whether each regression coefficient is significantly different from zero
 
-根據下列迴歸模型的估計結果：
+According to the estimation results of the following regression model:
 
 $$
 \ln(WAGE) = \beta_1 + \beta_2 \cdot EDUC + \beta_3 \cdot EDUC^2 + \beta_4 \cdot EXPER + \beta_5 \cdot EXPER^2 + \beta_6 \cdot (EDUC \times EXPER) + e
 $$
 
-| 變數           | 估計值       | 標準誤     | $t$ 值  | $p$ 值         | 顯著性 |
+| variables           | values       | standard error     | $t$ value  | $p$ value         | siganificant |
 |----------------|--------------|------------|---------|----------------|--------|
 | (Intercept)     | 1.038        | 0.2757     | 3.764   | 0.0002         | ***    |
 | EDUC            | 0.08954      | 0.03108    | 2.881   | 0.0040         | **     |
@@ -20,31 +20,33 @@ $$
 | EXPER²          | -0.000468    | 0.00007601 | -6.157  | 1.01e-09       | ***    |
 | EDUC × EXPER    | -0.001010    | 0.0003791  | -2.665  | 0.0078         | **     |
 
-\* 5% 顯著水準下，除了 $\beta_3$（EDUC²），其他變數的係數皆顯著不為 0。
+\* 5% significant level，besides $\beta_3$（EDUC²），其他變數的係數皆顯著不為 0。
 
 ---
 
-## b. 教育的邊際效果 $\partial \ln(WAGE)/\partial EDUC$
+## b. Marginal Effects of Education $\partial \ln(WAGE)/\partial EDUC$
 
 $$
 \frac{\partial \ln(WAGE)}{\partial EDUC} = \beta_2 + 2\beta_3 \cdot EDUC + \beta_6 \cdot EXPER
 $$
 
-教育的邊際效果會隨著教育年數及經驗年數而改變，其中 $\beta_3 > 0$ 且 $\beta_6 < 0$，代表教育的報酬隨經驗增加而遞減。
+The marginal effect of education varies with years of education and years of experience，and $\beta_3 > 0$ with $\beta_6 < 0$，means that the return on education decreases with experience.
+
+。
 
 ---
 
-## c. 評估每筆觀察值的教育邊際效果
+## c. Estimate the marginal effect of education for each observation
 
-使用上式計算每筆資料的教育邊際效果，並繪製直方圖。結果摘要如下：
+Use the above formula to calculate the marginal effect of education for each data and draw a histogram. The results are summarized as follows:
 
 ![image](https://github.com/user-attachments/assets/8ee6e3c0-fe9b-4c0b-a44d-35455bd62276)
 
 
-- 第 5 百分位（5%）：0.0801
-- 中位數（50%）：0.1084
-- 第 95 百分位（95%）：0.1336
+- 5th percentile (5%)：0.0801
+- Median (50%)：0.1084
+- 95th percentile ：0.1336
 
-這顯示教育對薪資的邊際效果集中在正值附近。
+This shows that the marginal effect of education on wages is concentrated around positive values.
 
 ---
