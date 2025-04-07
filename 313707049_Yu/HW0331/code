@@ -27,11 +27,10 @@ print(marginal_effects_summary)
 
 # Create a histogram
 ggplot(data.frame(marginal_effects), aes(x = marginal_effects)) +
-  geom_histogram(bins = 30, fill = "skyblue", color = "black", alpha = 0.7) +
+  geom_histogram(bins = 30, fill = "blue", color = "black", alpha = 0.7) +
   labs(title = "Histogram of Marginal Effects",
        x = "Marginal Effect",
-       y = "Frequency") +
-  theme_minimal()
+       y = "Frequency") +theme_minimal()
 
 #(e)
 marginal_effects_exper <- 0.04488 + 2 * (-0.000468) * cps5_small$exper - 0.001010 * cps5_small$educ
@@ -42,7 +41,7 @@ print(marginal_effects_exper_summary)
 
 
 ggplot(data.frame(marginal_effects_exper), aes(x = marginal_effects_exper)) +
-  geom_histogram(bins = 30, fill = "skyblue", color = "black", alpha = 0.7) +
+  geom_histogram(bins = 30, fill = "blue", color = "black", alpha = 0.7) +
   labs(title = "Histogram of Marginal Effects for EXPER",
        x = "Marginal Effect for EXPER",
        y = "Frequency") +
