@@ -32,6 +32,7 @@ model <- lm(time ~ depart + reds + trains, data = commute5)
 summary(model)
 ```
 ## **(b) **
+
 ```{r}
 model <- lm(time ~ depart + reds + trains, data = commute5)
 
