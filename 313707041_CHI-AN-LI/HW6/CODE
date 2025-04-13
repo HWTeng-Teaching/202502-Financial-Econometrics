@@ -1,1 +1,201 @@
+##5.31
+#(a)
+model <- lm(time ~ depart + reds + trains, data = commute5)
+summary(model)
+#(b)
+confint(model, level = 0.95)
+#(c)
+beta_reds <- coef(model)["reds"]
+se_reds <- summary(model)$coefficients["reds", "Std. Error"]
+t_stat <- (beta_reds - 2) / se_reds
+p_val <- pt(t_stat, df = model$df.residual)
+p_val  # 小於 0.05 則拒絕虛無假設
+#(d)
+# 擷取估計值與標準誤
+b3 <- coef(model)["reds"]
+se_b3 <- summary(model)$coefficients["reds", "Std. Error"]
+
+# t 值與 p 值（下尾檢定）
+t_val <- (b3 - 3) / se_b3
+p_val <- pt(t_val, df = model$df.residual)
+t_val
+p_val  # 小於 0.1 則拒絕虛無假設
+#(e)
+beta_depart <- coef(model)["depart"]
+se_depart <- summary(model)$coefficients["depart", "Std. Error"]
+
+t_stat <- (beta_depart * 30 - 10) / (se_depart * 30)
+p_val <- 1 - pt(t_stat, df = model$df.residual)
+p_val  # 小於 0.05 則拒絕 H0，代表差異顯著大於10分鐘
+#(f)
+b <- coef(model)
+vcov_mat <- vcov(model)
+Lb <- b["trains"] - 3 * b["reds"]
+
+# 計算 Var(beta4 - 3 * beta3)
+var_Lb <- vcov_mat["trains", "trains"] + 
+  9 * vcov_mat["reds", "reds"] - 
+  6 * vcov_mat["trains", "reds"]  # 2*3*Cov
+t_val <- Lb / sqrt(var_Lb)
+
+df <- model$df.residual
+p_val <- 1 - pt(t_val, df)
+t_val
+p_val # 小於 0.05 則拒絕虛無假設
+#(g)
+# 預測值
+x0 <- data.frame(depart = 30, reds = 6, trains = 1)
+pred <- predict(model, newdata = x0, interval = "confidence", level = 0.95)
+pred
+#(h)
+mu_hat <- predict(model, newdata = x0)
+se_fit <- predict(model, newdata = x0, se.fit = TRUE)$se.fit
+t_stat <- (mu_hat - 45) / se_fit
+p_val <- pt(t_stat, df = model$df.residual)
+p_val  # 小於 0.05 則拒絕 H0（代表真的早於 7:45）
+##5.33
+#(a)
+cps5_small$educ2 <- cps5_small$educ^2
+cps5_small$exper2 <- cps5_small$exper^2
+cps5_small$eductimesexper <- cps5_small$educ * cps5_small$exper
+
+# 建立回歸模型
+model <- lm(log(wage) ~ educ + educ2 + exper + exper2 + eductimesexper, data = cps5_small)
+summary(model)
+educ 的係數在 1% 顯著水準下顯著（p = 0.004038）
+
+educ2 的係數在傳統顯著水準下 不顯著（p = 0.114855）
+
+exper 的係數在 0.1% 顯著水準下高度顯著（p ≈ 0.00000106）
+
+exper2 的係數也在 0.1% 顯著水準下高度顯著（p ≈ 1.01e-09）
+
+eductimesexper 的交乘項在 1% 顯著水準下顯著（p = 0.007803）
+
+截距項 (intercept) 在 0.1% 顯著水準下高度顯著（p = 0.000175）
+
+#(b)
+b <- coef(model)
+
+me_educ <- function(educ, exper) {
+  b["educ"] + 2 * b["educ2"] * educ + b["eductimesexper"] * exper
+}
+#(c)
+me_educ_vals <- me_educ(cps5_small$educ, cps5_small$exper)
+
+# 百分位
+quantile(me_educ_vals, probs = c(0.05, 0.5, 0.95))
+
+# 繪圖
+hist(me_educ_vals, main = "Marginal Effect of educ", xlab = "∂ln(wage)/∂educ")
+#(d)
+me_exper <- function(educ, exper) {
+  b["exper"] + 2 * b["exper2"] * exper + b["eductimesexper"] * educ
+}
+#(e)
+me_exper_vals <- me_exper(cps5_small$educ, cps5_small$exper)
+
+quantile(me_exper_vals, probs = c(0.05, 0.5, 0.95))
+
+hist(me_exper_vals, main = "Marginal Effect of exper", xlab = "∂ln(wage)/∂exper")
+#(f)
+x_david <- c(1, 17, 17^2, 8, 8^2, 17*8)
+x_svet  <- c(1, 16, 16^2, 18, 18^2, 16*18)
+x_diff  <- x_david - x_svet
+
+diff_hat <- sum(x_diff * b)
+se <- sqrt(t(x_diff) %*% vcov(model) %*% x_diff)
+
+t_val <- diff_hat / se
+p_val <- 1 - pt(t_val, df = model$df.residual)
+
+t_val
+p_val
+#(g)
+x_david <- c(1, 17, 17^2, 16, 16^2, 17*16)
+x_svet  <- c(1, 16, 16^2, 26, 26^2, 16*26)
+x_diff  <- x_david - x_svet
+
+diff_hat <- sum(x_diff * b)
+se <- sqrt(t(x_diff) %*% vcov(model) %*% x_diff)
+
+t_val <- diff_hat / se
+p_val <- 1 - pt(t_val, df = model$df.residual)
+
+t_val
+p_val
+#(h)
+me_wendy <- me_exper(12, 17)
+me_jill  <- me_exper(16, 11)
+me_diff  <- me_wendy - me_jill
+
+# 建立導數對應 x 向量：只針對 exper, exper2, eductimesexper
+x_wendy <- c(0, 0, 0, 1, 2*17, 12)
+x_jill  <- c(0, 0, 0, 1, 2*11, 16)
+x_diff <- x_wendy - x_jill
+
+se <- sqrt(t(x_diff) %*% vcov(model) %*% x_diff)
+t_val <- me_diff / se
+p_val <- 1 - pt(t_val, df = model$df.residual)
+
+t_val
+p_val
+#(i)
+# 教育固定為 16，求解 exper 使得邊際效果為 0
+beta <- coef(model)
+vcov_mat <- vcov(model)
+
+# 係數
+b4 <- beta["exper"]
+b5 <- beta["exper2"]
+b6 <- beta["eductimesexper"]
+
+# 解方程式: b4 + 2*b5*x + b6*16 = 0
+a <- 2 * b5
+b <- b4 + b6 * 16
+
+exper_cutoff <- -b / a
+extra_years <- exper_cutoff - 11
+cat("Jill's marginal effect becomes 0 at exper =", exper_cutoff, "\n")
+cat("She needs", extra_years, "more years.\n")
+# 係數與共變異數矩陣
+b <- coef(model)
+v <- vcov(model)
+
+# 設定常數
+educ_jill <- 16
+b4 <- b["exper"]
+b5 <- b["exper2"]
+b6 <- b["eductimesexper"]
+
+# Point estimate
+x_star <- -(b4 + educ_jill * b6) / (2 * b5)
+years_left <- x_star - 11
+
+# 對應的偏微分向量 ∇f(β)
+# f(β4, β5, β6) = -(β4 + 16β6)/(2β5)
+df_db4 <- -1 / (2 * b5)
+df_db6 <- -educ_jill / (2 * b5)
+df_db5 <- (b4 + educ_jill * b6) / (2 * b5^2)
+
+grad <- c(df_db4, df_db5, df_db6)
+
+# 對應的子共變異數矩陣
+v_sub <- v[c("exper", "exper2", "eductimesexper"),
+           c("exper", "exper2", "eductimesexper")]
+
+# Delta method standard error
+se <- sqrt(t(grad) %*% v_sub %*% grad)
+
+# 95% 信賴區間
+lower <- x_star - 1.96 * se
+upper <- x_star + 1.96 * se
+
+# 輸出
+cat("Marginal effect becomes zero at exper =", x_star, "\n")
+cat("Jill needs", years_left, "more years\n")
+cat("95% CI for threshold experience: [", lower, ",", upper, "]\n")
+cat("95% CI for years left: [", lower - 11, ",", upper - 11, "]\n")
+
+
 
