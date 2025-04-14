@@ -1,5 +1,10 @@
 Written by 513717015 蕭宇辰 YCHsiao
 
+![C05Q31_0](https://github.com/user-attachments/assets/ff9eaf80-d473-40c0-bce7-76eb9046e349)
+
+
+
+
 ### (d) 
 
 - $H_0: \beta_4 = 3$
