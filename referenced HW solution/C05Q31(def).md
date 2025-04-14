@@ -52,4 +52,4 @@ RR={ t: $t_{ (0.05,245) }$ $\le$ -1.651 or $t_{ (0.95,245) }$ $\ge$ 1.651 }
 
 The test statistic's t-value fall within the rejection region; therefore, we reject the null hypothesis.
 
-**結論：** The data do not provide sufficient evidence to conclude that the expected delay from a train is less than three times the delay from a red light. 
+**結論：** The data provide sufficient evidence to conclude that the expected delay from a train is less than three times the delay from a red light. 
