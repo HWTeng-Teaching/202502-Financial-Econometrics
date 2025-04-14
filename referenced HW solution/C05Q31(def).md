@@ -12,11 +12,11 @@ Written by 513717015 蕭宇辰 YCHsiao
 
 $t = \frac{3.02237-3}{0.6340} =0.0374$
 
-且RR={ t: $t_{ (0.05,245) }$ $\le$ -1.651 or $t_{ (0.95,245) }$ $\ge$ 1.651 }
+RR={ t: $t_{ (0.05,245) }$ $\le$ -1.651 or $t_{ (0.95,245) }$ $\ge$ 1.651 }
 
-計算出的 t value 未在拒絕域中，故無法拒絕虛無假設 
+The test statistic's t-value does not fall within the rejection region; therefore, we fail to reject the null hypothesis.
 
-**結論：** 無法拒絕虛無假設，無顯著證據證明火車延遲 3 分鐘。
+**結論：**  The data are consistent with the hypothesis that the expected delay from each train is 3 minutes. 
 
 ---
 
@@ -30,11 +30,13 @@ SE： $30 \cdot 0.0351 = 1.053$
 
 $t = \frac{11.04 - 10}{1.053} = 0.991$  
 
-且RR={ t: $t_{ (0.05,245) }$ $\le$ -1.651 or $t_{ (0.95,245) }$ $\ge$ 1.651 }
+RR={ t: $t_{ (0.05,245) }$ $\le$ -1.651 or $t_{ (0.95,245) }$ $\ge$ 1.651 }
 
-計算出的 t value 未在拒絕域中，故無法拒絕虛無假設 
+The test statistic's t-value does not fall within the rejection region; therefore, we fail to reject the null hypothesis.
 
-**結論：** 無法拒絕虛無假設，沒有統計證據顯示延誤超過 10 分鐘。
+**結論：** 
+The data are consistent with the hypothesis that delaying departure time by 30 minutes increases expected travel time by at least 10 minutes.
+
 
 ---
 
@@ -45,8 +47,8 @@ $t = \frac{11.04 - 10}{1.053} = 0.991$
 
 $t = \frac{3.0237 - 3x1.5219}{0.8450}=-1.825$
 
-且RR={ t: $t_{ (0.05,245) }$ $\le$ -1.651 or $t_{ (0.95,245) }$ $\ge$ 1.651 }
+RR={ t: $t_{ (0.05,245) }$ $\le$ -1.651 or $t_{ (0.95,245) }$ $\ge$ 1.651 }
 
-計算出的 t value 在拒絕域中，故拒絕虛無假設 
+The test statistic's t-value fall within the rejection region; therefore, we reject the null hypothesis.
 
-**結論：** 拒絕虛無假設，顯示統計證據顯示火車延誤為紅燈的三倍。
+**結論：** The expected delay from a train is less than three times the delay from a red light. 
