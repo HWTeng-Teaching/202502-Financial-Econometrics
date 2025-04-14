@@ -16,7 +16,8 @@ RR={ t: $t_{ (0.05,245) }$ $\le$ -1.651 or $t_{ (0.95,245) }$ $\ge$ 1.651 }
 
 The test statistic's t-value does not fall within the rejection region; therefore, we fail to reject the null hypothesis.
 
-**結論：**  The data are consistent with the hypothesis that the expected delay from each train is 3 minutes. 
+**結論：**  
+The data do not provide sufficient evidence to conclude that the expected delay from each train is not 3 minutes.
 
 ---
 
@@ -35,7 +36,7 @@ RR={ t: $t_{ (0.05,245) }$ $\le$ -1.651 or $t_{ (0.95,245) }$ $\ge$ 1.651 }
 The test statistic's t-value does not fall within the rejection region; therefore, we fail to reject the null hypothesis.
 
 **結論：** 
-The data are consistent with the hypothesis that delaying departure time by 30 minutes increases expected travel time by at least 10 minutes.
+The data do not provide sufficient evidence to conclude that delaying departure time by 30 minutes increases expected travel time by at least 10 minutes.
 
 
 ---
@@ -51,4 +52,4 @@ RR={ t: $t_{ (0.05,245) }$ $\le$ -1.651 or $t_{ (0.95,245) }$ $\ge$ 1.651 }
 
 The test statistic's t-value fall within the rejection region; therefore, we reject the null hypothesis.
 
-**結論：** The expected delay from a train is less than three times the delay from a red light. 
+**結論：** The data do not provide sufficient evidence to conclude that the expected delay from a train is less than three times the delay from a red light. 
