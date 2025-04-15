@@ -42,7 +42,7 @@ $$
 
 **結論：**
 
- <img src="https://github.com/user-attachments/assets/e0cc0746-2d0a-46ae-abfe-c6c5d6806d06" alt="圖片描述" width="100" height="80" />
+ <img src="https://github.com/user-attachments/assets/e0cc0746-2d0a-46ae-abfe-c6c5d6806d06" alt="圖片描述" width="150" height="20" />
 
 因為 \( F = 14.1 \gg 1.25 \)，故拒絕虛無假設 \( H_0 \)，表示男性與女性的誤差變異不相同。
 
