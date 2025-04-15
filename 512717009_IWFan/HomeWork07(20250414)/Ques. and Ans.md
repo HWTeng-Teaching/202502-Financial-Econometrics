@@ -17,7 +17,7 @@ $$
 
 **假設檢定：**
 
-<img src="https://github.com/user-attachments/assets/5147822f-cb8c-4b52-9919-045a67897b08" alt="圖片描述" width="100" height="80" />
+<img src="https://github.com/user-attachments/assets/5147822f-cb8c-4b52-9919-045a67897b08" alt="圖片描述" width="70" height="50" />
 
 
 **已知資料：**
