@@ -26,7 +26,7 @@ $$
 - 女性樣本數 \( n_2 = 423 \)
 - 男性 SSE：97161.9174
 - 女性估計誤差變異：
-  <img src="https://github.com/user-attachments/assets/36452df5-9e2f-41d4-b8fb-a2ea77f72998" alt="圖片描述" width="70" height="50" />= 12.024 \)
+  <img src="https://github.com/user-attachments/assets/36452df5-9e2f-41d4-b8fb-a2ea77f72998" alt="圖片描述" width="20" height="10" />= 12.024 \)
 
 **男性估計變異數：**
 
