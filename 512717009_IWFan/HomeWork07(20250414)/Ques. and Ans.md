@@ -17,8 +17,8 @@ $$
 
 **假設檢定：**
 
-- \( H_0: \sigma_M^2 = \sigma_F^2 \)
-- \( H_1: \sigma_M^2 \ne \sigma_F^2 \)
+![image](https://github.com/user-attachments/assets/5147822f-cb8c-4b52-9919-045a67897b08)
+
 
 
 **已知資料：**
