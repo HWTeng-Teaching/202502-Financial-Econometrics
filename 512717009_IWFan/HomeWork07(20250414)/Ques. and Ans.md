@@ -211,7 +211,8 @@ $$
 3. 分別對兩組進行 OLS 回歸並計算殘差平方和 (SSE)
 4. 建立 F 統計量：
 
-F 統計量為：\\( F = \\frac{\\text{SSE}_{\\text{高收入}}}{\\text{SSE}_{\\text{低收入}}} \\)
+<img width="108" alt="1" src="https://github.com/user-attachments/assets/72239bfb-b9ab-4a42-b341-34cce0bb3bdf" />
+
 
 結果摘要：
 
