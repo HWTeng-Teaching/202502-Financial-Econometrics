@@ -18,8 +18,8 @@ $$
 我們需要檢驗男性和女性工資隨機變異是否相同。
 
 給定資訊：
-- 男性誤差項方差：$\text{var}(e_i|x_i, \text{FEMALE} = 0) = \sigma^2_M$
-- 女性誤差項方差：$\text{var}(e_i|x_i, \text{FEMALE} = 1) = \sigma^2_F$
+男性誤差項方差：var(e_i|x_i, FEMALE = 0) = σ²_M
+女性誤差項方差：var(e_i|x_i, FEMALE = 1) = σ²_F
 - 男性OLS殘差平方和：$SSE_M = 97161.9174$
 - 男性樣本數：$n_M = 577$
 - 女性估計標準差：$\hat{\sigma}_F = 12.024$
