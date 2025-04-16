@@ -51,14 +51,14 @@ $$
 - 已婚：\( n = 600 \), SSE = 100703.0471
 
 **假設：**
-- \( H_0: \sigma^2_{SINGLE} = \sigma^2_{MARRIED} \)
-- \( H_1: \sigma^2_{MARRIED} > \sigma^2_{SINGLE} \)
+-  H_0: σ²_SINGLE = σ²_MARRIED
+-  H_1: σ²_MARRIED > σ²_SINGLE (單尾檢驗)
 
 **計算變異數：**
 
 $$
-\hat{\sigma}_{SINGLE}^2 = \frac{56231.0382}{400} = 140.58 \\
-\hat{\sigma}_{MARRIED}^2 = \frac{100703.0471}{600} = 167.84
+σ²_SINGLE = \frac{56231.0382}{400} = 140.58 \\
+σ²_MARRIED = \frac{100703.0471}{600} = 167.84
 $$
 
 **F 統計量：**
