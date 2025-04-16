@@ -179,8 +179,14 @@ $$
 
 **(b)** 異質變異數圖形檢查：殘差圖
 
-1. **殘差 vs INCOME**  
+1. **殘差 vs INCOME**
+
+![image](https://github.com/user-attachments/assets/86cfdd71-0c7d-4c50-b1ee-e80d9448290d)
+
 2. **殘差 vs AGE**
+
+![image](https://github.com/user-attachments/assets/0a0b666a-3ba0-4597-bdc8-e4a82a27f1ea)
+
 
 觀察結果
 
