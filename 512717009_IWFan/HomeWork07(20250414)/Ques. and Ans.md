@@ -5,7 +5,7 @@
 
 ## Ans:
 
-## 題目模型：
+題目模型：
 
 $$
 \text{WAGE}_i = \beta_1 + \beta_2 \text{EDUC}_i + \beta_3 \text{EXPER}_i + \beta_4 \text{METRO}_i + e_i
