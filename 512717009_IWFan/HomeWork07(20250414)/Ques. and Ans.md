@@ -294,6 +294,14 @@ $$
 
 因此使用 **Generalized Least Squares (GLS)** 方法進行估計，並使用 **Robust 標準誤（HC1）** 進行修正，以產生更穩健的推論結果。
 
+
+<img width="748" alt="76" src="https://github.com/user-attachments/assets/a85721e9-2166-47dd-962a-185c06239e39" />
+
+
+<img width="769" alt="77" src="https://github.com/user-attachments/assets/d8a2c2f8-44d2-48a9-bcc9-b337ffb60b94" />
+
+
+
 KIDS 變數的估計結果
 
 | 模型版本        | 估計值     | 標準誤   | 95% 信賴區間             |
