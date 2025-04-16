@@ -141,7 +141,32 @@ NR²檢驗進一步證實了這一點，表明模型中確實存在異方差性�
 
 ---
 
+## Q.16
+
+<img width="585" alt="C08Q16" src="https://github.com/user-attachments/assets/d7d353b0-0635-4a00-9cf2-e28e56323861" />
 
 
+## Ans:
+
+
+**(a)** 
+
+
+
+---
+
+## Q.18
+
+<img width="598" alt="C08Q18" src="https://github.com/user-attachments/assets/78f2796f-895d-456f-9557-e8f20bd905f4" />
+
+
+## Ans:
+
+
+**(a)** 
+
+
+
+---
 
 
