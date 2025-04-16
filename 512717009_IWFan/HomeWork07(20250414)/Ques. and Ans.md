@@ -158,27 +158,7 @@ $$
 
 **(a)**  OLS 回歸與信賴區間估計
 
-Residuals:
-     Min       1Q      Median       3Q       Max 
-  -1198.14  -295.31    17.98      287.54    1549.41 
-
-Coefficients:
-            Estimate      Std.    Error   t value Pr(>|t|)    
-(Intercept) -391.548    169.775  -2.306   0.0221 *  
-income        14.201      1.800   7.889   2.10e-13 ***
-age           15.741      3.757   4.189   4.23e-05 ***
-kids         -81.826     27.130  -3.016   0.0029 ** 
----
-Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
-
-Residual standard error: 452.3 on 196 degrees of freedom
-Multiple R-squared:  0.3406,	Adjusted R-squared:  0.3305 
-F-statistic: 33.75 on 3 and 196 DF,  p-value: < 2.2e-16
-
-> confint(model, "kids", level = 0.95)
-         2.5 %    97.5 %
-kids -135.3298 -28.32302
-
+<img width="580" alt="2" src="https://github.com/user-attachments/assets/18e45cdb-d69f-4f6d-9249-ac86ae3c12b6" />
 
 回歸結果（關注 KIDS 變數）
 
