@@ -289,27 +289,34 @@ $$
 
 並使用 **GLS (Generalized Least Squares)** 與 **Robust GLS (HC1 標準誤)** 進行估計。
 
+
+<img width="752" alt="76" src="https://github.com/user-attachments/assets/0a216a8a-01b5-4eaf-aceb-a53ad2d8477f" />
+
+
 GLS 模型結果（KIDS）
 
 - KIDS 估計值**：  
-  β̂₄ = -92.44 \)
+  β̂₄ = -76.806 
 
 - 標準誤（GLS）**：  
-  SE = 39.37 
+  SE = 21.848 
 
 - 95% 信賴區間**：  
   \[
-  [-170.09, -14.80]
+  [-119.8945, -33.71808]
   \]
 
 Robust GLS 標準誤（White HC1）
 
+<img width="832" alt="77" src="https://github.com/user-attachments/assets/7e6e0407-8cea-4477-b31d-a086055b8b0d" />
+
+
 - 標準誤：  
-  SE_robust = 39.37 \)（與 GLS 相同，因模型已使用 robust SE）
+  SE_robust = 22.6186
 
 - 95% 信賴區間：  
   \[
-  [-170.09, -14.80]
+  [-121.139, -32.474]
   \]
 
 與(a)(d)小題比較：
