@@ -241,6 +241,8 @@ $$
 
 **(d)** 使用異質變異數穩健標準誤（White robust SE）重新估計
 
+<img width="723" alt="3" src="https://github.com/user-attachments/assets/af6c758f-ef60-4944-afab-16af2e857e8d" />
+
 模型結果（KIDS）
 
 - KIDS 估計值：
