@@ -181,11 +181,13 @@ $$
 
 1. **殘差 vs INCOME**
 
-<img width="415" alt="Residuals vs Income" src="https://github.com/user-attachments/assets/79bb8cb7-72c1-42dc-89fb-15d05bd81344" />
+<img width="574" alt="Residuals vs Income_a" src="https://github.com/user-attachments/assets/edf37c40-96e2-4bb3-afc6-e384339264df" />
+
 
 2. **殘差 vs AGE**
 
-<img width="415" alt="Residuals vs Age" src="https://github.com/user-attachments/assets/4df526d3-9ef3-4633-8340-befd11dc8c33" />
+<img width="585" alt="Residuals vs Age_a" src="https://github.com/user-attachments/assets/0ce34b44-fa92-4df3-a4d5-ca3517804cf6" />
+
 
 觀察結果
 
