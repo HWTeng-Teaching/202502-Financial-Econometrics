@@ -1,1 +1,6 @@
-
+# 設定資料集的 URL
+url <- "https://www.principlesofeconometrics.com/poe5/data/rdata/vacation.rdata"
+download.file(url, destfile = "vacation.rdata")  # 下載資料集並儲存為本地檔案
+load("vacation.rdata")  # 載入資料集
+names(vacation)  # 確認變數名稱
+data <- vacation  # 讀取數據 (已載入 vacation.rdata) 使用簡單變數名稱
