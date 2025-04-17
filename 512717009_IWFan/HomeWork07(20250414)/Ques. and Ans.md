@@ -375,8 +375,7 @@ KIDS 變數的估計結果
 | 樣本數 \( n \)             | 9799             |
 | \( NR²  \)（殘差平方迴歸） | 0.0024           |
 | \( NR²  \) 統計量         | **23.5568**       |
-| <img width="87" alt="1" src="https://github.com/user-attachments/assets/d8b8a84c-9ce2-4d77-bea6-1a936f36f30b" />
- | **11.3449**       |
+| <img width="87" alt="1" src="https://github.com/user-attachments/assets/d8b8a84c-9ce2-4d77-bea6-1a936f36f30b" />| **11.3449**       |
 
 
 結論：
