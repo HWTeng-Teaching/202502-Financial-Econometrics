@@ -453,9 +453,9 @@ KIDS 變數的估計結果
 
 為處理異質變異數，本題採用 **FGLS（Feasible GLS）** 方法：
 
-1. 使用 OLS 殘差平方 \( \hat{e}_i^2 \)
-2. 以 \( \log(\hat{e}_i^2) \sim METRO + EXPER \) 建模異質變異結構
-3. 根據預測值 \( \hat{h}_i \) 建立權重 \( w_i = 1/\hat{h}_i \)
+1. 使用 OLS 殘差平方 ê²
+2. 以 \( log(ê²) \sim METRO + EXPER \) 建模異質變異結構
+3. 根據預測值 \( ĥᵢ) 建立權重 \( w_i = 1/\ĥᵢ \)
 4. 實施加權最小平方法（WLS）
 
 FGLS 模型估計結果：
