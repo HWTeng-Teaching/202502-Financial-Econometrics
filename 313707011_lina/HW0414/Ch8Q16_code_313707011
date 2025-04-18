@@ -45,7 +45,7 @@ SSE_high <- sum(resid(model_high)^2)
 alpha <- 0.05
 df <- 90 - 4  # 自由度
 F_stat <- (SSE_high / df) / (SSE_low / df)  # 計算 Goldfeld-Quandt 檢驗統計量
-F_critical_upper <- qf(1 - alpha, df, df)   # 計算 F 分佈右尾臨界值）
+F_critical_upper <- qf(1 - alpha, df, df)   # 計算 F 分佈右尾臨界值
 
 library(lmtest)   # 用於計算GQ test
 # 題目指定使用前 90 與後 90 筆樣本，故總共剔除 20 筆樣本（200 × 0.1）
