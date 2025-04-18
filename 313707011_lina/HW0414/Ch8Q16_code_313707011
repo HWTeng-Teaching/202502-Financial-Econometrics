@@ -58,7 +58,7 @@ print(gq_result)
 
 # 8.16(d)
 library(sandwich)   # 用於計算Robust SE
-library(lmtest)   # 用於檢驗和計算Robust SE的模型摘要
+library(lmtest)   # 用於檢驗和計算Robust SE的模型摘要 for coeftest()
 
 robust_se <- vcovHC(model_ols, type = "HC1")    # 使用異質變異穩健標準誤 (Huber-White)
 coeftest(model_ols, vcov = robust_se)   # 使用 coeftest 檢視 robust t-value
