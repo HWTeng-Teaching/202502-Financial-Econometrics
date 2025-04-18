@@ -349,6 +349,10 @@ kids的95%信賴區間：
 
 ## Ans:
 
+<img width="653" alt="2" src="https://github.com/user-attachments/assets/7cb3d475-8451-4115-88ca-e127239452c2" />
+
+
+
 **(a)**  Goldfeld–Quandt 檢定：檢驗男性與女性的誤差變異是否相同
 
 檢定假設：
