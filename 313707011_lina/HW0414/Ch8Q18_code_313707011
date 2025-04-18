@@ -1,0 +1,7 @@
+# 設定資料集的 URL
+url <- "https://www.principlesofeconometrics.com/poe5/data/rdata/cps5.rdata"
+download.file(url, destfile = "cps5.rdata")  # 下載資料集並儲存為本地檔案
+load("cps5.rdata")  # 載入資料集
+names(cps5)  # 確認變數名稱
+data <- cps5  # 讀取數據 (已載入 cps5.rdata) 使用簡單變數名稱
+str(cps5) # 查看資料結構
