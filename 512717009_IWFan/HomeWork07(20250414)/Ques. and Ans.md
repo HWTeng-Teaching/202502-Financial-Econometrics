@@ -325,8 +325,15 @@ KIDS 變數的估計結果
 
 解釋與比較：
 
-- GLS 模型的估計值與 OLS 相比 **略小**（影響較弱），但其 **標準誤顯著縮小**。
-- 使用 robust GLS 後，標準誤略微上升，但仍 **明顯小於 robust OLS**。
+kids係數：
+- GLS 模型的估計值與 OLS 相比 **略小**（影響較弱），因為GLS使用權重1/INCOME²i，給予低income觀測更大權重，改變了估計。 Robust GLS係數與GLS相同，因為Robust SE不影響點估計。
+
+kids 標準誤:
+- GLS模型因考慮heteroskedasticity結構，標準誤相對較小，推論更有效率。
+
+kids的95%信賴區間：
+- GLS信賴區間【-119.894,-33.718】比OLS【-135.329,-28.232】窄，估計更精確
+- Robust GLS信賴區間【-121.139,-32.474】比GLS略寬，但仍優於OLS與Robust OLS
 - Robust GLS 確實提供更窄的信賴區間與更有效的估計，顯示推論更精確。
 
 
