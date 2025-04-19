@@ -8,9 +8,6 @@ str(data)
 
 
 # 8.18(a)
-model_ols <- lm(log(wage) ~ educ + exper + I(exper^2) + female + black + 
-              metro + south + midwest + west, data = data)
-
 # 分割資料為男性和女性子樣本
 data_male <- subset(data, female == 0)
 data_female <- subset(data, female == 1)
@@ -20,6 +17,9 @@ model_male <- lm(log(wage) ~ educ + exper + I(exper^2) + black +
 model_female <- lm(log(wage) ~ educ + exper + I(exper^2) + black + 
                      metro + south + midwest + west, data = data_female)
 
+summary(model_male)
+summary(model_female)
+
 # 獲取每個模型的殘差平方和(SSE)和自由度(df)
 sse_male <- sum(model_male$residuals^2)
 sse_female <- sum(model_female$residuals^2)
@@ -28,18 +28,22 @@ df_female <- model_female$df.residual
 
 # 計算F統計量 (方差比)
 # 以男性為分子，女性為分母計算F統計量
-F_stat <- (sse_male/df_male)/(sse_female/df_female)
+F_stat <- (sse_male/df_male) / (sse_female/df_female)
 
 # 計算 F 分佈臨界值（5%顯著水準）
 F_critical_upper <- qf(1 - 0.05/2, df_male, df_female) 
 F_critical_lower <- qf(0.05/2, df_male, df_female) 
 
-cat("自由度：", df_male, "和", df_female, "\n")
 cat("F統計量值：", F_stat,"\n")
 cat("5%顯著水準的臨界值：", F_critical_lower,"和", F_critical_upper, "\n")
 
 
 # 8.18(b)
+# OLS
+model_ols <- lm(log(wage) ~ educ + exper + I(exper^2) + female + black + 
+                  metro + south + midwest + west, data = data)
+summary(model_ols)
+
 residuals_squared <- resid(model_ols)^2   # 獲取殘差平方
 
 # 輔助回歸：殘差平方對 METRO、FEMALE、BLACK
@@ -102,14 +106,12 @@ cat("5% 顯著水準的臨界值:", critical_value_white, "\n")
 library(sandwich)   # 用於計算Robust SE
 library(lmtest)     # for coeftest()
 
-summary(model_ols)  # OLS 傳統標準誤
-
 # White 穩健標準誤
 robust_results <- coeftest(model_ols, vcov = vcovHC(model_ols, type = "HC0"))
 print(robust_results)
 
 # 比較標準誤、信賴區間(OLS vs Robust OLS)
-se_ols <- summary(model)$coefficients[, "Std. Error"]   # OLS 標準誤
+se_ols <- summary(model_ols)$coefficients[, "Std. Error"]   # OLS 標準誤
 ci_ols <- confint(model_ols)   # OLS 信賴區間
 se_ols_robust <- sqrt(diag(vcovHC(model_ols, type = "HC0")))      # OLS 標準誤（以 robust SE）
 ci_ols_robust <- coefci(model_ols, vcov. = vcovHC(model_ols, type = "HC0"))   # OLS 信賴區間（以 robust SE）
@@ -126,23 +128,11 @@ comparison_d <- data.frame(
 )
 print(comparison_d)
 
-# 比較顯著性(OLS vs Robust OLS)
-p_ols <- summary(model_ols)$coefficients[, "Pr(>|t|)"]  # OLS p-value
-p_ols_robust <- robust_results[, "Pr(>|t|)"]    # OLS p-value（以 robust SE）
-significance_comparison <- data.frame(
-  OLS_p = p_ols,
-  OLS_Robust_p = p_ols_robust,
-  OLS_Significant = p_ols < 0.05,
-  OLS_Robust_Significant = p_ols_robust < 0.05,
-  Consistent = (p_ols < 0.05) == (p_ols_robust < 0.05)
-)
-print(significance_comparison)
-
-
 # 8.18(e)
 # 對殘差平方取對數，對METRO和EXPER進行回歸，建立誤差變異模型
-log_resid_sq <- log(residuals_squared)   
+log_resid_sq <- log(resid(model_ols)^2)   
 model_var <- lm(log_resid_sq ~ metro + exper, data = data)
+summary(model_var)
 
 # 計算權重 (1/標準差)
 sigma_sq <- exp(fitted(model_var))
