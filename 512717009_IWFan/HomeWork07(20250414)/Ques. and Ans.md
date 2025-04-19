@@ -31,7 +31,7 @@ $$
 **F 檢定統計量：**
 
 $$
-GQ = \frac{\hat{\sigma}_M^2}{\hat{\sigma}_F^2} = \frac{169.567}{144.5766} \approx 1.173
+F = \frac{\hat{\sigma}_M^2}{\hat{\sigma}_F^2} = \frac{169.567}{144.5766} \approx 1.173
 $$
 
 **查表：**  
