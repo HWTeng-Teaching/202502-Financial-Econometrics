@@ -39,13 +39,19 @@ data_high <- data_sorted[(n-89):n, ]  # 選取後 90 個觀測值（高收入組
 model_low <- lm(miles ~ income + age + kids, data = data_low)
 model_high <- lm(miles ~ income + age + kids, data = data_high)
 
+summary(model_low)
+summary(model_high)
+
 SSE_low <- sum(resid(model_low)^2)    # 計算殘差平方和（SSE）
 SSE_high <- sum(resid(model_high)^2)
 
 alpha <- 0.05
 df <- 90 - 4  # 自由度
 F_stat <- (SSE_high / df) / (SSE_low / df)  # 計算 Goldfeld-Quandt 檢驗統計量
-F_critical_upper <- qf(1 - alpha, df, df)   # 計算 F 分佈右尾臨界值
+F_critical_upper <- qf(1 - alpha, df, df)   # 計算 F 分佈右尾臨界值）
+
+F_stat
+F_critical_upper
 
 library(lmtest)   # 用於計算GQ test
 # 題目指定使用前 90 與後 90 筆樣本，故總共剔除 20 筆樣本（200 × 0.1）
@@ -58,11 +64,11 @@ print(gq_result)
 
 # 8.16(d)
 library(sandwich)   # 用於計算Robust SE
-library(lmtest)   # 用於檢驗和計算Robust SE的模型摘要 for coeftest()
+library(lmtest)   # 用於檢驗和計算Robust SE的模型摘要
 
 robust_se <- vcovHC(model_ols, type = "HC1")    # 使用異質變異穩健標準誤 (Huber-White)
 coeftest(model_ols, vcov = robust_se)   # 使用 coeftest 檢視 robust t-value
-coefci(model_ols, vcov. = robust_se, level = 0.95)    # OLS 信賴區間（以 robust SE）
+coefci(model_ols, vcov. = robust_se, level = 0.95)    # 信賴區間（以 robust SE）
 
 
 # 8.16(e)
