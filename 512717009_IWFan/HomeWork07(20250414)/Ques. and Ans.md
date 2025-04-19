@@ -46,6 +46,12 @@ $$
 
 **(b)** 檢驗已婚與單身者的誤差變異數是否不同
 
+題目模型：
+
+$$
+\text{WAGE}_i = \beta_1 + \beta_2 \text{EDUC}_i + \beta_3 \text{EXPER}_i + \beta_4 \text{METRO}_i + \beta_5 \text{FEMALE}_i+  e_i
+$$
+
 **資料：**
 - 單身：\( n = 400 \, df=400-5=395), SSE = 56231.0382
 - 已婚：\( n = 600 \, df=600-5=595), SSE = 100703.0471
