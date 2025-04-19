@@ -87,9 +87,9 @@ $$
 
 **(c)** \( NR² \) 檢定（異質變異數檢定）
 
-H_0:α_2=α_3=α_4=α_5=0(homoskedasticity)
+H_0:α_2=α_3=α_4=α_5=0(homoskedasticity同質變異)
 
-H_1:not all the α_i in Ho are zero(hetroskedasticity)
+H_1:not all the α_i in Ho are zero(hetroskedasticity異質變異)
 
 公式：NR² ~ χ²_{α,S-1} 
 
