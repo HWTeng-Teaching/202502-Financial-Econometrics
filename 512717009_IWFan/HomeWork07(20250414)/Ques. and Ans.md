@@ -91,9 +91,9 @@ H_0:α_2=α_3=α_4=α_5=0(homoskedasticity同質變異)
 
 H_1:not all the α_i in Ho are zero(hetroskedasticity異質變異)
 
-公式：NR² ~ χ²_{α,S-1} 
+公式：NR² ~ χ²_{1-α,S-1} 
 
-NR² = 59.03 ＞ χ²_{0.95,5-1} = 9.49
+NR² = 59.03 ＞ χ²_{1-0.05,5-1} = 9.49
 
 
 **結論：**  
