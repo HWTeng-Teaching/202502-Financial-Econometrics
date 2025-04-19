@@ -186,7 +186,7 @@ $$
 - 標準誤（Standard Error）**：
  SE(β̂₄) = 27.130
 
-- t critical value 1.97214
+- t est = 1.97214
 
 - 95% 信賴區間**為：
   \[
