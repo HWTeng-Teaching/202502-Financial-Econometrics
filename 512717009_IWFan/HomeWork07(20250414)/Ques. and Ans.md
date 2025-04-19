@@ -28,10 +28,10 @@ $$
 \hat{\sigma}_M^2 = \frac{\text{SSE}_M}{df_M} = \frac{97161.9174}{573} \approx 169.567
 $$
 
-**F 檢定統計量：**
+**檢定統計量：**
 
 $$
-F = \frac{\hat{\sigma}_M^2}{\hat{\sigma}_F^2} = \frac{169.567}{144.5766} \approx 1.173
+GQ = \frac{\hat{\sigma}_M^2}{\hat{\sigma}_F^2} = \frac{169.567}{144.5766} \approx 1.173
 $$
 
 **查表：**  
@@ -64,10 +64,10 @@ $$
 σ²_ MARRIED = \frac{100703.0471}{600-5} = 169.248
 $$
 
-**F 統計量：**
+**檢定統計量：**
 
 $$
-F = \frac{\hat{\sigma}_MARRIED^2}{\hat{\sigma}_SINGLE^2} = \frac{169.248}{142.357} = 1.1889
+GQ = \frac{\hat{\sigma}_MARRIED^2}{\hat{\sigma}_SINGLE^2} = \frac{169.248}{142.357} = 1.1889
 $$
 
 **查表：**  
