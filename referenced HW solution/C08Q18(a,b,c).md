@@ -26,8 +26,8 @@ There is no significant evidence of heteroskedasticity between males and females
 ### Case 1: Using only `metro`, `female`, and `black` as candidate variables
 
 **Hypothesis:**
-- $H_0$: The variance of the error term is unrelated to metro, female, and black; that is, the errors are homoskedastic.  
-- $H_1$: The variance of the error term is related to at least one of the variables (metro, female, or black); that is, heteroskedasticity is present.
+- $H_0$: Error variance is constant and unrelated to metro, female, or black.  
+- $H_1$: Error variance depends on at least one of metro, female, or black.
 
 **Through R programming, we obtain the following results:**
 
@@ -44,8 +44,8 @@ This indicates that heteroskedasticity is present.
 ### Case 2: Using all explanatory variables as candidate variables
 
 **Hypothesis:**
-- $H_0$: The variance of the error term is unrelated to all explanatory variables; that is, the errors are homoskedastic.  
-- $H_1$: The variance of the error term is related to at least one explanatory variable; that is, heteroskedasticity is present.
+- $H_0$: Error variance is constant and unrelated to all regressors.  
+- $H_1$: Error variance depends on at least one regressor.
 
 **Through R programming, we obtain the following results:**
 
