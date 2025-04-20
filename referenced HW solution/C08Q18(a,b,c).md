@@ -3,7 +3,7 @@
 ![image](https://github.com/user-attachments/assets/1a79a574-9e6c-4304-92d7-a5222eb4822c)
 
 
-### (a) 
+## (a) 
 **Hypothesis:**
 
 - $H_0$: $\sigma^2_{\text{male}} = \sigma^2_{\text{female}}$ (homoskedasticity)
@@ -23,7 +23,6 @@ There is no significant evidence of heteroskedasticity between males and females
 
 ---
 ## (b)
-### (b) 
 ### Case 1: Using only `metro`, `female`, and `black` as candidate variables
 
 **Hypothesis:**
