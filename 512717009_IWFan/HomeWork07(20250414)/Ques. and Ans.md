@@ -357,7 +357,7 @@ kids的95%信賴區間：
 
 ## Ans:
 
-<img width="653" alt="2" src="https://github.com/user-attachments/assets/7cb3d475-8451-4115-88ca-e127239452c2" />
+<img width="587" alt="3" src="https://github.com/user-attachments/assets/47006a24-5373-4be2-b6f7-ae280132e7b9" />
 
 ---
 
