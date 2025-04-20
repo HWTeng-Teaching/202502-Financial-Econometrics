@@ -10,6 +10,7 @@
 **Alternative Hypothesis (H₁):**  
 σ²_M ≠ σ²_F
 
+Hypothesis:
 
 - $H_0$: $\sigma^2_{\text{low income}} = \sigma^2_{\text{high income}}$ (homoskedasticity)
 - $H_1$: $\sigma^2_{\text{high income}} \neq \sigma^2_{\text{low income}}$ (heteroskedasticity)
