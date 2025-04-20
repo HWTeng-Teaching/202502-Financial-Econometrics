@@ -23,6 +23,12 @@ There is no significant evidence of heteroskedasticity between males and females
 
 ## (b) 
 **Case 1**
+
 **Hypothesis:**
 - $H_0$: The variance of the error term is unrelated to metro, female, and black; that is, the errors are homoskedastic
 - $H_1$: The variance of the error term is related to at least one of the variables (metro, female, or black); that is, heteroskedasticity is present.
+  
+**Through R programing, we can get the result:**
+
+**Test Statistic (NR^2 test):**  
+1.05076
