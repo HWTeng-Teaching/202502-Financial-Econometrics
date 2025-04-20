@@ -62,3 +62,5 @@ Again, the p-value is far below 0.01. We strongly reject the null hypothesis, co
 Although the Goldfeld–Quandt test in part (a) showed no evidence of unequal variances by gender,  
 the NR² test results in part (b) reveal that heteroskedasticity is present in the model and may be related to other variables such as metro or black.  
 Therefore, the evidence from this test complements and expands upon the findings in part (a).
+
+## (c) 
