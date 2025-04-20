@@ -1,68 +1,67 @@
 
-# 第18題：異質變異數檢定與修正分析
-# 載入必要套件
-library(car)
-library(lmtest)
-library(sandwich)
+# 套件載入 -------------------------------
 library(dplyr)
+library(lmtest)
+library(car)
+library(sandwich)
 
-# 正確載入 .rdata 資料檔
-load(url("http://www.principlesofeconometrics.com/poe5/data/rdata/cps5.rdata"))
+# 資料載入 -------------------------------
+cps5 <- read.csv("https://www.principlesofeconometrics.com/poe5/data/rdata/cps5.rdata")
 
-# 資料框命名為 data（與後續程式碼一致）
-data <- cps5
-names(data) <- toupper(names(data))  # 統一欄位名稱為大寫
+# OLS 模型 -------------------------------
+ols_model <- lm(log(WAGE) ~ EDUC + EXPER + I(EXPER^2) + FEMALE + BLACK +
+                  METRO + SOUTH + MIDWEST + WEST, data = cps5)
 
-# 基礎 OLS 回歸模型
-model_ols <- lm(WAGE ~ EDUC + EXPER + I(EXPER^2) + FEMALE + BLACK + METRO + SOUTH + MIDWEST + WEST, data = data)
-summary(model_ols)
+# a. Goldfeld–Quandt test -----------------
+gq_result <- gqtest(ols_model, order.by = ~ FEMALE, data = cps5, fraction = 0.2)
+print(gq_result)
+# 解釋：檢定殘差變異在 FEMALE=0 與 FEMALE=1 是否相等。若 p < 0.05，則拒絕 H0，有異質變異。
 
-# === (a) Goldfeld–Quandt Test：比較男性與女性變異數 ===
-data_male <- subset(data, FEMALE == 0)
-data_female <- subset(data, FEMALE == 1)
+# b. NR^2 Test ----------------------------
+# 以 METRO, FEMALE, BLACK 為解釋變數檢定異質變異
+res_sq <- residuals(ols_model)^2
+nr2_model <- lm(res_sq ~ METRO + FEMALE + BLACK, data = cps5)
+nr2 <- summary(nr2_model)$r.squared
+n <- nrow(cps5)
+LM_stat <- n * nr2
+pval_b1 <- 1 - pchisq(LM_stat, df = 3)
+print(paste0("NR^2 Test Stat = ", round(LM_stat, 4), ", p-value = ", round(pval_b1, 4)))
 
-model_m <- lm(WAGE ~ EDUC + EXPER + I(EXPER^2) + BLACK + METRO + SOUTH + MIDWEST + WEST, data = data_male)
-model_f <- lm(WAGE ~ EDUC + EXPER + I(EXPER^2) + BLACK + METRO + SOUTH + MIDWEST + WEST, data = data_female)
+# 全部解釋變數做 NR^2 test
+nr2_full_model <- lm(res_sq ~ EDUC + EXPER + I(EXPER^2) + FEMALE + BLACK +
+                       METRO + SOUTH + MIDWEST + WEST, data = cps5)
+nr2_full <- summary(nr2_full_model)$r.squared
+LM_stat_full <- n * nr2_full
+pval_b2 <- 1 - pchisq(LM_stat_full, df = 9)
+print(paste0("Full NR^2 Test Stat = ", round(LM_stat_full, 4), ", p-value = ", round(pval_b2, 4)))
 
-sse_m <- sum(resid(model_m)^2)
-sse_f <- sum(resid(model_f)^2)
-f_stat <- sse_m / sse_f
-f_stat
-
-df_m <- df.residual(model_m)
-df_f <- df.residual(model_f)
-qf(c(0.025, 0.975), df1 = df_m, df2 = df_f)
-
-# === (b) NR² test：誤差平方對 METRO、FEMALE、BLACK 迴歸 ===
-res2 <- resid(model_ols)^2
-aux_model <- lm(res2 ~ METRO + FEMALE + BLACK, data = data)
-n <- nrow(data)
-nr2 <- n * summary(aux_model)$r.squared
-nr2
-qchisq(0.99, df = 3)  # α = 1%
-
-# === (c) 簡化版 White Test：避免記憶體錯誤 ===
-white_test <- bptest(model_ols, ~ fitted(model_ols) + I(fitted(model_ols)^2))
+# c. White Test ---------------------------
+white_test <- bptest(ols_model, ~ fitted(ols_model) + I(fitted(ols_model)^2))
 print(white_test)
+# 解釋：White test 的臨界值為 χ²(2) 的 5% 臨界值，若 p < 0.05，表示存在異質變異。
 
-# === (d) OLS vs White Robust SE ===
-coeftest(model_ols, vcov = vcovHC(model_ols, type = "HC1"))
+# d. OLS with Robust SE -------------------
+coeftest_robust <- coeftest(ols_model, vcov = vcovHC(ols_model, type = "HC1"))
+print(coeftest_robust)
 
-# === (e) FGLS：log(e²) ~ METRO + EXPER，過濾非法權重值並修正欄位 ===
-log_res2 <- log(resid(model_ols)^2)
-fitted_var_model <- lm(log_res2 ~ METRO + EXPER, data = data)
-h_hat <- fitted(fitted_var_model)
-w <- 1 / exp(h_hat)
+# e. FGLS using METRO and EXPER ----------
+# Step 1: 用 METRO 和 EXPER 擬合殘差平方
+res_sq <- residuals(ols_model)^2
+log_res_model <- lm(log(res_sq) ~ METRO + EXPER, data = cps5)
+pred_log_var <- predict(log_res_model)
+weights <- 1 / exp(pred_log_var)
 
-# 過濾權重中的無窮值與非正數，並大寫欄位名稱
-valid_index <- is.finite(w) & w > 0
-data_valid <- data.frame(data[valid_index, ])
-names(data_valid) <- toupper(names(data_valid))
-w_valid <- w[valid_index]
+# Step 2: 加權最小平方法 (WLS)
+fgls_model <- lm(log(WAGE) ~ EDUC + EXPER + I(EXPER^2) + FEMALE + BLACK +
+                   METRO + SOUTH + MIDWEST + WEST, data = cps5, weights = weights)
+summary(fgls_model)
 
-model_fgls <- lm(WAGE ~ EDUC + EXPER + I(EXPER^2) + FEMALE + BLACK + METRO + SOUTH + MIDWEST + WEST,
-                 weights = w_valid, data = data_valid)
-summary(model_fgls)
+# f. FGLS with robust SE ------------------
+coeftest_fgls_robust <- coeftest(fgls_model, vcov = vcovHC(fgls_model, type = "HC1"))
+print(coeftest_fgls_robust)
 
-# === (f) FGLS + Robust SE ===
-coeftest(model_fgls, vcov = vcovHC(model_fgls, type = "HC1"))
+# g. 報告建議 -----------------------------
+cat("\n建議：\n")
+cat("如果模型存在顯著的異質變異數（如 a~c 顯示），建議使用 FGLS 或 OLS with robust SE。\n")
+cat("FGLS 更有效率（smaller standard errors），但其估計需要對變異結構做出假設。\n")
+cat("若報告需強調穩健性，可優先選擇 OLS with robust SE。\n")
