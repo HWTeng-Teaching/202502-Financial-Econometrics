@@ -62,7 +62,6 @@ ci_robust <- c(
   upper = coef_wls["kids"] + z_val * se_robust_kids
 )
 
-# ========== 印出結果 ==========
 cat("Conventional GLS 95% CI for kids:\n")
 print(ci_conventional)
 
@@ -70,3 +69,60 @@ cat("Robust GLS 95% CI for kids:\n")
 print(ci_robust)
 
 #8.18
+form <- log(wage) ~ educ + exper + I(exper^2) + female + black +
+  metro + south + midwest + west
+#(a)
+# 將資料依 female 排序，分為男性 (0) 與女性 (1)
+cps_m <- cps5 %>% filter(female == 0)
+cps_f <- cps5 %>% filter(female == 1)
+
+# 回歸模型
+model_m <- lm(form, data = cps_m)
+model_f <- lm(form, data = cps_f)
+
+# 計算 SSE 與 F 統計量
+sse_m <- sum(resid(model_m)^2)
+sse_f <- sum(resid(model_f)^2)
+df_m <- df.residual(model_m)
+df_f <- df.residual(model_f)
+F_stat <- (sse_m/df_m) / (sse_f/df_f)
+crit <- qf(0.975, df_m, df_f)
+
+c(F_stat = F_stat, Critical = crit)
+#(b)
+model_ols <- lm(form, data = cps5)
+e2 <- resid(model_ols)^2
+
+# 次迴歸：誤差平方 ~ METRO, FEMALE, BLACK
+nr2_model <- lm(e2 ~ metro + female + black, data = cps5)
+NR2 <- summary(nr2_model)$r.squared * nrow(cps5)
+
+# 臨界值
+crit <- qchisq(0.99, df = 3)
+c(NR2 = NR2, Critical = crit)
+#(c)
+# 使用所有變數 + 平方 + 交互作用
+white_model <- lm(e2 ~ .^2, data = model.matrix(model_ols)[, -1] %>% as.data.frame())
+white_stat <- summary(white_model)$r.squared * nrow(cps5)
+crit_white <- qchisq(0.95, df = length(coef(white_model)) - 1)
+
+c(White_stat = white_stat, Critical = crit_white)
+#(d)
+# 比較 OLS vs robust SE
+coeftest(model_ols)                    # 常規 SE
+coeftest(model_ols, vcov. = vcovHC)   # White robust SE
+#(e)
+# 次迴歸：log(resid^2) on METRO, EXPER
+loge2 <- log(resid(model_ols)^2)
+aux_model <- lm(loge2 ~ metro + exper, data = cps5)
+fitted_var <- exp(fitted(aux_model))
+
+# WLS (FGLS)
+fgls_model <- lm(form, data = cps5, weights = 1 / fitted_var)
+confint(fgls_model, "female", level = 0.95)  # 或其他變數
+#(f)
+# robust 標準誤配合 FGLS
+coeftest(fgls_model, vcov. = vcovHC)
+#(g)
+#使用 OLS + robust SE 或 FGLS + robust SE ，若能合理建模誤差結構，FGLS較佳
+
