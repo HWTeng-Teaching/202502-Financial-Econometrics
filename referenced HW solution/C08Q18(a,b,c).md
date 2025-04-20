@@ -65,3 +65,13 @@ the NR² test results in part (b) reveal that heteroskedasticity is present in t
 Therefore, the evidence from this test complements and expands upon the findings in part (a).
 
 ## (c) 
+**Through R programming, we obtain the following results:**
+
+- **Test Statistic (NR²):** 158.67
+- **Degrees of freedom:** 33
+- **p-value:** 2.2 × 10⁻¹⁶
+- **5% critical value** (χ² with 33 degrees of freedom): 47.40
+
+**Conclusion:**  
+Since the test statistic exceeds the critical value, we reject the null hypothesis of homoskedasticity.
+There is strong evidence of heteroskedasticity in the model.
