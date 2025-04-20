@@ -15,14 +15,14 @@ residuals <- resid(model)
 plot(vacation$income, residuals,
      main = "Residuals vs INCOME",
      xlab = "INCOME (in $1000s)", ylab = "Residuals",
-     pch = 20, col = "purple")
-abline(h = 0, col = "orange")
+     pch = 20, col = "blue")
+abline(h = 0, col = "red")
 
 plot(vacation$age, residuals,
      main = "Residuals vs AGE",
      xlab = "AGE", ylab = "Residuals",
-     pch = 20, col = "pink")
-abline(h = 0, col = "blue")
+     pch = 20, col = "orange")
+abline(h = 0, col = "brown")
 ## It looks like the residuals are increasing when the income is larger.
 
 ##(c)
