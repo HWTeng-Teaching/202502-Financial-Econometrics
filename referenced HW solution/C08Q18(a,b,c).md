@@ -8,3 +8,13 @@ Hypothesis:
 
 - $H_0$: $\sigma^2_{\text{male}} = \sigma^2_{\text{female}}$ (homoskedasticity)
 - $H_1$: $\sigma^2_{\text{male}} \neq \sigma^2_{\text{female}}$ (heteroskedasticity)
+
+**Test Statistic (F):**  
+1.05076
+
+**Critical Region (5% significance level):**  
+F < 0.9451 or F > 1.0581
+
+**Conclusion:**  
+Fail to reject the null hypothesis.  
+There is no significant evidence of heteroskedasticity between males and females.
