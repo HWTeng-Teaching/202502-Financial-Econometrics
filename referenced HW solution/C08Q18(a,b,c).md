@@ -4,4 +4,13 @@
 
 
 ## (a) 
+**Null Hypothesis (H₀):**  
+$$
+\sigma_M^2 = \sigma_F^2
+$$
+
+**Alternative Hypothesis (H₁):**    
+$$
+\sigma_M^2 \neq \sigma_F^2
+$$
 
