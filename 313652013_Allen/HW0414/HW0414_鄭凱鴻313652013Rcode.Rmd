@@ -207,7 +207,7 @@ library(lmtest)
 model <- lm(log(wage) ~ educ + exper + I(exper^2) + female + black +
               metro + south + midwest + west, data = cps5)
 
-# White test: 包含一次項、平方項、交乘項（依照課本 8.6.4）
+# White test: 包含一次項、平方項、交乘項
 white_test <- bptest(model, 
                      ~ (educ + exper + female + black + metro + south + midwest + west)^2, 
                      data = cps5)
