@@ -18,3 +18,5 @@ F < 0.9451 or F > 1.0581
 **Conclusion:**  
 Fail to reject the null hypothesis.  
 There is no significant evidence of heteroskedasticity between males and females.
+
+## (b) 
