@@ -21,7 +21,7 @@ F < 0.9451 or F > 1.0581
 Fail to reject the null hypothesis.  
 There is no significant evidence of heteroskedasticity between males and females.
 
----
+
 ## (b)
 ### Case 1: Using only `metro`, `female`, and `black` as candidate variables
 
