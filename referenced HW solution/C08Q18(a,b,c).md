@@ -4,7 +4,7 @@
 
 
 ## (a) 
-##Hypothesis:##
+**Hypothesis:**
 
 - $H_0$: $\sigma^2_{\text{male}} = \sigma^2_{\text{female}}$ (homoskedasticity)
 - $H_1$: $\sigma^2_{\text{male}} \neq \sigma^2_{\text{female}}$ (heteroskedasticity)
