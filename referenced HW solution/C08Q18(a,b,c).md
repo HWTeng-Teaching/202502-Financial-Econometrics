@@ -4,13 +4,7 @@
 
 
 ## (a) 
-**Null Hypothesis (H₀):**  
-σ²_M = σ²_F
-
-**Alternative Hypothesis (H₁):**  
-σ²_M ≠ σ²_F
-
 Hypothesis:
 
-- $H_0$: $\sigma^2_{\text{low income}} = \sigma^2_{\text{high income}}$ (homoskedasticity)
-- $H_1$: $\sigma^2_{\text{high income}} \neq \sigma^2_{\text{low income}}$ (heteroskedasticity)
+- $H_0$: $\sigma^2_{\text{male}} = \sigma^2_{\text{female}}$ (homoskedasticity)
+- $H_1$: $\sigma^2_{\text{male}} \neq \sigma^2_{\text{female}}$ (heteroskedasticity)
