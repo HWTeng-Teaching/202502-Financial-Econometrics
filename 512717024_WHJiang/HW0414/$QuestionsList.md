@@ -46,3 +46,30 @@ e. 假設 σ²ᵢ = σ²INCOMEᵢ²，使用一般 GLS 與異質變異數穩健 
 -------
 
 <img width="598" alt="C08Q18" src="https://github.com/user-attachments/assets/c3bad38a-2eb3-44ec-8ae0-3370bf6cc388" />
+
+
+請考慮以下薪資模型：
+
+ln(WAGEᵢ) = β₁ + β₂EDUCᵢ + β₃EXPERᵢ + β₄EXPERᵢ² + β₅FEMALEᵢ + β₆BLACKᵢ + β₇METROᵢ + β₈SOUTHᵢ + β₉MIDWESTᵢ + β₁₀WESTᵢ + eᵢ
+
+其中 WAGE 是每小時薪資（美元），EDUC 與 EXPER 是年數，METRO = 1 表示居住於都會區。請使用 cps5 資料檔進行本題分析。
+
+a. 我們想知道在控制教育、工作經驗與 METRO 變數相同情況下，男性與女性的薪資變異是否相同。假設 var(eᵢ|xᵢ, FEMALE = 0) = σ²M，var(eᵢ|xᵢ, FEMALE = 1) = σ²F，檢定虛無假設 σ²M = σ²F 對立假設為 σ²M ≠ σ²F。請以 5% 顯著水準執行 Goldfeld–Quandt 檢定，清楚說明檢定統計量與拒絕區域，並做出結論。
+
+b. 使用 OLS 估計模型，並以 METRO、FEMALE、BLACK 為候選變數執行 NR² 異質變異數檢定，在 1% 顯著水準下，結果是否支持 (a) 的結論？接著使用所有解釋變數為候選項再次執行 NR² 檢定。
+
+c. 執行 White 檢定檢查是否存在異質變異數。請列出 5% 顯著水準的臨界值與你的結論。
+
+d. 使用 White 異質變異數穩健標準誤進行 OLS 估計。與傳統標準誤的 OLS 相比，哪些係數的區間估計變窄？哪些變寬？是否有結果矛盾的情形？
+
+e. 使用 METRO 與 EXPER 為候選變數進行 FGLS 估計。該估計的區間估計與 (d) 題 OLS 穩健標準誤相比有何差異？
+
+f. 使用 METRO 與 EXPER 為候選變數進行具穩健標準誤的 FGLS 估計。其區間估計與 (e) 題與 (d) 題的結果相比如何？
+
+g. 若要將此模型的結果寫入研究論文，你會選擇哪一組估計值作為報告？請說明你的理由。
+
+
+
+
+
+
