@@ -30,5 +30,5 @@ There is no significant evidence of heteroskedasticity between males and females
   
 **Through R programing, we can get the result:**
 
-**Test Statistic (NR^2 test):**  
+**Test Statistic (NR² test):**  
 1.05076
