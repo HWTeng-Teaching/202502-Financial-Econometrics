@@ -1,1 +1,72 @@
+#8.16
+#(a)
+m1 <- lm(miles ~ income + age + kids, data = vacation)
+confint(m1, "kids", level = 0.95)
+#(b)
+vacation <- vacation %>% mutate(resid = resid(m1))
+ggplot(vacation, aes(x = income, y = resid)) +
+  geom_point() +
+  geom_hline(yintercept = 0, linetype = "dashed") +
+  labs(title = "Residuals vs. income")
 
+ggplot(vacation, aes(x = age, y = resid)) +
+  geom_point() +
+  geom_hline(yintercept = 0, linetype = "dashed") +
+  labs(title = "Residuals vs. age")
+#可以觀察到不同年齡層的殘差變異性略有不同
+#(C)
+vac_sorted <- vacation %>% arrange(income)
+vac_low  <- vac_sorted[1:90, ]
+vac_high <- vac_sorted[(nrow(vac_sorted)-89):nrow(vac_sorted), ]
+
+m_low  <- lm(miles ~ income + age + kids, data = vac_low)
+m_high <- lm(miles ~ income + age + kids, data = vac_high)
+sse_low <- sum(resid(m_low)^2)
+sse_high <- sum(resid(m_high)^2)
+f_gq <- (sse_high/df.residual(m_high)) / (sse_low/df.residual(m_low))
+crit_gq <- qf(0.95, df.residual(m_high), df.residual(m_low))
+
+c(F_stat = f_gq, critical_val = crit_gq)
+#虛無假設：兩組變異數相等（homoskedasticity）;對立假設：高收入組變異數 > 低收入組（heteroskedasticity）
+#(d)
+vc_rob <- vcovHC(m1, type = "HC0")
+se_rob <- sqrt(vc_rob["kids", "kids"])
+coef_kids <- coef(m1)["kids"]
+z <- qnorm(0.975)
+
+c(lower = coef_kids - z * se_rob,
+  upper = coef_kids + z * se_rob)
+#觀察到信賴區間變寬
+#(e)
+wls_model <- lm(miles ~ income + age + kids,
+                data = vacation,
+                weights = 1 / income^2)
+
+# ========== (1) 常規標準誤：conventional GLS 95% 信賴區間 ==========
+coef_wls <- coef(wls_model)
+se_wls   <- sqrt(diag(vcov(wls_model)))
+t_val <- qt(0.975, df = nrow(vacation) - length(coef_wls))
+
+ci_conventional <- c(
+  lower = coef_wls["kids"] - t_val * se_wls["kids"],
+  upper = coef_wls["kids"] + t_val * se_wls["kids"]
+)
+
+# ========== (2) robust 標準誤（White HC0）：robust GLS 95% CI ==========
+vcov_robust <- vcovHC(wls_model, type = "HC0")
+se_robust_kids <- sqrt(vcov_robust["kids", "kids"])
+z_val <- qnorm(0.975)
+
+ci_robust <- c(
+  lower = coef_wls["kids"] - z_val * se_robust_kids,
+  upper = coef_wls["kids"] + z_val * se_robust_kids
+)
+
+# ========== 印出結果 ==========
+cat("Conventional GLS 95% CI for kids:\n")
+print(ci_conventional)
+
+cat("Robust GLS 95% CI for kids:\n")
+print(ci_robust)
+
+#8.18
