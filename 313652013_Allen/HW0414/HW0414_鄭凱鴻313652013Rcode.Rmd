@@ -117,20 +117,19 @@ coefci(gls_model, vcov. = vcovHC(gls_model, type = "HC1"), level = 0.95)["I(kids
 # **CH8 Question 18**
 
 ```{r}
-setwd("C:/Users/User/Downloads/poe5rdata")
+# 設定工作目錄並載入資料
+setwd("C:/Users/User/Downloads/poe5rdata")  # 根據你提供的位置
 load("cps5.RData")
-ls()
-str(cps5)
 ```
 
 ## **(a) **
 
 ```{r}
-# 分群
+# 分群（依性別）
 male_data <- subset(cps5, female == 0)
 female_data <- subset(cps5, female == 1)
 
-# 對男性與女性分別回歸
+# 對男性與女性分別回歸（不包括 FEMALE 變數，因為已分群）
 model_male <- lm(log(wage) ~ educ + exper + I(exper^2) + black + metro + south + midwest + west, data = male_data)
 model_female <- lm(log(wage) ~ educ + exper + I(exper^2) + black + metro + south + midwest + west, data = female_data)
 
@@ -141,11 +140,11 @@ RSS_female <- sum(residuals(model_female)^2)
 df_male <- df.residual(model_male)
 df_female <- df.residual(model_female)
 
-# Goldfeld–Quandt test statistic
-F_stat <- max(RSS_male/df_male, RSS_female/df_female) / min(RSS_male/df_male, RSS_female/df_female)
-F_stat
+# 計算 Goldfeld–Quandt 檢定統計量
+F_stat <- max(RSS_male/df_male, RSS_female/df_female) / 
+          min(RSS_male/df_male, RSS_female/df_female)
 
-# 臨界值（雙尾 5%）
+# 計算雙尾 5% 顯著水準下的上下臨界值
 alpha <- 0.05
 df1 <- max(df_male, df_female)
 df2 <- min(df_male, df_female)
@@ -153,12 +152,20 @@ df2 <- min(df_male, df_female)
 F_crit_upper <- qf(1 - alpha/2, df1 = df1, df2 = df2)
 F_crit_lower <- 1 / F_crit_upper
 
-c(F_crit_lower, F_crit_upper)
+# 輸出檢定結果
+cat("Goldfeld–Quandt Test Statistic (F):", F_stat, "\n")
+cat("Critical Region: F <", round(F_crit_lower, 4), "or F >", round(F_crit_upper, 4), "\n")
+
+if (F_stat < F_crit_lower || F_stat > F_crit_upper) {
+  cat("Conclusion: Reject the null hypothesis. There is significant evidence of heteroskedasticity between males and females.\n")
+} else {
+  cat("Conclusion: Fail to reject the null hypothesis. There is no significant evidence of heteroskedasticity between males and females.\n")
+}
 ```
 ## **(b) **
 
 ```{r}
-# 原始回歸
+# OLS回歸
 model <- lm(log(wage) ~ educ + exper + I(exper^2) + female + black +
               metro + south + midwest + west, data = cps5)
 
@@ -193,20 +200,21 @@ pchisq(NR2_all, df = 9, lower.tail = FALSE)
 ## **(c) **
 
 ```{r}
-# 載入套件
+# 載入必要套件
 library(lmtest)
 
-# 原迴歸模型
+# 原始模型
 model <- lm(log(wage) ~ educ + exper + I(exper^2) + female + black +
               metro + south + midwest + west, data = cps5)
 
-# White test：輔助回歸包含平方與交乘項
-white_test <- bptest(model, ~ educ + exper + I(exper^2) + female + black +
-                      metro + south + midwest + west + 
-                      I(educ^2) + I(exper^2) + I(female^2) + I(black^2) + 
-                      I(metro^2) + I(south^2) + I(midwest^2) + I(west^2),
-                    data = cps5)
+# White test: 包含一次項、平方項、交乘項（依照課本 8.6.4）
+white_test <- bptest(model, 
+                     ~ (educ + exper + female + black + metro + south + midwest + west)^2, 
+                     data = cps5)
+
+# 顯示檢定結果
 white_test
 
+# 計算 5% 顯著水準下的臨界值（chi-square 分布）
 qchisq(0.95, df = white_test$parameter)
 ```
