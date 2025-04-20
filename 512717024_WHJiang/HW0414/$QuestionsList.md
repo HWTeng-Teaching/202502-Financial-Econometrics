@@ -26,4 +26,23 @@ f. 若在 (b) 模型中加入 MARRIED 變數，其 White 修正後 t 值約為 1
 <img width="585" alt="C08Q16" src="https://github.com/user-attachments/assets/41b22ed3-b14a-4962-93d9-5c0e3f16b254" />
 
 
+我們採樣了 200 個芝加哥家庭，調查美國家庭在度假時平均會開多遠的車。請考慮以下模型：
+
+MILES = β₁ + β₂INCOME + β₃AGE + β₄KIDS + e
+
+MILES 是每年開車的英里數，INCOME 是以千美元為單位的家庭收入，AGE 是成年家庭成員的平均年齡，KIDS 是家庭中的孩童數量。
+
+a. 使用 vacation 資料檔以 OLS 方法估計模型，建構在控制另外兩個變數不變下，孩童數增加一人對里程數影響的 95% 區間估計。
+
+b. 繪製 OLS 殘差對 INCOME 和 AGE 的圖。你是否觀察到任何異質變異數的跡象？
+
+c. 將資料依收入大小排序，分別使用前 90 筆與後 90 筆資料估計模型，並進行 Goldfeld–Quandt 異質變異數檢定（5% 顯著水準）。請寫出虛無與對立假設。
+
+d. 使用異質變異數穩健標準誤以 OLS 方法估計模型，建構孩童數增加一人對里程影響的 95% 區間估計。與 (a) 題的結果相比如何？
+
+e. 假設 σ²ᵢ = σ²INCOMEᵢ²，使用一般 GLS 與異質變異數穩健 GLS 標準誤，建構孩童數增加一人對里程影響的 95% 區間估計。該結果與 (a)、(d) 題相比如何？
+
+
+-------
+
 <img width="598" alt="C08Q18" src="https://github.com/user-attachments/assets/c3bad38a-2eb3-44ec-8ae0-3370bf6cc388" />
