@@ -25,14 +25,19 @@ t_stat_depart
 
 # f
 
-t_stat_ratio <- (coef(model)["trains"] - 3 * coef(model)["reds"]) / sqrt(
-  (summary(model)$coefficients["trains", "Std. Error"])^2 +
-    (3^2 * (summary(model)$coefficients["reds", "Std. Error"])^2)
-)
+b1 <- coef(model)[[1]]
+b2 <- coef(model)[[2]]
+b3 <- coef(model)[[3]]
+b4 <- coef(model)[[4]]
+varb3 <- vcov(model)[3,3]
+varb4 <- vcov(model)[4,4]
+covb3b4 <- vcov(model)[3,4]
+t = (b4 - 3 * b3)/sqrt(varb4 + 9 * varb3 - 2 * 3 * covb3b4)
+
 qt(0.05, 245)
 # -1.651097
-t_stat_ratio
-# -1.830017 
+t
+# -1.825027
 
 # Since t-value < qt(0.05, 245), we reject the null hypothesis, the delay caused by a train is less than three times the delay caused by a red light.
 

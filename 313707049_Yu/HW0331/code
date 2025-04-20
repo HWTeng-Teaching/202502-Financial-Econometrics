@@ -1,0 +1,48 @@
+#5.31
+(a)
+data("commute5")
+model <- lm(time ~ depart + reds + trains, data = commute5)
+summary(model)
+
+#(b)
+confint(model, level = 0.95)
+cov_matrix <- vcov(model)
+print(cov_matrix)
+
+
+#5.33(a)
+data("cps5_small")
+model <- lm(log(wage) ~ educ + I(educ^2) + exper + I(exper^2) + educ*exper, data = cps5_small)
+
+summary(model)
+
+#(c)
+# Calculate the marginal effect for each observation
+marginal_effects <- 0.08954 + 2 * 0.001458 * cps5_small$educ - 0.001010 * cps5_small$exper
+
+# Calculate percentiles and median
+marginal_effects_summary <- quantile(marginal_effects, probs = c(0.05, 0.5, 0.95))
+
+print(marginal_effects_summary)
+
+# Create a histogram
+ggplot(data.frame(marginal_effects), aes(x = marginal_effects)) +
+  geom_histogram(bins = 30, fill = "blue", color = "black", alpha = 0.7) +
+  labs(title = "Histogram of Marginal Effects",
+       x = "Marginal Effect",
+       y = "Frequency") +theme_minimal()
+
+#(e)
+marginal_effects_exper <- 0.04488 + 2 * (-0.000468) * cps5_small$exper - 0.001010 * cps5_small$educ
+
+marginal_effects_exper_summary <- quantile(marginal_effects_exper, probs = c(0.05, 0.5, 0.95))
+
+print(marginal_effects_exper_summary)
+
+
+ggplot(data.frame(marginal_effects_exper), aes(x = marginal_effects_exper)) +
+  geom_histogram(bins = 30, fill = "blue", color = "black", alpha = 0.7) +
+  labs(title = "Histogram of Marginal Effects for EXPER",
+       x = "Marginal Effect for EXPER",
+       y = "Frequency") +
+  theme_minimal()

@@ -1,0 +1,225 @@
+library(POE5Rdata)
+data(vacation)
+data(cps5)
+
+##8.16(a)
+model <- lm(miles ~ income + age + kids, data = vacation)
+
+summary(model)
+confint(model, "kids", level = 0.95)
+
+##(b)
+residuals <- resid(model)
+
+plot(vacation$income, residuals,
+     main = "Residuals vs INCOME",
+     xlab = "INCOME (in $1000s)", ylab = "Residuals",
+     pch = 20, col = "purple")
+abline(h = 0, col = "orange")
+
+plot(vacation$age, residuals,
+     main = "Residuals vs AGE",
+     xlab = "AGE", ylab = "Residuals",
+     pch = 20, col = "pink")
+abline(h = 0, col = "blue")
+## It looks like the residuals are increasing when the income is larger.
+
+##(c)
+vacation_sorted <- vacation[order(vacation$income), ]
+
+first90 <- vacation_sorted[1:90, ]
+last90 <- vacation_sorted[(nrow(vacation_sorted)-89):nrow(vacation_sorted), ]
+
+model_low <- lm(miles ~ income + age + kids, data = first90)
+model_high <- lm(miles ~ income + age + kids, data = last90)
+
+rss_low <- sum(resid(model_low)^2)
+rss_high <- sum(resid(model_high)^2)
+
+gq_stat <- rss_high / rss_low
+
+df1 <- model_high$df.residual
+df2 <- model_low$df.residual
+
+alpha <- 0.05
+f_crit <- qf(1 - alpha, df1, df2)
+
+cat("GQ statistic:", round(gq_stat, 3), "\n")
+cat("Critical value at 5% level:", round(f_crit, 3), "\n")
+
+if (gq_stat > f_crit) {
+  cat("Reject H₀: Evidence of heteroskedasticity.\n")
+} else {
+  cat("Fail to reject H₀: No evidence of heteroskedasticity.\n")
+}
+
+##(d)
+library(sandwich)
+library(lmtest)
+
+ols_model <- lm(miles ~ income + age + kids, data = vacation)
+
+robust_se <- vcovHC(ols_model, type = "HC1")
+
+coeftest(ols_model, vcov. = robust_se)
+
+confint_robust <- coeftest(ols_model, vcov. = robust_se)
+beta_kids <- confint_robust["kids", 1]
+se_kids <- confint_robust["kids", 2]
+lower <- beta_kids - 1.96 * se_kids
+upper <- beta_kids + 1.96 * se_kids
+
+cat("Robust 95% CI for KIDS:", round(lower, 3), "to", round(upper, 3), "\n")
+## This is wider than the interval in (a)
+
+##(e)
+vacation$weights_gls <- 1 / (vacation$income^2)
+
+gls_model <- lm(miles ~ income + age + kids, data = vacation, weights = weights_gls)
+
+summary(gls_model)
+confint(gls_model, level = 0.95)["kids", ]
+robust_gls_se <- vcovHC(gls_model, type = "HC1")
+coeftest(gls_model, vcov. = robust_gls_se)
+
+beta_kids_gls <- coef(gls_model)["kids"]
+se_kids_gls <- sqrt(robust_gls_se["kids", "kids"])
+
+lower_gls <- beta_kids_gls - 1.96 * se_kids_gls
+upper_gls <- beta_kids_gls + 1.96 * se_kids_gls
+
+cat("Robust GLS 95% CI for KIDS:", round(lower_gls, 3), "to", round(upper_gls, 3), "\n")
+## From the narrowest to the widest:a,d,gls,robust gls
+
+#Q18
+#b
+# Step 1: Fit the original OLS model
+model_main <- lm(log(wage) ~ educ + exper + I(exper^2) + female + black + metro +
+                   south + midwest + west, data = cps5)
+
+# Step 2: Obtain squared residuals
+cps5$resid_sq <- resid(model_main)^2
+
+# Step 3: Auxiliary regression – regress squared residuals on suspected sources of heteroskedasticity
+model_aux <- lm(resid_sq ~ metro + female + black, data = cps5)
+
+# Step 4: Get R-squared from auxiliary regression
+R2_aux <- summary(model_aux)$r.squared
+
+# Step 5: Compute NR² statistic
+N <- nrow(cps5)
+NR2_stat <- N * R2_aux
+NR2_stat
+
+# Step 6: Degrees of freedom = number of regressors in auxiliary regression
+df <- length(coef(model_aux)) - 1  # excluding intercept
+df
+# Step 7: 1% significance level chi-squared critical value
+critical_value <- qchisq(0.99, df)
+critical_value
+# Step 8: Conclusion
+if (NR2_stat > critical_value) {
+  cat("Reject the null hypothesis: evidence of heteroskedasticity at the 1% level\n")
+} else {
+  cat("Fail to reject the null hypothesis: no significant heteroskedasticity at the 1% level\n")
+}
+
+
+#c
+library(lmtest)
+
+# Step 1: Fit the original model
+model_main <- lm(log(wage) ~ educ + exper + I(exper^2) + female + black + metro +
+                   south + midwest + west, data = cps5)
+
+# Step 2: White test using bptest() with all regressors and interactions
+white_test <- bptest(model_main, ~ educ + exper + I(exper^2) + female + black + metro +
+                       south + midwest + west +
+                       I(educ^2) + I(exper^2) + I(female^2) + I(black^2) + I(metro^2) +
+                       I(south^2) + I(midwest^2) + I(west^2), data = cps5)
+
+# Step 3: View test result
+print(white_test)
+
+# white_test <- bptest(
+#   model_main,
+#   ~ educ + exper + I(exper^2) + female + black + metro + south + midwest + west +
+#     I(educ^2) + I(female^2) + I(black^2) + I(metro^2) + 
+#     I(south^2) + I(midwest^2) + I(west^2),
+#   data = cps5
+# )
+# print(white_test)
+
+#d
+library(sandwich)
+library(lmtest) 
+
+
+model_main <- lm(log(wage) ~ educ + exper + I(exper^2) + female + black + metro +
+                   south + midwest + west, data = cps5)
+ols_se <- summary(model_main)$coefficients[, "Std. Error"]
+robust_vcov <- vcovHC(model_main, type = "HC1")
+robust_se <- sqrt(diag(robust_vcov))
+change_pct <- 100 * (robust_se - ols_se) / ols_se
+
+comparison_table <- data.frame(
+  變數 = names(ols_se),
+  `OLS 標準誤` = round(ols_se, 4),
+  `Robust 標準誤` = round(robust_se, 4),
+  `改變幅度 (%)` = paste0(ifelse(change_pct >= 0, "+", ""), round(change_pct, 2), "%")
+  
+)
+
+print(comparison_table, row.names = FALSE)
+ols_ci_female <- confint(model_main)["female", ]
+robust_ci_female <- coefci(model_main, vcov. = robust_vcov)["female", ]
+
+cat("\n95% Confidence Interval for 'female':\n")
+cat("OLS:     [", round(ols_ci_female[1], 4), ",", round(ols_ci_female[2], 4), "]\n")
+cat("Robust:  [", round(robust_ci_female[1], 4), ",", round(robust_ci_female[2], 4), "]\n")
+
+
+#e
+model_ols <- lm(log(wage) ~ educ + exper + I(exper^2) + female + black + metro +
+                  south + midwest + west, data = cps5)
+cps5$resid_sq <- resid(model_ols)^2
+aux_model <- lm(log(resid_sq) ~ metro + exper, data = cps5)
+
+log_sigma2_hat <- fitted(aux_model)
+sigma2_hat <- exp(log_sigma2_hat)
+weights <- 1 / sigma2_hat
+
+model_fgls <- lm(log(wage) ~ educ + exper + I(exper^2) + female + black + metro +
+                   south + midwest + west, data = cps5, weights = weights)
+
+coefs <- coef(model_fgls)
+se <- summary(model_fgls)$coefficients[, "Std. Error"]
+ci <- confint(model_fgls)
+
+fgls_table <- data.frame(
+  變數 = names(coefs),
+  估計值 = round(coefs, 4),
+  標準誤 = round(se, 4),
+  `95% 信賴區間` = paste0("[", round(ci[, 1], 4), ", ", round(ci[, 2], 4), "]")
+)
+
+print(fgls_table, row.names = FALSE)
+
+
+#f
+fgls_coef <- coef(model_fgls)
+fgls_se <- summary(model_fgls)$coefficients[, "Std. Error"]
+fgls_vcov_robust <- vcovHC(model_fgls, type = "HC1")
+fgls_se_robust <- sqrt(diag(fgls_vcov_robust))
+
+se_change_pct <- 100 * (fgls_se_robust - fgls_se) / fgls_se
+
+fgls_se_table <- data.frame(
+  變數 = names(fgls_coef),
+  `FGLS 係數` = round(fgls_coef, 4),
+  `FGLS SE` = round(fgls_se, 4),
+  `Robust SE` = round(fgls_se_robust, 4),
+  `SE 變化 (%)` = paste0(ifelse(se_change_pct >= 0, "+", ""), round(se_change_pct, 2), "%")
+)
+
+print(fgls_se_table, row.names = FALSE)
