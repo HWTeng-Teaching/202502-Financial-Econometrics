@@ -22,13 +22,42 @@ Fail to reject the null hypothesis.
 There is no significant evidence of heteroskedasticity between males and females.
 
 ## (b) 
-**Case 1**
+**Case 1:Using only metro, female, and black as candidate variables**
 
 **Hypothesis:**
-- $H_0$: The variance of the error term is unrelated to metro, female, and black; that is, the errors are homoskedastic
+- $H_0$: The variance of the error term is unrelated to metro, female, and black; that is, the errors are homoskedastic.
 - $H_1$: The variance of the error term is related to at least one of the variables (metro, female, or black); that is, heteroskedasticity is present.
   
 **Through R programing, we can get the result:**
 
-**Test Statistic (NR² test):**  
-1.05076
+**Test Statistic (NR²):**  
+23.5568
+
+**Degrees of freedom:**
+3
+
+**p-value:**
+3.0909×10⁻⁵
+
+**Since the p-value is smaller than 0.01, we reject the null hypothesis of homoskedasticity at the 1% level. This indicates that heteroskedasticity is present.**
+
+**Case 2:Using all explanatory variables as candidate variables:**
+
+**Hypothesis:**
+- $H_0$: The variance of the error term is unrelated to all explanatory variables; that is, the errors are homoskedastic.
+- $H_1$: The variance of the error term is related to at least one explanatory variable; that is, heteroskedasticity is present.
+
+**Through R programing, we can get the result:**
+
+**Test Statistic (NR²):**  
+109.4243
+
+**Degrees of freedom:**
+9
+
+**p-value:**
+1.925849×10⁻¹⁹
+
+**Again, the p-value is far below 0.01. We strongly reject the null hypothesis, concluding that the model exhibits significant heteroskedasticity.**
+
+**Conclusion: Although the Goldfeld–Quandt test in part (a) showed no evidence of unequal variances by gender, the NR² test results in part (b) reveal that heteroskedasticity is present in the model and may be related to other variables such as metro or black. Therefore, the evidence from this test complements and expands upon the findings in part (a).**
