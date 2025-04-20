@@ -9,7 +9,7 @@ Hypothesis:
 - $H_0$: $\sigma^2_{\text{male}} = \sigma^2_{\text{female}}$ (homoskedasticity)
 - $H_1$: $\sigma^2_{\text{male}} \neq \sigma^2_{\text{female}}$ (heteroskedasticity)
 
-**Through R programing, we can get the result: **
+**Through R programing, we can get the result:**
 
 **Test Statistic (F):**  
 1.05076
