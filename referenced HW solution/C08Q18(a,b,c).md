@@ -4,7 +4,7 @@
 
 
 ## (a) 
-Hypothesis:
+##Hypothesis:##
 
 - $H_0$: $\sigma^2_{\text{male}} = \sigma^2_{\text{female}}$ (homoskedasticity)
 - $H_1$: $\sigma^2_{\text{male}} \neq \sigma^2_{\text{female}}$ (heteroskedasticity)
@@ -22,3 +22,4 @@ Fail to reject the null hypothesis.
 There is no significant evidence of heteroskedasticity between males and females.
 
 ## (b) 
+Hypothesis:
