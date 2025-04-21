@@ -208,9 +208,13 @@ model <- lm(log(wage) ~ educ + exper + I(exper^2) + female + black +
               metro + south + midwest + west, data = cps5)
 
 # White test: 包含一次項、平方項、交乘項
-white_test <- bptest(model, 
-                     ~ (educ + exper + female + black + metro + south + midwest + west)^2, 
+cps5$exper2 <- cps5$exper^2  # 和原始模型用的一樣
+
+white_test <- bptest(model,
+                     ~ (educ + exper + exper2 + female + black + metro + south + midwest + west)^2 -
+                       exper2 - I(exper2^2),  # 手動拿掉 exper2 本身與 exper2 的平方
                      data = cps5)
+
 
 # 顯示檢定結果
 white_test
