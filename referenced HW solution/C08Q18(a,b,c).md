@@ -75,10 +75,10 @@ the NR² test results in question (b) reveal that heteroskedasticity is present 
   
 **Through R programming, we obtain the following results:**
 
-- **Test Statistic (NR²):** 158.67
-- **Degrees of freedom:** 33
+- **Test Statistic (NR²):** 165.46
+- **Degrees of freedom:** 41
 - **p-value:** 2.2 × 10⁻¹⁶
-- **5% critical value** (χ² with 33 degrees of freedom): 47.40
+- **5% critical value** (χ² with 41 degrees of freedom): 56.94239
 
 **Conclusion:**  
 Since the test statistic exceeds the critical value, we reject the null hypothesis of homoskedasticity.
