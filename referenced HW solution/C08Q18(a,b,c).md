@@ -11,7 +11,8 @@
 
 **Through R programing, we can get the result:**
 
-**Test Statistic (F):**  
+**Test Statistic (F):**  σ̂²_M / σ̂²_F
+
 1.05076
 
 **Critical Region (5% significance level):**  
