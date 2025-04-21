@@ -11,7 +11,8 @@
 
 **Through R programing, we can get the result:**
 
-$\hat{\sigma}^2_{\text{male}} = \hat{\sigma}^2_{\text{female}}$
+**Test Statistic (NR²):** 
+$\hat{\sigma}^2_{\text{male}}/ \hat{\sigma}^2_{\text{female}}=$
 1.05076
 
 **Critical Region (5% significance level):**  
