@@ -7,6 +7,8 @@ d.
 
 ![image](https://github.com/user-attachments/assets/fe211618-1511-4991-ad30-8b8a32f0b6d8)
 ![image](https://github.com/user-attachments/assets/afed8c5a-f364-40f6-b428-7df779b00a41)
+![image](https://github.com/user-attachments/assets/1bfb115b-3aa8-4980-b87a-9ea3d90823ba)
+
 
 Traditional OLS standard errors assume constant error variance (homoskedasticity). If this assumption is violated—for example, if wage variance changes with metro or experience—OLS standard errors can be biased, often underestimated.
 White's robust standard errors correct for heteroskedasticity by allowing error variance to vary. As a result, robust standard errors are usually larger, leading to wider confidence intervals.
