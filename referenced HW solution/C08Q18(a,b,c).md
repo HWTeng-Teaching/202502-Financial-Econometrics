@@ -19,6 +19,7 @@ $\hat{\sigma}^2_{\text{male}}/ \hat{\sigma}^2_{\text{female}}=$
 F < 0.9451 or F > 1.0581
 
 Since the Test Statistic does not fall in the Critical Region, we Fail to reject the null hypothesis.
+
 **Conclusion:**    
 There is no significant evidence of heteroskedasticity between males and females.
 
