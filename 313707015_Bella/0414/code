@@ -1,0 +1,216 @@
+# 8.16 (a)
+data(vacation)
+# OLS 迴歸
+model <- lm(miles ~ income + age + kids, data = vacation)
+
+# 檢視回歸摘要
+summary(model)
+
+# 建立所有係數的 95% 信賴區間
+confint(model, level = 0.95)
+
+# 8.16 (b)
+# 取出殘差
+residuals <- resid(model)
+
+# 繪製殘差 vs income
+plot(vacation$income, residuals,
+     xlab = "Income (in $1000)", ylab = "Residuals",
+     main = "Residuals vs Income")
+abline(h = 0, col = "red", lty = 2)
+
+# 繪製殘差 vs age
+plot(vacation$age, residuals,
+     xlab = "Average Adult Age", ylab = "Residuals",
+     main = "Residuals vs Age")
+abline(h = 0, col = "red", lty = 2)
+
+# 8.16 (c)
+# 1. 排序資料
+vac_sorted <- vacation[order(vacation$income), ]
+
+# 2. 切成三組
+low_group <- vac_sorted[1:90, ]
+high_group <- vac_sorted[111:200, ]  # 中間的 20 筆不使用
+
+# 3. 分別建立迴歸模型
+model_low <- lm(miles ~ income + age + kids, data = low_group)
+model_high <- lm(miles ~ income + age + kids, data = high_group)
+
+# 4. 計算 SSE（殘差平方和）
+SSE_low <- sum(resid(model_low)^2)
+SSE_high <- sum(resid(model_high)^2)
+
+# 5. 計算 F 統計量（假設 high 組變異較大）
+F_stat <- SSE_high / SSE_low
+
+# 6. 自由度
+df_low <- df.residual(model_low)
+df_high <- df.residual(model_high)
+
+# 7. 臨界值與結論
+alpha <- 0.05
+crit_val <- qf(1 - alpha, df_high, df_low)
+
+cat("F 統計量 =", round(F_stat, 4), "\n")
+cat("臨界值 =", round(crit_val, 4), "\n")
+
+# 8.16 (d)
+# 計算權重為 1 / income^2
+vacation$w <- 1 / (vacation$income^2)
+
+# 進行 GLS（加權最小平方法）
+gls_model <- lm(miles ~ income + age + kids, data = vacation, weights = w)
+
+#  GLS 結果
+summary(gls_model)
+# 常規 GLS 的 95% 信賴區間
+confint(gls_model, "kids", level = 0.95)
+
+# 8.16 (e)
+# 計算權重為 1 / income^2
+vacation$w <- 1 / (vacation$income^2)
+
+# 進行 GLS（加權最小平方法）
+gls_model <- lm(miles ~ income + age + kids, data = vacation, weights = w)
+
+# 查看 GLS 結果
+summary(gls_model)
+
+# 常規 GLS 的 95% 信賴區間
+confint(gls_model, "kids", level = 0.95)
+
+library(sandwich)
+library(lmtest)
+
+# 使用 robust covariance matrix
+coeftest(gls_model, vcov. = vcovHC(gls_model, type = "HC1"))
+
+# 建立 robust CI for kids
+b_kids_gls <- coef(gls_model)["kids"]
+se_kids_robust <- sqrt(vcovHC(gls_model, type = "HC1")["kids", "kids"])
+df <- df.residual(gls_model)
+
+CI_kids_robust <- b_kids_gls + c(-1, 1) * qt(0.975, df) * se_kids_robust
+CI_kids_robust
+
+
+# 8.28 (a)
+beta1 <- 5
+beta2 <- 4
+beta3 <- 0
+mod1 <- lm(Y ~ X2 + X3)
+summary(mod1)
+coef_estimates <- coef(mod1)
+std_errors <- summary(mod1)$coefficients[, "Std. Error"]
+cat("Estimated Coefficients:\n")
+print(coef_estimates)
+cat("\nStandard Errors:\n")
+print(std_errors)
+true_values <- c(beta1, beta2, beta3)
+print("Estimated Coefficients vs True Values:")
+print(cbind(coef_estimates, true_values))
+alpha <- 0.05
+cat("critical value =", tc <- qt(1-0.05/2, mod1$df.residual),'\n')
+b1<-coef(mod1)[[1]]
+b2<-coef(mod1)[[2]]
+b3<-coef(mod1)[[3]]
+seb1 <- sqrt(vcov(mod1)[1,1])
+seb2 <- sqrt(vcov(mod1)[2,2])
+seb3 <- sqrt(vcov(mod1)[3,3])
+test1 <- (b1-beta1)/seb1
+test2 <- (b2-beta2)/seb2
+test3 <- (b3-beta3)/seb3
+cat("T value1:",test1,'\n',"T value2:",test2,'\n',"T value3:",test3,'\n')
+
+
+# 8.28 (b)
+# 安裝與載入 broom 套件
+install.packages("broom")  # 若尚未安裝
+library(broom)
+
+# 計算 OLS 殘差與平方
+resid <- residuals(mod1)
+resid_squared <- resid^2
+
+# 進行殘差平方回歸
+resid_mod1 <- lm(resid_squared ~ X2 + X3)
+summary(resid_mod1)
+
+# Breusch-Pagan 檢定的計算邏輯
+N <- nobs(resid_mod1)
+gresid_mod1 <- glance(resid_mod1)  # 使用 broom 的 glance() 取得摘要
+S <- gresid_mod1$df.residual + length(coef(resid_mod1))  # 模型自由度總數
+Rsqres <- gresid_mod1$r.squared
+chisq <- N * Rsqres
+pval <- 1 - pchisq(chisq, S - 1)
+
+# 顯示結果
+cat('Breusch-Pagan 檢定結果：\n')
+cat('Chi-square statistic:', round(chisq, 4), '\n')
+cat('p-value:', round(pval, 5), '\n')
+
+# 繪圖
+plot(X2, resid, xlab = 'X2', ylab = 'Residuals')
+plot(X3, resid, xlab = 'X3', ylab = 'Residuals')
+
+
+#8.28 (c)
+install.packages("sandwich")
+install.packages("lmtest")
+
+# 載入套件
+library(sandwich)
+library(lmtest)
+
+# 執行 OLS 回歸（如果還沒建立）
+model <- lm(Y ~ X2 + X3)
+
+# 使用 robust 標準誤估計（HC1 是 White 常用的）
+coeftest(model, vcov. = vcovHC(model, type = "HC1"))
+
+# 8.28 (d)
+# 設定 GLS 權重為 1 / X2^2（因為 Var(e) ∝ X2^2）
+weights <- 1 / (X2^2)
+
+# GLS 回歸
+gls_model <- lm(Y ~ X2 + X3, weights = weights)
+
+# 顯示常規標準誤下的 GLS 結果
+summary(gls_model)
+
+library(sandwich)
+library(lmtest)
+
+# 強健標準誤的 GLS 結果
+coeftest(gls_model, vcov. = vcovHC(gls_model, type = "HC1"))
+
+
+#8.28 (e)
+# 原始模型
+ols_model <- lm(Y ~ X2 + X3)
+
+# 殘差與平方
+resid_sq <- residuals(ols_model)^2
+
+# 建立 log(殘差平方) 模型
+log_resid_model <- lm(log(resid_sq) ~ X2 + X3)
+summary(log_resid_model)
+
+# 預測 log(σ²i)
+log_sigma2_hat <- fitted(log_resid_model)
+
+# 回推 sigma^2_i（異質變異數估計值）
+sigma2_hat <- exp(log_sigma2_hat)
+
+# 權重為 1 / sigma^2
+weights_fgls <- 1 / sigma2_hat
+
+# 執行 FGLS 回歸
+fgls_model <- lm(Y ~ X2 + X3, weights = weights_fgls)
+summary(fgls_model)
+
+# 取得 robust 標準誤
+library(sandwich)
+library(lmtest)
+coeftest(fgls_model, vcov. = vcovHC(fgls_model, type = "HC1"))
