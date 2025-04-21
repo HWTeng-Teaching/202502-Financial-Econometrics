@@ -34,7 +34,7 @@ There is no significant evidence of heteroskedasticity between males and females
 **Through R programming, we obtain the following results:**
 
 - **Test Statistic (NR²):** 23.5568
-- **χ²(0.99, 4-1)**
+- **χ²(0.99, 4-1)=** 11.3449
 - **Degrees of freedom:** 3  
 - **p-value:** 3.0909×10⁻⁵
 
