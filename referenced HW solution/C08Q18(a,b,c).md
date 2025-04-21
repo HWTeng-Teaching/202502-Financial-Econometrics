@@ -25,7 +25,7 @@ There is no significant evidence of heteroskedasticity between males and females
 
 
 ## (b)
-### Case 1: Using only `metro`, `female`, and `black` as candidate variables
+### Case 1: Using only `metro`, `female`, and `black` as candidate variables related to the heteroskedasticity
 
 **Hypothesis:**
 - $H_0$: Error variance is constant and unrelated to metro, female, or black.  
@@ -43,7 +43,7 @@ This indicates that heteroskedasticity is present.
 
 ---
 
-### Case 2: Using all explanatory variables as candidate variables
+### Case 2: Using all explanatory variables as candidate variables related to the heteroskedasticity
 
 **Hypothesis:**
 - $H_0$: Error variance is constant and unrelated to all regressors.  
