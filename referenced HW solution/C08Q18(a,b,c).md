@@ -68,6 +68,11 @@ Although the Goldfeld–Quandt test in question (a) showed no evidence of hetero
 the NR² test results in question (b) reveal that heteroskedasticity is present in the model and may be related to other variables such as metro or black.  
 
 ## (c) 
+
+**Hypothesis:**
+- $H_0$: Error variance is constant and unrelated to all regressors.  
+- $H_1$: Error variance depends on at least one regressor.
+  
 **Through R programming, we obtain the following results:**
 
 - **Test Statistic (NR²):** 158.67
