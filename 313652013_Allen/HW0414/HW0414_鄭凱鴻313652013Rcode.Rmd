@@ -200,7 +200,7 @@ pchisq(NR2_all, df = 9, lower.tail = FALSE)
 ## **(c) **
 
 ```{r}
-# 載入必要套件
+# 載入套件
 library(lmtest)
 
 # 原始模型
