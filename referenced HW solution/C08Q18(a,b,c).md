@@ -11,9 +11,9 @@
 
 **Through R programing, we can get the result:**
 
-**Test Statistic (NR²):** 
-$\hat{\sigma}^2_{\text{male}}/ \hat{\sigma}^2_{\text{female}}=$
-1.05076
+**Test Statistic (F):** 
+$\hat{\sigma}^2_{\text{male}}/ \hat{\sigma}^2_{\text{female}}=$1.05076
+
 
 **Critical Region (5% significance level):**  
 F < 0.9451 or F > 1.0581
