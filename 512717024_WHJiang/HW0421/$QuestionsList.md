@@ -18,7 +18,7 @@ e. 敘述取得 IV/2SLS 估計值的步驟（非電腦指令）。
 
 ------
 
-##C10Q03
+## C10Q03
 
 
 <img width="672" alt="Q03" src="https://github.com/user-attachments/assets/558a5121-f26f-4d96-a241-18a29b3cc33c" />
