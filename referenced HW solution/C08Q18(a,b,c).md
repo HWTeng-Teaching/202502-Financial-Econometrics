@@ -39,7 +39,7 @@ There is no significant evidence of heteroskedasticity between males and females
 - **p-value:** 3.0909×10⁻⁵
 
 **Conclusion:**  
-Since the p-value is smaller than 0.01, we reject the null hypothesis of homoskedasticity at the 1% level.  
+Since the test Statistic is bigger than critical value, we reject the null hypothesis of homoskedasticity at the 1% level.  
 This indicates that heteroskedasticity is present.
 
 ---
@@ -58,7 +58,7 @@ This indicates that heteroskedasticity is present.
 - **p-value:** 1.925849×10⁻¹⁹
 
 **Conclusion:**  
-Again, the p-value is far below 0.01. We strongly reject the null hypothesis, concluding that the model exhibits significant heteroskedasticity.
+Again, the test Statistic is far bigger than 1% critical value. We strongly reject the null hypothesis, concluding that the model exhibits significant heteroskedasticity.
 
 ---
 
