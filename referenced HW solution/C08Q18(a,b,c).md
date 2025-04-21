@@ -14,6 +14,7 @@
 **Test Statistic (F):**  σ̂_M² / σ̂_F²
 
 
+
 1.05076
 
 **Critical Region (5% significance level):**  
