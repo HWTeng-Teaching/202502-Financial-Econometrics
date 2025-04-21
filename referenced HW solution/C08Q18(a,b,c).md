@@ -11,7 +11,8 @@
 
 **Through R programing, we can get the result:**
 
-**Test Statistic (F):**  σ̂²_M / σ̂²_F
+**Test Statistic (F):**  σ̂_M² / σ̂_F²
+
 
 1.05076
 
