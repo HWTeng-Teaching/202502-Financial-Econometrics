@@ -34,7 +34,7 @@ There is no significant evidence of heteroskedasticity between males and females
 **Through R programming, we obtain the following results:**
 
 - **Test Statistic (NR²):** 23.5568
-- **χ²(0.99, 4-1)=** 11.3449
+- **1% critical value** (χ² with 4-1 degrees of freedom): 11.34487
 - **Degrees of freedom:** 3  
 - **p-value:** 3.0909×10⁻⁵
 
@@ -52,7 +52,8 @@ This indicates that heteroskedasticity is present.
 
 **Through R programming, we obtain the following results:**
 
-- **Test Statistic (NR²):** 109.4243  
+- **Test Statistic (NR²):** 109.4243
+- **1% critical value** (χ² with 10-1 degrees of freedom): 21.66599
 - **Degrees of freedom:** 9  
 - **p-value:** 1.925849×10⁻¹⁹
 
@@ -63,9 +64,8 @@ Again, the p-value is far below 0.01. We strongly reject the null hypothesis, co
 
 ### Overall Interpretation
 
-Although the Goldfeld–Quandt test in part (a) showed no evidence of unequal variances by gender,  
-the NR² test results in part (b) reveal that heteroskedasticity is present in the model and may be related to other variables such as metro or black.  
-Therefore, the evidence from this test complements and expands upon the findings in part (a).
+Although the Goldfeld–Quandt test in question (a) showed no evidence of unequal variances by gender,  
+the NR² test results in question (b) reveal that heteroskedasticity is present in the model and may be related to other variables such as metro or black.  
 
 ## (c) 
 **Through R programming, we obtain the following results:**
