@@ -70,22 +70,76 @@ e. 敘述取得 IV/2SLS 估計值的步驟（非電腦指令）。
 
 **(e)** 取得 IV／2SLS 估計的步驟
 
-1. **第一階段**  
-   - 以 \(Z=(EXPER, EXPER^{2}, EDUC, AGE, KIDSL6, NWIFEINC)\) 回歸 **WAGE**，得 \(\widehat{WAGE}\)。  
-2. **檢查工具強度**  
-   - 檢視第一階段 F 統計量（> 10 視為強工具）。  
-3. **第二階段**  
-   - 以 \(\widehat{WAGE}\) 取代 WAGE，對  
+1. **第一階段 (First Stage)**  
+
+   以所有外生變數組成的工具集合  
+   \[
+     Z \;=\; \bigl\{\textit{EXPER},\; \textit{EXPER}^2,\; \textit{EDUC},\; \textit{AGE},\; \textit{KIDSL6},\; \textit{NWIFEINC}\bigr\}
+   \]  
+   來回歸 \(\textit{WAGE}\)，得到擬合值 \(\widehat{\textit{WAGE}}\)：  
+   \[
+     \widehat{\textit{WAGE}}_i
+       \;=\;
+       \gamma_0
+       \;+\;
+       \gamma_1\,\textit{EXPER}_i
+       \;+\;
+       \gamma_2\,\textit{EXPER}_i^{\,2}
+       \;+\;
+       \gamma_3\,\textit{EDUC}_i
+       \;+\;
+       \gamma_4\,\textit{AGE}_i
+       \;+\;
+       \gamma_5\,\textit{KIDSL6}_i
+       \;+\;
+       \gamma_6\,\textit{NWIFEINC}_i
+       \;+\;
+       v_i .
+   \]
+
+2. **檢查工具相關性**  
+
+   計算第一階段的 \(F\)-statistic。  
+   \[
+     F_{\text{1st stage}} \;>\; 10
+   \quad\Longrightarrow\quad
+     \text{工具變數被視為「強工具」}
+   \]
+
+3. **第二階段 (Second Stage)**  
+
+   用 \(\widehat{\textit{WAGE}}\) 取代 \(\textit{WAGE}\)，估計 2SLS 方程式：  
+   \[
+     \textit{HOURS}_i
+       \;=\;
+       \beta_1
+       \;+\;
+       \beta_2\,\widehat{\textit{WAGE}}_i
+       \;+\;
+       \beta_3\,\textit{EDUC}_i
+       \;+\;
+       \beta_4\,\textit{AGE}_i
+       \;+\;
+       \beta_5\,\textit{KIDSL6}_i
+       \;+\;
+       \beta_6\,\textit{NWIFEINC}_i
+       \;+\;
+       u_i .
+   \]
+
+4. **估計正確的標準誤**  
+
+   使用 2SLS / IV **robust** 樣本外推公式（例如 White 或 Newey–West）計算標準誤與信賴區間。
+
+5. **診斷檢定 (Diagnostics)**  
+
+   * **過度識別檢定**：Sargan／Hansen \(J\)-test  
      \[
-       HOURS = \beta_{1}+ \beta_{2}\widehat{WAGE}+ \beta_{3}EDUC+ \beta_{4}AGE+ \beta_{5}KIDSL6+ \beta_{6}NWIFEINC+u
-     \]  
-     進行 OLS，取得 2SLS 估計。  
-4. **計算正確標準誤**  
-   - 使用 IV‑robust 樣本公式（如 White 或 Newey–West）。  
-5. **診斷檢定**  
-   - 過度識別檢定（Sargan / Hansen J‑test）  
-   - 弱工具檢定（Stock–Yogo）  
-   - 內生性檢定（Durbin‑Wu‑Hausman）
+       H_0:\; \text{工具變數外生} \quad
+       \bigl(\text{不顯著} \Rightarrow 無拒絕證據\bigr)
+     \]
+   * **弱工具檢定**：比較第一階段 \(F\)-statistic 與 Stock–Yogo 臨界值。  
+   * **內生性檢定**：Durbin–Wu–Hausman test，比較 OLS 與 2SLS 估計差異。
 
 
 -----
