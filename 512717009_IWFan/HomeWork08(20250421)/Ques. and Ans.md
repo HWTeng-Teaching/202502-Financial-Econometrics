@@ -109,7 +109,32 @@ e. 敘述取得 IV/2SLS 估計值的步驟（非電腦指令）。
 
 <img width="672" alt="Q03" src="https://github.com/user-attachments/assets/9e1dd20f-9ef1-45d0-bbe0-718d0e59992d" />
 
-
+> **10.3** 在迴歸模型  
+> \[
+> y = \beta_1 + \beta_2 x + e
+> \]
+> 中，假設 \(x\) 為內生變數，而 \(z\) 為有效的工具變數。  
+> 在 § 10.3.5 已知  
+> \[
+> \beta_2 = \dfrac{\operatorname{cov}(z,y)}{\operatorname{cov}(z,x)}。
+> \]
+>
+> **a.** 將 \(\beta_2\) 分子分母同除以 \(\operatorname{var}(z)\)。  
+> 證明 \(\operatorname{cov}(z,x)/\operatorname{var}(z)\) 正是單變量迴歸  
+> \(x = \gamma_1 + \theta_1 z + v\) 的斜率係數（第一階段）。  
+>
+> **b.** 同理，證明 \(\operatorname{cov}(z,y)/\operatorname{var}(z)\) 為單變量迴歸  
+> \(y = \pi_0 + \pi_1 z + u\) 的斜率係數。  
+>
+> **c.** 在結構式 \(y = \beta_1 + \beta_2 x + e\) 中，以  
+> \(x = \gamma_1 + \theta_1 z + \nu\) 代入並化簡得  
+> \(y = \pi_0 + \pi_1 z + u\)。  
+> 請寫出 \(\pi_0,\; \pi_1,\; u\) 與模型參數、誤差項的關係，並說明這是一條「簡約式」（reduced‑form）方程。  
+>
+> **d.** 證明 \(\beta_2 = \pi_1 / \theta_1\)。  
+>
+> **e.** 若 \(\hat\pi_1,\; \hat\theta_1\) 為 \(\pi_1,\; \theta_1\) 的 OLS 估計值，證明  
+> \(\hat\beta_2 = \hat\pi_1 / \hat\theta_1\) 為 \(\beta_2\) 的一致估計量；此法稱為 **間接最小平方法**（ILS）。
 
 
 ## Ans:
