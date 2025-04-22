@@ -90,12 +90,14 @@ e. 敘述取得 IV/2SLS 估計值的步驟（非電腦指令）。
 
 5. **診斷檢定 (Diagnostics)**  
 
-   * **過度識別檢定**：Sargan／Hansen \(J\)-test  
-     \[
-       H_0:\; \text{工具變數外生} \quad
-       \bigl(\text{不顯著} \Rightarrow 無拒絕證據\bigr)
-     \]
-   * **弱工具檢定**：比較第一階段 \(F\)-statistic 與 Stock–Yogo 臨界值。  
+   * **過度識別檢定**：(Sargan/Hansen J‑test)
+     
+    $$
+    H_0:\;\text{工具變數外生}\qquad 
+    (\text{檢定結果不顯著}\;\Rightarrow\;\text{無拒絕證據})
+    $$
+
+   * **弱工具檢定**：比較第一階段 F-statistic 與 Stock–Yogo 臨界值。  
    * **內生性檢定**：Durbin–Wu–Hausman test，比較 OLS 與 2SLS 估計差異。
 
 
