@@ -70,55 +70,25 @@ e. 敘述取得 IV/2SLS 估計值的步驟（非電腦指令）。
 
 **(e)** 取得 IV／2SLS 估計的步驟
 
-1. **第一階段 (First Stage)**  
-   令工具變數集合為
+1. **第一階段 (First Stage)**
    
-   $$
-   Z := \bigl\{\mathrm{EXPER},\ \mathrm{EXPER}^2,\ \mathrm{EDUC},\ \mathrm{AGE},\ \mathrm{KIDSL6},\ \mathrm{NWIFEINC}\bigr\}.
-   $$
-   
-   估計以下迴歸，並取其擬合值 $\displaystyle\widehat{\mathrm{WAGE}}_i$：
-   
-   $$
-   \widehat{\mathrm{WAGE}}_i
-   = \gamma_0
-     + \gamma_1\,\mathrm{EXPER}_i
-     + \gamma_2\,\mathrm{EXPER}_i^2
-     + \gamma_3\,\mathrm{EDUC}_i
-     + \gamma_4\,\mathrm{AGE}_i
-     + \gamma_5\,\mathrm{KIDSL6}_i
-     + \gamma_6\,\mathrm{NWIFEINC}_i
-     + v_i.
-   $$
+  <img width="540" alt="2" src="https://github.com/user-attachments/assets/88b404cf-ece5-4df1-a367-50826ea40ab0" />
 
-3. **檢查工具相關性 (Instrument Relevance)**  
-   計算第一階段的 F 統計量，若
-   
-   $$
-   F_{\text{1st stage}} > 10,
-   $$  
 
-   則認定工具為「強工具」。
+2. **檢查工具相關性 (Instrument Relevance)**  
+   
+   檢視第一階段 F‑statistic（>10 通常視為強工具）。
 
-5. **第二階段 (Second Stage)**  
-   以 $\widehat{\mathrm{WAGE}}_i$ 取代 $\mathrm{WAGE}_i$，估計 2SLS 主迴歸式：
+3. **第二階段 (Second Stage)**  
+
+<img width="569" alt="1" src="https://github.com/user-attachments/assets/c716e806-806e-4aea-92ba-443f1d629f58" />
+
    
-   $$
-   \mathrm{HOURS}_i
-   = \beta_1
-     + \beta_2\,\widehat{\mathrm{WAGE}}_i
-     + \beta_3\,\mathrm{EDUC}_i
-     + \beta_4\,\mathrm{AGE}_i
-     + \beta_5\,\mathrm{KIDSL6}_i
-     + \beta_6\,\mathrm{NWIFEINC}_i
-     + u_i.
-   $$
-   
-6. **估計正確的標準誤**  
+4. **估計正確的標準誤**  
 
    使用 2SLS / IV **robust** 樣本外推公式（例如 White 或 Newey–West）計算標準誤與信賴區間。
 
-7. **診斷檢定 (Diagnostics)**  
+5. **診斷檢定 (Diagnostics)**  
 
    * **過度識別檢定**：Sargan／Hansen \(J\)-test  
      \[
