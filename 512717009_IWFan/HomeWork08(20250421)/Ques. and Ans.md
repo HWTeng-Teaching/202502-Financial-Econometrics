@@ -71,11 +71,14 @@ e. 敘述取得 IV/2SLS 估計值的步驟（非電腦指令）。
 **(e)** 取得 IV／2SLS 估計的步驟
 
 1. **第一階段 (First Stage)**  
-   令工具變數集合為  
+   令工具變數集合為
+   
    $$
    Z := \bigl\{\mathrm{EXPER},\ \mathrm{EXPER}^2,\ \mathrm{EDUC},\ \mathrm{AGE},\ \mathrm{KIDSL6},\ \mathrm{NWIFEINC}\bigr\}.
-   $$  
-   估計以下迴歸，並取其擬合值 $\displaystyle\widehat{\mathrm{WAGE}}_i$：  
+   $$
+   
+   估計以下迴歸，並取其擬合值 $\displaystyle\widehat{\mathrm{WAGE}}_i$：
+   
    $$
    \widehat{\mathrm{WAGE}}_i
    = \gamma_0
@@ -88,14 +91,16 @@ e. 敘述取得 IV/2SLS 估計值的步驟（非電腦指令）。
      + v_i.
    $$
 
-2. **檢查工具相關性 (Instrument Relevance)**  
-   計算第一階段的 F 統計量，若  
+3. **檢查工具相關性 (Instrument Relevance)**  
+   計算第一階段的 F 統計量，若
+   
    $$
    F_{\text{1st stage}} > 10,
    $$  
+
    則認定工具為「強工具」。
 
-3. **第二階段 (Second Stage)**  
+5. **第二階段 (Second Stage)**  
    以 $\widehat{\mathrm{WAGE}}_i$ 取代 $\mathrm{WAGE}_i$，估計 2SLS 主迴歸式：
    
    $$
@@ -109,11 +114,11 @@ e. 敘述取得 IV/2SLS 估計值的步驟（非電腦指令）。
      + u_i.
    $$
    
-5. **估計正確的標準誤**  
+6. **估計正確的標準誤**  
 
    使用 2SLS / IV **robust** 樣本外推公式（例如 White 或 Newey–West）計算標準誤與信賴區間。
 
-6. **診斷檢定 (Diagnostics)**  
+7. **診斷檢定 (Diagnostics)**  
 
    * **過度識別檢定**：Sargan／Hansen \(J\)-test  
      \[
