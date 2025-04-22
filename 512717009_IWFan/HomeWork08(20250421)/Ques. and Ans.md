@@ -94,8 +94,7 @@ e. 敘述取得 IV/2SLS 估計值的步驟（非電腦指令）。
      
    $$
    \begin{aligned}
-   H_0 &: \text{工具變數外生}
-   
+   H_0 &: \text{工具變數外生} vs. 
    H_1 &: \text{至少一個工具變數不外生}
    \end{aligned}
    $$
