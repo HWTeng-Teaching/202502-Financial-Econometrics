@@ -130,7 +130,7 @@ $$
 
 <img width="672" alt="Q03" src="https://github.com/user-attachments/assets/9e1dd20f-9ef1-45d0-bbe0-718d0e59992d" />
 
-## 題目 10.3（工具變數與間接最小平方法）
+**工具變數與間接最小平方法**
 
 在迴歸模型：
 
