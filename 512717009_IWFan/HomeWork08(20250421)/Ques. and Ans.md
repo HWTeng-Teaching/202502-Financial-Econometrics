@@ -153,7 +153,7 @@ $$
 \hat{\theta}_1 = \frac{\text{Cov}(z, x)}{\text{Var}(z)}
 $$
 
-因此，$\frac{\text{Cov}(z, x)}{\text{Var}(z)} = \theta_1$
+因此， $\frac{\text{Cov}(z, x)}{\text{Var}(z)} = \theta_1$
 
 這正是兩階段最小平方法（2SLS）中的第一階段回歸。
 
