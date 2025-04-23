@@ -208,7 +208,7 @@ $$
 
 這是 reduced-form 模型。
 
----
+
 
 **(d)** 證明 $\beta_2 = \frac{\pi_1}{\theta_1}$
 
