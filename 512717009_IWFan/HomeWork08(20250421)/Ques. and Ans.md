@@ -173,7 +173,7 @@ $$
 \hat{\pi}_1 = \frac{\text{Cov}(z, y)}{\text{Var}(z)}
 $$
 
-因此，$\frac{\text{Cov}(z, y)}{\text{Var}(z)} = \pi_1$
+因此， $\frac{\text{Cov}(z, y)}{\text{Var}(z)} = \pi_1$
 
 這是 reduced-form 回歸：$y$ 對 $z$ 的回歸。
 
@@ -241,7 +241,7 @@ $$
 \hat{\beta}_2 = \frac{\hat{\pi}_1}{\hat{\theta}_1} \xrightarrow{p} \frac{\pi_1}{\theta_1} = \beta_2
 $$
 
-因此，$\hat{\beta}_2$ 是 $\beta_2$ 的一致估計量，這稱為 **indirect least squares (ILS)** 估計量。
+因此， $\hat{\beta}_2$ 是 $\beta_2$ 的一致估計量，這稱為 **indirect least squares (ILS)** 估計量。
 
 ---
 
