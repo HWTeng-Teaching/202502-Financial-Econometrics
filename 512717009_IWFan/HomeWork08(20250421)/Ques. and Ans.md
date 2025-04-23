@@ -125,42 +125,125 @@ e. 若 ˆπ₁ 與 ˆθ₁ 分別為 π₁ 與 θ₁ 的 OLS 估計值，證明
 
 ## Ans:
 
-**(a)** 第一階段斜率
- 
- 單變量回歸 x_i = γ₁ + θ₁ z_i + v_i 的 OLS 斜率
+在回歸模型：
 
- θ₁ = cov(z,x) / var(z)。
+$$
+y = \beta_1 + \beta_2 x + e
+$$
 
- 因此 cov(z,x)/var(z) 就是 θ₁，符合題意。
+中，假設 $x$ 是內生變數，$z$ 是一個有效的工具變數。
 
-**(b)** 簡約式斜率
- 
- 回歸 y_i = π₀ + π₁ z_i + u_i 的 OLS 斜率
+我們知道：
 
- π₁ = cov(z,y) / var(z)。
+$$
+\beta_2 = \frac{\text{Cov}(z, y)}{\text{Cov}(z, x)}
+$$
 
-**(c)** 將 x 代入結構式
+**(a)** 證明 $\frac{\text{Cov}(z, x)}{\text{Var}(z)}$ 是一個回歸係數
 
-  y = β₁ + β₂(γ₁ + θ₁ z + ν) + e
+考慮簡單線性回歸：
 
-  = (β₁ + β₂ γ₁) + (β₂ θ₁) z + (β₂ ν + e)。
+$$
+x = \gamma_1 + \theta_1 z + \nu
+$$
 
- 故 π₀ = β₁ + β₂ γ₁； π₁ = β₂ θ₁； u = β₂ ν + e。
+由最小平方法估計：
 
- 因僅剩外生變數 z，此式為簡約式（reduced form）。
+$$
+\hat{\theta}_1 = \frac{\text{Cov}(z, x)}{\text{Var}(z)}
+$$
 
-**(d)** β₂ 與 π₁、θ₁ 的關係
+因此，$\frac{\text{Cov}(z, x)}{\text{Var}(z)} = \theta_1$
 
- 由 π₁ = β₂ θ₁ ⇒ β₂ = π₁ / θ₁。
+這正是兩階段最小平方法（2SLS）中的第一階段回歸。
 
-**(e)** 一致性
 
- 若 ˆπ₁ →ₚ π₁ 且 ˆθ₁ →ₚ θ₁，
 
- 則 ˆβ₂ = ˆπ₁ / ˆθ₁ →ₚ π₁ / θ₁ = β₂ （連續映射定理）。
+**(b)** 證明 $\frac{\text{Cov}(z, y)}{\text{Var}(z)}$ 是另一個回歸係數
 
- 因此 ˆβ₂ 為 β₂ 的一致估計量，稱為間接最小平方法估計。
+考慮簡單線性回歸：
 
+$$
+y = \pi_0 + \pi_1 z + u
+$$
+
+由 OLS 估計：
+
+$$
+\hat{\pi}_1 = \frac{\text{Cov}(z, y)}{\text{Var}(z)}
+$$
+
+因此，$\frac{\text{Cov}(z, y)}{\text{Var}(z)} = \pi_1$
+
+這是 reduced-form 回歸：$y$ 對 $z$ 的回歸。
+
+
+
+**(c)** 推導 reduced-form 方程式
+
+從原始模型：
+
+$$
+y = \beta_1 + \beta_2 x + e
+$$
+
+將第一階段回歸 $x = \gamma_1 + \theta_1 z + \nu$ 代入得：
+
+$$
+y = \beta_1 + \beta_2 (\gamma_1 + \theta_1 z + \nu) + e \\
+= \beta_1 + \beta_2 \gamma_1 + \beta_2 \theta_1 z + \beta_2 \nu + e
+$$
+
+令：
+
+- $\pi_0 = \beta_1 + \beta_2 \gamma_1$
+- $\pi_1 = \beta_2 \theta_1$
+- $u = \beta_2 \nu + e$
+
+得到：
+
+$$
+y = \pi_0 + \pi_1 z + u
+$$
+
+這是 reduced-form 模型。
+
+---
+
+**(d)** 證明 $\beta_2 = \frac{\pi_1}{\theta_1}$
+
+由上一步可得：
+
+$$
+\pi_1 = \beta_2 \theta_1
+\quad \Rightarrow \quad
+\beta_2 = \frac{\pi_1}{\theta_1}
+$$
+
+
+
+**(e)** 證明間接最小平方法估計量為一致估計量
+
+若 $\hat{\pi}_1$ 與 $\hat{\theta}_1$ 是 OLS 的一致估計量，則：
+
+$$
+\hat{\beta}_2 = \frac{\hat{\pi}_1}{\hat{\theta}_1}
+$$
+
+由於：
+
+- $\hat{\pi}_1 \xrightarrow{p} \pi_1$
+- $\hat{\theta}_1 \xrightarrow{p} \theta_1$
+
+根據連續映射定理（Continuous Mapping Theorem）：
+
+$$
+\hat{\beta}_2 = \frac{\hat{\pi}_1}{\hat{\theta}_1} \xrightarrow{p} \frac{\pi_1}{\theta_1} = \beta_2
+$$
+
+因此，$\hat{\beta}_2$ 是 $\beta_2$ 的一致估計量，這稱為 **indirect least squares (ILS)** 估計量。
+
+---
 
 
 
