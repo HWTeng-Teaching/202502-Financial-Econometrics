@@ -60,3 +60,21 @@ h. 取 (g) 題的 IV/2SLS 殘差，並（手動）進行 Breusch–Pagan 異質�
 
 <img width="664" alt="Q24" src="https://github.com/user-attachments/assets/23b4a0f6-ca7e-4576-b155-83dceb96d874" />
 
+
+10.24 請考慮 working wives 資料檔 mroz，使用 428 位參與勞動市場的已婚婦女觀測值。本練習旨在檢驗替代標準誤對 IV 估計量之效果。請以 IV/2SLS 方法，使用 MOTHEREDUC 與 FATHEREDUC 作為工具變數，估計範例 10.5 的模型，並將結果視為基準模型。
+
+a. 計算 IV/2SLS 殘差 ê_IV，並將其與 EXPER 作圖。殘差是否呈現符合同質變異 (homoskedasticity) 的型態？
+
+b. 將 ê_IV² 對常數項與 EXPER 進行迴歸，並套用第 8 章的 NR² 檢定，以檢驗是否存在異質變異數。
+
+c. 在軟體中選擇異質變異數穩健標準誤 (Heteroskedasticity Robust Standard Errors) 選項，取得 IV/2SLS 估計。穩健標準誤相較於基準模型的標準誤是變大還是變小？請以穩健標準誤計算 EDUC 係數的 95% 區間估計。
+
+d. 以 B = 200 次自助抽樣 (bootstrap) 重新抽樣，並在軟體中選擇自助抽樣標準誤 (Bootstrap standard errors) 選項，取得 IV/2SLS 估計。自助抽樣標準誤相較於基準模型的標準誤是變大還是變小？與 (c) 題中的異質變異數穩健標準誤相比如何？請以自助抽樣標準誤計算 EDUC 係數的 95% 區間估計。
+
+
+
+
+
+
+
+
