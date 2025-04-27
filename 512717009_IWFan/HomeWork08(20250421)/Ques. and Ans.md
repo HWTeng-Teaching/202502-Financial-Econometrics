@@ -291,7 +291,7 @@ $$
 
 因此， $\frac{\text{Cov}(z, y)}{\text{Var}(z)} = \pi_1$
 
-這是 reduced-form 回歸：$y$ 對 $z$ 的回歸。
+這是 reduced-form 回歸：y 對 z 的回歸。
 
 -----
 
