@@ -247,6 +247,16 @@ $$
 x = \gamma_1 + \theta_1 z + \nu
 $$
 
+將 \( \beta_2 \) 式中的分母除以 \( \text{var}(z) \)：
+
+$$
+\text{cov}(z, y) \times \frac{\text{var}(z)}{\text{var}(z)} = \frac{\text{cov}(z, y)}{\text{var}(z)} \times \text{var}(z)
+$$
+
+$$
+\frac{\text{cov}(z, x)}{\text{var}(z)} = \theta_1
+$$
+
 由最小平方法估計：
 
 $$
