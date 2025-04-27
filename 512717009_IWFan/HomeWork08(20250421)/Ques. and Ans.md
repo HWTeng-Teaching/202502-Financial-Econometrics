@@ -247,7 +247,7 @@ $$
 x = \gamma_1 + \theta_1 z + \nu
 $$
 
-將 \( \beta_2 \) 式中的分母除以 \( \text{var}(z) \)：
+將 β2 式中的分母除以 var(z)：
 
 $$
 \text{cov}(z, y) \times \frac{\text{var}(z)}{\text{var}(z)} = \frac{\text{cov}(z, y)}{\text{var}(z)} \times \text{var}(z)
