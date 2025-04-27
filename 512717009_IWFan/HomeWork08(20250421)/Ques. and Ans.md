@@ -277,7 +277,7 @@ $$
 y = \pi_0 + \pi_1 z + u
 $$
 
-將 \( \pi_1 \) 式的分母除以 \( \text{var}(z) \)：
+將 π1  式的分母除以 var(z)：
 
 $$
 \text{cov}(z, y) \times \frac{\text{var}(z)}{\text{var}(z)} = \frac{\text{cov}(z, y)}{\text{var}(z)} \times \text{var}(z)
