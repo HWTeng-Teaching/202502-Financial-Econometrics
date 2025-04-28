@@ -11,7 +11,7 @@
 
 **Through R programing, we can get the result:**
 
-**Test Statistic (F):** 
+**Test Statistic (F) :** 
 $\hat{\sigma}^2_{\text{male}}/ \hat{\sigma}^2_{\text{female}}=$
 1.05076
 
@@ -33,7 +33,7 @@ There is no significant difference in wage variance between males and females.
 
 **Through R programming, we obtain the following results:**
 
-- **Test Statistic (NR²):** 23.5568
+- **Test Statistic (NR²) :** 23.5568
 - **1% critical value** (χ² with 4-1 degrees of freedom): 11.34487
 - **Degrees of freedom:** 3  
 - **p-value:** 3.0909×10⁻⁵
@@ -52,7 +52,7 @@ This indicates that heteroskedasticity is present.
 
 **Through R programming, we obtain the following results:**
 
-- **Test Statistic (NR²):** 109.4243
+- **Test Statistic (NR²) :** 109.4243
 - **1% critical value** (χ² with 10-1 degrees of freedom): 21.66599
 - **Degrees of freedom:** 9  
 - **p-value:** 1.925849×10⁻¹⁹
