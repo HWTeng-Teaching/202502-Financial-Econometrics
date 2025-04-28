@@ -184,9 +184,9 @@ NR2  # 印出 NR²
 # 檢定（自由度 = 3）
 pchisq(NR2, df = 3, lower.tail = FALSE)
 
-# 計算 5% 顯著水準下的 critical value
+# 計算 1% 顯著水準下的 critical value
 crit_val_3 <- qchisq(0.99, df = 3)
-crit_val_3  # 印出 chi-squared(3, 0.95)
+crit_val_3  # 印出 chi-squared(3, 0.99)
 
 # --------------------
 # 再做一次，這次用全部變數
@@ -201,9 +201,9 @@ NR2_all  # 印出 NR²
 # 檢定，自由度 = 9
 pchisq(NR2_all, df = 9, lower.tail = FALSE)
 
-# 計算 5% 顯著水準下的 critical value
+# 計算 1% 顯著水準下的 critical value
 crit_val_9 <- qchisq(0.99, df = 9)
-crit_val_9  # 印出 chi-squared(9, 0.95)
+crit_val_9  # 印出 chi-squared(9, 0.99)
 ```
 
 ## **(c) **
