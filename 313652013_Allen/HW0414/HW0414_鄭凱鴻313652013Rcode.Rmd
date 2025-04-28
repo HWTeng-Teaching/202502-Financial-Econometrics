@@ -165,36 +165,45 @@ if (F_stat < F_crit_lower || F_stat > F_crit_upper) {
 ## **(b) **
 
 ```{r}
-# OLS回歸
+# 原始迴歸
 model <- lm(log(wage) ~ educ + exper + I(exper^2) + female + black +
               metro + south + midwest + west, data = cps5)
 
 # Step 1: 取出殘差平方
 uhat2 <- residuals(model)^2
 
-# Step 2: 輔助回歸（對 METRO, FEMALE, BLACK）
+# Step 2: 輔助回歸（只用 METRO, FEMALE, BLACK）
 aux_model <- lm(uhat2 ~ metro + female + black, data = cps5)
 
 # Step 3: 計算 NR²
 N <- nrow(cps5)
 R2 <- summary(aux_model)$r.squared
 NR2 <- N * R2
-NR2
+NR2  # 印出 NR²
 
-# 檢定（自由度 df = 3）
+# 檢定（自由度 = 3）
 pchisq(NR2, df = 3, lower.tail = FALSE)
 
-# 輔助回歸：這次用所有原模型右手邊的變數（不含常數）
+# 計算 5% 顯著水準下的 critical value
+crit_val_3 <- qchisq(0.99, df = 3)
+crit_val_3  # 印出 chi-squared(3, 0.95)
+
+# --------------------
+# 再做一次，這次用全部變數
+# --------------------
 aux_model_all <- lm(uhat2 ~ educ + exper + I(exper^2) + female + black +
                       metro + south + midwest + west, data = cps5)
 
-# 計算 NR²
 R2_all <- summary(aux_model_all)$r.squared
 NR2_all <- N * R2_all
-NR2_all
+NR2_all  # 印出 NR²
 
-# 檢定，自由度 = 9（共 9 個變數）
+# 檢定，自由度 = 9
 pchisq(NR2_all, df = 9, lower.tail = FALSE)
+
+# 計算 5% 顯著水準下的 critical value
+crit_val_9 <- qchisq(0.99, df = 9)
+crit_val_9  # 印出 chi-squared(9, 0.95)
 ```
 
 ## **(c) **
