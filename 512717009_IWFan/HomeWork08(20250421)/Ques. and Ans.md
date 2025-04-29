@@ -230,7 +230,7 @@ $$
 y = \beta_1 + \beta_2 x + e
 $$
 
-中，假設 $x$ 是內生變數，$z$ 是一個有效的工具變數。
+中，假設 $x$ 是內生變數，z 是一個有效的工具變數。
 
 我們知道：
 
@@ -247,31 +247,31 @@ x = \gamma_1 + \theta_1 z + \nu
 $$
 
 
-**對兩邊取期望：**
+對兩邊取期望：
 
    $$
    E(x) = \gamma_1 + \theta_1 E(z)
    $$
 
-**兩邊減去期望：**
+兩邊減去期望：
 
    $$
    x - E(x) = \theta_1 (z - E(z)) + \nu
    $$
 
-**將等式兩邊都乘上 $z - E(z)$：**
+將等式兩邊都乘上 $z - E(z)$：
 
    $$
    (z - E(z))(x - E(x)) = \theta_1 (z - E(z))^2 + \nu (z - E(z))
    $$
 
-**對整個式子取期望值：**
+對整個式子取期望值：
 
    $$
    E\left[(z - E(z))(x - E(x))\right] = \theta_1 E\left[(z - E(z))^2\right] + E\left[\nu (z - E(z))\right]
    $$
 
-**假設 $\nu$ 與 $z$ 無關（工具變數的基本假設），則右邊的誤差項期望為 0：**
+假設 $\nu$ 與 $z$ 無關（工具變數的基本假設），則右邊的誤差項期望為 0：
 
    $$
    E[\nu(z - E(z))] = 0
@@ -283,13 +283,13 @@ $$
    E\left[(z - E(z))(x - E(x))\right] = \theta_1 E\left[(z - E(z))^2\right]
    $$
 
-**解出 $\theta_1$：**
+解出 $\theta_1$：**
 
    $$
    \theta_1 = \frac{E[(z - E(z))(x - E(x))]}{E[(z - E(z))^2]} = \frac{\text{Cov}(z, x)}{\text{Var}(z)}
    $$
 
------
+------
 
 **(b)** 證明 $\frac{\text{Cov}(z, y)}{\text{Var}(z)}$ 是另一個回歸係數
 
@@ -300,36 +300,35 @@ y = \pi_0 + \pi_1 z + u
 $$
 
 
-**對兩邊取期望值**
+對兩邊取期望值
 
 $$
 E(y) = \pi_0 + \pi_1 E(z)
 $$
 
 
-**兩邊減去期望**
+兩邊減去期望
 
 $$
 y - E(y) = \pi_1 (z - E(z)) + u
 $$
 
 
-**兩邊乘上 $z - E(z)$**
+兩邊乘上 $z - E(z)$
 
 $$
 (z - E(z))(y - E(y)) = \pi_1 (z - E(z))^2 + u (z - E(z))
 $$
 
----
 
-### 4. 對整個式子取期望值：
+對整個式子取期望值：
 
 $$
 E[(z - E(z))(y - E(y))] = \pi_1 E[(z - E(z))^2] + E[u (z - E(z))]
 $$
 
 
-**假設 $u$ 與 $z$ 無關（IV 基本假設）**
+假設 $u$ 與 $z$ 無關（IV 基本假設）
 
 $$
 E[u (z - E(z))] = 0
@@ -341,26 +340,14 @@ $$
 E[(z - E(z))(y - E(y))] = \pi_1 E[(z - E(z))^2]
 $$
 
----
 
-### 6. 解出 $\pi_1$：
+解出 $\pi_1$：
 
 $$
 \pi_1 = \frac{E[(z - E(z))(y - E(y))]}{E[(z - E(z))^2]} = \frac{\text{Cov}(z, y)}{\text{Var}(z)}
 $$
 
-
-**結論**
-
-這是模型：
-
-$$
-y = \pi_0 + \pi_1 z + u
-$$
-
-中 $\pi_1$ 的 OLS 估計量。
-
-
+------
 
 **(c)** 推導 reduced-form 方程式
 
@@ -407,24 +394,65 @@ $$
 
 **(e)** 證明間接最小平方法估計量為一致估計量
 
-若 $\hat{\pi}_1$ 與 $\hat{\theta}_1$ 是 OLS 的一致估計量，則：
+推導 $\theta_1$
+
+$$
+\theta_1 = \frac{E[(z - E(z))(x - E(x))]}{E[(z - E(z))^2]} = \frac{\text{Cov}(z, x)}{\text{Var}(z)}
+$$
+
+$$
+\hat{\theta}_1 = \frac{\widehat{\text{Cov}}(z, x)}{\widehat{\text{Var}}(z)} 
+= \frac{\sum (z_i - \bar{z})(x_i - \bar{x}) / N}{\sum (z_i - \bar{z})^2 / N} 
+= \frac{\sum (z_i - \bar{z})(x_i - \bar{x})}{\sum (z_i - \bar{z})^2}
+$$
+
+> This estimator is consistent if $z$ is uncorrelated with $v$.
+
+
+推導 $\pi_1$
+
+$$
+\pi_1 = \frac{E[(z - E(z))(y - E(y))]}{E[(z - E(z))^2]} = \frac{\text{Cov}(z, y)}{\text{Var}(z)}
+$$
+
+$$
+\hat{\pi}_1 = \frac{\widehat{\text{Cov}}(z, y)}{\widehat{\text{Var}}(z)} 
+= \frac{\sum (z_i - \bar{z})(y_i - \bar{y}) / N}{\sum (z_i - \bar{z})^2 / N} 
+= \frac{\sum (z_i - \bar{z})(y_i - \bar{y})}{\sum (z_i - \bar{z})^2}
+$$
+
+> This estimator is consistent if $z$ is uncorrelated with $u$.
+
+
+間接估計 $\beta_2$
+
+$$
+\beta_2 = \frac{\pi_1}{\theta_1}
+$$
 
 $$
 \hat{\beta}_2 = \frac{\hat{\pi}_1}{\hat{\theta}_1}
+= \frac{\left[ \frac{\sum (z_i - \bar{z})(y_i - \bar{y})}{\sum (z_i - \bar{z})^2} \right]}
+       {\left[ \frac{\sum (z_i - \bar{z})(x_i - \bar{x})}{\sum (z_i - \bar{z})^2} \right]}
+= \frac{\sum (z_i - \bar{z})(y_i - \bar{y})}{\sum (z_i - \bar{z})(x_i - \bar{x})}
 $$
 
-由於：
 
-- $\hat{\pi}_1 \xrightarrow{p} \pi_1$
-- $\hat{\theta}_1 \xrightarrow{p} \theta_1$
+大樣本極限定理
 
-根據連續映射定理（Continuous Mapping Theorem）：
+當 $N \to \infty$ 時，有：
 
 $$
-\hat{\beta}_2 = \frac{\hat{\pi}_1}{\hat{\theta}_1} \xrightarrow{p} \frac{\pi_1}{\theta_1} = \beta_2
+\widehat{\text{Cov}}(z, y) \overset{p}{\to} \text{Cov}(z, y), \quad 
+\widehat{\text{Cov}}(z, x) \overset{p}{\to} \text{Cov}(z, x)
 $$
 
-因此， $\hat{\beta}_2$ 是 $\beta_2$ 的一致估計量，這稱為 **indirect least squares (ILS)** 估計量。
+因此：
+
+$$
+\hat{\beta}_2 = \frac{\widehat{\text{Cov}}(z, y)}{\widehat{\text{Cov}}(z, x)} 
+\overset{p}{\to} \beta_2 = \frac{\text{Cov}(z, y)}{\text{Cov}(z, x)}
+$$
 
 ---
 
