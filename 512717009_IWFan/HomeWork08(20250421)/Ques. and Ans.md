@@ -304,71 +304,66 @@ $$
 y = \pi_0 + \pi_1 z + u
 $$
 
-**從第一階段迴歸開始：**
+
+**對兩邊取期望值**
 
 $$
-y = \beta_1 + \beta_2 x + \epsilon
-$$
-
-
-**對兩邊取期望**
-
-$$
-E(y) = \beta_1 + \beta_2 E(x)
+E(y) = \pi_0 + \pi_1 E(z)
 $$
 
 
-**兩邊減去期望值**
+**兩邊減去期望**
 
 $$
-y - E(y) = \beta_2 (x - E(x)) + \epsilon
-$$
-
-
-**將等式兩邊都乘上 \( z - E(z) \)**
-
-$$
-(z - E(z))(y - E(y)) = \beta_2 (z - E(z))(x - E(x)) + \epsilon (z - E(z))
+y - E(y) = \pi_1 (z - E(z)) + u
 $$
 
 
-**對整個式子取期望值**
+**兩邊乘上 $z - E(z)$**
 
 $$
-E\left[(z - E(z))(y - E(y))\right] = \beta_2 E\left[(z - E(z))(x - E(x))\right] + E\left[\epsilon (z - E(z))\right]
+(z - E(z))(y - E(y)) = \pi_1 (z - E(z))^2 + u (z - E(z))
+$$
+
+---
+
+### 4. 對整個式子取期望值：
+
+$$
+E[(z - E(z))(y - E(y))] = \pi_1 E[(z - E(z))^2] + E[u (z - E(z))]
 $$
 
 
-**假設誤差項 \( \epsilon \) 與工具變數 \( z \) 無關（IV 假設）**
+**假設 $u$ 與 $z$ 無關（IV 基本假設）**
 
 $$
-E[\epsilon (z - E(z))] = 0
+E[u (z - E(z))] = 0
 $$
 
 因此有：
 
 $$
-\text{Cov}(z, y) = \beta_2 \cdot \text{Cov}(z, x)
+E[(z - E(z))(y - E(y))] = \pi_1 E[(z - E(z))^2]
+$$
+
+---
+
+### 6. 解出 $\pi_1$：
+
+$$
+\pi_1 = \frac{E[(z - E(z))(y - E(y))]}{E[(z - E(z))^2]} = \frac{\text{Cov}(z, y)}{\text{Var}(z)}
 $$
 
 
-同除以 \( \text{Var}(z) \)，可得
+**結論**
+
+這是模型：
 
 $$
-\frac{\text{Cov}(z, y)}{\text{Var}(z)} = \beta_2 \cdot \frac{\text{Cov}(z, x)}{\text{Var}(z)} = \beta_2 \cdot \theta_1
+y = \pi_0 + \pi_1 z + u
 $$
 
-因此整理後得：
-
-$$
-\beta_2 = \frac{\text{Cov}(z, y)}{\text{Cov}(z, x)} = \frac{\pi_1}{\theta_1}
-$$
-
-其中：
-
-- \( \pi_1 = \frac{\text{Cov}(z, y)}{\text{Var}(z)} \)：為將 \( y \) 對 \( z \) 做 OLS 時的迴歸係數
-- \( \theta_1 = \frac{\text{Cov}(z, x)}{\text{Var}(z)} \)：為將 \( x \) 對 \( z \) 做 OLS 時的迴歸係數（a 小題結果）
-
+中 $\pi_1$ 的 OLS 估計量。
 
 
 
