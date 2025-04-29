@@ -150,53 +150,7 @@ $$
 
 **(a)**
 
-**從第一階段迴歸開始：**
 
-   $$
-   x = \gamma_1 + \theta_1 z + \nu
-   $$
-
-**對兩邊取期望：**
-
-   $$
-   E(x) = \gamma_1 + \theta_1 E(z)
-   $$
-
-**兩邊減去期望：**
-
-   $$
-   x - E(x) = \theta_1 (z - E(z)) + \nu
-   $$
-
-**將等式兩邊都乘上 $z - E(z)$：**
-
-   $$
-   (z - E(z))(x - E(x)) = \theta_1 (z - E(z))^2 + \nu (z - E(z))
-   $$
-
-**對整個式子取期望值：**
-
-   $$
-   E\left[(z - E(z))(x - E(x))\right] = \theta_1 E\left[(z - E(z))^2\right] + E\left[\nu (z - E(z))\right]
-   $$
-
-**假設 $\nu$ 與 $z$ 無關（工具變數的基本假設），則右邊的誤差項期望為 0：**
-
-   $$
-   E[\nu(z - E(z))] = 0
-   $$
-
-   所以得：
-
-   $$
-   E\left[(z - E(z))(x - E(x))\right] = \theta_1 E\left[(z - E(z))^2\right]
-   $$
-
-**解出 $\theta_1$：**
-
-   $$
-   \theta_1 = \frac{E[(z - E(z))(x - E(x))]}{E[(z - E(z))^2]} = \frac{\text{Cov}(z, x)}{\text{Var}(z)}
-   $$
 
 
 
@@ -281,25 +235,53 @@ $$
 x = \gamma_1 + \theta_1 z + \nu
 $$
 
-將 β2 式中的分母除以 var(z)：
+**從第一階段迴歸開始：**
 
-$$
-\text{cov}(z, y) \times \frac{\text{var}(z)}{\text{var}(z)} = \frac{\text{cov}(z, y)}{\text{var}(z)} \times \text{var}(z)
-$$
+   $$
+   x = \gamma_1 + \theta_1 z + \nu
+   $$
 
-$$
-\frac{\text{cov}(z, x)}{\text{var}(z)} = \theta_1
-$$
+**對兩邊取期望：**
 
-由最小平方法估計：
+   $$
+   E(x) = \gamma_1 + \theta_1 E(z)
+   $$
 
-$$
-\hat{\theta}_1 = \frac{\text{Cov}(z, x)}{\text{Var}(z)}
-$$
+**兩邊減去期望：**
 
-因此， $\frac{\text{Cov}(z, x)}{\text{Var}(z)} = \theta_1$
+   $$
+   x - E(x) = \theta_1 (z - E(z)) + \nu
+   $$
 
-這正是兩階段最小平方法（2SLS）中的第一階段回歸。
+**將等式兩邊都乘上 $z - E(z)$：**
+
+   $$
+   (z - E(z))(x - E(x)) = \theta_1 (z - E(z))^2 + \nu (z - E(z))
+   $$
+
+**對整個式子取期望值：**
+
+   $$
+   E\left[(z - E(z))(x - E(x))\right] = \theta_1 E\left[(z - E(z))^2\right] + E\left[\nu (z - E(z))\right]
+   $$
+
+**假設 $\nu$ 與 $z$ 無關（工具變數的基本假設），則右邊的誤差項期望為 0：**
+
+   $$
+   E[\nu(z - E(z))] = 0
+   $$
+
+   所以得：
+
+   $$
+   E\left[(z - E(z))(x - E(x))\right] = \theta_1 E\left[(z - E(z))^2\right]
+   $$
+
+**解出 $\theta_1$：**
+
+   $$
+   \theta_1 = \frac{E[(z - E(z))(x - E(x))]}{E[(z - E(z))^2]} = \frac{\text{Cov}(z, x)}{\text{Var}(z)}
+   $$
 
 -----
 
