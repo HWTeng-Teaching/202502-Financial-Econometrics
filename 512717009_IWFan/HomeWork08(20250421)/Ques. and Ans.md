@@ -304,23 +304,73 @@ $$
 y = \pi_0 + \pi_1 z + u
 $$
 
-將 π1  式的分母除以 var(z)：
+**從第一階段迴歸開始：**
 
 $$
-\text{cov}(z, y) \times \frac{\text{var}(z)}{\text{var}(z)} = \frac{\text{cov}(z, y)}{\text{var}(z)} \times \text{var}(z)
+y = \beta_1 + \beta_2 x + \epsilon
 $$
 
-由 OLS 估計：
+
+**對兩邊取期望**
 
 $$
-\hat{\pi}_1 = \frac{\text{Cov}(z, y)}{\text{Var}(z)}
+E(y) = \beta_1 + \beta_2 E(x)
 $$
 
-因此， $\frac{\text{Cov}(z, y)}{\text{Var}(z)} = \pi_1$
 
-這是 reduced-form 回歸：y 對 z 的回歸。
+**兩邊減去期望值**
 
------
+$$
+y - E(y) = \beta_2 (x - E(x)) + \epsilon
+$$
+
+
+**將等式兩邊都乘上 \( z - E(z) \)**
+
+$$
+(z - E(z))(y - E(y)) = \beta_2 (z - E(z))(x - E(x)) + \epsilon (z - E(z))
+$$
+
+
+**對整個式子取期望值**
+
+$$
+E\left[(z - E(z))(y - E(y))\right] = \beta_2 E\left[(z - E(z))(x - E(x))\right] + E\left[\epsilon (z - E(z))\right]
+$$
+
+
+**假設誤差項 \( \epsilon \) 與工具變數 \( z \) 無關（IV 假設）**
+
+$$
+E[\epsilon (z - E(z))] = 0
+$$
+
+因此有：
+
+$$
+\text{Cov}(z, y) = \beta_2 \cdot \text{Cov}(z, x)
+$$
+
+
+同除以 \( \text{Var}(z) \)，可得
+
+$$
+\frac{\text{Cov}(z, y)}{\text{Var}(z)} = \beta_2 \cdot \frac{\text{Cov}(z, x)}{\text{Var}(z)} = \beta_2 \cdot \theta_1
+$$
+
+因此整理後得：
+
+$$
+\beta_2 = \frac{\text{Cov}(z, y)}{\text{Cov}(z, x)} = \frac{\pi_1}{\theta_1}
+$$
+
+其中：
+
+- \( \pi_1 = \frac{\text{Cov}(z, y)}{\text{Var}(z)} \)：為將 \( y \) 對 \( z \) 做 OLS 時的迴歸係數
+- \( \theta_1 = \frac{\text{Cov}(z, x)}{\text{Var}(z)} \)：為將 \( x \) 對 \( z \) 做 OLS 時的迴歸係數（a 小題結果）
+
+
+
 
 **(c)** 推導 reduced-form 方程式
 
