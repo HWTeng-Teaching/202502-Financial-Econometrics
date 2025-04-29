@@ -289,7 +289,7 @@ $$
    \theta_1 = \frac{E[(z - E(z))(x - E(x))]}{E[(z - E(z))^2]} = \frac{\text{Cov}(z, x)}{\text{Var}(z)}
    $$
 
-
+------
 
 **(b)** 證明 $\frac{\text{Cov}(z, y)}{\text{Var}(z)}$ 是另一個回歸係數
 
@@ -347,7 +347,7 @@ $$
 \pi_1 = \frac{E[(z - E(z))(y - E(y))]}{E[(z - E(z))^2]} = \frac{\text{Cov}(z, y)}{\text{Var}(z)}
 $$
 
-
+------
 
 **(c)** 推導 reduced-form 方程式
 
