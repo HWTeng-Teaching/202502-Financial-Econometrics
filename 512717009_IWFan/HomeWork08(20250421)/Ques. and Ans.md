@@ -394,24 +394,65 @@ $$
 
 **(e)** 證明間接最小平方法估計量為一致估計量
 
-若 $\hat{\pi}_1$ 與 $\hat{\theta}_1$ 是 OLS 的一致估計量，則：
+推導 $\theta_1$
+
+$$
+\theta_1 = \frac{E[(z - E(z))(x - E(x))]}{E[(z - E(z))^2]} = \frac{\text{Cov}(z, x)}{\text{Var}(z)}
+$$
+
+$$
+\hat{\theta}_1 = \frac{\widehat{\text{Cov}}(z, x)}{\widehat{\text{Var}}(z)} 
+= \frac{\sum (z_i - \bar{z})(x_i - \bar{x}) / N}{\sum (z_i - \bar{z})^2 / N} 
+= \frac{\sum (z_i - \bar{z})(x_i - \bar{x})}{\sum (z_i - \bar{z})^2}
+$$
+
+> This estimator is consistent if $z$ is uncorrelated with $v$.
+
+
+推導 $\pi_1$
+
+$$
+\pi_1 = \frac{E[(z - E(z))(y - E(y))]}{E[(z - E(z))^2]} = \frac{\text{Cov}(z, y)}{\text{Var}(z)}
+$$
+
+$$
+\hat{\pi}_1 = \frac{\widehat{\text{Cov}}(z, y)}{\widehat{\text{Var}}(z)} 
+= \frac{\sum (z_i - \bar{z})(y_i - \bar{y}) / N}{\sum (z_i - \bar{z})^2 / N} 
+= \frac{\sum (z_i - \bar{z})(y_i - \bar{y})}{\sum (z_i - \bar{z})^2}
+$$
+
+> This estimator is consistent if $z$ is uncorrelated with $u$.
+
+
+間接估計 $\beta_2$
+
+$$
+\beta_2 = \frac{\pi_1}{\theta_1}
+$$
 
 $$
 \hat{\beta}_2 = \frac{\hat{\pi}_1}{\hat{\theta}_1}
+= \frac{\left[ \frac{\sum (z_i - \bar{z})(y_i - \bar{y})}{\sum (z_i - \bar{z})^2} \right]}
+       {\left[ \frac{\sum (z_i - \bar{z})(x_i - \bar{x})}{\sum (z_i - \bar{z})^2} \right]}
+= \frac{\sum (z_i - \bar{z})(y_i - \bar{y})}{\sum (z_i - \bar{z})(x_i - \bar{x})}
 $$
 
-由於：
 
-- $\hat{\pi}_1 \xrightarrow{p} \pi_1$
-- $\hat{\theta}_1 \xrightarrow{p} \theta_1$
+大樣本極限定理
 
-根據連續映射定理（Continuous Mapping Theorem）：
+當 $N \to \infty$ 時，有：
 
 $$
-\hat{\beta}_2 = \frac{\hat{\pi}_1}{\hat{\theta}_1} \xrightarrow{p} \frac{\pi_1}{\theta_1} = \beta_2
+\widehat{\text{Cov}}(z, y) \overset{p}{\to} \text{Cov}(z, y), \quad 
+\widehat{\text{Cov}}(z, x) \overset{p}{\to} \text{Cov}(z, x)
 $$
 
-因此， $\hat{\beta}_2$ 是 $\beta_2$ 的一致估計量，這稱為 **indirect least squares (ILS)** 估計量。
+因此：
+
+$$
+\hat{\beta}_2 = \frac{\widehat{\text{Cov}}(z, y)}{\widehat{\text{Cov}}(z, x)} 
+\overset{p}{\to} \beta_2 = \frac{\text{Cov}(z, y)}{\text{Cov}(z, x)}
+$$
 
 ---
 
