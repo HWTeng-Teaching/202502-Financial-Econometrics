@@ -44,8 +44,11 @@ g. 就 (e) 題的 IV 估計，檢定額外工具變數的有效性。你得到�
 
 **(c) 僅使用 MOTHERCOLL 作為工具變數的 2SLS 估計**
 
+
+<img width="585" alt="未命名" src="https://github.com/user-attachments/assets/1b0a3268-7495-4d59-a3fc-d8db18e261e5" />
+
 - \( \hat{\beta}_{\text{EDUC}} = 0.0760 \)
-- 標準誤差 (SE) = 0.042
+- 標準誤差 (SE) = 0.039
 - 95% 信賴區間：\([-0.006,\;0.158]\)
 
 
