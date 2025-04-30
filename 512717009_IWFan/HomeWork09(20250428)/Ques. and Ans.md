@@ -178,7 +178,7 @@ $$
 估計值：
 
 $$
-\hat{\alpha}_{\text{IV}} = 0.0030,\quad \hat{\beta}_{\text{IV}} = 1.2783
+\hat{\alpha}_{\text{IV}} = 0.0030, \quad \hat{\beta}_{\text{IV}} = 1.2783
 $$
 
 $$
