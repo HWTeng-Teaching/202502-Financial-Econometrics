@@ -246,8 +246,43 @@ c. 在軟體中選擇異質變異數穩健標準誤 (Heteroskedasticity Robust S
 
 d. 以 B = 200 次 (bootstrap) 重新抽樣，並在軟體中選擇抽樣標準誤 (Bootstrap standard errors) 選項，取得 IV/2SLS 估計。抽樣標準誤相較於基準模型的標準誤是變大還是變小？與 (c) 題中的異質變異數穩健標準誤相比如何？請以抽樣標準誤計算 EDUC 係數的 95% 區間估計。
 
+### ANS
+
+IV/2SLS Estimation for Returns to Education
+
+Data & Setup
+
+- 樣本數：428 位已在勞動市場工作的已婚女性（`lfp = 1`）
+
+模型設定
+
+$$
+\ln(\text{wage}) = \beta_0 + \beta_1 \cdot \text{educ} + \beta_2 \cdot \text{exper} + \beta_3 \cdot \text{exper}^2 + u
+$$
+
+工具變數（Instruments）
+
+- `mothereduc`
+- `fathereduc`
 
 
+**結果摘要**
+
+| 分析項目 | 結果 |
+|----------|------|
+| Baseline IV/2SLS | $$\hat{\beta}_1 = 0.0614$$，標準誤差 SE = 0.0330 |
+| (a) 殘差圖 | 呈現漏斗形變異 ⇒ 推測有異質變異（heteroskedasticity） |
+| (b) Breusch–Pagan 檢定 | $$R^2 \approx 0.0144$$，$$N R^2 = 6.15$$，$$p = 0.013$$ ⇒ 拒絕同質變異假設 |
+| (c) White 強健標準誤 | Robust SE($$\hat{\beta}_1$$) = 0.0350 ⇒ 更大；95% 信賴區間 = [−0.007, 0.130] |
+| (d) Bootstrap 標準誤（B = 200） | Bootstrap SE($$\hat{\beta}_1$$) = 0.0338 ⇒ 略大於 baseline，略小於 robust；95% 信賴區間 = [−0.005, 0.128] |
+
+
+
+**解釋（Interpretation）**
+
+- 有異質變異的證據意味著傳統 OLS 標準誤可能不可靠。
+- 使用 White 強健標準誤或 Bootstrap 修正後，信賴區間變寬。
+- 在這兩種方法下，**女性教育報酬在 5% 顯著水準下皆不顯著**。
 
 
 
