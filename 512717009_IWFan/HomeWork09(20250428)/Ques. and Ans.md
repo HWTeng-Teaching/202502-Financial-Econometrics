@@ -31,11 +31,8 @@ g. 就 (e) 題的 IV 估計，檢定額外工具變數的有效性。你得到�
 
 **(b) 相關係數（Correlations）**
 
-| 配對 | 相關係數  |
-|------|---------------------|
-| EDUC 與 MOTHERCOLL | 0.3595 |
-| EDUC 與 FATHERCOLL | 0.3985 |
-| MOTHERCOLL 與 FATHERCOLL | 0.355 |
+<img width="364" alt="未命名" src="https://github.com/user-attachments/assets/26965f10-5705-4cb9-ba17-e077ceb95fd5" />
+
 
 可以推論，曾經上過大學的父母，對子女教育的重要性會有較高的重視，較之於那些未曾上過大學的父母。
 
