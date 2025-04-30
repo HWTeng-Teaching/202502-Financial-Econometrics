@@ -177,13 +177,7 @@ $$
 
 估計值：
 
-$$
-\hat{\alpha}_{\text{IV}} = 0.0030, \quad \hat{\beta}_{\text{IV}} = 1.2783
-$$
-
-$$
-\hat{\beta}_{\text{IV}} > \hat{\beta}_{\text{OLS}}
-$$
+<img width="213" alt="未命名" src="https://github.com/user-attachments/assets/683902a3-baa8-4f3f-94a0-3c5af6b5ff70" />
 
 ⇒ 與測量誤差導致 OLS β 低估（attenuation bias）一致。
 
