@@ -251,8 +251,6 @@ d. 以 B = 200 次自助抽樣 (bootstrap) 重新抽樣，並在軟體中選擇�
 
 ### ANS
 
-<img width="576" alt="未命名" src="https://github.com/user-attachments/assets/9fa90243-53a4-407e-b4c9-e5c9d9fd6b68" />
-
 **(a)殘差圖**
 
 <img width="588" alt="1" src="https://github.com/user-attachments/assets/bbdb4c67-38c6-49d0-97b8-af02e4857aca" />
