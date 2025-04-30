@@ -202,9 +202,8 @@ $$
 
 估計值：
 
-$$
-\hat{\alpha}_{\text{IV},2} = 0.0030,\quad \hat{\beta}_{\text{IV},2} = 1.2831
-$$
+<img width="242" alt="未命名" src="https://github.com/user-attachments/assets/bcfb7702-0486-4fe6-9503-982dfbb460f3" />
+
 
 與 (d) 的結果相近，且皆大於 OLS。
 
