@@ -255,9 +255,7 @@ d. 以 B = 200 次自助抽樣 (bootstrap) 重新抽樣，並在軟體中選擇�
 
 <img width="588" alt="1" src="https://github.com/user-attachments/assets/bbdb4c67-38c6-49d0-97b8-af02e4857aca" />
 
-將 IV 殘差（IV residuals）對經驗值（EXPER）繪圖後，顯示出明顯的漏斗型（funnel pattern）分佈，顯示可能存在異質變異（heteroskedasticity）的情形，
-
-說明經驗年資較低時的殘差變化⽐經驗年限較⾼時的殘差變化更⼤。
+將 IV 殘差（IV residuals）對經驗值（EXPER）繪圖後，顯示出明顯的漏斗型（funnel pattern）分佈，顯示可能存在異質變異（heteroskedasticity）的情形，說明經驗年資較低時的殘差變化⽐經驗年限較⾼時的殘差變化更⼤。
  
 
 **(b)** NR²（Breusch–Pagan）檢定
