@@ -237,7 +237,7 @@ $$
 
 
 
-**summary table**
+**SUMMARY TABLE**
 
 
 回歸結果表（第二組模型）
