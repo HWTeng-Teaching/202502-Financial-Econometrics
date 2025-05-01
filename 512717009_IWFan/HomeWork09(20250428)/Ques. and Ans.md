@@ -146,6 +146,10 @@ Microsoft β 值的估計與診斷結果
 
 **(a) 最小平方法 (OLS) 估計**
 
+<img width="570" alt="C10Q20a" src="https://github.com/user-attachments/assets/d6c2af19-415b-4ad2-830e-9cdf84c5e00c" />
+
+
+
 模型：
 
 $$
@@ -169,6 +173,12 @@ $$
 
 **(b) 工具變數：RANK**
 
+
+<img width="575" alt="C10Q20b" src="https://github.com/user-attachments/assets/9689953e-2ae9-4e2b-bff1-8ebb91c4eaef" />
+
+
+
+
 第一階段回歸式：
 
 $$
@@ -183,6 +193,12 @@ $$
 
 **(c) 外生性檢定（Exogeneity Test）**
 
+
+<img width="575" alt="C10Q20c" src="https://github.com/user-attachments/assets/bbe0561b-c49f-4c00-a53a-a32141e5b987" />
+
+
+
+
 擴充回歸模型，加入第一階段殘差 $$\hat{v}$$：
 
 - t value −2.04
@@ -192,6 +208,9 @@ $$
 
 
 **(d) 兩階段最小平方法 (2SLS)：使用 RANK**
+
+<img width="575" alt="C10Q20d" src="https://github.com/user-attachments/assets/2711e36b-d05c-4f60-a7cc-2f901b241f52" />
+
 
 估計值：
 
@@ -203,6 +222,10 @@ $$
 
 **(e) 加入第二工具變數：POS**
 
+<img width="576" alt="C10Q20e" src="https://github.com/user-attachments/assets/328bc941-d669-4c57-8ee7-f1ca4c4c50be" />
+
+
+
 - 第一階段 F 統計量：$$F = 951.3$$  
 - $$R^2 = 0.915$$  
 ⇒ 工具變數整體非常強。
@@ -211,12 +234,22 @@ $$
 
 **(f) Hausman 檢定**
 
+<img width="577" alt="C10Q20f" src="https://github.com/user-attachments/assets/0d1962a1-296d-4780-bf12-589feb2e46e5" />
+
+
+
 - 殘差 p 值：$$0.0287 > 0.01$$  
 - 結論：無法在 1% 顯著水準下拒絕外生性假設。
 
 
 
 **(g) 兩階段最小平方法：使用 RANK 與 POS**
+
+
+<img width="575" alt="C10Q20g" src="https://github.com/user-attachments/assets/df5ed4a9-5de1-4841-a6a0-2e60d9c6b78d" />
+
+
+
 
 估計值：
 
@@ -228,6 +261,12 @@ $$
 
 
 **(h) Breusch–Pagan 異質變異檢定**
+
+
+<img width="362" alt="C10Q20h" src="https://github.com/user-attachments/assets/8a65e2b1-8678-4239-b7fc-74e7f17d4988" />
+
+
+
 
 $$
 \chi^2(1) = 1.57,\quad p = 0.21
