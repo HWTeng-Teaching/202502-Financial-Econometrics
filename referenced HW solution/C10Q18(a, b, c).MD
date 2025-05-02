@@ -1,104 +1,25 @@
 ***學號：313704006     工工碩一 : 蘇柏誠***
 
-![圖片]
+<img width="552" alt="Image" src="https://github.com/user-attachments/assets/e3154fbd-84c6-4591-8b33-13f1637cb5d0" />
 
-## (d)
+## (a)
 
-| Method           | Lower bound (2.5%) | Upper bound (97.5%) |
-|------------------|--------------------|---------------------|
-| Traditional SE   | $-135.3298$        | $-28.3230$          |
-| HC1 Robust SE    | $-139.3218$        | $-24.3311$          |
+<img width="719" alt="Image" src="https://github.com/user-attachments/assets/d7f5f468-8693-4d60-b83d-47d25ea3263b" />
 
-The traditional standard errors assume homoskedasticity, yielding a 95\% confidence interval for  $[-135.33,\,-28.32]$. In contrast, the HC1 robust standard errors account for heteroskedasticity, producing a wider interval of $[-139.32,\,-24.33]$, reflecting increased uncertainty when the homoskedasticity assumption is relaxed.
+## (b)
+<img width="811" alt="Image" src="https://github.com/user-attachments/assets/b5cc1431-a1b6-4b4d-ae7a-148f513717a3" />
+<img width="779" alt="Image" src="https://github.com/user-attachments/assets/628139dd-f367-4d61-b9f9-f7c87282b095" />
 
-## (e)
-Through R programing, we can get the result below.
-```
-(a):
-> confint(model_ols, "KIDS", level = 0.95)
-         2.5 %    97.5 %
-KIDS -135.3298 -28.32302
-
-(d)
-> kid_coef <- coef(model_ols)["KIDS"]
-> kid_se_robust <- sqrt(vcovHC(model_ols, type = "HC1")["KIDS", "KIDS"])
-> ci_lower <- kid_coef - 1.9721 * kid_se_robust
-> ci_upper <- kid_coef + 1.9721 * kid_se_robust
-      KIDS       KIDS 
--139.32177  -24.33107
-
-(e)
-GLS
-> confint(model_gls, "KIDS", level = 0.95)
-         2.5 %    97.5 %
-KIDS -119.8945 -33.71808
-
-Robust GLS
-> kid_coef <- coef(model_gls)["KIDS"]
-> robust_gls_se <- sqrt(vcovHC(model_gls, type = "HC1")["KIDS", "KIDS"])
-> ci_lower <- kid_coef - 1.9721 * robust_gls_se
-> ci_upper <- kid_coef + 1.9721 * robust_gls_se
-> c(ci_lower, ci_upper)
-      KIDS       KIDS 
--121.41245  -32.20013 
-```
-After organzising the result, we can get the result below.
-| Method                     | Lower bound (2.5%) | Upper bound (97.5%) | width of intervals |
-|--------------------------|---------------------|----------------------|-----------|
-| Conventional OLS SE              | $-135.3298$         | $-28.3230$           | $107.007$ |
-| HC1 Robust SE            | $-139.3218$         | $-24.3311$           | $114.991$ |
-| Conventional GLS (WLS)   | $-119.8945$         | $-33.7181$           | $86.176$  |
-| Robust GLS (HC1)         | $-121.4125$         | $-32.2001$           | $89.212$  |
-
-![圖片](https://github.com/user-attachments/assets/d41ec3ae-14db-4889-b2ed-31c7308f00c5)
-
-
-### Difference Analysis
-
-- **Interval Widths**  
-  - *Conventional GLS(WLS)(the pink one)* produces the narrowest 95\% confidence interval ($\approx 86.18$), reflecting greatest efficiency.  
-  - *HC1 Robust OLS(the green one)* has the widest interval ($\approx 114.99$), as it fully relaxes the constant‐variance assumption and thus captures the greatest level of uncertainty.
-
-- **Interval Positioning**  
-  - GLS‐based(the pink and yellow ones) intervals tend to be shifted closer to zero (i.e. smaller magnitude), indicating more concentrated estimates of the coefficient under the weighted specification.  
-  - OLS‐based intervals (both conventional and robust) are centered further away from zero, reflecting larger sampling variability.
-
-\
-\
-\
-\
-\
-\
-\
-\
-\
-\
-\
-\
-\
-\
-\
-\
-\
-\
-\
-memo:
-![圖片](https://github.com/user-attachments/assets/9204a7af-158c-4503-b255-d1c9148cbcea)
-
-
-
-![圖片](https://github.com/user-attachments/assets/61c3882c-38b7-457e-9364-740ee9473bfa)
-
-![圖片](https://github.com/user-attachments/assets/deb3f5ac-aaf6-4cad-a6bc-813ddab3fb90)
-## but
-![圖片](https://github.com/user-attachments/assets/d6c14654-e461-4dcc-a96a-a831d1691edb)
-![圖片](https://github.com/user-attachments/assets/d47974a8-3183-4c3b-bc38-ff41c04b4315)
-
-\
-\
-\
-\
-T distribution:
-![圖片](https://github.com/user-attachments/assets/cad1df45-d619-4e52-a874-3177fd27e0f8)
-
-
+##(c)
+library(AER)
+#install.packages("AER")
+mroz.iv = ivreg(log(wage)~educ + exper + I(exper^2)| exper + I(exper^2) + mothercoll, data = married_data)
+#confint(mroz.iv, level = 0.95)
+vcoc_mroz = vcov(mroz.iv) 
+mroz.iv$coefficients
+df = mroz.iv$df.residual
+tc = qt(0.975, df, lower.tail = TRUE)
+educ_lb = mroz.iv$coefficients[2] - tc * (vcoc_mroz[2, 2]^0.5)
+educ_ub = mroz.iv$coefficients[2] + tc * (vcoc_mroz[2, 2]^0.5)
+cat("95% CI for educ coefficient: [", round(educ_lb, 5), ",", round(educ_ub, 5), "]\n")
+<img width="828" alt="Image" src="https://github.com/user-attachments/assets/34779c60-0589-48d3-97b5-0c2e1ad8df20" />
