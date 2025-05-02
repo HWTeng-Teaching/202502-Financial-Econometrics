@@ -1,0 +1,186 @@
+rm(list=ls())
+temp_file <- tempfile(fileext = ".rdata")
+download.file(url = "https://www.principlesofeconometrics.com/poe5/data/rdata/mroz.rdata",
+              destfile = temp_file, mode = "wb")
+load(temp_file)
+head(mroz)
+
+#Q18A
+
+# -------------------------------------------------------------
+# 1. 僅保留 1975 年有工作的樣本 (lfp == 1) —— 共 428 筆
+# -------------------------------------------------------------
+mroz_work = subset(mroz, lfp == 1) # 428 obs
+
+# -------------------------------------------------------------
+# 2. 建立父母「有上過大學」的虛擬變數
+#    - MOTHERCOLL = 1  ⇔  mothereduc > 12
+#    - FATHERCOLL = 1  ⇔  fathereduc > 12
+# -------------------------------------------------------------
+
+mroz_work$mothercoll <- as.integer(mroz_work$mothereduc > 12 )
+mroz_work$fathercoll <- as.integer(mroz_work$fathereduc > 12 )
+
+# -------------------------------------------------------------
+# 3. 計算比例（%）
+# -------------------------------------------------------------
+
+pct_mothercoll <- mean(mroz_work$mothercoll) * 100
+pct_fathercoll <- mean(mroz_work$fathercoll) * 100
+
+pct_fathercoll
+pct_mothercoll
+
+# -------------------------------------------------------------
+# 4. 輸出結果
+# -------------------------------------------------------------
+cat(sprintf("母親受過大學教育的比例：%.2f%%\n", pct_mothercoll))
+cat(sprintf("父親受過大學教育的比例：%.2f%%\n", pct_fathercoll))
+
+#B
+vars <- mroz_work[, c('educ', 'mothercoll', 'fathercoll')]
+corr <- cor(vars)
+corr
+
+#C
+
+library(AER)
+library(dplyr)
+
+mroz_work <- mroz %>% 
+  filter(lfp == 1, wage > 0) %>%            
+  mutate(
+    MOTHERCOLL = as.integer(mothereduc > 12),  
+    lnwage     = log(wage),                    
+    exper2     = exper^2                       
+  )
+
+# -------------------------------------------------------------
+# 2. IV／2SLS 估計：ln(wage) ~ exper + exper² + educ
+#    educ 為內生變數，工具 = MOTHERCOLL
+# -------------------------------------------------------------
+
+iv_fit <- ivreg(
+  lnwage ~ exper + exper2 + educ |           # 第二階段方程
+    MOTHERCOLL + exper + exper2,     # 第一步所用工具與外生變數
+  data = mroz_work
+)
+
+summary(iv_fit, diagnostics = TRUE)          # 檢視估計結果與弱工具 F 統計
+#工具非常強
+# 3. EDUC 係數的 95% 信賴區間
+confint(iv_fit)["educ", ]
+
+#D
+## 第一階段：以 EDUC 為應變數
+first <- lm(educ ~ exper + exper2 + MOTHERCOLL, data = mroz_work)
+summary(first)
+#T值夠大，是強工具，與C結果一致
+
+#E
+mroz_work <- mroz %>% 
+  filter(lfp == 1, wage > 0) %>%           # 426 筆 (wage>0)
+  mutate(
+    lnwage     = log(wage),               # 被解釋變數
+    exper2     = exper^2,                 # 經驗平方
+    MOTHERCOLL = as.integer(mothereduc  > 12),
+    FATHERCOLL = as.integer(fathereduc  > 12)
+  )
+
+iv2_fit <- ivreg(
+  lnwage ~ exper + exper2 + educ |
+    exper + exper2 + MOTHERCOLL + FATHERCOLL,
+  data = mroz_work
+)
+
+summary(iv2_fit, diagnostics = TRUE)  # 可一起查看弱工具與過度識別檢定
+
+# 3. 取 EDUC 係數的 95 % 信賴區間
+ci_educ_iv2 <- confint(iv2_fit)["educ", ]
+print(ci_educ_iv2)
+#變窄了 而且排除0
+
+#F
+library(car)
+
+# -------------------------------------------------------------
+# 1. 準備工作樣本與工具
+# -------------------------------------------------------------
+mroz_work <- mroz %>% 
+  filter(lfp == 1, wage > 0) %>%           # 426 筆
+  mutate(
+    exper2     = exper^2,
+    MOTHERCOLL = as.integer(mothereduc > 12),
+    FATHERCOLL = as.integer(fathereduc > 12)
+  )
+
+# -------------------------------------------------------------
+# 2. 第一階段迴歸：EDUC ~ exper + exper2 + MOTHERCOLL + FATHERCOLL
+# -------------------------------------------------------------
+first2 <- lm(educ ~ exper + exper2 + MOTHERCOLL + FATHERCOLL,
+             data = mroz_work)
+
+summary(first2)                          # 查看係數與個別 t 值
+
+# -------------------------------------------------------------
+# 3. 聯合檢定：兩個工具係數同時為 0
+# -------------------------------------------------------------
+# H0: MOTHERCOLL = 0  並且  FATHERCOLL = 0
+f_test <- linearHypothesis(first2,
+                           c("MOTHERCOLL = 0",
+                             "FATHERCOLL = 0"))
+print(f_test)
+#兩工具變數係數明顯至少其一不為0，足以避免弱工具變數所帶來的不一致問題
+
+#G
+# iv2_fit 來自上一題：使用兩個工具的 2SLS 模型
+summary(iv2_fit, diagnostics = TRUE)
+#無法拒絕H0：所有工具皆外生
+
+#Q20
+
+## 建立超額報酬與工具變數 --------------------------------------------
+capm5 <- capm5 %>% 
+  mutate(
+    msft_rf = msft - riskfree,      # Microsoft 超額報酬
+    rm_rf   = mkt  - riskfree,      # 市場超額報酬
+    RANK    = rank(rm_rf, ties.method = "first"),
+    POS     = if_else(rm_rf > 0, 1, 0)
+  )
+
+## (a) OLS 估計 -------------------------------------------------------
+ols_fit <- lm(msft_rf ~ rm_rf, data = capm5)
+summary(ols_fit)
+
+## (b) 第一階段：rm_rf ~ RANK ----------------------------------------
+first_rank <- lm(rm_rf ~ RANK, data = capm5)
+summary(first_rank)
+capm5 <- capm5 %>% mutate(vhat = resid(first_rank))
+
+## (c) 外生性檢定（加入 vhat） ---------------------------------------
+aug_fit <- lm(msft_rf ~ rm_rf + vhat, data = capm5)
+coeftest(aug_fit)          # vhat 的顯著性
+# 若需 1% 顯著水準比較：查看 p-value < 0.01？
+
+##v(d) 2SLS：單一工具 RANK -------------------------------------------
+iv1_fit <- ivreg(msft_rf ~ rm_rf | RANK, data = capm5)
+summary(iv1_fit, diagnostics = TRUE)
+
+## (e) 第一階段：rm_rf ~ RANK + POS ----------------------------------
+first_rank_pos <- lm(rm_rf ~ RANK + POS, data = capm5)
+summary(first_rank_pos)
+capm5 <- capm5 %>% mutate(vhat2 = resid(first_rank_pos))
+
+## (f) Hausman 檢定 ---------------------------------------------------
+hausman_test <- lm(msft_rf ~ rm_rf + vhat2, data = capm5)
+coeftest(hausman_test)     # 檢查 vhat2 在 1% 水準是否顯著
+
+## (g) 2SLS：雙工具 RANK + POS ---------------------------------------
+iv2_fit <- ivreg(msft_rf ~ rm_rf | RANK + POS, data = capm5)
+summary(iv2_fit, diagnostics = TRUE)
+
+## (h) Breusch–Pagan 檢定（2SLS 殘差） -------------------------------
+capm5 <- capm5 %>% mutate(iv_resid = resid(iv2_fit))
+
+bp_test <- bptest(iv_resid ~ fitted(iv2_fit), data = capm5)
+bp_test    # 在 5% 顯著水準檢視 p-value
