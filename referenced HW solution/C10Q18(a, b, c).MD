@@ -24,4 +24,5 @@ educ_lb = mroz.iv$coefficients[2] - tc * (vcoc_mroz[2, 2]^0.5)
 educ_ub = mroz.iv$coefficients[2] + tc * (vcoc_mroz[2, 2]^0.5)
 cat("95% CI for educ coefficient: [", round(educ_lb, 5), ",", round(educ_ub, 5), "]\n")
 
+## (confidence interval)
 <img width="828" alt="Image" src="https://github.com/user-attachments/assets/34779c60-0589-48d3-97b5-0c2e1ad8df20" />
