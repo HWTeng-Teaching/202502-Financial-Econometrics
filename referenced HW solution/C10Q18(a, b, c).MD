@@ -12,7 +12,8 @@
 
 ## (c)
 
-```library(AER)
+```r
+library(AER)
 mroz.iv = ivreg(log(wage)~educ + exper + I(exper^2)| exper + I(exper^2) + mothercoll, data = married_data)
 #confint(mroz.iv, level = 0.95)
 vcoc_mroz = vcov(mroz.iv) 
@@ -21,6 +22,6 @@ df = mroz.iv$df.residual
 tc = qt(0.975, df, lower.tail = TRUE)
 educ_lb = mroz.iv$coefficients[2] - tc * (vcoc_mroz[2, 2]^0.5)
 educ_ub = mroz.iv$coefficients[2] + tc * (vcoc_mroz[2, 2]^0.5)
-cat("95% CI for educ coefficient: [", round(educ_lb, 5), ",", round(educ_ub, 5), "]\n")```
+cat("95% CI for educ coefficient: [", round(educ_lb, 5), ",", round(educ_ub, 5), "]\n")
 
 <img width="828" alt="Image" src="https://github.com/user-attachments/assets/34779c60-0589-48d3-97b5-0c2e1ad8df20" />
