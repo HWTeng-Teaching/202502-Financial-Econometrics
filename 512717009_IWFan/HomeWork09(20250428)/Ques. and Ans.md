@@ -56,9 +56,15 @@ g. 就 (e) 題的 IV 估計，檢定額外工具變數的有效性。你得到�
 
 **(d) 第一階段 F 統計量（First-Stage F-Statistic）**
 
-- \( F = 63.56 \)，p 值 < 0.001  
-→ 工具變數為強工具（strong instrument）
-- F-值為 63.56 ⼤於經驗值 10，因此我們拒絕了 IV 。
+我們利用 第一階段的 F 統計量：𝐹= 工具變數對被解釋變數的解釋力 / 殘差變異
+
+如果這個 F 值夠大，表示這個工具變數對 EDUC 解釋得夠清楚，是「強工具」。
+
+<img width="399" alt="c10q18d" src="https://github.com/user-attachments/assets/3df6846a-f0d0-4847-ad80-8a7aa91b6468" />
+
+這個 F = 63.56 ＞ 10，也遠高於 Stock-Yogo 提供的弱工具臨界值（像是 16.38 等）→ 工具變數為強工具（strong instrument）
+
+因此我們拒絕了 IV 。
 
 
 **(e) 同時使用 MOTHERCOLL 與 FATHERCOLL 的 2SLS 估計**
