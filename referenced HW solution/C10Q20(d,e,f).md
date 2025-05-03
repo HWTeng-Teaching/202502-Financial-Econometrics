@@ -70,7 +70,7 @@ The 2SLS estimate of β is **greater** than the OLS estimate, consistent with th
 - OLS estimates are biased **toward zero** when regressors are measured with error.  
 - The strong performance of the instrument `RANK` ensures reliable identification.
 
-
+---
 
 ## 
 ![image](https://github.com/user-attachments/assets/44fb74dd-8c48-4fbb-bac7-6db36a39facd)
@@ -116,3 +116,54 @@ summary(first_stage2)
 ### Conclusion
 
 The first‐stage regression shows that the two instruments explain over 91% of the variation in `excess_mkt` and pass the joint‐significance test (F ≫ 10). Therefore, `RANK` and `POS` form an adequately strong IV set for the subsequent 2SLS estimation.  
+
+---
+
+## 
+![image](https://github.com/user-attachments/assets/e03717d9-86b5-45c9-83d0-b17783b2eab4)
+
+## (f) Hausman Test for Endogeneity
+
+In this section, we carry out the Hausman test to determine whether the market excess return (`excess_mkt`) is endogenous, using the residuals from the first‐stage regression in part (e).
+
+---
+
+### Step 1: Extract First‐Stage Residuals
+
+```r
+# Obtain residuals from the first-stage regression (instruments: RANK + POS)
+capm$vhat2 <- resid(first_stage2)
+```
+
+---
+
+### Step 2: Augmented Regression
+
+We augment the original CAPM model with the first‐stage residuals:
+
+
+excess_msft<sub>t</sub> = α + β · excess_mkt<sub>t</sub> + δ · vhat2<sub>t</sub> + ε<sub>t</sub>
+
+
+```r
+hausman_model <- lm(excess_msft ~ excess_mkt + vhat2, data = capm)
+summary(hausman_model)
+```
+
+**Results:**
+- Coefficient of `vhat2`: **−0.9549**  
+- Std. Error: 0.4331  
+- t value: −2.205  
+- p value: **0.0287**
+
+---
+
+### Conclusion
+
+The null hypothesis H<sub>0</sub>: &delta; = 0 (market return is exogenous) is tested at the 1% significance level.
+
+- **p value = 0.0287 ≥ 0.01**  
+- We **do not reject** H<sub>0</sub> at the 1% level.
+
+> **Therefore, we conclude that the market excess return can be treated as exogenous at the 1% significance level.**
+
