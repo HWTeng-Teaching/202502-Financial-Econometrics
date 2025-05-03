@@ -2,13 +2,13 @@
 ## 
 ![image](https://github.com/user-attachments/assets/9b577874-fdb7-4109-bd24-5850be2b4e8a)
 
-## 📌 (d) IV/2SLS Estimation Using `RANK` as an Instrument
+## (d) IV/2SLS Estimation Using `RANK` as an Instrument
 
 In this section, we estimate the CAPM model using two-stage least squares (2SLS), treating the market excess return as a potentially endogenous regressor. The instrument used is `RANK`, which is constructed by ranking the values of the market excess return from smallest to largest.
 
 ---
 
-### ✅ Step 1: Construct the Instrument `RANK`
+### Step 1: Construct the Instrument `RANK`
 
 ```r
 # Create the instrumental variable RANK by ranking the market excess returns
@@ -18,7 +18,7 @@ capm$RANK <- rank(capm$excess_mkt, ties.method = "first")
 
 ---
 
-### ✅ Step 2: First‐Stage Regression
+### Step 2: First‐Stage Regression
 
 We regress `excess_mkt` on `RANK` to obtain fitted values.
 
@@ -29,22 +29,21 @@ first_stage <- lm(excess_mkt ~ RANK, data = capm)
 summary(first_stage)
 ```
 
-**Result highlights:**
+**Results:**
 - R<sup>2</sup> = 0.913  
 - F-statistic = 1858  
 - `RANK` is **highly significant** (p < 0.001)  
 
-> ✅ This confirms that `RANK` is a **strong instrument**.
+> This confirms that `RANK` is a **strong instrument**.
 
 ---
 
-### ✅ Step 3: 2SLS Estimation using `ivreg()`
+### Step 3: 2SLS Estimation using `ivreg()`
 
 We estimate the CAPM equation using `RANK` as the instrument for `excess_mkt`.
 
-```
 excess_msft<sub>t</sub> = α + β · excess_mkt<sub>t</sub> + ε<sub>t</sub>
-```
+
 
 ```r
 library(AER)
@@ -55,7 +54,7 @@ summary(iv_model)
 
 ---
 
-### 📊 Estimation Results
+### Estimation Results
 
 | Method   | Beta (Market Coefficient) | Std. Error | t Value | Significance |
 |----------|---------------------------:|-----------:|--------:|--------------|
@@ -64,12 +63,56 @@ summary(iv_model)
 
 ---
 
-### ✅ Conclusion
+### Conclusion
 
 The 2SLS estimate of β is **greater** than the OLS estimate, consistent with theoretical expectations under **measurement error**:
 
 - OLS estimates are biased **toward zero** when regressors are measured with error.  
-- IV estimation corrects for this attenuation bias.  
 - The strong performance of the instrument `RANK` ensures reliable identification.
 
-> **Yes**, the IV estimate agrees with expectations. It is consistent, significant, and slightly larger than the OLS estimate, validating the usefulness of `RANK` as an instrument.
+
+
+## 
+![image](https://github.com/user-attachments/assets/44fb74dd-8c48-4fbb-bac7-6db36a39facd)
+
+## (e) First‐Stage Regression with `RANK` and `POS` as Instruments
+
+In this section, we extend the first‐stage regression to include both `RANK` and `POS` as instruments for the potentially endogenous regressor `excess_mkt`.
+
+---
+
+### Step 1: Construct the Instrument `POS`
+
+```r
+# Create the binary instrument POS: 1 if market excess return is positive, 0 otherwise
+capm$POS <- ifelse(capm$excess_mkt > 0, 1, 0)
+```
+
+---
+
+### Step 2: First‐Stage Regression
+
+We regress `excess_mkt` on `RANK` and `POS`:
+
+
+excess_mkt<sub>t</sub> = π<sub>0</sub> + π<sub>1</sub> · RANK<sub>t</sub> + π<sub>2</sub> · POS<sub>t</sub> + v<sub>t</sub>
+
+
+```r
+first_stage2 <- lm(excess_mkt ~ RANK + POS, data = capm)
+summary(first_stage2)
+```
+
+**Results:**
+- R<sup>2</sup> = 0.9149  
+- F-statistic: 951.3 on 2 and 177 DF (p < 0.001)  
+- `RANK` is highly significant (p < 0.001)  
+- `POS` is significant at 5% level (p = 0.0291)  
+
+> This confirms that `RANK` and `POS` are **jointly strong instruments**.
+
+---
+
+### Conclusion
+
+The first‐stage regression shows that the two instruments explain over 91% of the variation in `excess_mkt` and pass the joint‐significance test (F ≫ 10). Therefore, `RANK` and `POS` form an adequately strong IV set for the subsequent 2SLS estimation.  
