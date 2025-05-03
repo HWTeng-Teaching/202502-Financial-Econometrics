@@ -2,11 +2,20 @@
 ## 
 ![image](https://github.com/user-attachments/assets/9b577874-fdb7-4109-bd24-5850be2b4e8a)
 
-IV/2SLS Estimation Using RANK as an Instrument. 
-We estimate the CAPM model using two-stage least squares (2SLS), where the market excess return (excess_mkt) is treated as a potentially endogenous regressor. The instrument used is RANK, which is defined as the rank ordering of excess_mkt from smallest to largest.
+## (d) IV/2SLS Estimation Using `RANK` as an Instrument
+
+In this section, we estimate the CAPM model using two-stage least squares (2SLS), treating the market excess return as a potentially endogenous regressor. The instrument used is `RANK`, which is constructed by ranking the values of the market excess return from smallest to largest.
+
+---
+
+### Step 1: Construct the Instrument `RANK`
+
 ```r
 # Load the AER package for instrumental variable regression
 library(AER)
+
+# from smallest to largest. Each observation receives a rank between 1 and 180.
+capm$RANK <- rank(capm$excess_mkt, ties.method = "first")
 
 # Perform 2SLS estimation using ivreg()
 iv_model <- ivreg(excess_msft ~ excess_mkt | RANK, data = capm)
