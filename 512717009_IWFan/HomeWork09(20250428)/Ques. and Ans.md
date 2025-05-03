@@ -45,9 +45,13 @@ g. 就 (e) 題的 IV 估計，檢定額外工具變數的有效性。你得到�
 
 <img width="585" alt="未命名" src="https://github.com/user-attachments/assets/1b0a3268-7495-4d59-a3fc-d8db18e261e5" />
 
-- β^2_EDUC = 0.0760 
-- 標準誤差 (SE) = 0.039
-- 95% 區間估計係數: [-0.000858, 0.1528939]。
+
+<img width="671" alt="c10q18c" src="https://github.com/user-attachments/assets/b07f5586-e8a6-414f-bc2f-bd6e9a93dcd0" />
+
+
+- β^2_EDUC = 0.0760 ： 表示教育每增加一年，工資對數平均增加約 0.076。
+- 標準誤差 (SE) = 0.039 ➜ 不小，因此有統計誤差。
+- 95% 區間估計係數: [-0.000858, 0.1528939] ➜ 這個區間包含 0，表示在 5% 顯著水準下，這個估計值「不顯著」。
 
 
 **(d) 第一階段 F 統計量（First-Stage F-Statistic）**
