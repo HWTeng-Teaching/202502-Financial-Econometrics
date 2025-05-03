@@ -70,10 +70,10 @@ The 2SLS estimate of β is **greater** than the OLS estimate, consistent with th
 - OLS estimates are biased **toward zero** when regressors are measured with error.  
 - The strong performance of the instrument `RANK` ensures reliable identification.
 
----
 
-## 
+
 ![image](https://github.com/user-attachments/assets/44fb74dd-8c48-4fbb-bac7-6db36a39facd)
+
 
 ## (e) First‐Stage Regression with `RANK` and `POS` as Instruments
 
@@ -117,10 +117,9 @@ summary(first_stage2)
 
 The first‐stage regression shows that the two instruments explain over 91% of the variation in `excess_mkt` and pass the joint‐significance test (F ≫ 10). Therefore, `RANK` and `POS` form an adequately strong IV set for the subsequent 2SLS estimation.  
 
----
 
-## 
 ![image](https://github.com/user-attachments/assets/e03717d9-86b5-45c9-83d0-b17783b2eab4)
+
 
 ## (f) Hausman Test for Endogeneity
 
