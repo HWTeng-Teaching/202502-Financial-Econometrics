@@ -1,4 +1,4 @@
-313707007 陳泓瑋
+***學號：313707007     財金碩一 : 陳泓瑋***
 
 ![image](https://github.com/user-attachments/assets/99e7da4f-bc91-4c8f-a099-91f90528267f)
 ## 
