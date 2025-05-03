@@ -12,7 +12,7 @@ In this section, we estimate the CAPM model using two-stage least squares (2SLS)
 
 ```r
 # Create the instrumental variable RANK by ranking the market excess returns
-# from smallest to largest. Ties are assigned based on order of appearance.
+# from smallest to largest.
 capm$RANK <- rank(capm$excess_mkt, ties.method = "first")
 ```
 
