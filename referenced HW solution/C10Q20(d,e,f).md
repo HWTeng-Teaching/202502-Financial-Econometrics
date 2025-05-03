@@ -2,13 +2,13 @@
 ## 
 ![image](https://github.com/user-attachments/assets/9b577874-fdb7-4109-bd24-5850be2b4e8a)
 
-## 📌 (d) IV/2SLS Estimation Using `RANK` as an Instrument
+## (d) IV/2SLS Estimation Using `RANK` as an Instrument
 
 In this section, we estimate the CAPM model using two-stage least squares (2SLS), treating the market excess return as a potentially endogenous regressor. The instrument used is `RANK`, which is constructed by ranking the values of the market excess return from smallest to largest.
 
 ---
 
-### ✅ Step 1: Construct the Instrument `RANK`
+### Step 1: Construct the Instrument `RANK`
 
 ```r
 # Create the instrumental variable RANK by ranking the market excess returns
@@ -18,7 +18,7 @@ capm$RANK <- rank(capm$excess_mkt, ties.method = "first")
 
 ---
 
-### ✅ Step 2: First-Stage Regression
+### Step 2: First-Stage Regression
 
 We regress `excess_mkt` on `RANK` to obtain fitted values.
 
@@ -36,11 +36,11 @@ summary(first_stage)
 - F-statistic = 1858
 - `RANK` is **highly significant** (p < 0.001)  
 
-> ✅ This confirms that `RANK` is a **strong instrument**.
+> This confirms that `RANK` is a **strong instrument**.
 
 ---
 
-### ✅ Step 3: 2SLS Estimation using `ivreg()`
+### Step 3: 2SLS Estimation using `ivreg()`
 
 We estimate the CAPM equation using `RANK` as the instrument for `excess_mkt`.
 
@@ -57,7 +57,7 @@ summary(iv_model)
 
 ---
 
-### 📊 Estimation Results
+### Estimation Results
 
 | Method       | Beta (Market Coefficient) | Std. Error | t Value | Significance |
 |--------------|---------------------------:|-----------:|--------:|--------------|
@@ -66,7 +66,7 @@ summary(iv_model)
 
 ---
 
-### ✅ Conclusion
+### Conclusion
 
 The 2SLS estimate of \\(\beta\\) is **greater** than the OLS estimate, consistent with theoretical expectations under **measurement error**:
 
