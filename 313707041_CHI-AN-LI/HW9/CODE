@@ -1,1 +1,48 @@
+#10.18 
+#(a)
+mroz$MOTHERCOLL <- as.numeric(mroz$mothereduc > 12)
+mroz$FATHERCOLL <- as.numeric(mroz$fathereduc > 12)
+
+# 百分比
+mean(mroz$mothereduc, na.rm = TRUE)  # 母親有大學
+mean(mroz$fathereduc, na.rm = TRUE)  # 父親有大學
+#(b)
+cor(mroz[, c("educ", "MOTHERCOLL", "FATHERCOLL")], use = "complete.obs")
+#相關性是重要的，要和EDUC有關，工具變數才有用
+#(C)
+# 建立乾淨的資料集
+mroz_clean <- subset(mroz, !is.na(wage) & wage > 0 &
+                       !is.na(educ) & !is.na(exper) & !is.na(motheduc))
+
+iv_c <- ivreg(log(wage) ~ educ + exper + I(exper^2) |
+                MOTHERCOLL + exper + I(exper^2),
+              data = mroz_clean)
+confint(iv_c, level = 0.95)
+#(d)
+first_stage1 <- lm(educ ~ MOTHERCOLL + exper + I(exper^2), data = mroz)
+summary(first_stage1)
+
+# F 檢定（是否為強工具變數）
+linearHypothesis(first_stage1, "MOTHERCOLL = 0")
+#(e)
+mroz_clean <- subset(mroz, !is.na(wage) & wage > 0 &
+                       !is.na(educ) & !is.na(exper) & !is.na(motheduc))
+iv_c <- ivreg(log(wage) ~ educ + exper + I(exper^2) |
+                MOTHERCOLL + exper + I(exper^2),
+              data = mroz_clean)
+confint(iv_c, level = 0.95)
+#(f)
+first_stage2 <- lm(educ ~ MOTHERCOLL + FATHERCOLL + exper + I(exper^2), data = mroz)
+summary(first_stage2)
+
+# joint F-test: MOTHERCOLL & FATHERCOLL 是否 jointly 顯著
+linearHypothesis(first_stage2, c("MOTHERCOLL = 0", "FATHERCOLL = 0"))
+#(g)
+# Hansen J 檢定
+library(sandwich)
+library(lmtest)
+library(car)
+# 檢驗 overidentifying restrictions
+summary(iv_c, diagnostics = TRUE)
+
 
