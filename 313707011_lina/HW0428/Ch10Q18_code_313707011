@@ -5,3 +5,58 @@ load("mroz.rdata")  # 載入資料集
 names(mroz)  # 確認變數名稱
 data <- mroz  # 讀取數據 (已載入 mroz.rdata) 使用簡單變數名稱
 str(mroz) # 查看資料結構
+
+
+# 10.18(a)
+library(wooldridge)
+mroz_sub <- subset(mroz,lfp==1)   # 只針對變數 lfp == 1（有參與勞動市場的女性）進行分析
+mroz_sub$mothercoll <- ifelse(mroz_sub$mothereduc > 12, 1, 0)
+mroz_sub$fathercoll <- ifelse(mroz_sub$fathereduc > 12, 1, 0)
+mean(mroz_sub$mothercoll, na.rm = TRUE) 
+mean(mroz_sub$fathercoll, na.rm = TRUE) 
+
+# 10.18(b)
+# 相關係數矩陣
+cor(mroz_sub[, c("educ", "mothercoll", "fathercoll")], use = "complete.obs")
+
+# 10.18(c)
+library(AER)
+mroz_sub$lwage <- log(mroz_sub$wage)
+mroz_sub$exper2 <- mroz_sub$exper^2
+# 使用MOTHERCOLL作為educ的工具變數
+iv_model <- ivreg(lwage ~ educ + exper + exper2 | mothercoll + exper + exper2, 
+                  data = mroz_sub)
+summary(iv_model)
+confint(iv_model, "educ", level = 0.95)
+
+# 10.18(d)
+library(lmtest)
+first_stage <- lm(educ ~ exper + exper2 + mothercoll, data = mroz_sub)
+summary(first_stage)
+linearHypothesis(first_stage, c("mothercoll=0"))
+
+# 10.18(e)
+# 使用MOTHERCOLL和FATHERCOLL作為工具變數估計工資方程式
+iv_model_both <- ivreg(lwage ~ educ + exper + exper2 | 
+                         exper + exper2 + mothercoll + fathercoll, 
+                       data = mroz_sub)
+summary(iv_model_both)
+confint(iv_model_both, "educ", level = 0.95)
+
+# 10.18(f)
+first_stage_both <- lm(educ ~ exper + exper2 + mothercoll + fathercoll, data = mroz_sub)
+summary(first_stage_both)
+linearHypothesis(first_stage_both, c("mothercoll = 0", "fathercoll = 0"))
+
+# 10.18(g)
+summary(iv_model_both, diagnostics = TRUE)
+
+# 10.18(g) 
+# 取得IV估計的殘差
+resid_iv <- resid(iv_model_both)
+# 將這些殘差對所有工具變數進行迴歸
+sargan_test <- lm(resid_iv ~ mothercoll + fathercoll, data = mroz_sub)  
+summary(sargan_test)
+S <- nrow(mroz_sub) * summary(sargan_test)$r.squared    # 計算 Sargan 統計量：n × R²
+# 計算p值：使用卡方分布，自由度為過度識別的工具變數數量
+(p_value <- 1 - pchisq(S, df = 1))
