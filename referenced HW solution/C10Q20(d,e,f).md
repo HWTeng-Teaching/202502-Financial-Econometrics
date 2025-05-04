@@ -131,6 +131,8 @@ In this section, we carry out the Hausman test to determine whether the market e
 
 ### Step 1: Extract First‐Stage Residuals
 
+excess_mkt<sub>t</sub> = π<sub>0</sub> + π<sub>1</sub> · RANK<sub>t</sub> + π<sub>2</sub> · POS<sub>t</sub> + vhat2<sub>t</sub>
+
 ```r
 # Obtain residuals from the first-stage regression (instruments: RANK + POS)
 capm$vhat2 <- resid(first_stage2)
@@ -144,6 +146,11 @@ We augment the original CAPM model with the first‐stage residuals:
 
 
 excess_msft<sub>t</sub> = α + β · excess_mkt<sub>t</sub> + δ · vhat2<sub>t</sub> + ε<sub>t</sub>
+
+**Hypotheses:**
+
+- H<sub>0</sub>: δ = 0  (market return is exogenous)
+- H<sub>a</sub>: δ ≠ 0  (market return is endogenous)
 
 
 ```r
