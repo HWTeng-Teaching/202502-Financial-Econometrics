@@ -22,8 +22,11 @@ Microsoft stock is relatively risky compared to the market portfolio.
 capm5$RANK <- rank(capm5$mkt_excess)
 first_stage <- lm(mkt_excess ~ RANK, data = capm5)
 summary(first_stage)
+linearHypothesis(first_stage, c("RANK=0"))
 ```
 ![2](https://github.com/user-attachments/assets/20692682-e56d-4d61-bdec-d345b9a124c1)
+![5](https://github.com/user-attachments/assets/4468f340-760a-4ad4-9183-6134c13df191)
+
 
 The variable RANK does not directly cause Microsoft’s return, so it meets condition.
 R^2 = 0.9126.
