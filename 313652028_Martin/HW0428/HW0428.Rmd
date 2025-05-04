@@ -1,0 +1,596 @@
+---
+title: "HW0428"
+author: "Yung-Jung Cheng"
+date: "2025-05-04"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(POE5Rdata)
+library(AER)
+library(sandwich)
+library(lmtest)
+library(tidyverse)
+library(boot)
+
+
+```
+# 10.18 
+Consider the data file `mroz` on working wives. Use the 428 observations on married women who participate in the labor force. In this exercise, we examine the effectiveness of a parent’s college education as an instrumental variable.
+
+## 18(a)
+Create two new variables. **MOTHERCOLL** is a dummy variable equaling one if `MOTHEREDUC > 12`, zero otherwise. Similarly, **FATHERCOLL** equals one if `FATHEREDUC > 12` and zero otherwise. What percentage of parents have some college education in this sample?
+
+### Ans
+```{r 18a}
+# (a) Create dummy variables for parental college education
+mroz$mothercoll <- ifelse(mroz$mothereduc > 12, 1, 0)
+mroz$fathercoll <- ifelse(mroz$fathereduc > 12, 1, 0)
+
+# Compute proportions
+mean(mroz$mothercoll)  # proportion of mothers with college education
+mean(mroz$fathercoll)  # proportion of fathers with college education
+mean(mroz$mothercoll == 1 | mroz$fathercoll == 1)  # at least one parent with college
+
+
+```
+- About **10.09%** of mothers have more than 12 years of education (i.e., some college education).
+- About **10.76%** of fathers have more than 12 years of education.
+- Approximately **16.33%** of the women in the sample have **at least one parent** with some college education.
+
+
+
+---
+
+## 18(b)
+Find the correlations between `EDUC`, `MOTHERCOLL`, and `FATHERCOLL`. Are the magnitudes of these correlations important? Can you make a logical argument why **MOTHERCOLL** and **FATHERCOLL** might be better instruments than `MOTHEREDUC` and `FATHEREDUC`?
+
+### Ans
+```{r 18b}
+# (b) Correlations among education and instruments
+cor(mroz[, c("educ", "mothercoll", "fathercoll")])
+
+
+```
+- The correlation between `educ` and `mothercoll` is **0.337**, and between `educ` and `fathercoll` is **0.319**. These are moderate positive correlations, indicating that parental college education is positively associated with the woman’s own education.
+- The correlation between `mothercoll` and `fathercoll` is **0.367**, suggesting that parents’ education levels are somewhat positively related, but not collinear.
+- The magnitudes are meaningful, though not extremely strong. These results suggest that both `mothercoll` and `fathercoll` are **relevant instruments** because they are correlated with the endogenous regressor `educ`.
+- Using binary indicators for college education may help mitigate measurement error or nonlinearity issues compared to using raw years of parental education, making them **potentially better instruments** than `mothereduc` and `fathereduc`.
+
+
+---
+
+## 18(c)
+Estimate the wage equation in Example 10.5 using **MOTHERCOLL** as the instrumental variable. What is the 95% interval estimate for the coefficient of `EDUC`?
+
+### Ans
+```{r 18c}
+# Estimate IV model: wage on educ, instrumented by mothercoll
+iv_c <- ivreg(wage ~ educ | mothercoll, data = mroz)
+
+# Summary of IV model
+summary(iv_c)
+
+# 95% confidence interval for the coefficient on educ
+confint(iv_c, level = 0.95)
+```
+- Using **MOTHERCOLL** as an instrument for `educ`, the IV regression yields a coefficient estimate of **0.4818** for `educ`.
+- The 95% confidence interval is **[0.196, 0.768]**, which does not include zero, indicating statistical significance at the 1% level (p = 0.001).
+- This suggests that additional years of education, when instrumented by a mother's college attendance, are associated with a substantial and significant increase in wages.
+- The result helps mitigate concerns of endogeneity in OLS estimates of the return to education.
+
+
+---
+
+## 18(d)
+For the problem in part (c), estimate the first-stage equation. What is the value of the *F*-test statistic for the hypothesis that **MOTHERCOLL** has no effect on `EDUC`? Is **MOTHERCOLL** a strong instrument?
+
+### Ans
+```{r 18d}
+# (d) First-stage regression: educ on mothercoll
+fs_d <- lm(educ ~ mothercoll, data = mroz)
+
+# Summary of first-stage regression
+summary(fs_d)
+
+# Extract F-statistic
+fs_d_summary <- summary(fs_d)
+fs_d_summary$fstatistic
+
+```
+
+- In the first-stage regression of `educ` on `mothercoll`, the coefficient on `mothercoll` is **2.549**, with a t-statistic of **9.81** and a p-value < 0.001, indicating strong statistical significance.
+- The **F-statistic** for testing the null hypothesis that `mothercoll` has no effect on `educ` is **96.23**, which far exceeds the common rule-of-thumb threshold of 10 for weak instruments.
+- Therefore, `mothercoll` appears to be a **strong instrument** for `educ`.
+
+
+---
+
+## 18(e)
+Estimate the wage equation in Example 10.5 using **MOTHERCOLL** and **FATHERCOLL** as the instrumental variables. What is the 95% interval estimate for the coefficient of `EDUC`? Is it narrower or wider than the one in part (c)?
+
+### Ans
+```{r 18e}
+# (e) IV estimation using both mothercoll and fathercoll as instruments
+iv_e <- ivreg(wage ~ educ | mothercoll + fathercoll, data = mroz)
+
+# Summary of IV model
+summary(iv_e)
+
+# 95% confidence interval for the coefficient on educ
+confint(iv_e, level = 0.95)
+
+
+```
+
+- Using both `mothercoll` and `fathercoll` as instruments for `educ`, the estimated coefficient on `educ` is **0.4597**, with a standard error of **0.1238**.
+- The 95% confidence interval is **[0.217, 0.702]**, which is narrower than the one obtained using only `mothercoll` as the instrument.
+- The coefficient is statistically significant at the 1% level (p = 0.0002), confirming a strong and positive relationship between education and wages.
+- Adding a second instrument improves precision, as reflected in the narrower confidence interval.
+
+
+---
+
+## 18(f)
+For the problem in part (e), estimate the first-stage equation. Test the joint significance of **MOTHERCOLL** and **FATHERCOLL**. Do these instruments seem adequately strong?
+
+### Ans
+```{r 18f}
+# (f) First-stage regression with both instruments
+fs_f <- lm(educ ~ mothercoll + fathercoll, data = mroz)
+
+# Summary of the first-stage regression
+summary(fs_f)
+
+# Extract F-statistic for joint significance test
+anova(fs_f)
+
+```
+
+- In the first-stage regression of `educ` on both `mothercoll` and `fathercoll`, the coefficients are:
+  - `mothercoll`: **1.921**, p < 0.001
+  - `fathercoll`: **1.662**, p < 0.001
+- The overall model has an F-statistic of **70.24** (df = 2, 750), with a p-value < 2.2e-16.
+- The individual F-statistics from the ANOVA table are:
+  - `mothercoll`: F = **101.14**
+  - `fathercoll`: F = **39.34**
+- These results confirm that the instruments are jointly significant and strongly correlated with the endogenous regressor `educ`.
+- Therefore, `mothercoll` and `fathercoll` are **adequately strong instruments**.
+
+---
+
+## 18(g)
+For the IV estimation in part (e), test the validity of the surplus instrument. What do you conclude?
+
+### Ans
+```{r 18g}
+# Run J-test via 'summary' with diagnostics = TRUE
+summary(iv_e, diagnostics = TRUE)
+
+```
+- The **Sargan test** of overidentifying restrictions tests the null hypothesis that the extra instrument (`fathercoll`) is valid—that is, uncorrelated with the error term and correctly excluded from the structural equation.
+- The test statistic is **0.083** with a p-value of **0.774**, which is not statistically significant.
+- Therefore, we **fail to reject the null hypothesis**, providing no evidence against the validity of `fathercoll` as an additional instrument.
+- This supports the conclusion that both instruments (`mothercoll` and `fathercoll`) are valid in the IV estimation.
+
+---
+
+
+# 10.20 
+
+The CAPM [see Exercises 10.14 and 2.16] says that the risk premium on security j is related to the risk premium on the market portfolio. That is  
+$$
+r_j - r_f = \alpha_j + \beta_j (r_m - r_f)
+$$  
+where \( r_j \) and \( r_f \) are the returns to security j and the risk-free rate, respectively, \( r_m \) is the return on the market portfolio, and \( \beta_j \) is the jth security’s “beta” value. We measure the market portfolio using the Standard & Poor’s value weighted index, and the risk-free rate by the 30-day LIBOR monthly rate of return. As noted in Exercise 10.14, if the market return is measured with error, then we face an errors-in-variables, or measurement error, problem.
+
+## 20(a)
+Use the observations on Microsoft in the data file `capm5` to estimate the CAPM model using OLS. How would you classify the Microsoft stock over this period? Risky or relatively safe, relative to the market portfolio?
+
+### Ans
+```{r 20a}
+# Compute excess returns for Microsoft and the market
+capm5 <- capm5 %>%
+  mutate(
+    capm20a_excess_msft = msft - riskfree,
+    capm20a_excess_mkt = mkt - riskfree
+  )
+
+# Estimate CAPM model: capm20a_excess_msft ~ capm20a_excess_mkt
+capm20a_ols_model <- lm(capm20a_excess_msft ~ capm20a_excess_mkt, data = capm5)
+
+# Display regression summary
+summary(capm20a_ols_model)
+```
+We estimate the CAPM model for Microsoft using OLS:
+
+$$
+(r_j - r_f) = \alpha + \beta (r_m - r_f) + u
+$$
+
+From the regression output:
+
+- Estimated alpha (intercept): **0.00325**, which is not statistically significant (p = 0.591).
+- Estimated beta: **1.20184**, statistically significant at the 1% level (p < 0.001).
+
+The beta coefficient greater than 1 implies that Microsoft’s excess return is **more volatile than the market’s**. Therefore, Microsoft stock is considered **risky** relative to the market during this period.
+
+The model’s \( R^2 \) is **0.3523**, meaning about 35% of the variation in Microsoft’s excess return is explained by the market’s excess return.
+
+
+## 20(b)
+It has been suggested that it is possible to construct an IV by ranking the values of the explanatory variable and using the rank as the IV, that is, we sort \( (r_m - r_f) \) from smallest to largest, and assign the values \( RANK = 1, 2, \ldots, 180 \). Does this variable potentially satisfy the conditions IV1–IV3? Create `RANK` and obtain the first-stage regression results. Is the coefficient of `RANK` very significant? What is the \( R^2 \) of the first-stage regression? Can `RANK` be regarded as a strong IV?
+
+### Ans
+```{r 20b}
+# Create RANK as the rank of (r_m - r_f)
+capm5 <- capm5 %>%
+  mutate(
+    capm20b_excess_mkt = mkt - riskfree,
+    capm20b_rank = rank(capm20b_excess_mkt)  # ascending rank
+  )
+
+# First-stage regression: excess_mkt ~ RANK
+capm20b_first_stage <- lm(capm20b_excess_mkt ~ capm20b_rank, data = capm5)
+
+# Display summary of the first-stage regression
+summary(capm20b_first_stage)
+```
+
+We construct the instrument `RANK` by ranking the market excess returns \( (r_m - r_f) \) from smallest to largest and assigning integers from 1 to 180. This rank variable is used as an instrument for the market excess return.
+
+The first-stage regression is:
+
+$$
+(r_m - r_f) = \pi_0 + \pi_1 \cdot \text{RANK} + v
+$$
+
+From the regression output:
+
+- The estimated coefficient on `RANK` is **0.0009067**, which is **highly significant** (t = 43.1, p < 0.001).
+- The **R-squared is 0.9126**, indicating that `RANK` explains over 91% of the variation in the market excess return.
+
+This confirms that `RANK` is a **strong instrument**, satisfying the relevance condition (IV1). Whether it satisfies the exogeneity condition (IV2 and IV3) cannot be tested directly, but the construction based on ranking, which is independent of future shocks, makes it a plausible candidate.
+
+
+## 20(c)
+Compute the first-stage residuals, \( \hat{v} \), and add them to the CAPM model. Estimate the resulting augmented equation by OLS and test the significance of \( \hat{v} \) at the 1% level of significance. Can we conclude that the market return is exogenous?
+
+### Ans
+```{r 20c}
+
+# Compute first-stage residuals
+capm5 <- capm5 %>%
+  mutate(capm20c_vhat = resid(capm20b_first_stage))
+
+# Compute excess return for Microsoft (if not already done)
+capm5 <- capm5 %>%
+  mutate(capm20c_excess_msft = msft - riskfree)
+
+# Estimate augmented regression: excess_msft ~ excess_mkt + vhat
+capm20c_augmented <- lm(capm20c_excess_msft ~ capm20b_excess_mkt + capm20c_vhat, data = capm5)
+
+# Display summary
+summary(capm20c_augmented)
+```
+
+To test whether the market excess return \( (r_m - r_f) \) is exogenous, we include the residuals \( \hat{v} \) from the first-stage regression in the structural equation:
+
+$$
+(r_{\text{msft}} - r_f) = \alpha + \beta (r_m - r_f) + \delta \hat{v} + e
+$$
+
+From the regression output:
+
+- The coefficient on \( \hat{v} \) is **-0.8746**, with a **p-value of 0.0428**.
+- This result is statistically significant at the **5% level**, but **not** at the **1% level**.
+
+**Conclusion:**  
+There is **moderate evidence against exogeneity** of the market excess return. At the 1% significance level, we **fail to reject** the null hypothesis that the market return is exogenous. However, the 5% significance suggests some degree of endogeneity, which justifies considering IV methods like 2SLS in the following steps.
+
+
+## 20(d)
+Use `RANK` as an IV and estimate the CAPM model by IV/2SLS. Compare this IV estimate to the OLS estimate in part (a). Does the IV estimate agree with your expectations?
+
+### Ans
+```{r 20d}
+# Estimate 2SLS model using ivreg(): instrumenting capm20a_excess_mkt with capm20b_rank
+capm20d_iv_model <- ivreg(capm20a_excess_msft ~ capm20a_excess_mkt | capm20b_rank, data = capm5)
+
+# Display regression summary
+summary(capm20d_iv_model, diagnostics = TRUE)
+
+```
+
+We estimate the CAPM model for Microsoft using 2SLS, where the market excess return \( (r_m - r_f) \) is instrumented using `RANK`. The structural model is:
+
+$$
+(r_{\text{msft}} - r_f) = \alpha + \beta (r_m - r_f) + u
+$$
+
+From the 2SLS regression output:
+
+- The estimated beta is **1.2783**, with a **p-value < 0.001**, indicating it is highly statistically significant.
+- The intercept (alpha) is **0.0030**, not statistically significant (p = 0.618).
+- The **beta estimate is slightly larger than the OLS estimate (1.2018)** from part (a), which is consistent with the direction of bias expected under classical measurement error — OLS tends to attenuate the slope estimate toward zero.
+
+**Diagnostics:**
+- **Weak instrument test (F = 1857.6, p < 0.001)** confirms that `RANK` is a very strong instrument.
+- **Wu-Hausman test** yields a p-value of **0.0428**, suggesting some evidence that the market excess return may be endogenous, reinforcing the use of IV.
+
+**Conclusion:**  
+The IV estimate is larger than the OLS estimate and statistically significant. The diagnostics support the use of 2SLS with `RANK` as a valid and strong instrument.
+
+
+## 20(e)
+Create a new variable \( POS = 1 \) if the market return \( (r_m - r_f) \) is positive, and zero otherwise. Obtain the first-stage regression results using both `RANK` and `POS` as instrumental variables. Test the joint significance of the IV. Can we conclude that we have adequately strong IV? What is the \( R^2 \) of the first-stage regression?
+
+### Ans
+```{r 20e}
+
+# Create POS: 1 if market excess return > 0, else 0
+capm5 <- capm5 %>%
+  mutate(capm20e_pos = as.numeric(capm20b_excess_mkt > 0))
+
+# First-stage regression with two instruments: RANK and POS
+capm20e_first_stage <- lm(capm20b_excess_mkt ~ capm20b_rank + capm20e_pos, data = capm5)
+
+# Display regression results
+summary(capm20e_first_stage)
+```
+
+We introduce a second instrument `POS`, defined as 1 if the market excess return \( (r_m - r_f) > 0 \), and 0 otherwise. We then estimate the first-stage regression:
+
+$$
+(r_m - r_f) = \pi_0 + \pi_1 \cdot \text{RANK} + \pi_2 \cdot \text{POS} + v
+$$
+
+From the regression output:
+
+- The coefficient on `RANK` is **0.00098** with a very high t-value (24.55), confirming it remains a strong instrument.
+- The coefficient on `POS` is **-0.00928**, statistically significant at the 5% level (p = 0.0291).
+- The **R-squared is 0.9149**, slightly higher than the model using `RANK` alone.
+
+**Conclusion:**  
+The instruments `RANK` and `POS` are **jointly significant** in the first-stage regression, indicating that they are collectively strong instruments. The improvement in \( R^2 \) suggests that `POS` adds some explanatory power beyond `RANK`, though its contribution is modest.
+
+
+## 20(f)
+Carry out the Hausman test for endogeneity using the residuals from the first-stage equation obtained in (e). Can we conclude that the market return is exogenous at the 1% level of significance?
+
+### Ans
+```{r 20f}
+
+# Compute first-stage residuals from (e)
+capm5 <- capm5 %>%
+  mutate(capm20f_vhat = resid(capm20e_first_stage))
+
+# Reuse Microsoft excess return if needed
+capm5 <- capm5 %>%
+  mutate(capm20f_excess_msft = msft - riskfree)
+
+# Estimate augmented model: excess_msft ~ excess_mkt + vhat
+capm20f_augmented <- lm(capm20f_excess_msft ~ capm20b_excess_mkt + capm20f_vhat, data = capm5)
+
+# Show regression summary
+summary(capm20f_augmented)
+```
+
+To test for the endogeneity of the market excess return \( (r_m - r_f) \), we include the residuals \( \hat{v} \) from the first-stage regression using both `RANK` and `POS` as instruments. The augmented model is:
+
+$$
+(r_{\text{msft}} - r_f) = \alpha + \beta (r_m - r_f) + \delta \hat{v} + e
+$$
+
+From the regression output:
+
+- The coefficient on \( \hat{v} \) is **-0.9549**, with a p-value of **0.0287**, which is statistically significant at the **5% level**, but **not** at the 1% level.
+- The beta estimate remains significant and slightly increases to **1.2831**.
+
+**Conclusion:**  
+There is **moderate evidence of endogeneity** in the market excess return. At the 5% level, we reject the null hypothesis of exogeneity. This result supports the use of IV methods like 2SLS to obtain consistent estimates. However, since the result is not significant at the 1% level, the evidence is not overwhelmingly strong.
+
+
+## 20(g)
+Obtain the IV/2SLS estimates of the CAPM model using `RANK` and `POS` as instrumental variables. Compare these IV estimates to the OLS estimate in part (a). Does the IV estimate agree with your expectations?
+
+### Ans
+```{r 20g}
+
+# Estimate 2SLS model using ivreg() with two instruments
+capm20g_iv_model <- ivreg(capm20a_excess_msft ~ capm20a_excess_mkt | capm20b_rank + capm20e_pos, data = capm5)
+
+# Display regression summary
+summary(capm20g_iv_model, diagnostics = TRUE)
+```
+
+We re-estimate the CAPM model for Microsoft using **two instrumental variables**: `RANK` and `POS`, via 2SLS:
+
+$$
+(r_{\text{msft}} - r_f) = \alpha + \beta (r_m - r_f) + u
+$$
+
+From the 2SLS regression output:
+
+- The estimated beta is **1.2831**, statistically significant at the 1% level (p < 0.001).
+- The intercept is **0.0030**, not significant (p = 0.62).
+- The beta estimate is **slightly larger than the OLS estimate (1.2018)** from 20(a), and almost the same as the single-IV result in 20(d).
+
+**Diagnostic tests:**
+- **Weak instrument test (F = 951.3, p < 0.001)** indicates that the instruments are jointly strong.
+- **Wu-Hausman test (p = 0.0287)** suggests rejection of the exogeneity of the market return at the 5% level, consistent with earlier findings.
+- **Sargan test (p = 0.4549)** indicates that the overidentifying restriction is not rejected, supporting the validity of the instruments.
+
+**Conclusion:**  
+Using both `RANK` and `POS` as instruments produces a similar but slightly more precise IV estimate compared to the single-instrument case. Diagnostics confirm that the instruments are strong and valid, and there is mild evidence of endogeneity in the market return.
+
+
+## 20(h)
+Obtain the IV/2SLS residuals from part (g) and use them (not an automatic command) to carry out an exogeneity test. Does this test support using IV or the usual OLS?
+
+### Ans
+```{r 20h}
+
+# Extract residuals from the 2SLS model
+capm5 <- capm5 %>%
+  mutate(capm20h_iv_resid = resid(capm20g_iv_model))
+
+# Estimate augmented model: excess_msft ~ excess_mkt + iv_resid
+capm20h_augmented <- lm(capm20a_excess_msft ~ capm20a_excess_mkt + capm20h_iv_resid, data = capm5)
+
+# Show regression summary
+summary(capm20h_augmented)
+```
+
+In part (h), we attempt to test for the exogeneity of the market excess return by including the residuals from the 2SLS model (from part g) into the structural equation:
+
+$$
+(r_{\text{msft}} - r_f) = \alpha + \beta (r_m - r_f) + \delta \cdot \hat{u}_{IV} + e
+$$
+
+However, this test is **not valid** in this form because:
+
+- The residuals from a 2SLS model are by construction orthogonal to the instruments, but **not to the endogenous regressor**.
+- When we include both the original regressor and its IV residuals, we create **perfect multicollinearity**, as seen in the warning and the perfect fit (R² = 1).
+
+**Conclusion:**  
+This approach cannot be used to test exogeneity **using residuals from the 2SLS model directly**. Instead, exogeneity should be assessed using:
+- The **Wu-Hausman test**, which we already conducted in part (g), and which yielded a p-value of **0.0287**.
+- That result suggests we reject exogeneity at the 5% level and supports using IV estimation.
+
+Hence, **OLS is inconsistent**, and **2SLS with `RANK` and `POS` should be preferred**.
+
+
+---
+
+
+# 10.24 
+Consider the data file `mroz` on working wives.Use the 428 observations on married women who participate in the labor force. In this exercise, we examine the effectiveness of alternative standard errors for the IV estimator. Estimate the model in Example 10.5 using IV/2SLS with both `MOTHEREDUC` and `FATHEREDUC` as IV. These will serve as our baseline results.
+
+## 24(a)
+
+Calculate the IV/2SLS residuals, \( \hat{e}_{IV} \). Plot them versus `EXPER`. Do the residuals exhibit a pattern consistent with homoskedasticity?
+
+### Ans
+```{r 24a}
+# Keep only observations with valid, positive wage
+mroz_iv24 <- subset(mroz, !is.na(wage) & wage > 0)
+
+# Create log wage variable
+mroz_iv24$log_wage_iv24 <- log(mroz_iv24$wage)
+
+# Estimate IV/2SLS model again
+iv_model_24a <- ivreg(log_wage_iv24 ~ educ | mothereduc + fathereduc, data = mroz_iv24)
+
+# Get residuals
+resid_iv_24a <- resid(iv_model_24a)
+
+# Plot residuals against experience
+plot(mroz_iv24$exper, resid_iv_24a,
+     xlab = "EXPER",
+     ylab = expression(hat(e)[IV]),
+     main = "Residuals from IV(educ) vs. EXPER (Q24a)")
+abline(h = 0, col = "red", lty = 2)
+
+```
+
+We estimated the IV/2SLS model of `log(wage)` on `educ`, using `mothereduc` and `fathereduc` as instruments. The residuals \( \hat{e}_{IV} \) from this model were plotted against `EXPER`. The scatterplot indicates that the residuals have greater dispersion at lower levels of `EXPER` and appear more compressed at higher levels. This suggests a potential violation of the homoskedasticity assumption, pointing toward heteroskedasticity. Therefore, a formal test is warranted in the next step.
+
+
+## 24(b)
+
+Regress $\hat{e}_{IV}^2$ against a constant and `EXPER`. Apply the $ NR^2 $ test from Chapter 8 to test for the presence of heteroskedasticity.
+
+### Ans
+```{r 24b}
+# Create squared residuals
+mroz_iv24$resid_iv_24a_sq <- resid_iv_24a^2
+
+# Run auxiliary regression: squared residuals on constant and EXPER
+aux_model_24b <- lm(resid_iv_24a_sq ~ exper, data = mroz_iv24)
+
+# Compute NR^2 test statistic
+n_24b <- nobs(aux_model_24b)                  # number of observations
+r2_24b <- summary(aux_model_24b)$r.squared    # R-squared
+nr2_stat_24b <- n_24b * r2_24b
+
+# Compute p-value (chi-squared with 1 df, since 1 regressor)
+pval_24b <- 1 - pchisq(nr2_stat_24b, df = 1)
+
+# Display test statistic and p-value
+cat("NR^2 test statistic =", nr2_stat_24b, "\n")
+cat("p-value =", pval_24b, "\n")
+
+```
+
+We regressed the squared IV/2SLS residuals \( \hat{e}_{IV}^2 \) on a constant and `EXPER`, and calculated the test statistic for the \( NR^2 \) heteroskedasticity test. The resulting test statistic is approximately 9.22, with a p-value of 0.0024. Since the p-value is well below conventional significance levels (e.g., 0.05), we reject the null hypothesis of homoskedasticity. This provides formal statistical evidence that the error variance is not constant and supports the presence of heteroskedasticity in the model.
+
+
+## 24(c)
+
+Obtain the IV/2SLS estimates with the software option for Heteroskedasticity Robust Standard Errors.  
+- Are the robust standard errors larger or smaller than those for the baseline model?  
+- Compute the 95% interval estimate for the coefficient of `EDUC` using the robust standard error.
+
+### Ans
+```{r 24c}
+
+# Compute robust standard errors for the IV model
+robust_se_24c <- vcovHC(iv_model_24a, type = "HC1")
+
+# Get robust test results
+coeftest(iv_model_24a, vcov = robust_se_24c)
+
+# Compute 95% confidence interval for 'educ' using robust SE
+ci_educ_robust_24c <- coef(iv_model_24a)["educ"] + 
+  c(-1, 1) * 1.96 * sqrt(robust_se_24c["educ", "educ"])
+
+# Display confidence interval
+ci_educ_robust_24c
+```
+
+We re-estimated the IV/2SLS model and computed heteroskedasticity-robust standard errors. For the coefficient on `educ`, the robust standard error is approximately 0.0343, which is slightly **larger** than the conventional standard error from the baseline IV model. This increase is consistent with the presence of heteroskedasticity.
+
+Using the robust standard error, the 95% confidence interval for the `educ` coefficient is approximately \([-0.017, 0.118]\). Since the interval includes zero, the effect of education on log wages is not statistically significant at the 5% level when accounting for heteroskedasticity.
+
+
+## 24(d)
+
+Obtain the IV/2SLS estimates with the software option for Bootstrap standard errors, using \( B = 200 \) bootstrap replications.  
+- Are the bootstrap standard errors larger or smaller than those for the baseline model?  
+- How do they compare to the heteroskedasticity robust standard errors in (c)?  
+- Compute the 95% interval estimate for the coefficient of `EDUC` using the bootstrap standard error.
+
+### Ans
+```{r 24d}
+
+# Define bootstrap function for IV/2SLS estimate of 'educ'
+iv_boot_fn <- function(data, indices) {
+  d <- data[indices, ]
+  model <- ivreg(log_wage_iv24 ~ educ | mothereduc + fathereduc, data = d)
+  return(coef(model)["educ"])
+}
+
+# Run bootstrap with 200 replications
+set.seed(123)  # for reproducibility
+boot_result_24d <- boot(data = mroz_iv24, statistic = iv_boot_fn, R = 200)
+
+# Display bootstrap standard error
+boot_se_educ_24d <- sd(boot_result_24d$t)
+boot_se_educ_24d
+
+# Compute 95% CI using normal approximation
+educ_hat_24d <- coef(iv_model_24a)["educ"]
+ci_educ_boot_24d <- educ_hat_24d + c(-1, 1) * 1.96 * boot_se_educ_24d
+ci_educ_boot_24d
+
+```
+
+We computed the bootstrap standard error of the IV/2SLS estimate for `educ` using 200 replications. The resulting bootstrap standard error is approximately 0.0320. Compared to the baseline model, this value is slightly smaller than the robust standard error reported in part (c), which was approximately 0.0343.
+
+Using the bootstrap standard error and the normal approximation, we constructed a 95% confidence interval for the `educ` coefficient: \([-0.0123, 0.1133]\). Like the robust interval in part (c), this interval also includes zero, suggesting that the causal effect of education on log wages is not statistically significant at the 5% level even when using bootstrapped inference.
+
+
+
+
