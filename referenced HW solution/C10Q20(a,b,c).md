@@ -25,7 +25,7 @@ summary(first_stage)
 ```
 ![2](https://github.com/user-attachments/assets/20692682-e56d-4d61-bdec-d345b9a124c1)
 
-The variable RANK does not directly cause Microsoft’s return, so it meets condition IV1.
+The variable RANK does not directly cause Microsoft’s return, so it meets condition.
 R^2 = 0.9126.
 The t-value is 43.10, and the F-statistic is 1857.61.
 This means that RANK is a very strong instrument.
