@@ -1,0 +1,61 @@
+library(POE5Rdata)
+data("capm5")
+
+#a
+capm5$excess_msft <- capm5$msft - capm5$riskfree
+capm5$excess_mkt <- capm5$mkt - capm5$riskfree
+#OLS
+capm_model <- lm(excess_msft ~ excess_mkt, data = capm5)
+summary(capm_model)
+
+#b
+capm5$RANK <- rank(capm5$excess_mkt)
+
+first_stage <- lm(excess_mkt ~ RANK, data = capm5)
+summary(first_stage)
+
+#c
+
+capm5$v_hat <- resid(first_stage)
+augmented_model <- lm(excess_msft ~ excess_mkt + v_hat, data = capm5)
+summary(augmented_model)
+
+#d
+library(AER)
+iv_model <- ivreg(excess_msft ~ excess_mkt | RANK, data = capm5)
+summary(iv_model)
+
+#e
+# 建立 POS 變數：當市場超額報酬 > 0 時為 1，否則為 0
+capm5$POS <- ifelse(capm5$excess_mkt > 0, 1, 0)
+first_stage_e <- lm(excess_mkt ~ RANK + POS, data = capm5)
+summary(first_stage_e)
+
+library(car)
+#H0: RANK = 0 且 POS = 0
+linearHypothesis(first_stage_e, c("RANK = 0", "POS = 0"))
+
+# f
+capm5$v_hat2 <- resid(first_stage_e)
+
+hausman_model <- lm(excess_msft ~ excess_mkt + v_hat2, data = capm5)
+summary(hausman_model)
+
+# g
+iv_model_2iv <- ivreg(excess_msft ~ excess_mkt | RANK + POS, data = capm5)
+summary(iv_model_2iv)
+
+# h
+resid_iv <- resid(iv_model_2iv)
+
+sargan_test <- lm(resid_iv ~ capm5$RANK + capm5$POS)
+summary(sargan_test)
+
+n <- nrow(capm5)
+R2_sargan <- summary(sargan_test)$r.squared
+sargan_stat <- n * R2_sargan
+
+
+p_value <- 1 - pchisq(sargan_stat, df = 1)
+cat("Sargan statistic =", sargan_stat, "\n")
+cat("p-value =", p_value, "\n")
