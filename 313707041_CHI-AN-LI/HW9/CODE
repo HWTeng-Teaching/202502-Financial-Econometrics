@@ -45,4 +45,103 @@ library(car)
 # 檢驗 overidentifying restrictions
 summary(iv_c, diagnostics = TRUE)
 
+#10.20
+#(a)
+# 計算超額報酬
+capm5$excess_msft <- capm5$msft - capm5$riskfree
+capm5$excess_mkt  <- capm5$mkt - capm5$riskfree
+ols <- lm(excess_msft ~ excess_mkt, data = capm5)
+summary(ols)
+#(b)
+capm5$RANK <- rank(capm5$excess_mkt)
+first_stage_b <- lm(excess_mkt ~ RANK, data = capm5)
+summary(first_stage_b)
+#該工具變數滿足IV1，IV2、IV3還需要進一步檢驗。RANK係數在統計上顯著
+#(C)
+vhat <- resid(first_stage_b)
+augmented <- lm(excess_msft ~ excess_mkt + vhat, data = capm5)
+summary(augmented)
+#V_hat在1%信心水準下並不顯著，市場報酬可視為外生
+#(d)
+iv_d <- ivreg(excess_msft ~ excess_mkt | RANK, data = capm5)
+summary(iv_d)
+#(e)
+capm5$POS <- as.numeric(capm5$excess_mkt > 0)
+first_stage_e <- lm(excess_mkt ~ RANK + POS, data = capm5)
+summary(first_stage_e)
+#根據第一階段回歸的 R² 與 F 統計量，以及兩個工具變數皆在統計上顯著，我們的工具變數 RANK 和 POS 為充分強的工具變數。
+#(f)
+vhat2 <- resid(first_stage_e)
+hausman <- lm(excess_msft ~ excess_mkt + vhat2, data = capm5)
+summary(hausman)
+#(g)
+iv_e <- ivreg(excess_msft ~ excess_mkt | RANK + POS, data = capm5)
+#vhat2在1%信心水準下並不顯著，支持市場報酬外生性
+#(h)
+capm5$uhat_iv <- resid(iv_e)
+sargan_reg <- lm(uhat_iv ~ RANK + POS, data = capm5)
+summary(sargan_reg)
+n <- nobs(iv_e)  # 或 n <- nrow(capm5)
+R2 <- summary(sargan_reg)$r.squared
+Sargan_stat <- n * R2
+Sargan_stat
+pval <- 1 - pchisq(Sargan_stat, df = 1)
+pval
+#根據p-value，工具變數有效
+
+#10.24
+#(a)
+mroz_clean <- subset(mroz, !is.na(wage) & wage > 0)
+iv_model <- ivreg(log(wage) ~ educ + exper + I(exper^2) |
+                    exper + I(exper^2) + mothereduc + fathereduc,
+                  data = mroz_clean)
+resid_iv <- resid(iv_model)
+plot(mroz_clean$exper, resid_iv, main = "Residuals vs Experience")
+abline(h = 0, col = "red")
+#有點像扇形，推測異質變異
+#(b)
+ehat2 <- resid_iv^2
+aux_reg <- lm(ehat2 ~ mroz_clean$exper)
+R2 <- summary(aux_reg)$r.squared
+n <- nrow(mroz_clean)
+NR2 <- n * R2
+pval <- 1 - pchisq(NR2, df = 1)
+
+cat("NR² = ", NR2, ", p-value = ", pval, "\n")
+#統計上顯著存在異質變異數
+#(c)
+# 基本 CI
+baseline_ci <- confint(iv_model)["educ", ]
+baseline_width <- diff(baseline_ci)
+
+# Robust CI
+robust_ci <- confint(iv_model, vcov. = vcovHC(iv_model, type = "HC1"))["educ", ]
+robust_width <- diff(robust_ci)
+
+# 比較
+baseline_width
+robust_width
+robust_width - baseline_width
+#(d)
+set.seed(123)
+
+boot_iv <- function(data, indices) {
+  d <- data[indices, ]
+  model <- ivreg(log(wage) ~ educ + exper + I(exper^2) |
+                   exper + I(exper^2) + mothereduc + fathereduc,
+                 data = d)
+  coef(model)["educ"]
+}
+
+
+boot_out <- boot(data = mroz_clean, statistic = boot_iv, R = 200)
+
+# 標準誤
+boot_se <- sd(boot_out$t)
+cat("Bootstrap SE for EDU =", boot_se, "\n")
+
+# 95% CI
+boot_ci <- boot.ci(boot_out, type = "perc")
+boot_ci
+
 
