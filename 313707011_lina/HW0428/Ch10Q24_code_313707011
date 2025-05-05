@@ -91,6 +91,7 @@ se_comparison_2 <- data.frame(
 )
 print(se_comparison_2)
 
+# CI
 educ_index <- which(names(coef(model_iv)) == "educ")
 ci_boot <- coef(model_iv)["educ"] + c(-1,1)*qnorm(0.975)* boot_se[educ_index]
 ci_boot 
