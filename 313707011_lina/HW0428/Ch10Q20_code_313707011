@@ -1,1 +1,7 @@
-
+# 設定資料集的 URL
+url <- "https://www.principlesofeconometrics.com/poe5/data/rdata/capm5.rdata"
+download.file(url, destfile = "capm5.rdata")  # 下載資料集並儲存為本地檔案
+load("capm5.rdata")  # 載入資料集
+names(capm5)  # 確認變數名稱
+data <- capm5  # 讀取數據 (已載入 capm5.rdata) 使用簡單變數名稱
+str(capm5) # 查看資料結構
