@@ -106,3 +106,14 @@ $$ Q = \theta_1 + \theta_2 W + \nu_2 \quad 與 \quad P = \pi_1 + \pi_2 W + \nu_1
 
 ### （d）
 根據簡約式中 \( P \) 的預測值，應用 **兩階段最小平方法（2SLS）** 來估計需求方程的參數。
+
+
+
+------------
+
+<img width="680" alt="C11Q17" src="https://github.com/user-attachments/assets/1522b0b8-8489-4e58-9246-aab7372a9d61" />
+
+
+
+
+
