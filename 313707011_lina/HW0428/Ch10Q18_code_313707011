@@ -57,6 +57,10 @@ resid_iv <- resid(iv_model_both)
 # 將這些殘差對所有工具變數進行迴歸
 sargan_test <- lm(resid_iv ~ mothercoll + fathercoll, data = mroz_sub)  
 summary(sargan_test)
-S <- nrow(mroz_sub) * summary(sargan_test)$r.squared    # 計算 Sargan 統計量：n × R²
+R2 <- summary(sargan_test)$r.squared
+n <- nrow(mroz_sub)  # 樣本量
+S <- n * R2   # 計算 Sargan 統計量：n × R²
+n
+S
 # 計算p值：使用卡方分布，自由度為過度識別的工具變數數量
 (p_value <- 1 - pchisq(S, df = 1))
