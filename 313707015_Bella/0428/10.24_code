@@ -1,0 +1,116 @@
+# 10.24 (a) ----------------------------------------------------------------------
+library(AER) 
+library(ggplot2)
+data("mroz")
+
+# 篩選參與勞動市場的女性
+mroz_working <- subset(mroz, lfp == 1)
+
+# 建立 exper^2 變數
+mroz_working$exper2 <- mroz_working$exper^2
+
+# 執行 IV/2SLS，educ 是內生變數，工具是 mothereduc 和 fathereduc
+iv_model <- ivreg(log(wage) ~ educ + exper + exper2 | mothereduc + fathereduc + exper + exper2, data = mroz_working)
+
+# 顯示 IV/2SLS 回歸結果
+summary(iv_model)
+
+# 取出 IV 殘差
+mroz_working$e_iv <- resid(iv_model)
+
+# 繪製散佈圖：IV 殘差與 EXPER 之間的關係
+ggplot(mroz_working, aes(x = exper, y = e_iv)) +
+  geom_point(alpha = 0.6) +
+  geom_smooth(method = "loess", se = FALSE, color = "red") +
+  labs(title = "IV/2SLS 殘差對 EXPER 散佈圖",
+       x = "工作經驗 (EXPER)",
+       y = "IV 殘差 (ê_IV)") +
+  theme_minimal()
+
+# 10.24 (b) ----------------------------------------------------------------------
+# 步驟 1: 回歸 ê_IV^2 於常數和 EXPER
+mroz_working$e_iv_squared <- mroz_working$e_iv^2
+model_hetero <- lm(e_iv_squared ~ exper, data = mroz_working)
+
+# 顯示回歸結果
+model_summary <- summary(model_hetero)
+
+# 提取並顯示 R^2 和 p 值
+R_squared <- model_summary$r.squared  # 提取 R^2 值
+p_value <- coef(model_summary)[2, 4]  # 提取 EXPER 的 p 值
+
+cat("R^2 from the regression is:", R_squared, "\n")
+cat("The p-value for EXPER is:", p_value, "\n")
+
+# 步驟 2: 計算 NR^2 測試
+N <- nrow(mroz_working)  # 記錄樣本數
+
+# 計算 NR^2 測試統計量
+NR_squared_test_stat <- R_squared * N
+
+# 顯示 NR^2 測試結果
+cat("The NR^2 test statistic is", NR_squared_test_stat, "\n")
+
+# 計算卡方臨界值
+critical_value <- qchisq(0.95, df = 1)  # 5% 顯著性水平，1 自由度
+cat("The 5% critical value for the NR^2 test is", critical_value, "\n")
+
+# 根據 NR^2 測試結果進行決策
+if (NR_squared_test_stat > critical_value) {
+  cat("We reject the null hypothesis of homoskedasticity.\n")
+} else {
+  cat("We fail to reject the null hypothesis of homoskedasticity.\n")
+}
+
+# 10.24 (c) ----------------------------------------------------------------------
+library(AER)
+library(lmtest)
+
+# IV/2SLS估算
+iv_model <- ivreg(log(wage) ~ educ + exper + exper2 | mothereduc + fathereduc + exper + exper2, data = mroz_working)
+
+# 計算異方差一致的穩健標準誤
+robust_se <- coeftest(iv_model, vcov = vcovHC(iv_model, type = "HC3"))
+
+# 顯示穩健標準誤
+print(robust_se)
+
+# 計算EDUC係數的95%信賴區間
+educ_coef <- robust_se[2, 1]
+educ_se <- robust_se[2, 2]
+lower_bound <- educ_coef - 1.96 * educ_se
+upper_bound <- educ_coef + 1.96 * educ_se
+
+# 顯示EDUC係數的95%信賴區間
+cat("95% confidence interval for EDUC: [", lower_bound, ", ", upper_bound, "]", sep = "")
+
+# 10.24 (d) ----------------------------------------------------------------------
+# 步驟 1: 定義函數來計算 IV/2SLS 模型的係數
+iv_2sls_bootstrap <- function(data, indices) {
+  d <- data[indices, ]  # 從 bootstrap 抽樣中獲得數據
+  model <- ivreg(log(wage) ~ educ + exper + exper2 | mothereduc + fathereduc + exper + exper2, data = d)
+  return(coef(model))  # 返回模型係數
+}
+# 步驟 2: 使用 200 次 bootstrap 重複抽樣計算 IV/2SLS 係數
+set.seed(123)  # 設置隨機種子以確保結果可重現
+bootstrap_results <- boot(data = mroz_working, statistic = iv_2sls_bootstrap, R = 200)
+
+# 顯示 bootstrap 結果
+print(bootstrap_results$t)  # 顯示所有重複抽樣的結果
+
+# 檢查 bootstrap_results 以了解其結構
+str(bootstrap_results)
+
+# 提取 EDUCoef 變數的 bootstrap 結果，這樣可以確保選擇正確的列
+educ_bootstrap <- bootstrap_results$t[, 1]  # 假設 "educ" 在第一列，根據你的結構進行調整
+
+# 計算 bootstrap 標準誤差
+bootstrap_se <- sd(educ_bootstrap)
+
+# 計算 95% 信賴區間
+educ_lower_bound <- quantile(educ_bootstrap, 0.025)
+educ_upper_bound <- quantile(educ_bootstrap, 0.975)
+
+# 顯示結果
+cat("Bootstrap 標準誤差:", bootstrap_se, "\n")
+cat("95% 信賴區間: [", educ_lower_bound, ", ", educ_upper_bound, "]\n")
