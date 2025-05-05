@@ -3,12 +3,10 @@ url <- "https://www.principlesofeconometrics.com/poe5/data/rdata/mroz.rdata"
 download.file(url, destfile = "mroz.rdata")  # 下載資料集並儲存為本地檔案
 load("mroz.rdata")  # 載入資料集
 names(mroz)  # 確認變數名稱
-data <- mroz  # 讀取數據 (已載入 mroz.rdata) 使用簡單變數名稱
 str(mroz) # 查看資料結構
 
 
 # 10.18(a)
-library(wooldridge)
 mroz_sub <- subset(mroz,lfp==1)   # 只針對變數 lfp == 1（有參與勞動市場的女性）進行分析
 mroz_sub$mothercoll <- ifelse(mroz_sub$mothereduc > 12, 1, 0)
 mroz_sub$fathercoll <- ifelse(mroz_sub$fathereduc > 12, 1, 0)
