@@ -8,4 +8,4 @@
 ![S__46260231](https://github.com/user-attachments/assets/b01c5c44-ec0a-45e0-90b0-ec5c9b024da9)
 
 ## smiles
-![S__46260232](https://github.com/user-attachments/assets/16c5aac5-a66a-4d3c-9311-0bc6545fe663)
+![S__51642370](https://github.com/user-attachments/assets/f1d5d353-b965-4b55-bf4b-15a2e4adc34c)
