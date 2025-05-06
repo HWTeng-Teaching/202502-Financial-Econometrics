@@ -124,7 +124,8 @@ $$
 y_2 = \pi_1 x_1 + \pi_2 x_2 + v_2
 $$
 
-注意：由於 \( v_2 \) 中含 \( e_1 \)，**\( y_2 \) 與 \( e_1 \) 是相關的**。
+<img width="282" alt="1" src="https://github.com/user-attachments/assets/654c7a79-55d6-4830-95b6-96c137949e2e" />
+
 
 
 **(b) 哪些參數可由 OLS 一致估計？**
