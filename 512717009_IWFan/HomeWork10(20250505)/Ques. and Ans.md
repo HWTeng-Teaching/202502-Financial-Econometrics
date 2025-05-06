@@ -8,6 +8,9 @@
 
 $$
 y_1 = \alpha_1 y_2 + e_1 \\
+$$
+
+$$
 y_2 = \alpha_2 y_1 + \beta_1 x_1 + \beta_2 x_2 + e_2
 $$
 
