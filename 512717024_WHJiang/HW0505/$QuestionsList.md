@@ -1,4 +1,4 @@
-##C11Q01
+## C11Q01
 
 <img width="652" alt="C11Q01" src="https://github.com/user-attachments/assets/a2248d85-3166-47bd-a741-0686105e6171" />
 
@@ -90,7 +90,7 @@ $$
 
 ---------
 
-##C11Q16
+## C11Q16
 
 <img width="680" alt="C11Q16" src="https://github.com/user-attachments/assets/8ec6ccf6-e2ce-4fd0-adfa-916a89273346" />
 
@@ -131,7 +131,7 @@ $$ Q_i = \beta_1 + \beta_2 P_i + \beta_3 W_i + e_{si} $$
 
 ------------
 
-##C11Q17
+## C11Q17
 
 
 
