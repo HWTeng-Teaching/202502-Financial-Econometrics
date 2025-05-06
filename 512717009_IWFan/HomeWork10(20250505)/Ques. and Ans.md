@@ -112,6 +112,9 @@ $$
 \begin{align*}
 y_2 &= \alpha_2 (\alpha_1 y_2 + e_1) + \beta_1 x_1 + \beta_2 x_2 + e_2 \\\\
 (1 - \alpha_1 \alpha_2) y_2 &= \beta_1 x_1 + \beta_2 x_2 + \alpha_2 e_1 + e_2 \\\\
+$$
+
+$$
 y_2 &= \frac{\beta_1}{1 - \alpha_1 \alpha_2} x_1 + \frac{\beta_2}{1 - \alpha_1 \alpha_2} x_2 + \frac{\alpha_2 e_1 + e_2}{1 - \alpha_1 \alpha_2}
 \end{align*}
 $$
