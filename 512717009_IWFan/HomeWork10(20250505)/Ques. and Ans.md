@@ -282,13 +282,8 @@ $$
 
 我們考慮以下的結構模型：
 
-- **需求方程**：
-  
-  Qi=α1+α2Pi+edi
+<img width="398" alt="1" src="https://github.com/user-attachments/assets/b32594f1-0500-4ff4-be52-b3e370447d3d" />
 
-- **供給方程**：
-  
- Qi=β1+β2Pi+β3Wi+esi
 
 其中：
 - \( Q \)：數量（quantity）
