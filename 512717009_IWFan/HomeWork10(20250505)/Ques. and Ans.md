@@ -513,7 +513,10 @@ $$
 用所有外生變數回歸內生變數，如  Pt 、W1t，獲得預測值：
 
 $$
-\hat{P}_t = \text{fitted values from } P_t \sim Z \\
+\hat{P}_t = \text{fitted values from } P_t \sim Z 
+$$
+
+$$
 \hat{W}_{1t} = \text{fitted values from } W_{1t} \sim Z
 $$
 
