@@ -250,10 +250,8 @@ $$
 
 考慮以下供給與需求模型：
 
-- 需求方程式：  Qi=α1+α2Pi+edi
+<img width="398" alt="1" src="https://github.com/user-attachments/assets/aae3fa43-81cf-45a1-902f-094575421ee6" />
 
-  
-​- 供給方程式：  Qi=β1+β2Pi+β3Wi+esi
 ​
 - 其中 Q 為數量，P 為價格， W 為工資水準，並假設為外生變數。  
 
@@ -297,22 +295,19 @@ $$
 我們希望得到：
 
 $$
-Q = \theta_1 + \theta_2 W + v_2 \\
+Q = \theta_1 + \theta_2 W + v_2 
+$$
+
+$$
 P = \pi_1 + \pi_2 W + v_1
 $$
 
-解法概念：
-1. 將 demand 方程代入 supply 方程，消去內生變數 \( P \)
-2. 使 \( Q \)、\( P \) 僅以 \( W \) 表示
 
-**簡約形式結論**：
 
-$$
-Q = \theta_1 + \theta_2 W + v_2 \\
-P = \pi_1 + \pi_2 W + v_1
-$$
+<img width="446" alt="2" src="https://github.com/user-attachments/assets/27678c3d-01f8-49d2-aac8-c4406ee847b0" />
 
-其中 \( \theta \)、\( \pi \) 是結構參數的函數，\( v_1, v_2 \) 是誤差項的組合。
+<img width="449" alt="3" src="https://github.com/user-attachments/assets/03b798ed-caba-4ecc-a265-71fb9996429d" />
+
 
 
 
