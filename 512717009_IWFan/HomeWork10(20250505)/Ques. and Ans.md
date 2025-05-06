@@ -305,11 +305,12 @@ $$
 P = \pi_1 + \pi_2 W + v_1
 $$
 
+**Ⅰ**
 
 <img width="446" alt="2" src="https://github.com/user-attachments/assets/27678c3d-01f8-49d2-aac8-c4406ee847b0" />
 
 
-
+**Ⅱ**
 
 <img width="449" alt="3" src="https://github.com/user-attachments/assets/03b798ed-caba-4ecc-a265-71fb9996429d" />
 
