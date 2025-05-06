@@ -192,7 +192,7 @@ $$
 
 
 
-**(f) 計算 \( \hat{\pi}_1, \hat{\pi}_2 \)**
+**(f) 計算 π^1, 𝜋^2**
 
 <img width="429" alt="2" src="https://github.com/user-attachments/assets/6fbb3041-ab15-478d-833f-174b88464bec" />
 
