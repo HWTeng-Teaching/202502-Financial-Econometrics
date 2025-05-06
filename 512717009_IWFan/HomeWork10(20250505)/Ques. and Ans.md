@@ -94,28 +94,20 @@ $$
 
 考慮以下同時方程模型：
 
-$$
-\begin{align}
-y_1 &= \alpha_1 y_2 + e_1 \tag{1} \\\\
-y_2 &= \alpha_2 y_1 + \beta_1 x_1 + \beta_2 x_2 + e_2 \tag{2}
-\end{align}
-$$
-
-假設 \( x_1, x_2 \) 是外生變數，且與誤差項 \( e_1 \)、\( e_2 \) 無關。
+(1) y1=α1y2+e1
+​(2) y2=α2y1+β1x1+β2x2+e2
+​
+假設 x1, x2  是外生變數，且與誤差項 e1 、 e2  無關。
 
 
 **(a) 推導 \( y_2 \) 的簡約形式（Reduced Form）**
 
 將 (1) 代入 (2) 得：
 
-$$
-\begin{align*}
-y_2 &= \alpha_2 (\alpha_1 y_2 + e_1) + \beta_1 x_1 + \beta_2 x_2 + e_2 \\\\
-(1 - \alpha_1 \alpha_2) y_2 &= \beta_1 x_1 + \beta_2 x_2 + \alpha_2 e_1 + e_2 \\\\
-y_2 &= \frac{\beta_1}{1 - \alpha_1 \alpha_2} x_1 + \frac{\beta_2}{1 - \alpha_1 \alpha_2} x_2 + \frac{\alpha_2 e_1 + e_2}{1 - \alpha_1 \alpha_2}
-\end{align*}
-$$
-
+y2=α2(α1y2+e1)+β1x1+β2x2+e2​y2−α1α2
+​y2=α2e1+β1x1+β2x2+e2(1−α1α2)
+y2=β1x1+β2x2+α2e1+e2
+​
 定義：
 
 $$
