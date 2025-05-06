@@ -1,3 +1,5 @@
+## C11Q01
+
 <img width="652" alt="C11Q01" src="https://github.com/user-attachments/assets/a2248d85-3166-47bd-a741-0686105e6171" />
 
 ---
@@ -88,6 +90,180 @@ $$
 
 ---------
 
+## ANS:
+
+考慮以下同時方程模型：
+
+$$
+\begin{align}
+y_1 &= \alpha_1 y_2 + e_1 \tag{1} \\\\
+y_2 &= \alpha_2 y_1 + \beta_1 x_1 + \beta_2 x_2 + e_2 \tag{2}
+\end{align}
+$$
+
+假設 \( x_1, x_2 \) 是外生變數，且與誤差項 \( e_1 \)、\( e_2 \) 無關。
+
+
+**(a) 推導 \( y_2 \) 的簡約形式（Reduced Form）**
+
+將 (1) 代入 (2) 得：
+
+$$
+\begin{align*}
+y_2 &= \alpha_2 (\alpha_1 y_2 + e_1) + \beta_1 x_1 + \beta_2 x_2 + e_2 \\\\
+(1 - \alpha_1 \alpha_2) y_2 &= \beta_1 x_1 + \beta_2 x_2 + \alpha_2 e_1 + e_2 \\\\
+y_2 &= \frac{\beta_1}{1 - \alpha_1 \alpha_2} x_1 + \frac{\beta_2}{1 - \alpha_1 \alpha_2} x_2 + \frac{\alpha_2 e_1 + e_2}{1 - \alpha_1 \alpha_2}
+\end{align*}
+$$
+
+定義：
+
+$$
+\( \pi_1 = \frac{\beta_1}{1 - \alpha_1 \alpha_2} \)
+\( \pi_2 = \frac{\beta_2}{1 - \alpha_1 \alpha_2} \)
+\( v_2 = \frac{\alpha_2 e_1 + e_2}{1 - \alpha_1 \alpha_2} \)
+$$
+
+則簡約式為：
+
+$$
+y_2 = \pi_1 x_1 + \pi_2 x_2 + v_2
+$$
+
+注意：由於 \( v_2 \) 中含 \( e_1 \)，**\( y_2 \) 與 \( e_1 \) 是相關的**。
+
+
+**(b) 哪些參數可由 OLS 一致估計？**
+
+- 方程 (1)：因為 \( y_2 \) 為內生變數，OLS 估計 \( \alpha_1 \) 會有偏誤 ❌
+- 方程 (2)：\( y_1 \) 同樣為內生變數，OLS 也無法一致估計 \( \alpha_2 \) ❌
+
+✅ 所以：**兩條結構式的參數皆無法由 OLS 一致估計。**
+
+
+
+**(c) 模型的「可識別性」判斷**
+
+- 方程 (1) 沒有被排除的外生變數 ⇒ **不可識別**
+- 方程 (2) 有兩個外生變數 \( x_1, x_2 \) ⇒ **過度識別**
+
+✅ 結論：**僅方程 (2) 是可識別的。**
+
+
+
+**(d) 方法矩估計（MOM）**
+
+根據簡約形式：
+
+$$
+y_2 = \pi_1 x_1 + \pi_2 x_2 + v_2
+$$
+
+設下兩個矩條件：
+
+$$
+\begin{align*}
+\frac{1}{N} \sum x_{1i} (y_{2i} - \pi_1 x_{1i} - \pi_2 x_{2i}) = 0 \\\\
+\frac{1}{N} \sum x_{2i} (y_{2i} - \pi_1 x_{1i} - \pi_2 x_{2i}) = 0
+\end{align*}
+$$
+
+這來自於 \( E[x_j v_2] = 0 \)，因為 \( x_1, x_2 \) 為外生變數。  
+✅ 這兩個條件足以一致估計 \( \pi_1 \)、\( \pi_2 \)。
+
+
+
+**(e) MOM 與 OLS 是否相同？**
+
+OLS 最小化：
+
+$$
+\sum (y_{2i} - \pi_1 x_{1i} - \pi_2 x_{2i})^2
+$$
+
+一階導數設為 0 得到：
+
+$$
+\sum x_{1i}(y_{2i} - \pi_1 x_{1i} - \pi_2 x_{2i}) = 0 \\
+\sum x_{2i}(y_{2i} - \pi_1 x_{1i} - \pi_2 x_{2i}) = 0
+$$
+
+✅ 與 (d) 完全相同 ⇒ **OLS = MOM（在這情況下）**
+
+
+
+**(f) 計算 \( \hat{\pi}_1, \hat{\pi}_2 \)**
+
+提供的樣本量矩：
+
+- \( \sum x_{1i}^2 = 1 \), \( \sum x_{2i}^2 = 2 \), \( \sum x_{1i} x_{2i} = 0 \)
+- \( \sum x_{1i} y_{2i} = 2 \), \( \sum x_{2i} y_{2i} = 3 \)
+
+解方程：
+
+$$
+\begin{bmatrix}
+1 & 0 \\
+0 & 2
+\end{bmatrix}
+\begin{bmatrix}
+\hat{\pi}_1 \\
+\hat{\pi}_2
+\end{bmatrix}
+=
+\begin{bmatrix}
+2 \\
+3
+\end{bmatrix}
+\Rightarrow
+\hat{\pi}_1 = 2,\quad \hat{\pi}_2 = 1.5
+$$
+
+✅ MOM 與 OLS 結果一致
+
+
+
+**(g) 解釋下列矩條件為何合理：**
+
+$$
+\sum x_{2i}(y_{1i} - \alpha_1 \hat{y}_{2i}) = 0
+$$
+
+其中：
+
+$$
+\hat{y}_2 = \hat{\pi}_1 x_1 + \hat{\pi}_2 x_2 = 2x_1 + 1.5x_2
+$$
+
+這對應於用 \( x_1, x_2 \) 做為 \( y_2 \) 的工具，來估計：
+
+$$
+y_1 = \alpha_1 \hat{y}_2 + \text{誤差}
+$$
+
+✅ 由於 \( x_2 \) 為外生 ⇒ 與誤差無關 ⇒ 矩條件合理有效
+
+
+
+**(h) 利用 2SLS 估計 \( \alpha_1 \)**
+
+第二階段：
+
+$$
+y_1 = \alpha_1 \hat{y}_2 + \epsilon_1
+$$
+
+其中 \( \hat{y}_2 = 2x_1 + 1.5x_2 \) 來自第一階段  
+→ 此步即為 2SLS，與 (g) 中矩條件結果相符
+
+✅ 所得的 \( \hat{\alpha}_1 \) 為一致估計值
+
+
+
+------------------
+
+## C11Q16
+
 <img width="680" alt="C11Q16" src="https://github.com/user-attachments/assets/8ec6ccf6-e2ce-4fd0-adfa-916a89273346" />
 
 
@@ -126,6 +302,8 @@ $$ Q_i = \beta_1 + \beta_2 P_i + \beta_3 W_i + e_{si} $$
 
 
 ------------
+
+## C11Q17
 
 <img width="680" alt="C11Q17" src="https://github.com/user-attachments/assets/1522b0b8-8489-4e58-9246-aab7372a9d61" />
 
