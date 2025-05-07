@@ -2,6 +2,7 @@
 
 <img width="671" alt="C11Q28" src="https://github.com/user-attachments/assets/4e69ba9f-afea-4b44-81f5-23c6d9dc1d63" />
 
+-----
 11.28 在經濟學原理課程中，供需曲線通常以價格 (P) 為縱軸、數量 (Q) 為橫軸。
 
 a. 將 truffle 的需求與供給方程式 (11.11) 與 (11.12) 改寫為以價格 P 為左邊。在此改寫的方程式系統中，參數的預期符號為何？
@@ -22,6 +23,7 @@ f. 以 OLS 估計 (a) 中改寫之供給與需求方程式。估計結果之符�
 
 <img width="669" alt="C11Q30" src="https://github.com/user-attachments/assets/aca00be9-922a-4271-8032-e9669e8c9aee" />
 
+-----
 
 範例 11.3 介紹了 **Klein 的模型 I**。請使用資料檔 `klein` 回答以下問題。
 
