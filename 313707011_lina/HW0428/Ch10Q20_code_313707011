@@ -1,0 +1,65 @@
+# 設定資料集的 URL
+url <- "https://www.principlesofeconometrics.com/poe5/data/rdata/capm5.rdata"
+download.file(url, destfile = "capm5.rdata")  # 下載資料集並儲存為本地檔案
+load("capm5.rdata")  # 載入資料集
+names(capm5)  # 確認變數名稱
+str(capm5) # 查看資料結構
+
+
+# 10.20(a)
+capm5$excess_msft <- capm5$msft - capm5$riskfree  # Microsoft 超額報酬率
+capm5$excess_mkt <- capm5$mkt - capm5$riskfree    # 市場超額報酬率
+ols_model <- lm(excess_msft ~ excess_mkt, data = capm5)
+summary(ols_model)
+
+# 10.20(b)
+library(car)
+# 根據excess_mkt的大小排序並分配RANK值
+capm5$RANK <- rank(capm5$excess_mkt)
+first_stage <- lm(excess_mkt ~ RANK, data = capm5)
+summary(first_stage)
+linearHypothesis(first_stage, c("RANK=0"))
+
+# 10.20(c)
+capm5$v_hat <- residuals(first_stage)   # 從第一階段迴歸中獲取殘差
+model_residuals <- lm(excess_msft ~ excess_mkt + v_hat, data = capm5)   # 建立加入殘差的增強CAPM模型
+summary(model_residuals)
+
+# 10.20(d)
+library(AER)
+iv_model <- ivreg(excess_msft ~ excess_mkt | RANK, data = capm5)
+summary(iv_model)
+
+# 10.20(e)
+# 建立POS變數：當市場超額報酬為正時為1，否則為0
+capm5$POS <- ifelse(capm5$excess_mkt > 0, 1, 0)
+first_stage_both <- lm(excess_mkt ~ RANK + POS, data = capm5)
+summary(first_stage_both)
+linearHypothesis(first_stage_both, c("RANK=0", "POS=0"))
+
+# 10.20(f)
+capm5$v_hat_both <- residuals(first_stage_both)
+model_residuals_both <- lm(excess_msft ~ excess_mkt + v_hat_both, data = capm5)
+summary(model_residuals_both)
+
+# 10.20(g)
+iv_model_both <- ivreg(excess_msft ~ excess_mkt | RANK + POS, data = capm5)
+summary(iv_model_both)
+
+# 10.20(h)
+summary(iv_model_both, diagnostics = TRUE)
+
+# 10.20(h)
+# 取得IV估計的殘差
+capm5$iv_residuals_both <- residuals(iv_model_both)
+# 殘差對所有工具變數迴歸
+sargan_test <- lm(iv_residuals_both ~ RANK + POS, data = capm5)  
+summary(sargan_test)
+R2 <- summary(sargan_test)$r.squared
+n <- nrow(capm5)  # 樣本量
+S <- n * R2   # 計算 Sargan 統計量：n × R²
+n
+S
+# 計算p值：使用卡方分布，自由度為過度識別的工具變數數量
+(p_value <- 1 - pchisq(S, df = 1))
+

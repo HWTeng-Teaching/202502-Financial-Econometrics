@@ -1,0 +1,211 @@
+# C10Q24 IV/2SLS 與各種標準誤
+
+##############################################################################
+# 前置設定：清除環境、載入套件與資料
+##############################################################################
+rm(list = ls())  # 清除工作環境
+
+### 載入必要套件
+## 套件與資料 ------------------------------------------------------------
+if (!require("AER"))        install.packages("AER")
+if (!require("ivreg"))      install.packages("ivreg")
+if (!require("lmtest"))     install.packages("lmtest")
+if (!require("sandwich"))   install.packages("sandwich")
+if (!require("dplyr"))      install.packages("dplyr")
+
+library(AER)        # waldtest(), overid()
+library(ivreg)      # ivreg()
+library(lmtest)     # coeftest(), waldtest()
+library(sandwich)   # vcovHC()
+library(boot)       # bootstrap
+library(dplyr)
+library(ggplot2)
+library(car)
+library(POE5Rdata)  # 資料內含 mroz 資料集
+
+## 載入資料
+data("mroz", package = "POE5Rdata")  # 這一步只會把物件 mroz 放進環境
+d <- POE5Rdata::mroz                 # 或者 d <- get("mroz")
+d <- subset(d, lfp == 1)             # 428 位勞動市場妻子
+d$lwage  <- log(d$wage)
+d$exper2 <- d$exper^2
+n <- nrow(d)
+## 檢查資料結構
+#str(data)
+#summary(data)
+#head(data)
+#tail(data)
+#nrow(data)
+
+
+## (a-1) 
+## IV/2SLS, Hetero_test, robust, bootstrap 
+iv.mod <- ivreg(lwage ~ educ + exper + exper2 |
+                  mothereduc + fathereduc + exper + exper2, data = d)
+
+coef_iv <- coef(iv.mod)
+se_iv   <- summary(iv.mod)$coef[, "Std. Error"]
+
+## (a-2) 殘差圖 -------------------------------------------------
+# ① 把殘差加到資料框；② 用 ggplot 畫散佈圖 + LOESS 平滑
+d <- d %>%
+  mutate(resid_iv = resid(iv.mod))
+
+ggplot(d, aes(exper, resid_iv)) + 
+  geom_point(alpha = .6) +
+  geom_smooth(method = "loess", se = FALSE, linewidth = .7) +
+  labs(x = "EXPER", y = "IV residuals",
+       title = "Residuals vs. Experience (2SLS)") +
+  theme_minimal()
+
+## (b) NR² 檢定：迴歸 ê² 對 1 與 EXPER -----------------------
+e_iv2   <- resid(iv.mod)^2
+het.mod <- lm(e_iv2 ~ d$exper)
+coef_het <- coef(het.mod)
+se_het   <- sqrt(diag(vcov(het.mod)))
+
+NR2 <- n * summary(het.mod)$r.squared
+p_NR2 <- pchisq(NR2, df = 1, lower.tail = FALSE)
+
+## (c) HC0 穩健 SE 與 EDUC 95% 區間 --------------------------
+rob_se <- sqrt(diag(vcovHC(iv.mod, type = "HC0")))
+ci_educ_rob <- coef_iv["educ"] + c(-1, 1) * qnorm(0.975) * rob_se["educ"]
+
+## (d) Bootstrap (B = 200) -----------------------------------
+set.seed(123)
+
+boot_fun <- function(data, idx) {
+  d2 <- data[idx, ]
+  res <- tryCatch(
+    coef(ivreg(lwage ~ educ + exper + exper2 |
+                 mothereduc + fathereduc + exper + exper2,
+               data = d2)),
+    error = function(e) rep(NA_real_, 4)   # 4 個係數
+  )
+  return(res)
+}
+
+B <- 200
+boot_out <- boot(d, statistic = boot_fun, R = B)
+
+## 幾個 bootstrap 抽樣成功？
+ok <- rowSums(is.na(boot_out$t)) == 0
+cat("有效 bootstrap 抽樣 =", sum(ok), "／", B, "\n")
+
+## 去掉 NA 再算標準誤
+se_boot <- apply(boot_out$t, 2, sd, na.rm = TRUE)
+names(se_boot) <- names(coef_iv)          # 讓後面抓得回來
+
+## 95% CI for EDUC (bootstrap)
+z975 <- qnorm(0.975)
+ci_educ_boot <- coef_iv["educ"] + c(-1, 1) * z975 * se_boot["educ"]
+
+### 總表(Table XR 10.24)
+
+## IV / 2SLS 基準迴歸
+iv.mod <- ivreg(lwage ~ educ + exper + exper2 |
+                  mothereduc + fathereduc + exper + exper2,
+                data = d)
+coef_iv <- coef(iv.mod)
+se_iv   <- sqrt(diag(vcov(iv.mod)))         # 常態假設下的標準誤
+
+## Hetero test 迴歸 (u^2 ~ exper)
+u2      <- resid(iv.mod)^2
+het.mod <- lm(u2 ~ exper, data = d)          # 只有截距 + exper
+coef_het <- coef(het.mod)
+se_het   <- summary(het.mod)$coefficients[,2]
+
+## White 型穩健 SE
+se_rob <- sqrt(diag(vcovHC(iv.mod, type = "HC0")))
+
+## Bootstrap SE (B = 200)
+boot_fun <- function(data, idx) {
+  m <- ivreg(lwage ~ educ + exper + exper2 |
+               mothereduc + fathereduc + exper + exper2,
+             data = data[idx, ])
+  coef(m)
+}
+set.seed(123)
+boot_out <- boot(d, boot_fun, R = 200)
+se_boot  <- apply(boot_out$t, 2, sd)
+
+## 計算共用統計量
+n     <- nobs(iv.mod)
+SSE   <- deviance(iv.mod)
+RMSE  <- sqrt(SSE / n)
+R2    <- summary(iv.mod)$r.squared
+
+SSE_h <- deviance(het.mod)
+RMSE_h<- sqrt(SSE_h / n)
+R2_h  <- summary(het.mod)$r.squared
+
+## 彙整表格
+fmt4  <- function(x) sprintf("%.4f", x)
+fmt2  <- function(x) sprintf("%.2f", x)
+fmt7  <- function(x) sprintf("%.7f", x)
+
+tab <- tibble::tribble(
+  ~Variable, ~Stat,
+  "C",          "Estimate",
+  "C",          "StdErr",
+  "EDUC",       "Estimate",
+  "EDUC",       "StdErr",
+  "EXPER",      "Estimate",
+  "EXPER",      "StdErr",
+  "EXPER2",     "Estimate",
+  "EXPER2",     "StdErr",
+  "N",          "",
+  "R2",         "",
+  "SSE",        "",
+  "RMSE",       ""
+) %>%
+  dplyr::mutate(
+    IV          = c(fmt4(coef_iv["(Intercept)"]), fmt4(se_iv["(Intercept)"]),
+                    fmt4(coef_iv["educ"]),        fmt4(se_iv["educ"]),
+                    fmt4(coef_iv["exper"]),       fmt4(se_iv["exper"]),
+                    fmt4(coef_iv["exper2"]),      fmt4(se_iv["exper2"]),
+                    n,
+                    fmt7(R2),
+                    fmt2(SSE),
+                    fmt7(RMSE)),
+    
+    `Hetero test` = c(fmt4(coef_het["(Intercept)"]), fmt4(se_het["(Intercept)"]),
+                      "", "",
+                      fmt4(coef_het["exper"]),       fmt4(se_het["exper"]),
+                      "", "",
+                      n,
+                      fmt7(R2_h),
+                      fmt2(SSE_h),
+                      fmt7(RMSE_h)),
+    
+    robust      = c(fmt4(coef_iv["(Intercept)"]), fmt4(se_rob["(Intercept)"]),
+                    fmt4(coef_iv["educ"]),        fmt4(se_rob["educ"]),
+                    fmt4(coef_iv["exper"]),       fmt4(se_rob["exper"]),
+                    fmt4(coef_iv["exper2"]),      fmt4(se_rob["exper2"]),
+                    n,
+                    fmt7(R2),
+                    fmt2(SSE),
+                    fmt7(RMSE)),
+    
+    bootstrap   = c(fmt4(coef_iv["(Intercept)"]), fmt4(se_boot["(Intercept)"]),
+                    fmt4(coef_iv["educ"]),        fmt4(se_boot["educ"]),
+                    fmt4(coef_iv["exper"]),       fmt4(se_boot["exper"]),
+                    fmt4(coef_iv["exper2"]),      fmt4(se_boot["exper2"]),
+                    n,
+                    fmt7(R2),
+                    fmt2(SSE),
+                    fmt7(RMSE))
+  )
+
+print(tab, n = Inf, width = Inf)
+
+## 額外：輸出關鍵結果摘要
+cat("\n---- NR^2 test ----\n",
+    "NR^2  =", round(NR2, 4),
+    " p-value =", round(p_NR2, 4), "\n")
+
+cat("\n---- 95% CI for EDUC ----\n",
+    "Robust  :", round(ci_educ_rob, 4), "\n",
+    "Bootstrap:", round(ci_educ_boot, 4), "\n")
+
+

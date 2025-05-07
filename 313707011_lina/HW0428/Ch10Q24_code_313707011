@@ -1,0 +1,102 @@
+# 設定資料集的 URL
+url <- "https://www.principlesofeconometrics.com/poe5/data/rdata/mroz.rdata"
+download.file(url, destfile = "mroz.rdata")  # 下載資料集並儲存為本地檔案
+load("mroz.rdata")  # 載入資料集
+names(mroz)  # 確認變數名稱
+str(mroz) # 查看資料結構
+
+
+# 10.24(a)
+library(AER)      # 用於IV/2SLS估計
+mroz_sub <- subset(mroz,lfp==1)   # 只針對變數 lfp == 1（有參與勞動市場的女性）進行分析
+mroz_sub$lwage <- log(mroz_sub$wage)
+mroz_sub$exper2 <- mroz_sub$exper^2
+iv_model <- ivreg(lwage ~ exper + exper2 + educ |
+                    exper + exper2 + mothereduc + fathereduc,
+                  data = mroz_sub)
+iv_resid <- resid(iv_model)
+summary(iv_model)
+plot(mroz_sub$exper, iv_resid, xlab = "EXPER", ylab = "Residuals", main = "IV/2SLS Residuals vs EXPER")
+
+
+# 10.24(b)
+iv_resid2 <- iv_resid^2
+het_model <- lm(iv_resid2 ~ exper, data = mroz_sub)
+summary(het_model)
+n <- length(het_model)
+R2 <- summary(het_model)$r.squared
+nR2 <- n * R2
+p_value <- 1 - pchisq(nR2, df = 1)    # 自由度為自變項數，這裡是 1
+qchisq(1-0.05, df = 1)
+nR2
+p_value
+
+
+# 10.24(c)
+library(sandwich)  # 用於計算穩健標準誤差
+library(lmtest)    # 用於coeftest函數
+
+iv_model <- ivreg(lwage ~ exper + exper2 + educ |
+                    exper + exper2 + mothereduc + fathereduc,
+                  data = mroz_sub)
+
+# 使用原始IV模型並計算穩健標準誤差
+robust_se <- vcovHC(iv_model, type = "HC1")
+robust_results <- coeftest(iv_model, vcov = robust_se)
+robust_results
+
+# 計算EDUC係數的95%信賴區間
+robust_ci <- coefci(iv_model, parm = "educ", level = 0.95, 
+                    vcov. = vcovHC(iv_model, type = "HC1"))   # 95% CI using Robust SE
+baseline_ci <- coefci(iv_model, parm = "educ", level = 0.95)  # 95% CI using Baseline SE
+robust_ci
+baseline_ci
+
+# baseline 與 robust 標準誤比較表
+baseline_se <- coef(summary(iv_model))[, "Std. Error"]  # baseline 標準誤
+robust_se_vec <- sqrt(diag(robust_se))
+se_comparison_1 <- data.frame(
+  Estimate = round(coef(iv_model),5),
+  Baseline_SE = round(baseline_se,5),
+  Robust_SE = round(robust_se_vec,5),
+  SE_Change = ifelse(robust_se_vec > baseline_se, "Increase", "Decrease")
+)
+print(se_comparison_1)
+
+
+# 10.24(d) Bootstrap標準誤差的IV/2SLS估計
+library(boot)
+iv_formula <- lwage ~ exper + exper2 + educ |
+  exper + exper2 + mothereduc + fathereduc
+model_iv <- ivreg(iv_formula, data = mroz_sub)
+iv_boot <- function(data, i) {
+  d <- data[i, ]
+  fit <- ivreg(iv_formula, data = d)
+  coef(fit)
+}
+
+set.seed(123)
+boot_iv <- boot(data = mroz_sub, statistic = iv_boot, R = 200)
+
+boot_se <- apply(boot_iv$t, 2, sd)
+
+# 比較三種標準誤差：基準、穩健和Bootstrap
+se_comparison_2 <- data.frame(
+  Coefficient = round(coef(model_iv),5),
+  Baseline_SE = round(baseline_se,5),
+  Robust_SE = round(robust_se_vec,5), 
+  Bootstrap_SE = round(boot_se,5),
+  Bootstrap_vs_Baseline = ifelse(boot_se > baseline_se, "Increase", "Decrease"),
+  Bootstrap_vs_Robust = ifelse(boot_se > robust_se_vec, "Increase", "Decrease")
+)
+print(se_comparison_2)
+
+# CI
+educ_index <- which(names(coef(model_iv)) == "educ")
+ci_boot <- coef(model_iv)["educ"] + c(-1,1)*qnorm(0.975)* boot_se[educ_index]
+ci_boot 
+
+boot_ci <- boot.ci(boot_iv, type = "perc", index = educ_index) 
+print(boot_ci)
+
+

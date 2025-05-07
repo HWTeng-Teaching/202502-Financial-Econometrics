@@ -1,0 +1,131 @@
+#10.20 (a) ----------------------------------------------------------------------
+# 載入資料集
+data(capm5)
+
+# 計算 Microsoft 股票的風險溢價 (msftrf) 和市場的風險溢價 (rmrf)
+capm5$msftrf = (capm5$msft - capm5$riskfree)
+capm5$rmrf = (capm5$mkt - capm5$riskfree)
+
+# 執行 CAPM 回歸模型
+msftrf = lm(msftrf ~ rmrf, data = capm5)
+
+# 顯示回歸結果
+summary(msftrf)
+
+# 計算 beta (rmrf) 的 95% 區間估計
+beta_95ci <- confint(msftrf, level = 0.95)["rmrf", ]
+
+# 顯示 beta 的 95% 區間估計
+cat("The 95% confidence interval for beta is [", round(beta_95ci[1], 4), ", ", round(beta_95ci[2], 4), "]\n")
+
+#10.20 (b) ----------------------------------------------------------------------
+capm5$rank = rank(capm5$rmrf)
+rmrf.ols=lm(rmrf~rank , data=capm5)
+summary(rmrf.ols)
+
+#10.20 (c) ----------------------------------------------------------------------
+# 重新計算第一階段的殘差
+capm5$rank = rank(capm5$rmrf)
+rmrf.ols = lm(rmrf ~ rank, data = capm5)
+
+# 提取第一階段回歸的殘差 v_hat
+capm5$v_hat = residuals(rmrf.ols)
+
+# 現在將殘差添加到 CAPM 模型中，並執行回歸分析
+capm5$msftrf = (capm5$msft - capm5$riskfree)
+capm5$rmrf = (capm5$mkt - capm5$riskfree)
+capm5$rank = rank(capm5$rmrf)
+
+capm5_model = lm(msftrf ~ rmrf + v_hat, data = capm5)
+
+# 顯示擴充回歸的結果
+summary(capm5_model)
+
+#10.20 (d) ----------------------------------------------------------------------
+# 使用 rank 作為工具變數，進行 IV/2SLS 估計
+library(AER)
+iv_model = ivreg(msftrf ~ rmrf | rank, data = capm5)
+
+# 顯示 IV 估計結果
+summary(iv_model)
+
+# 計算 beta 的 95% 信賴區間
+beta_95CI = confint(iv_model, level = 0.95)["rmrf", ]
+cat("The 95% confidence interval for beta is: [", round(beta_95CI, 4), "]")
+
+#10.20 (e) ----------------------------------------------------------------------
+# 創建 POS 變數
+capm5$POS <- ifelse(capm5$rmrf > 0, 1, 0)
+# 使用 RANK 和 POS 作為工具變數，進行第一階段回歸
+first_stage_model_e <- lm(rmrf ~ rank + POS, data = capm5)
+
+# 顯示回歸結果
+summary(first_stage_model_e)
+
+#10.20(f) ----------------------------------------------------------------------
+# 進行第一階段回歸，並提取殘差
+first_stage_model_e <- lm(rmrf ~ rank + POS, data = capm5)
+capm5$residuals_first_stage <- residuals(first_stage_model_e)
+
+# 將第一階段的殘差加到 CAPM 模型中
+capm5_model <- lm(msftrf ~ rmrf + residuals_first_stage, data = capm5)
+
+# 顯示回歸結果
+summary(capm5_model)
+
+# Hausman 測試，檢查市場回報是否外生
+hausman_test_result <- linearHypothesis(capm5_model, "residuals_first_stage = 0")
+print(hausman_test_result)
+
+#10.20(g) ----------------------------------------------------------------------
+# 使用 RANK 和 POS 作為工具變數，進行 IV/2SLS 估計
+library(AER)  # 需要安裝 AER 套件來使用 ivreg 函數
+
+# 設定工具變數，估算 IV/2SLS 模型
+capm_iv_model <- ivreg(msftrf ~ rmrf | rank + POS, data = capm5)
+
+# 顯示 IV 估計結果
+summary(capm_iv_model)
+
+# 估算OLS模型
+ols_model <- lm(msftrf ~ rmrf, data = capm5)
+summary(ols_model)
+
+# 比較 IV 和 OLS 估計結果
+iv_beta <- coef(capm_iv_model)["rmrf"]
+ols_beta <- coef(ols_model)["rmrf"]
+cat("IV Estimate of beta:", iv_beta, "\n")
+cat("OLS Estimate of beta:", ols_beta, "\n")
+
+# 計算 rmrf 的 95% 區間估計
+iv_beta_95CI <- confint(capm_iv_model, level = 0.95)["rmrf",]
+
+cat("The 95% confidence interval for beta in the IV model is: [", iv_beta_95CI[1], ", ", iv_beta_95CI[2], "]\n")
+
+#10.20 (h) ----------------------------------------------------------------------
+# 提取 IV 回歸的殘差
+residuals_iv = residuals(capm_iv_model)
+
+# 進行 OLS 回歸，將 IV 回歸殘差作為因變數，RANK 和 POS 作為自變數
+OLS_eIV = lm(residuals_iv ~ rank + POS, data = capm5)
+summary(OLS_eIV)
+
+# 計算 R-squared 值並乘以樣本數
+N = length(capm5$msft)  # 或者是數據中的其他觀察數量
+Rsqard = summary_OLS_eIV$r.squared
+Rsqard*N
+
+# 計算 Sargan test 的卡方臨界值
+chi_2 = qchisq(0.95, 1)  # 假設顯著性水平為 5%
+chi_2_critical = chi_2
+
+# 輸出 Sargan 統計量與臨界值
+cat("Sargan test statistic (NR^2) is", round(Rsqard*N, 6), "\n")
+cat("The 5% critical value for the Sargan test is", round(chi_2_critical, 3), "\n")
+
+# 根據 Sargan 統計量進行假設檢驗
+if (Rsqard*N > chi_2_critical) {
+  cat("We reject the null hypothesis that the surplus IV is valid.\n")
+} else {
+  cat("We fail to reject the null hypothesis that the surplus IV is valid.\n")
+}

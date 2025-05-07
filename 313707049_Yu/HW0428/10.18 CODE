@@ -1,0 +1,62 @@
+10.18
+library(POE5Rdata)
+data("mroz")
+
+#a.------------------------------------------------------
+
+mroz_working <- subset(mroz, lfp == 1)  # 428 筆觀察值
+mroz_working$MOTHERCOLL <- ifelse(mroz_working$mothereduc > 12, 1, 0)
+mroz_working$FATHERCOLL <- ifelse(mroz_working$fathereduc > 12, 1, 0)
+
+mother_coll_pct <- mean(mroz_working$MOTHERCOLL) * 100
+father_coll_pct <- mean(mroz_working$FATHERCOLL) * 100
+
+# 顯示結果
+cat("母親有部分大學教育的比例：", round(mother_coll_pct, 2), "%\n")
+cat("父親有部分大學教育的比例：", round(father_coll_pct, 2), "%\n")
+
+#b
+correlations <- cor(mroz_working[, c("educ", "MOTHERCOLL", "FATHERCOLL")])
+print(correlations)
+
+
+#c
+library(AER)
+mroz_working$lwage <- log(mroz_working$wage)
+mroz_working$exper2 <- mroz_working$exper^2
+iv_model <- ivreg(lwage ~ exper + exper2 + educ | exper + exper2 + MOTHERCOLL, data = mroz_working)
+summary(iv_model,diagnostics = TRUE)
+confint(iv_model, level = 0.95)["educ", ]
+cat('95% Confidence Interval: [',confint(iv_model, level = 0.95)["educ", ],']')
+
+#d
+
+first_stage_model <- lm(educ ~ MOTHERCOLL + exper + exper2, data = mroz_working)
+summary(first_stage_model)
+
+#e
+#2SLS
+iv_model2 <- ivreg(lwage ~ exper + exper2 + educ | exper + exper2 + MOTHERCOLL + FATHERCOLL, data = mroz_working)
+summary(iv_model2)
+
+# 計算 95% 信賴區間
+ci_educ <- confint(iv_model2, level = 0.95)
+cat("95% Confidence Interval for EDUC 
+
+#f
+first_stage2 <- lm(educ ~ exper + exper2 + MOTHERCOLL + FATHERCOLL, data = mroz_working)
+summary(first_stage2)
+linearHypothesis(first_stage2, c("MOTHERCOLL = 0", "FATHERCOLL = 0"))
+
+#g
+resid_iv <- resid(iv_model2)
+sargan_test <- lm(resid_iv ~ exper + exper2 + MOTHERCOLL + FATHERCOLL, data = mroz_working)
+summary(sargan_test)
+
+n <- nrow(mroz_working)
+sargan_stat <- n * summary(sargan_test)$r.squared
+
+p_value <- 1 - pchisq(sargan_stat, df = 1)
+
+cat("Sargan statistic:", sargan_stat, "\n")
+cat("p-value:", p_value, "\n")

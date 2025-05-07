@@ -1,0 +1,89 @@
+# a
+library(AER) 
+library(ggplot2)
+data("mroz")
+
+mroz_working <- subset(mroz, lfp == 1)
+mroz_working$exper2 <- mroz_working$exper^2
+
+iv_model <- ivreg(log(wage) ~ educ + exper + exper2 | mothereduc + fathereduc + exper + exper2, data = mroz_working)
+summary(iv_model)
+
+
+mroz_working$e_iv <- resid(iv_model)
+
+ggplot(mroz_working, aes(x = exper, y = e_iv)) +
+  geom_point(alpha = 0.6) +
+  geom_smooth(method = "loess", se = FALSE, color = "red") +
+  labs(title = "IV/2SLS 殘差對 EXPER 散佈圖",
+       x = "工作經驗 (EXPER)",
+       y = "IV 殘差 (ê_IV)") 
+
+#b
+# 回歸 ê_IV^2 於常數和 EXPER
+mroz_working$e_iv_squared <- mroz_working$e_iv^2
+model_hetero <- lm(e_iv_squared ~ exper, data = mroz_working)
+
+
+model_summary <- summary(model_hetero)
+
+
+R_squared <- model_summary$r.squared  # 提取 R^2 值
+p_value <- coef(model_summary)[2, 4]  # 提取 EXPER 的 p 值
+
+cat("R^2 from the regression is:", R_squared, "\n")
+cat("The p-value for EXPER is:", p_value, "\n")
+
+
+N <- nrow(mroz_working)  # 記錄樣本數
+
+NR_squared_test_stat <- R_squared * N
+
+cat("The NR^2 test statistic is", NR_squared_test_stat, "\n")
+
+
+critical_value <- qchisq(0.95, df = 1)  # 5% 顯著性水平，1 自由度
+cat("The 5% critical value for the NR^2 test is", critical_value, "\n")
+
+if (NR_squared_test_stat > critical_value) {
+  cat("We reject the null hypothesis of homoskedasticity.\n")
+} else {
+  cat("We fail to reject the null hypothesis of homoskedasticity.\n")
+}
+
+# c
+library(AER)
+library(lmtest)
+
+# IV/2SLS估算
+iv_model <- ivreg(log(wage) ~ educ + exper + exper2 | mothereduc + fathereduc + exper + exper2, data = mroz_working)
+
+robust_se <- coeftest(iv_model, vcov = vcovHC(iv_model, type = "HC3"))
+
+print(robust_se)
+educ_coef <- robust_se[2, 1]
+educ_se <- robust_se[2, 2]
+lower_bound <- educ_coef - 1.96 * educ_se
+upper_bound <- educ_coef + 1.96 * educ_se
+
+cat("95% confidence interval for EDUC: [", lower_bound, ", ", upper_bound, "]", sep = "")
+
+# d
+# 從 bootstrap 抽樣中獲得數據
+iv_2sls_bootstrap <- function(data, indices) {
+  d <- data[indices, ]  
+  model <- ivreg(log(wage) ~ educ + exper + exper2 | mothereduc + fathereduc + exper + exper2, data = d)
+  return(coef(model)) 
+
+bootstrap_results <- boot(data = mroz_working, statistic = iv_2sls_bootstrap, R = 200)
+
+print(bootstrap_results$t) 
+bootstrap_se <- sd(educ_bootstrap)
+
+# 計算 95% 信賴區間
+educ_lower_bound <- quantile(educ_bootstrap, 0.025)
+educ_upper_bound <- quantile(educ_bootstrap, 0.975)
+
+# 顯示結果
+cat("Bootstrap 標準誤差:", bootstrap_se, "\n")
+cat("95% 信賴區間: [", educ_lower_bound, ", ", educ_upper_bound, "]\n")
