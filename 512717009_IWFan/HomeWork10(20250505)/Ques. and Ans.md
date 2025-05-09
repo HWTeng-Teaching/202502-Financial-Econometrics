@@ -373,32 +373,21 @@ $$
 
 根據 Exercise 2.4 的無截距迴歸結果，令 \( \hat{y}_2 \) 為解釋變數、\( y_1 \) 為被解釋變數，我們可以寫出：
 
-$$
-\[
-\hat{\alpha}_{1,\text{2SLS}} = \frac{\sum \hat{y}_{i2} y_{i1}}{\sum \hat{y}_{i2}^2}
-\]
-$$
+
+<img width="134" alt="h" src="https://github.com/user-attachments/assets/788e52ab-8a54-4e8d-acfa-bc2f96f34043" />
+
 
 要證明與先前 IV 解相同：
 
 注意：
 
-$$
-\[
-\hat{v}_2 = y_2 - \hat{y}_2 \quad \Rightarrow \quad \hat{y}_2 = y_2 - \hat{v}_2
-\]
-$$
+<img width="338" alt="h1" src="https://github.com/user-attachments/assets/c292f632-58e8-45f3-80af-7197e12bdb7c" />
+
 
 因此，
 
-$$
-\[
-\sum \hat{y}_{i2}^2 
-= \sum \hat{y}_{i2} (y_{i2} - \hat{v}_{i2}) 
-= \sum \hat{y}_{i2} y_{i2} - \sum \hat{y}_{i2} \hat{v}_{i2}
-= \sum \hat{y}_{i2} y_{i2}
-\]
-$$
+<img width="370" alt="h2" src="https://github.com/user-attachments/assets/a4bd8bbd-5cf5-4275-aa93-c34734f33019" />
+
 
 解釋為何 \( \sum \hat{y}_{i2} \hat{v}_{i2} = 0 \)
 
