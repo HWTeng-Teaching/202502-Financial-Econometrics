@@ -95,6 +95,235 @@ $$
 
 ## ANS:
 
+## (a) 消去與代入法：推導 reduced form
+
+方程組：
+
+$$
+\begin{aligned}
+(1)\quad & y_1 = \alpha_1 + e_1 \\
+(2)\quad & y_2 = \alpha_2 + \beta_1 y_1 + \beta_2 x_1 + \beta_3 x_2 + e_2
+\end{aligned}
+$$
+
+將 (1) 式代入 (2) 式：
+
+$$
+\begin{aligned}
+y_2 &= \alpha_2 + \beta_1(\alpha_1 + e_1) + \beta_2 x_1 + \beta_3 x_2 + e_2 \\
+&= \alpha_2 + \beta_1 \alpha_1 + \beta_1 e_1 + \beta_2 x_1 + \beta_3 x_2 + e_2 \\
+&= \pi_0 + \pi_1 x_1 + \pi_2 x_2 + v
+\end{aligned}
+$$
+
+其中：
+
+- \( \pi_0 = \alpha_2 + \beta_1 \alpha_1 \)
+- \( v = \beta_1 e_1 + e_2 \)
+
+此 reduced form equation 中，\( y_2 \) 與 \( x_1, x_2 \) 可由 OLS 一致估計。
+
+---
+
+## (b) OLS 可一致估計的條件
+
+因為原始兩個結構式的右邊都包含內生變數（如 \( y_1 \)），所以不能直接使用 OLS。
+
+但 reduced form 中只有外生變數 \( x_1, x_2 \)，可以對其進行 OLS 一致估計。
+
+---
+
+## (c) 識別性（Identification）
+
+結構模型中 \( M = 2 \) 個方程式。為了識別一條方程式，必須省略 \( M - 1 = 1 \) 個外生變數。
+
+- 方程 (1) 中已省略 \( x_1, x_2 \)，是 **已識別**
+- 方程 (2) 中未省略任何外生變數，**未被識別**
+
+---
+
+## (d) Moment Conditions
+
+由外生性假設：
+
+$$
+E[x_1 v] = 0, \quad E[x_2 v] = 0
+$$
+
+其中：
+
+$$
+v = \beta_1 e_1 + e_2
+$$
+
+這些為 GMM 或 IV 推導的 moment condition。
+
+---
+
+## (e) 最小平方法：條件最小平方
+
+最小化：
+
+$$
+S(\pi_1, \pi_2) = \sum_i (y_{2i} - \pi_1 x_{1i} - \pi_2 x_{2i})^2
+$$
+
+對 \( \pi_1, \pi_2 \) 求導，導出：
+
+$$
+\begin{aligned}
+\frac{\partial S}{\partial \pi_1} &= -2 \sum x_{1i}(y_{2i} - \pi_1 x_{1i} - \pi_2 x_{2i}) = 0 \\
+\frac{\partial S}{\partial \pi_2} &= -2 \sum x_{2i}(y_{2i} - \pi_1 x_{1i} - \pi_2 x_{2i}) = 0
+\end{aligned}
+$$
+
+---
+
+## (f) 插入數值求解：
+
+若已知：
+
+$$
+\sum x_{1i} y_{2i} = 3, \quad \sum x_{1i}^2 = 1 \Rightarrow \hat{\pi}_1 = 3 \\
+\sum x_{2i} y_{2i} = 4, \quad \sum x_{2i}^2 = 1 \Rightarrow \hat{\pi}_2 = 4
+$$
+
+---
+
+## (g) 求 \( \alpha_1 \) 的 IV 估計量
+
+根據：
+
+$$
+y_1 = \alpha_1 + e_1 \\
+\hat{y}_2 = \hat{\pi}_1 x_1 + \hat{\pi}_2 x_2
+$$
+
+moment condition：
+
+$$
+\sum (x_{1i} y_{1i} - \alpha_1 x_{1i} \hat{y}_{2i}) = 0
+$$
+
+解得：
+
+$$
+\hat{\alpha}_1^{IV} = \frac{\sum x_{1i} y_{1i}}{\sum x_{1i} \hat{y}_{2i}}
+$$
+
+---
+
+## (h) 使用 SLS 的估計結果
+
+若設：
+
+- \( x = \hat{y}_2 \)，
+- \( y = y_1 \)
+
+無截距的最小平方法估計為：
+
+$$
+\hat{\alpha}_1 = \frac{\sum y_i x_i}{\sum x_i^2} = \frac{\sum y_{1i} \hat{y}_{2i}}{\sum \hat{y}_{2i}^2}
+$$
+
+這與上一題 (g) 得到的 IV 估計一致，根據：
+
+- \( \sum x v = 0 \)：OLS 的正交性質
+
+---
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 考慮以下同時方程模型：
 
 (1) y1=α1y2+e1
