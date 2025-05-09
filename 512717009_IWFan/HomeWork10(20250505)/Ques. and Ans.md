@@ -279,15 +279,42 @@ $$
 $$
 
 這些為 **最小平方法 (OLS)** 條件，用以求解 \( \hat{\pi}_1, \hat{\pi}_2 \) 的常見正規方程式（normal equations）。
+
 ---
 
 ## (f) 插入數值求解：
 
-若已知：
+我們根據 OLS 一階條件式得到以下 moment conditions：
 
 $$
-\sum x_{1i} y_{2i} = 3, \quad \sum x_{1i}^2 = 1 \Rightarrow \hat{\pi}_1 = 3 \\
-\sum x_{2i} y_{2i} = 4, \quad \sum x_{2i}^2 = 1 \Rightarrow \hat{\pi}_2 = 4
+\[
+\frac{1}{N} \sum x_{i1} (y_2 - \pi_1 x_{i1} - \pi_2 x_{i2}) = 0
+\]
+\[
+\frac{1}{N} \sum x_{i2} (y_2 - \pi_1 x_{i1} - \pi_2 x_{i2}) = 0
+\]
+$$
+
+展開後得到：
+
+$$
+\[
+\sum x_{i1} y_{i2} - \pi_1 \sum x_{i1}^2 - \pi_2 \sum x_{i1} x_{i2} = 0
+\]
+\[
+\sum x_{i2} y_{i2} - \pi_1 \sum x_{i1} x_{i2} - \pi_2 \sum x_{i2}^2 = 0
+\]
+$$
+
+插入已知值計算：
+
+$$
+\[
+3 - \hat{\pi}_1 = 0 \quad \Rightarrow \quad \hat{\pi}_1 = 3
+\]
+\[
+4 - \hat{\pi}_2 = 0 \quad \Rightarrow \quad \hat{\pi}_2 = 4
+\]
 $$
 
 ---
