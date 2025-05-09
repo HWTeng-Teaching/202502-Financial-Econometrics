@@ -100,16 +100,13 @@ $$
 方程組：
 
 $$
-\begin{aligned}
 (1)\quad & y_1 = \alpha_1 y_2  + e_1 \\
 (2)\quad & y_2 = \alpha_2 y_1 + \beta_1 x_1 + \beta_2 x_2 + e_2
-\end{aligned}
 $$
 
 將 (1) 式代入 (2) 式：
 
 $$
-\begin{aligned}
 y_2 = \alpha_2 y_1 + \beta_1 x_1 + \beta_2 x_2 + e_2
 &= \alpha_2 (\alpha_1 y_2 + e_1)+ \beta_1 x_1) + \beta_2 x_2 + e_2 \\
 &= \alpha_1 alpha_2 y_2 + alpha_2 e_1  + \beta_1 x_1 + \beta_2 x_2 + e_2 \\
@@ -124,7 +121,6 @@ $$
 \( \pi_2 = \frac{\beta_2}{1 - \alpha_1 \alpha_2} \)
 \( v_2 = \frac{\alpha_2 e_1 + e_2}{1 - \alpha_1 \alpha_2} \)
 &= \pi_0 + \pi_1 x_1 + \pi_2 x_2 + v
-\end{aligned}
 $$
 
 其中：
