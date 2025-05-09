@@ -95,7 +95,7 @@ $$
 
 ## ANS:
 
-## (a) 消去與代入法：推導 reduced form
+**(a) 消去與代入法：推導 reduced form**
 
 方程組：
 
@@ -170,40 +170,93 @@ $$
 
 因此，當 \( \alpha_2 \ne 0 \) 且 \( \alpha_1 \ne 0 \) 時，\( y_2 \) 與 \( e_1 \) 相關 ⇒ 說明內生性。
 
-## (b) OLS 可一致估計的條件
+我們已得：
+
+$$
+\[
+\text{cov}(y_2, e_1 \mid \mathbf{x}) = E(y_2 e_1 \mid \mathbf{x})
+\]
+$$
+
+接著，
+
+$$
+\[
+\begin{aligned}
+\text{cov}(y_2, e_1 \mid \mathbf{x}) 
+&= \frac{E(e_2 e_1 \mid \mathbf{x}) + \alpha_2 E(e_1^2 \mid \mathbf{x})}{1 - \alpha_1 \alpha_2} \\
+&= \frac{\alpha_2}{1 - \alpha_1 \alpha_2} \sigma_1^2
+\end{aligned}
+\]
+$$
+
+此共變數非零，除非：
+
+$$
+\[
+\alpha_2 = 0 \Rightarrow \text{無同時性問題 (no simultaneity)}
+$$
+
+
+
+**(b) OLS 可一致估計的條件**
 
 因為原始兩個結構式的右邊都包含內生變數（如 \( y_1 \)），所以不能直接使用 OLS。
 
 但 reduced form 中只有外生變數 \( x_1, x_2 \)，可以對其進行 OLS 一致估計。
 
----
 
-## (c) 識別性（Identification）
+**(c) 識別性（Identification）**
 
 結構模型中 \( M = 2 \) 個方程式。為了識別一條方程式，必須省略 \( M - 1 = 1 \) 個外生變數。
 
 - 方程 (1) 中已省略 \( x_1, x_2 \)，是 **已識別**
 - 方程 (2) 中未省略任何外生變數，**未被識別**
 
----
 
-## (d) Moment Conditions
+**(d) Moment Conditions**
 
-由外生性假設：
-
-$$
-E[x_1 v] = 0, \quad E[x_2 v] = 0
-$$
-
-其中：
+這些 moment conditions 來自於 \( x \) 為外生變數（exogenous）的假設。因此有：
 
 $$
-v = \beta_1 e_1 + e_2
+\[
+E(x_{i1} v_{i1} \mid \mathbf{x}) = E(x_{i2} v_{i2} \mid \mathbf{x}) = 0
+\]
 $$
 
-這些為 GMM 或 IV 推導的 moment condition。
+根據 part (a) 的結果，\( y_2 \) 的 reduced form 為：
 
----
+$$
+\[
+y_2 = \frac{\beta_1}{1 - \alpha_1 \alpha_2} x_1 + \frac{\beta_2}{1 - \alpha_1 \alpha_2} x_2 + \frac{e_2 + \alpha_2 e_1}{1 - \alpha_1 \alpha_2}
+\]
+$$
+
+簡記為：
+
+$$
+\[
+y_2 = \pi_1 x_1 + \pi_2 x_2 + v_2
+\]
+$$
+
+Reduced Form 誤差項與 \( x \) 無相關性證明：
+
+我們要證明：
+
+$$
+\[
+E\left[ x_{ik} \left( \frac{e_2 + \alpha_2 e_1}{1 - \alpha_1 \alpha_2} \right) \middle| \mathbf{x} \right]
+= E \left[ \frac{1}{1 - \alpha_1 \alpha_2} x_{ik} e_2 \mid \mathbf{x} \right] 
++ E \left[ \frac{\alpha_2}{1 - \alpha_1 \alpha_2} x_{ik} e_1 \mid \mathbf{x} \right]
+= 0 + 0
+\]
+$$
+
+這是因為 \( x \) 為外生變數，對 \( e_1, e_2 \) 條件期望為 0。
+
+因此，reduced form 的誤差項 \( v_2 \) 與 \( x \) 無相關。
+
 
 ## (e) 最小平方法：條件最小平方
 
