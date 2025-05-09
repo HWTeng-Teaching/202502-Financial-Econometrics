@@ -245,12 +245,24 @@ Reduced Form 誤差項與 \( x \) 無相關性證明：
 我們要證明：
 
 $$
-\[
-E\left[ x_{ik} \left( \frac{e_2 + \alpha_2 e_1}{1 - \alpha_1 \alpha_2} \right) \middle| \mathbf{x} \right] 
-= E \left[ \frac{1}{1 - \alpha_1 \alpha_2} x_{ik} e_2 \middle| \mathbf{x} \right] 
-+ E \left[ \frac{\alpha_2}{1 - \alpha_1 \alpha_2} x_{ik} e_1 \middle| \mathbf{x} \right]
+E \left[
+  x_{ik}
+  \left(
+    \frac{e_2 + \alpha_2 e_1}{1 - \alpha_1 \alpha_2}
+  \right)
+  \middle| \mathbf{x}
+\right]
+=
+E \left[
+  \frac{1}{1 - \alpha_1 \alpha_2} x_{ik} e_2
+  \middle| \mathbf{x}
+\right]
++
+E \left[
+  \frac{\alpha_2}{1 - \alpha_1 \alpha_2} x_{ik} e_1
+  \middle| \mathbf{x}
+\right]
 = 0 + 0
-\]
 $$
 
 這是因為 \( x \) 為外生變數，對 \( e_1, e_2 \) 條件期望為 0。
