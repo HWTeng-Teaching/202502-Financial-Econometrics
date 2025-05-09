@@ -104,33 +104,58 @@ $$
 (2)\quad & y_2 = \alpha_2 y_1 + \beta_1 x_1 + \beta_2 x_2 + e_2
 $$
 
-將 (1) 式代入 (2) 式：
+將方程式 (1) 代入方程式 (2) 並化簡：
 
-$$
-y_2 = \alpha_2 y_1 + \beta_1 x_1 + \beta_2 x_2 + e_2
-&= \alpha_2 (\alpha_1 y_2 + e_1)+ \beta_1 x_1) + \beta_2 x_2 + e_2 \\
-&= \alpha_1 alpha_2 y_2 + alpha_2 e_1  + \beta_1 x_1 + \beta_2 x_2 + e_2 \\
-$$
+\[
+\begin{aligned}
+y_2 &= \alpha_2 y_1 + \beta_1 x_1 + \beta_2 x_2 + e_2 \\
+&= \alpha_2 (\alpha_1 y_2 + e_1) + \beta_1 x_1 + \beta_2 x_2 + e_2 \\
+&= \alpha_1 \alpha_2 y_2 + \alpha_2 e_1 + \beta_1 x_1 + \beta_2 x_2 + e_2
+\end{aligned}
+\]
 
-$$
-y_2 (\ 1-(\alpha_1 alpha_2) =  \beta_1 x_1 + \beta_2 x_2 + e_2 + alpha_2 e_1
-$$
+將 \( y_2 \) 移至左邊：
 
-$$
-\( \pi_1 = \frac{\beta_1}{1 - \alpha_1 \alpha_2} \)
-\( \pi_2 = \frac{\beta_2}{1 - \alpha_1 \alpha_2} \)
-\( v_2 = \frac{\alpha_2 e_1 + e_2}{1 - \alpha_1 \alpha_2} \)
-&= \pi_0 + \pi_1 x_1 + \pi_2 x_2 + v
-$$
+\[
+y_2 (1 - \alpha_1 \alpha_2) = \beta_1 x_1 + \beta_2 x_2 + e_2 + \alpha_2 e_1
+\]
 
-其中：
+### 🔍 Solve for \( y_2 \):
 
-- \( \pi_0 = \alpha_2 + \beta_1 \alpha_1 \)
-- \( v = \beta_1 e_1 + e_2 \)
+\[
+y_2 = \frac{\beta_1}{1 - \alpha_1 \alpha_2} x_1 + \frac{\beta_2}{1 - \alpha_1 \alpha_2} x_2 + \frac{e_2 + \alpha_2 e_1}{1 - \alpha_1 \alpha_2}
+\]
 
-此 reduced form equation 中，\( y_2 \) 與 \( x_1, x_2 \) 可由 OLS 一致估計。
+定義：
+
+\[
+\pi_1 = \frac{\beta_1}{1 - \alpha_1 \alpha_2}, \quad 
+\pi_2 = \frac{\beta_2}{1 - \alpha_1 \alpha_2}, \quad 
+v_2 = \frac{e_2 + \alpha_2 e_1}{1 - \alpha_1 \alpha_2}
+\]
+
+則：
+
+\[
+y_2 = \pi_1 x_1 + \pi_2 x_2 + v_2
+\]
 
 ---
+
+### 🔗 To show the correlation:
+
+\[
+\begin{aligned}
+\text{cov}(y_2, e_1 \mid \mathbf{x}) 
+&= E(y_2 e_1 \mid \mathbf{x}) \\
+&= E \left[ \left( \frac{\beta_1}{1 - \alpha_1 \alpha_2} x_1 + \frac{\beta_2}{1 - \alpha_1 \alpha_2} x_2 + \frac{e_2 + \alpha_2 e_1}{1 - \alpha_1 \alpha_2} \right) e_1 \,\middle|\, \mathbf{x} \right] \\
+&= E \left[ \frac{\beta_1}{1 - \alpha_1 \alpha_2} x_1 e_1 \mid \mathbf{x} \right] + E \left[ \frac{\beta_2}{1 - \alpha_1 \alpha_2} x_2 e_1 \mid \mathbf{x} \right] + E \left[ \frac{e_2 + \alpha_2 e_1}{1 - \alpha_1 \alpha_2} e_1 \mid \mathbf{x} \right] \\
+&= 0 + 0 + E \left[ \frac{e_2 e_1 + \alpha_2 e_1^2}{1 - \alpha_1 \alpha_2} \mid \mathbf{x} \right] \\
+&= \frac{\alpha_2 \sigma_{e_1}^2}{1 - \alpha_1 \alpha_2} \quad \text{(若 } e_1 \text{ 與 } e_2 \text{ 不相關)}
+\end{aligned}
+\]
+
+因此，當 \( \alpha_2 \ne 0 \) 且 \( \alpha_1 \ne 0 \) 時，\( y_2 \) 與 \( e_1 \) 相關 ⇒ 說明內生性。
 
 ## (b) OLS 可一致估計的條件
 
