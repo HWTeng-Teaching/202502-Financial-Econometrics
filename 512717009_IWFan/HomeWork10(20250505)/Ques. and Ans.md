@@ -382,34 +382,23 @@ $$
 
 回憶：
 
-$$
-\hat{v}_2 = y_2 - \hat{y}_2 \Rightarrow \hat{y}_2 = y_2 - \hat{v}_2
-$$
+<img width="200" alt="h1" src="https://github.com/user-attachments/assets/05b91832-e09a-4ab7-b1f4-0bd34549e267" />
+
 
 代入後：
 
-$$
-\sum \hat{y}_{i2}^2 
-= \sum \hat{y}_{i2} (y_2 - \hat{v}_2)
-= \sum \hat{y}_{i2} y_2 - \sum \hat{y}_{i2} \hat{v}_2
-= \sum \hat{y}_{i2} y_2
-$$
+<img width="390" alt="h2" src="https://github.com/user-attachments/assets/da5224ae-2dba-4ad7-a25a-28d6b0d486c4" />
+
 
 因為：
 
-$$
-\sum \hat{y}_{i2} \hat{v}_{i2}
-= \sum (\hat{\pi}_1 x_{i1} + \hat{\pi}_2 x_{i2}) \hat{v}_{i2}
-= \hat{\pi}_1 \sum x_{i1} \hat{v}_{i2} + \hat{\pi}_2 \sum x_{i2} \hat{v}_{i2} = 0
-$$
+<img width="440" alt="h3" src="https://github.com/user-attachments/assets/2a8cd63a-a671-4fc0-919c-d6bac4cc9b4c" />
+
 
 這是 OLS 的基本性質（由 Exercises 2.3(f), 2.4(g) 證明），因此：
 
-$$
-\sum \hat{y}_{i2}^2 = \sum \hat{y}_{i2} y_{i2}
-\Rightarrow
-\hat{\alpha}_{1, \text{2SLS}} = \frac{\sum \hat{y}_{i2} y_{i1}}{\sum \hat{y}_{i2} y_{i2}} = \hat{\alpha}_{1, \text{IV}}
-$$
+<img width="324" alt="h4" src="https://github.com/user-attachments/assets/bd58620c-2854-4259-b188-d8d8997ae40a" />
+
 
 
 ------------------
