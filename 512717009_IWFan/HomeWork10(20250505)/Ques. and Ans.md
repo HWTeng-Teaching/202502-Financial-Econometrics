@@ -371,46 +371,38 @@ $$
 
 **(h) 使用 SLS 的估計結果**
 
-根據 Exercise 2.4 的無截距迴歸結果，令 \( \hat{y}_2 \) 為解釋變數、\( y_1 \) 為被解釋變數，我們可以寫出：
+最小平方法（Least Squares Estimator）在無截距項的簡單迴歸模型中的估計式已在習題 2.4 中給出。將此結果套用於本例，並以 $\hat{y}_2$ 代入 $x$，以 $y_1$ 代入 $y$，我們得到：
 
+$$
+\hat{\alpha}_{1, \text{2SLS}} = \frac{\sum \hat{y}_{i2} y_{i1}}{\sum \hat{y}_{i2}^2}
+$$
 
-<img width="134" alt="h" src="https://github.com/user-attachments/assets/788e52ab-8a54-4e8d-acfa-bc2f96f34043" />
+為了證明這些公式是等價的，請回憶：
+$$
+\hat{v}_2 = y_2 - \hat{y}_2 \Rightarrow \hat{y}_2 = y_2 - \hat{v}_2
+$$
 
+因此：
 
-要證明與先前 IV 解相同：
+$$
+\sum \hat{y}_{i2}^2 = \sum \hat{y}_{i2} (y_2 - \hat{v}_2)
+= \sum \hat{y}_{i2} y_2 - \sum \hat{y}_{i2} \hat{v}_2
+= \sum \hat{y}_{i2} y_2
+$$
 
-注意：
+對於以下這項：
 
-<img width="338" alt="h1" src="https://github.com/user-attachments/assets/c292f632-58e8-45f3-80af-7197e12bdb7c" />
-
-
-因此，
-
-<img width="370" alt="h2" src="https://github.com/user-attachments/assets/a4bd8bbd-5cf5-4275-aa93-c34734f33019" />
-
-
-解釋為何 \( \sum \hat{y}_{i2} \hat{v}_{i2} = 0 \)
+$$
+\sum \hat{y}_{i2} \hat{v}_{i2} = \sum (\hat{\pi}_1 x_{i1} + \hat{\pi}_2 x_{i2}) \hat{v}_{i2}
+= \hat{\pi}_1 \sum x_{i1} \hat{v}_{i2} + \hat{\pi}_2 \sum x_{i2} \hat{v}_{i2} = 0
+$$
 
 因為：
-
 $$
-\[
-\sum \hat{y}_{i2} \hat{v}_{i2}
-= \sum (\hat{\pi}_1 x_{i1} + \hat{\pi}_2 x_{i2}) \hat{v}_{i2}
-= \hat{\pi}_1 \sum x_{i1} \hat{v}_{i2} + \hat{\pi}_2 \sum x_{i2} \hat{v}_{i2} = 0
-\]
+\sum x_{i1} \hat{v}_{i2} = 0 \quad \text{且} \quad \sum x_{i2} \hat{v}_{i2} = 0
 $$
 
-這是 OLS 的基本性質，詳見 Exercises 2.3(f) 與 2.4(g)。
-
-結論
-
-$$
-\[
-\hat{\alpha}_{1, \text{2SLS}} = \frac{\sum \hat{y}_{i2} y_{i1}}{\sum \hat{y}_{i2} y_{i2}} = \hat{\alpha}_{1, IV}
-\]
-兩者一致。
-$$
+這是普通最小平方法（OLS）的一個基本性質，並已於習題 2.3(f) 和 2.4(g) 中說明。
 
 ------------------
 
