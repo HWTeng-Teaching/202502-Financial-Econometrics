@@ -252,7 +252,7 @@ Reduced Form 誤差項與 \( x \) 無相關性證明：
 因此，reduced form 的誤差項 \( v_2 \) 與 \( x \) 無相關。
 
 
-## (e) 最小平方法：條件最小平方
+**(e) 最小平方法：條件最小平方**
 
 略去下標 \( i \) 的情況下，平方和函數為：
 
@@ -282,7 +282,7 @@ $$
 
 ---
 
-## (f) 插入數值求解：
+**(f) 插入數值求解**
 
 我們根據 OLS 一階條件式得到以下 moment conditions：
 
@@ -319,30 +319,62 @@ $$
 
 ---
 
-## (g) 求 \( \alpha_1 \) 的 IV 估計量
+**(g) 求 \( \alpha_1 \) 的 IV 估計量**
 
-根據：
-
-$$
-y_1 = \alpha_1 + e_1 \\
-\hat{y}_2 = \hat{\pi}_1 x_1 + \hat{\pi}_2 x_2
-$$
-
-moment condition：
+第一條結構方程式為：
 
 $$
-\sum (x_{1i} y_{1i} - \alpha_1 x_{1i} \hat{y}_{2i}) = 0
+\[
+y_1 = \alpha_1 y_2 + e_1
+\]
 $$
 
-解得：
+因此，
 
 $$
-\hat{\alpha}_1^{IV} = \frac{\sum x_{1i} y_{1i}}{\sum x_{1i} \hat{y}_{2i}}
+\[
+E \left[ (\pi_1 x_1 + \pi_2 x_2) e_1 \mid \mathbf{x} \right] 
+= E \left[ (\pi_1 x_1 + \pi_2 x_2)(y_1 - \alpha_1 y_2) \mid \mathbf{x} \right] = 0
+\]
 $$
 
----
+這個 moment condition 的經驗型形式為：
 
-## (h) 使用 SLS 的估計結果
+$$
+\[
+\frac{1}{N} \sum (\pi_1 x_{i1} + \pi_2 x_{i2})(y_{i1} - \alpha_1 y_{i2}) = 0
+\]
+$$
+
+如果我們知道 \( \pi_1 \) 與 \( \pi_2 \)，就可以解出 \( \alpha_1 \) 的估計量。
+
+雖然我們不知道真實參數，但可以從 reduced form 中一致估計：
+
+$$
+\[
+\text{plim } \hat{\pi}_1 = \pi_1, \quad \text{plim } \hat{\pi}_2 = \pi_2
+\]
+$$
+
+因此，將估計值代入後，有：
+
+$$
+\[
+\sum (\hat{\pi}_1 x_{i1} + \hat{\pi}_2 x_{i2})(y_{i1} - \alpha_1 y_{i2}) = \sum \hat{y}_{i2} (y_{i1} - \alpha_1 y_{i2}) = 0
+\]
+$$
+
+整理得：
+
+$$
+\[
+\sum \hat{y}_{i2} y_{i1} - \alpha_1 \sum \hat{y}_{i2} y_{i2} = 0
+\quad \Rightarrow \quad
+\hat{\alpha}_{1, IV} = \frac{\sum \hat{y}_{i2} y_{i1}}{\sum \hat{y}_{i2} y_{i2}}
+\]
+$$
+
+**(h) 使用 SLS 的估計結果**
 
 若設：
 
