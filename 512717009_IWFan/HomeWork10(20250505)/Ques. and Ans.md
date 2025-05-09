@@ -254,21 +254,31 @@ Reduced Form 誤差項與 \( x \) 無相關性證明：
 
 ## (e) 最小平方法：條件最小平方
 
-最小化：
+略去下標 \( i \) 的情況下，平方和函數為：
 
 $$
-S(\pi_1, \pi_2) = \sum_i (y_{2i} - \pi_1 x_{1i} - \pi_2 x_{2i})^2
+\[
+S(\pi_1, \pi_2 \mid \mathbf{y}, \mathbf{x}) = \sum (y_2 - \pi_1 x_1 - \pi_2 x_2)^2
+\]
 $$
 
-對 \( \pi_1, \pi_2 \) 求導，導出：
+對參數求一階導數如下：
 
 $$
-\begin{aligned}
-\frac{\partial S}{\partial \pi_1} &= -2 \sum x_{1i}(y_{2i} - \pi_1 x_{1i} - \pi_2 x_{2i}) = 0 \\
-\frac{\partial S}{\partial \pi_2} &= -2 \sum x_{2i}(y_{2i} - \pi_1 x_{1i} - \pi_2 x_{2i}) = 0
-\end{aligned}
+\[
+\frac{\partial S(\pi_1, \pi_2 \mid \mathbf{y}, \mathbf{x})}{\partial \pi_1}
+= 2 \sum (y_2 - \pi_1 x_1 - \pi_2 x_2) x_1 = 0
+\]
 $$
 
+$$
+\[
+\frac{\partial S(\pi_1, \pi_2 \mid \mathbf{y}, \mathbf{x})}{\partial \pi_2}
+= 2 \sum (y_2 - \pi_1 x_1 - \pi_2 x_2) x_2 = 0
+\]
+$$
+
+這些為 **最小平方法 (OLS)** 條件，用以求解 \( \hat{\pi}_1, \hat{\pi}_2 \) 的常見正規方程式（normal equations）。
 ---
 
 ## (f) 插入數值求解：
