@@ -371,38 +371,57 @@ $$
 
 **(h) 使用 SLS 的估計結果**
 
-最小平方法（Least Squares Estimator）在無截距項的簡單迴歸模型中的估計式已在習題 2.4 中給出。將此結果套用於本例，並以 $\hat{y}_2$ 代入 $x$，以 $y_1$ 代入 $y$，我們得到：
+根據 Exercise 2.4，無截距簡單迴歸的最小平方法估計式為：
 
 $$
+\[
 \hat{\alpha}_{1, \text{2SLS}} = \frac{\sum \hat{y}_{i2} y_{i1}}{\sum \hat{y}_{i2}^2}
+\]
 $$
 
-為了證明這些公式是等價的，請回憶：
+其中將 \( \hat{y}_2 \) 作為自變數，\( y_1 \) 為因變數。
+
+證明與 IV 解相等：
+
+回憶：
+
 $$
+\[
 \hat{v}_2 = y_2 - \hat{y}_2 \Rightarrow \hat{y}_2 = y_2 - \hat{v}_2
+\]
 $$
 
-因此：
+代入後：
 
 $$
-\sum \hat{y}_{i2}^2 = \sum \hat{y}_{i2} (y_2 - \hat{v}_2)
+\[
+\sum \hat{y}_{i2}^2 
+= \sum \hat{y}_{i2} (y_2 - \hat{v}_2)
 = \sum \hat{y}_{i2} y_2 - \sum \hat{y}_{i2} \hat{v}_2
 = \sum \hat{y}_{i2} y_2
-$$
-
-對於以下這項：
-
-$$
-\sum \hat{y}_{i2} \hat{v}_{i2} = \sum (\hat{\pi}_1 x_{i1} + \hat{\pi}_2 x_{i2}) \hat{v}_{i2}
-= \hat{\pi}_1 \sum x_{i1} \hat{v}_{i2} + \hat{\pi}_2 \sum x_{i2} \hat{v}_{i2} = 0
+\]
 $$
 
 因為：
+
 $$
-\sum x_{i1} \hat{v}_{i2} = 0 \quad \text{且} \quad \sum x_{i2} \hat{v}_{i2} = 0
+\[
+\sum \hat{y}_{i2} \hat{v}_{i2}
+= \sum (\hat{\pi}_1 x_{i1} + \hat{\pi}_2 x_{i2}) \hat{v}_{i2}
+= \hat{\pi}_1 \sum x_{i1} \hat{v}_{i2} + \hat{\pi}_2 \sum x_{i2} \hat{v}_{i2} = 0
+\]
 $$
 
-這是普通最小平方法（OLS）的一個基本性質，並已於習題 2.3(f) 和 2.4(g) 中說明。
+這是 OLS 的基本性質（由 Exercises 2.3(f), 2.4(g) 證明），因此：
+
+$$
+\[
+\sum \hat{y}_{i2}^2 = \sum \hat{y}_{i2} y_{i2}
+\Rightarrow
+\hat{\alpha}_{1, \text{2SLS}} = \frac{\sum \hat{y}_{i2} y_{i1}}{\sum \hat{y}_{i2} y_{i2}} = \hat{\alpha}_{1, \text{IV}}
+\]
+$$
+
 
 ------------------
 
