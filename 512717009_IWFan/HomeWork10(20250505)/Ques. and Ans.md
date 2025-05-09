@@ -358,38 +358,67 @@ $$
 
 因此，將估計值代入後，有：
 
-$$
-\[
-\sum (\hat{\pi}_1 x_{i1} + \hat{\pi}_2 x_{i2})(y_{i1} - \alpha_1 y_{i2}) = \sum \hat{y}_{i2} (y_{i1} - \alpha_1 y_{i2}) = 0
-\]
-$$
+<img width="344" alt="e" src="https://github.com/user-attachments/assets/76c70af9-c69d-4020-978a-928f4f80ade0" />
+
 
 整理得：
 
-$$
-\[
-\sum \hat{y}_{i2} y_{i1} - \alpha_1 \sum \hat{y}_{i2} y_{i2} = 0
-\quad \Rightarrow \quad
-\hat{\alpha}_{1, IV} = \frac{\sum \hat{y}_{i2} y_{i1}}{\sum \hat{y}_{i2} y_{i2}}
-\]
-$$
+<img width="316" alt="e2" src="https://github.com/user-attachments/assets/b4e25798-a8ba-46fa-aec5-00291afbeff2" />
+
 
 **(h) 使用 SLS 的估計結果**
 
-若設：
-
-- \( x = \hat{y}_2 \)，
-- \( y = y_1 \)
-
-無截距的最小平方法估計為：
+根據 Exercise 2.4 的無截距迴歸結果，令 \( \hat{y}_2 \) 為解釋變數、\( y_1 \) 為被解釋變數，我們可以寫出：
 
 $$
-\hat{\alpha}_1 = \frac{\sum y_i x_i}{\sum x_i^2} = \frac{\sum y_{1i} \hat{y}_{2i}}{\sum \hat{y}_{2i}^2}
+\[
+\hat{\alpha}_{1,\text{2SLS}} = \frac{\sum \hat{y}_{i2} y_{i1}}{\sum \hat{y}_{i2}^2}
+\]
 $$
 
-這與上一題 (g) 得到的 IV 估計一致，根據：
+要證明與先前 IV 解相同：
 
-- \( \sum x v = 0 \)：OLS 的正交性質
+注意：
+
+$$
+\[
+\hat{v}_2 = y_2 - \hat{y}_2 \quad \Rightarrow \quad \hat{y}_2 = y_2 - \hat{v}_2
+\]
+$$
+
+因此，
+
+$$
+\[
+\sum \hat{y}_{i2}^2 
+= \sum \hat{y}_{i2} (y_{i2} - \hat{v}_{i2}) 
+= \sum \hat{y}_{i2} y_{i2} - \sum \hat{y}_{i2} \hat{v}_{i2}
+= \sum \hat{y}_{i2} y_{i2}
+\]
+$$
+
+解釋為何 \( \sum \hat{y}_{i2} \hat{v}_{i2} = 0 \)
+
+因為：
+
+$$
+\[
+\sum \hat{y}_{i2} \hat{v}_{i2}
+= \sum (\hat{\pi}_1 x_{i1} + \hat{\pi}_2 x_{i2}) \hat{v}_{i2}
+= \hat{\pi}_1 \sum x_{i1} \hat{v}_{i2} + \hat{\pi}_2 \sum x_{i2} \hat{v}_{i2} = 0
+\]
+$$
+
+這是 OLS 的基本性質，詳見 Exercises 2.3(f) 與 2.4(g)。
+
+結論
+
+$$
+\[
+\hat{\alpha}_{1, \text{2SLS}} = \frac{\sum \hat{y}_{i2} y_{i1}}{\sum \hat{y}_{i2} y_{i2}} = \hat{\alpha}_{1, IV}
+\]
+兩者一致。
+$$
 
 ---
 
