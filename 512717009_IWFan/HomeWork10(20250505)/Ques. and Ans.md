@@ -373,9 +373,8 @@ $$
 
 根據 Exercise 2.4，無截距簡單迴歸的最小平方法估計式為：
 
-$$
-\hat{\alpha}_{1, \text{2SLS}} = \frac{\sum \hat{y}_{i2} y_{i1}}{\sum \hat{y}_{i2}^2}
-$$
+<img width="139" alt="h" src="https://github.com/user-attachments/assets/57adbaa3-e943-4eb5-8ae0-2760aff93dd6" />
+
 
 其中將 \( \hat{y}_2 \) 作為自變數，\( y_1 \) 為因變數。
 
@@ -384,40 +383,32 @@ $$
 回憶：
 
 $$
-\[
 \hat{v}_2 = y_2 - \hat{y}_2 \Rightarrow \hat{y}_2 = y_2 - \hat{v}_2
-\]
 $$
 
 代入後：
 
 $$
-\[
 \sum \hat{y}_{i2}^2 
 = \sum \hat{y}_{i2} (y_2 - \hat{v}_2)
 = \sum \hat{y}_{i2} y_2 - \sum \hat{y}_{i2} \hat{v}_2
 = \sum \hat{y}_{i2} y_2
-\]
 $$
 
 因為：
 
 $$
-\[
 \sum \hat{y}_{i2} \hat{v}_{i2}
 = \sum (\hat{\pi}_1 x_{i1} + \hat{\pi}_2 x_{i2}) \hat{v}_{i2}
 = \hat{\pi}_1 \sum x_{i1} \hat{v}_{i2} + \hat{\pi}_2 \sum x_{i2} \hat{v}_{i2} = 0
-\]
 $$
 
 這是 OLS 的基本性質（由 Exercises 2.3(f), 2.4(g) 證明），因此：
 
 $$
-\[
 \sum \hat{y}_{i2}^2 = \sum \hat{y}_{i2} y_{i2}
 \Rightarrow
 \hat{\alpha}_{1, \text{2SLS}} = \frac{\sum \hat{y}_{i2} y_{i1}}{\sum \hat{y}_{i2} y_{i2}} = \hat{\alpha}_{1, \text{IV}}
-\]
 $$
 
 
