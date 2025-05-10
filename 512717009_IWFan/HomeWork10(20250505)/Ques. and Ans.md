@@ -606,81 +606,52 @@ $$
 - 投資函數（Investment function）省略了 11 個變數
 - 工資函數（Wage function）省略了 11 個變數
 
-$
-\Rightarrow
-$ 
-
 所有方程皆滿足識別（identification）的必要條件。
 
 --
 
 **(b) 等價的識別條件：排除外生變數的數量檢查**
 
-條件：方程中「排除的外生變數數量」應 ≥ 「右側內生變數數量」。
+- **消費函數（Consumption function）**：包含 2 個內生變數（endogenous variables），且排除了 5 個外生變數（exogenous variables）
+- **投資函數（Investment function）**：排除 5 個右邊變數（RHS）
+- **工資函數（Wage function）**：排除 5 個右邊變數（RHS）
 
-各方程檢查：
-
-- 消費方程包含： W1, P, P-1) ⇒ 排除至少兩個外生變數 ✅  
-- 投資方程包含： P, P-1  ⇒ 排除  W1, CN, TIME, TX  等 ✅  
-- 私部門薪資方程包含：Et, Et-1 ⇒ 排除 CN, I, Pt  等 ✅  
-
-✅ **結論**：每個方程都滿足此條件 ⇒ 可識別
+所有識別條件皆滿足（all satisfied）。
 
 --
 
 **(c) 私部門薪資  W1t  的一階段簡約形式（First-Stage）**
 
-以計量符號表示為：
+工資函數（Wage function）為：
 
 $$
-W_{1t} = \pi_1 + \pi_2 G_t + \pi_3 W_{2t} + \pi_4 TX_t + \pi_5 K_{t-1} + \pi_6 P_{t-1} + \pi_7 E_{t-1} + \pi_8 TIME_t + v_{1t}
+W_{it} = \pi_1 + \pi_2 G_{it} + \pi_3 W2_{it} + \pi_4 TX_{t} + \pi_5 TIME_{t} + \pi_6 B_{it} + \pi_7 K_{it} + \pi_8 E_{it} + \nu
 $$
 
-這是一個典型的「使用所有外生變數」作為工具變數的 reduced-form 方程。
+其中：
+
+- \( W_{it} \)：第 \(i\) 個單位在時間 \(t\) 的工資水準  
+- \( G_{it}, W2_{it}, TX_t, TIME_t, B_{it}, K_{it}, E_{it} \)：為解釋變數  
+- \( \nu \)：誤差項
+
 
 --
 
 **(d) 2SLS 估計消費函數的兩個步驟（非程式面）**
 
-Step 1️⃣：預測內生變數
+從 (c) 題中取得預測值 $\hat{W}_1$，並用與 $\hat{P}$ 相同的方法，建立：
 
-回歸每個右側的內生變數（如 𝑊1𝑡,𝑃𝑡W ）對所有外生變數（即工具變數），建立 OLS 回歸模型。
+$$
+W_t^* = \hat{W}_{1t} + W_{2t}
+$$
 
-程式碼區塊（以 𝑃為例）：
-
-P_hat <- lm(P ~ G + W2 + TX + K_lag + TIME + E_lag, data = ...)$fitted.values
-
-這代表：
-
-用外生變數（G, W2, TX, K_lag, TIME, E_lag）來解釋內生變數 𝑃 透過 lm() 進行 OLS 回歸 
-
-fitted.values 代表的是 𝑃^：這就是第二階段中要使用的工具變數形式
-
-得到 𝑃^𝑡,𝑊^1𝑡
-
-​Step 2️⃣：以預測值進行主方程回歸
-
-將預測值 𝑃^𝑡,𝑊^1𝑡 ​代入消費方程，估計：
-
-𝐶𝑁𝑡=𝛼1+𝛼2(𝑊^1𝑡+𝑊2𝑡)+𝛼3𝑃^𝑡+𝛼4𝑃𝑡−1+𝑢𝑡
-
-透過 OLS 即可得一致估計量。
+接著以 $OLS$ 方法對 $CNE$ 進行回歸。
 
 --
 
 **(e) 手動 2SLS 與軟體套件結果是否相同？**
 
-- ✅ **迴歸係數（估計值）會相同**
-- ⚠️ **標準誤與 t 值不一定相同**
-
-原因：
-
-- 軟體（如 `AER::ivreg()`）會使用 **heteroskedasticity-robust** 標準誤（sandwich estimator）
-- 若你手動執行 2SLS，需額外計算 robust 標準誤，否則 t 值會不同
-
-✅ **結論**：
-- 手動與軟體的係數一致
-- t 值僅在使用相同標準誤處理下才會一致
+迴歸係數（coefficients）會相同，但 t 值（t-values）則不會相同。
 
 ---
 
