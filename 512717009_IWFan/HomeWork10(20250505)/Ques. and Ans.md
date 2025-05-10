@@ -296,40 +296,43 @@ $$
 
 **(g) 求 \( \alpha_1 \) 的 IV 估計量**
 
-第一條結構方程式為：
+已知結構方程式為：
 
 $$
 y_1 = \alpha_1 y_2 + e_1
 $$
 
-因此，
+且：
 
 $$
-E \left[ (\pi_1 x_1 + \pi_2 x_2) e_1 \mid \mathbf{x} \right] 
-= E \left[ (\pi_1 x_1 + \pi_2 x_2)(y_1 - \alpha_1 y_2) \mid \mathbf{x} \right] = 0
+\hat{y}_2 = \hat{\pi}_1 x_1 + \hat{\pi}_2 x_2
 $$
 
-這個 moment condition 的經驗型形式為：
+根據 moment condition（即 \( E[\hat{y}_2 (y_1 - \alpha_1 y_2)] = 0 \)），可得：
 
 $$
-\frac{1}{N} \sum (\pi_1 x_{i1} + \pi_2 x_{i2})(y_{i1} - \alpha_1 y_{i2}) = 0
+\sum \hat{y}_2 (y_1 - \alpha_1 y_2) = 0 
+\Rightarrow 
+\sum \hat{y}_2 y_1 - \alpha_1 \sum \hat{y}_2 y_2 = 0 
+\Rightarrow 
+\alpha_1 = \frac{\sum \hat{y}_2 y_1}{\sum \hat{y}_2 y_2}
 $$
 
-如果我們知道  π1 與  π2，就可以解出 α1  的估計量。
-
-雖然我們不知道真實參數，但可以從 reduced form 中一致估計：
+代入 \( \hat{y}_2 = \hat{\pi}_1 x_1 + \hat{\pi}_2 x_2 \)，得：
 
 $$
-\text{plim } \hat{\pi}_1 = \pi_1, \quad \text{plim } \hat{\pi}_2 = \pi_2
+\Rightarrow \hat{\alpha}_1 = 
+\frac{\sum (\hat{\pi}_1 x_1 + \hat{\pi}_2 x_2) y_1}
+{\sum (\hat{\pi}_1 x_1 + \hat{\pi}_2 x_2) y_2}
+=
+\frac{3 \sum x_1 y_1 + 4 \sum x_2 y_1}
+{3 \sum x_1 y_2 + 4 \sum x_2 y_2}
+=
+\frac{3 \times 2 + 4 \times 3}
+{3 \times 3 + 4 \times 4}
+=
+\frac{18}{25}
 $$
-
-因此，將估計值代入後，有：
-
-<img width="344" alt="e" src="https://github.com/user-attachments/assets/76c70af9-c69d-4020-978a-928f4f80ade0" />
-
-整理得：
-
-<img width="316" alt="e2" src="https://github.com/user-attachments/assets/b4e25798-a8ba-46fa-aec5-00291afbeff2" />
 
 ----
 
