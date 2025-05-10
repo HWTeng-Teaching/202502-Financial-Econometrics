@@ -325,36 +325,37 @@ $$
 
 ----
 
-**(h) 使用 SLS 的估計結果**
+**(h) 證明 Two-Stage Least Squares 解與 IV 解相同**
 
-根據 Exercise 2.4，無截距簡單迴歸的最小平方法估計式為：
+已知：
 
-<img width="139" alt="h" src="https://github.com/user-attachments/assets/57adbaa3-e943-4eb5-8ae0-2760aff93dd6" />
+$$
+\hat{\alpha}_{1, \text{2SLS}} = \frac{\sum \hat{y}_2 y_1}{\sum \hat{y}_2^2}
+$$
 
+要證明 \( \hat{\alpha}_{1, \text{2SLS}} = \hat{\alpha}_1 \)（根據 moment condition），  
+我們需證明：
 
-其中將 y^_2 作為自變數，y_1  為因變數。
+$$
+\sum \hat{y}_2^2 = \sum \hat{y}_2 y_2
+$$
 
-證明與 IV 解相等：
+由以下推導：
 
-回憶：
-
-<img width="200" alt="h1" src="https://github.com/user-attachments/assets/05b91832-e09a-4ab7-b1f4-0bd34549e267" />
-
-
-代入後：
-
-<img width="390" alt="h2" src="https://github.com/user-attachments/assets/da5224ae-2dba-4ad7-a25a-28d6b0d486c4" />
-
+$$
+\sum \hat{y}_2^2 = \sum \hat{y}_2 (y_2 - \hat{v}_2)
+= \sum \hat{y}_2 y_2 - \sum \hat{y}_2 \hat{v}_2
+= \sum \hat{y}_2 y_2
+$$
 
 因為：
 
-<img width="440" alt="h3" src="https://github.com/user-attachments/assets/2a8cd63a-a671-4fc0-919c-d6bac4cc9b4c" />
+$$
+\sum \hat{y}_2 \hat{v}_2 = 0
+$$
 
-
-這是 OLS 的基本性質（由 Exercises 2.3(f), 2.4(g) 證明），因此：
-
-<img width="324" alt="h4" src="https://github.com/user-attachments/assets/bd58620c-2854-4259-b188-d8d8997ae40a" />
-
+這是因為在 OLS 中，預測值 \( \hat{y}_2 \) 與誤差項 \( \hat{v}_2 \) 正交，  
+亦即「解釋變數與誤差無關」的基本性質。
 
 
 ------------------
