@@ -444,7 +444,30 @@ $$
 <img width="449" alt="3" src="https://github.com/user-attachments/assets/03b798ed-caba-4ecc-a265-71fb9996429d" />
 
 --
+**Demand = Supply**
 
+$$
+\alpha_1 + \alpha_2 P_i + \varepsilon_{di} = \beta_1 + \beta_2 P_i + \beta_3 W_i + \varepsilon_{si}
+$$
+
+$$
+(\alpha_2 - \beta_2) P_i = (\beta_1 - \alpha_1) + \beta_3 W_i + (\varepsilon_{si} - \varepsilon_{di})
+$$
+
+$$
+P_i = \frac{\beta_1 - \alpha_1}{\alpha_2 - \beta_2} + \frac{\beta_3}{\alpha_2 - \beta_2} W_i + \frac{\varepsilon_{si} - \varepsilon_{di}}{\alpha_2 - \beta_2}
+$$
+
+$$
+Q_i = \alpha_1 + \alpha_2 \left( \frac{\beta_1 - \alpha_1}{\alpha_2 - \beta_2} + \frac{\beta_3}{\alpha_2 - \beta_2} W_i + \frac{\varepsilon_{si} - \varepsilon_{di}}{\alpha_2 - \beta_2} \right) + \varepsilon_{di}
+$$
+
+$$
+Q_i = \alpha_1 + \frac{\alpha_2 (\beta_1 - \alpha_1)}{\alpha_2 - \beta_2} + \frac{\alpha_2 \beta_3}{\alpha_2 - \beta_2} W_i + \frac{\alpha_2 (\varepsilon_{si} - \varepsilon_{di})}{\alpha_2 - \beta_2} + \varepsilon_{di}
+$$
+
+
+--
 **(b) 哪一個結構方程是可識別的（Identified）？**
 
 使用「識別條件（Order condition）」進行判斷：
