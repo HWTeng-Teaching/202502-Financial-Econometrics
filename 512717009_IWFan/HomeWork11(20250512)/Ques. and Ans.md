@@ -374,15 +374,12 @@ Hausman 檢定的回歸結果位於表 XR 11.30 的第 (5) 欄。
 
 錯誤的殘差計算方式（用於估計變異數）：
 
-$$
-\hat{e}_{2,\text{wrong}} = I_t - \left( \hat{\beta}_1 + \hat{\beta}_2 \hat{P}_t + \hat{\beta}_3 P_{t-1} + \hat{\beta}_4 K_{t-1} \right)
-$$
+<img width="227" alt="1" src="https://github.com/user-attachments/assets/75b3f6ab-bc31-4f22-a3a8-ee73ecb1831f" />
+
 
 正確的殘差應為：
 
-$$
-\hat{e}_{2,\text{correct}} = I_t - \left( \hat{\beta}_1 + \hat{\beta}_2 P_t + \hat{\beta}_3 P_{t-1} + \hat{\beta}_4 K_{t-1} \right)
-$$
+<img width="227" alt="2" src="https://github.com/user-attachments/assets/f7f83c6a-175e-407d-b095-2acf29a8a4b1" />
 
 - 錯誤版本使用了預測值 \( \hat{P}_t \)（即第一階段的預測利潤）作為解釋變數進行殘差估計，
   這會低估標準誤差，導致 t 統計量誤差。
