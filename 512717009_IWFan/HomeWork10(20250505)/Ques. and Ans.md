@@ -285,11 +285,11 @@ $$
 插入已知值計算：
 
 $$
-3 - \hat{\pi}_1 = 0 \quad \Rightarrow \quad \hat{\pi}_1 = 3
+3 - \hat{\pi}_1 x 1 - \pi_2 x 0 = 0 \quad \Rightarrow \quad \hat{\pi}_1 = 3
 $$
 
 $$
-4 - \hat{\pi}_2 = 0 \quad \Rightarrow \quad \hat{\pi}_2 = 4
+4 - \hat{\pi}_1 x 0 - \hat{\pi}_2 x 1 = 0 \quad \Rightarrow \quad \hat{\pi}_2 = 4
 $$
 
 ----
