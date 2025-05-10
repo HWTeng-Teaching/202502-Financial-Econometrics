@@ -117,7 +117,7 @@ y_2 &= \alpha_2 y_1 + \beta_1 x_1 + \beta_2 x_2 + e_2 \\
 \end{aligned}
 $$
 
-將 \( y_2 \) 移至左邊：
+將 y_2  移至左邊：
 
 $$
 y_2 (1 - \alpha_1 \alpha_2) = \beta_1 x_1 + \beta_2 x_2 + e_2 + \alpha_2 e_1
@@ -143,7 +143,7 @@ $$
 y_2 = \pi_1 x_1 + \pi_2 x_2 + v_2
 $$
 
- To show the correlation:
+To show the correlation:
 
 $$
 \begin{aligned}
@@ -184,30 +184,30 @@ $$
 
 **(b) OLS 可一致估計的條件**
 
-因為原始兩個結構式的右邊都包含內生變數（如 \( y_1 \)），所以不能直接使用 OLS。
+因為原始兩個結構式的右邊都包含內生變數（如  y_1 ），所以不能直接使用 OLS。
 
-但 reduced form 中只有外生變數 \( x_1, x_2 \)，可以對其進行 OLS 一致估計。
+但 reduced form 中只有外生變數  x_1, x_2 ，可以對其進行 OLS 一致估計。
 
 ----
 
 **(c) 識別性（Identification）**
 
-結構模型中 \( M = 2 \) 個方程式。為了識別一條方程式，必須省略 \( M - 1 = 1 \) 個外生變數。
+結構模型中  M = 2  個方程式。為了識別一條方程式，必須省略  M - 1 = 1  個外生變數。
 
-- 方程 (1) 中已省略 \( x_1, x_2 \)，是 **已識別**
+- 方程 (1) 中已省略  x_1, x_2 ，是 **已識別**
 - 方程 (2) 中未省略任何外生變數，**未被識別**
 
 ----
 
 **(d) Moment Conditions**
 
-這些 moment conditions 來自於 \( x \) 為外生變數（exogenous）的假設。因此有：
+這些 moment conditions 來自於  x  為外生變數（exogenous）的假設。因此有：
 
 $$
 E(x_{i1} v_{i1} \mid \mathbf{x}) = E(x_{i2} v_{i2} \mid \mathbf{x}) = 0
 $$
 
-根據 part (a) 的結果，\( y_2 \) 的 reduced form 為：
+根據 part (a) 的結果， y_2  的 reduced form 為：
 
 $$
 y_2 = \frac{\beta_1}{1 - \alpha_1 \alpha_2} x_1 + \frac{\beta_2}{1 - \alpha_1 \alpha_2} x_2 + \frac{e_2 + \alpha_2 e_1}{1 - \alpha_1 \alpha_2}
@@ -219,22 +219,22 @@ $$
 y_2 = \pi_1 x_1 + \pi_2 x_2 + v_2
 $$
 
-Reduced Form 誤差項與 \( x \) 無相關性證明：
+Reduced Form 誤差項與  x  無相關性證明：
 
 我們要證明：
 
 <img width="495" alt="d" src="https://github.com/user-attachments/assets/8fd9f1e9-f1b4-44f2-a14f-8e530680cf4f" />
 
 
-這是因為 \( x \) 為外生變數，對 \( e_1, e_2 \) 條件期望為 0。
+這是因為  x  為外生變數，對  e_1, e_2  條件期望為 0。
 
-因此，reduced form 的誤差項 \( v_2 \) 與 \( x \) 無相關。
+因此，reduced form 的誤差項  v_2  與  x  無相關。
 
 ----
 
 **(e) 最小平方法：條件最小平方**
 
-略去下標 \( i \) 的情況下，平方和函數為：
+略去下標  i 的情況下，平方和函數為：
 
 $$
 S(\pi_1, \pi_2 \mid \mathbf{y}, \mathbf{x}) = \sum (y_2 - \pi_1 x_1 - \pi_2 x_2)^2
@@ -294,7 +294,7 @@ $$
 
 ----
 
-**(g) 求 \( \alpha_1 \) 的 IV 估計量**
+**(g) 求 α_1  的 IV 估計量**
 
 已知結構方程式為：
 
@@ -318,7 +318,13 @@ $$
 \alpha_1 = \frac{\sum \hat{y}_2 y_1}{\sum \hat{y}_2 y_2}
 $$
 
-代入 \( \hat{y}_2 = \hat{\pi}_1 x_1 + \hat{\pi}_2 x_2 \)，得：
+代入 
+
+$$
+\( \hat{y}_2 = \hat{\pi}_1 x_1 + \hat{\pi}_2 x_2 \)
+$$
+
+，得：
 
 <img width="484" alt="g" src="https://github.com/user-attachments/assets/8960a10d-6288-4de8-a801-6902cb45e77f" />
 
@@ -359,7 +365,7 @@ $$
 \sum \hat{y}_2 \hat{v}_2 = 0
 $$
 
-這是因為在 OLS 中，預測值 \( \hat{y}_2 \) 與誤差項 \( \hat{v}_2 \) 正交，  
+這是因為在 OLS 中，預測值 y^_2  與誤差項 v^_2  正交，  
 亦即「解釋變數與誤差無關」的基本性質。
 
 
