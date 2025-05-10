@@ -567,8 +567,6 @@ $$
 （e）請問按照（d）步驟所得到的回歸結果，是否與專門用於 2SLS 估計的軟體所得結果一致？  尤其是  t  值會相同嗎？
 
 
-<img width="318" alt="a" src="https://github.com/user-attachments/assets/ea5a253f-c5ec-46e8-af73-797da9004f92" />
-
 
 ---------------
 
@@ -630,9 +628,9 @@ $$
 
 其中：
 
-- \( W_{it} \)：第 \(i\) 個單位在時間 \(t\) 的工資水準  
-- \( G_{it}, W2_{it}, TX_t, TIME_t, B_{it}, K_{it}, E_{it} \)：為解釋變數  
-- \( \nu \)：誤差項
+- W_it ：第 i 個單位在時間 t 的工資水準  
+- G_it, W2_it, TX_t, TIME_t, B_it, K_it, E_it ：為解釋變數  
+- nu ：誤差項
 
 
 --
