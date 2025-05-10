@@ -333,8 +333,13 @@ $$
 \hat{\alpha}_{1, \text{2SLS}} = \frac{\sum \hat{y}_2 y_1}{\sum \hat{y}_2^2}
 $$
 
-要證明 \( \hat{\alpha}_{1, \text{2SLS}} = \hat{\alpha}_1 \)（根據 moment condition），  
-我們需證明：
+要證明 
+
+$$
+\( \hat{\alpha}_{1, \text{2SLS}} = \hat{\alpha}_1 \)
+$$
+
+根據 moment condition，我們需證明：
 
 $$
 \sum \hat{y}_2^2 = \sum \hat{y}_2 y_2
