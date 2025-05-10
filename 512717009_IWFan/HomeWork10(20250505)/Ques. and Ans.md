@@ -110,13 +110,11 @@ $$
 將方程式 (1) 代入方程式 (2) 並化簡：
 
 $$
-\[
 \begin{aligned}
 y_2 &= \alpha_2 y_1 + \beta_1 x_1 + \beta_2 x_2 + e_2 \\
 &= \alpha_2 (\alpha_1 y_2 + e_1) + \beta_1 x_1 + \beta_2 x_2 + e_2 \\
 &= \alpha_1 \alpha_2 y_2 + \alpha_2 e_1 + \beta_1 x_1 + \beta_2 x_2 + e_2
 \end{aligned}
-\]
 $$
 
 將 \( y_2 \) 移至左邊：
