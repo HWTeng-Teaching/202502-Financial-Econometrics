@@ -242,14 +242,14 @@ $$
 
 對參數求一階導數如下：
 
-對 π1 偏徵：
+對 π1 偏微：
 
 $$
 \frac{\partial S(\pi_1, \pi_2 \mid \mathbf{y}, \mathbf{x})}{\partial \pi_1}
 = 2 \sum (y_2 - \pi_1 x_1 - \pi_2 x_2) x_1 = 0
 $$
 
-對 π2 偏徵：
+對 π2 偏微：
 
 $$
 \frac{\partial S(\pi_1, \pi_2 \mid \mathbf{y}, \mathbf{x})}{\partial \pi_2}
