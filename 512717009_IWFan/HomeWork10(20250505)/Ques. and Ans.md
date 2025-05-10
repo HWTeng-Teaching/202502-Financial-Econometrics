@@ -320,19 +320,8 @@ $$
 
 代入 \( \hat{y}_2 = \hat{\pi}_1 x_1 + \hat{\pi}_2 x_2 \)，得：
 
-$$
-\Rightarrow \hat{\alpha}_1 = 
-\frac{\sum (\hat{\pi}_1 x_1 + \hat{\pi}_2 x_2) y_1}
-{\sum (\hat{\pi}_1 x_1 + \hat{\pi}_2 x_2) y_2}
-=
-\frac{3 \sum x_1 y_1 + 4 \sum x_2 y_1}
-{3 \sum x_1 y_2 + 4 \sum x_2 y_2}
-=
-\frac{3 \times 2 + 4 \times 3}
-{3 \times 3 + 4 \times 4}
-=
-\frac{18}{25}
-$$
+<img width="484" alt="g" src="https://github.com/user-attachments/assets/8960a10d-6288-4de8-a801-6902cb45e77f" />
+
 
 ----
 
