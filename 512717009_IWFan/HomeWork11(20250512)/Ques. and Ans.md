@@ -127,8 +127,7 @@ $$
 **(d)**
 
 
-
-
+<img width="533" alt="d" src="https://github.com/user-attachments/assets/dcee07d1-ecf1-4e8b-addf-86bf9d31755a" />
 
 
 **(e) 均衡價格與數量的計算**
