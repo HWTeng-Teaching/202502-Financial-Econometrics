@@ -120,41 +120,32 @@ $$
 將 \( y_2 \) 移至左邊：
 
 $$
-\[
 y_2 (1 - \alpha_1 \alpha_2) = \beta_1 x_1 + \beta_2 x_2 + e_2 + \alpha_2 e_1
-\]
 $$
 
 Solve for \( y_2 \):
 
 $$
-\[
 y_2 = \frac{\beta_1}{1 - \alpha_1 \alpha_2} x_1 + \frac{\beta_2}{1 - \alpha_1 \alpha_2} x_2 + \frac{e_2 + \alpha_2 e_1}{1 - \alpha_1 \alpha_2}
-\]
 $$
 
 定義：
 
 $$
-\[
 \pi_1 = \frac{\beta_1}{1 - \alpha_1 \alpha_2}, \quad 
 \pi_2 = \frac{\beta_2}{1 - \alpha_1 \alpha_2}, \quad 
 v_2 = \frac{e_2 + \alpha_2 e_1}{1 - \alpha_1 \alpha_2}
-\]
 $$
 
 則：
 
 $$
-\[
 y_2 = \pi_1 x_1 + \pi_2 x_2 + v_2
-\]
 $$
 
  To show the correlation:
 
 $$
-\[
 \begin{aligned}
 \text{cov}(y_2, e_1 \mid \mathbf{x}) 
 &= E(y_2 e_1 \mid \mathbf{x}) \\
@@ -163,7 +154,6 @@ $$
 &= 0 + 0 + E \left[ \frac{e_2 e_1 + \alpha_2 e_1^2}{1 - \alpha_1 \alpha_2} \mid \mathbf{x} \right] \\
 &= \frac{\alpha_2 \sigma_{e_1}^2}{1 - \alpha_1 \alpha_2} \quad \text{(若 } e_1 \text{ 與 } e_2 \text{ 不相關)}
 \end{aligned}
-\]
 $$
 
 因此，當 \( \alpha_2 \ne 0 \) 且 \( \alpha_1 \ne 0 \) 時，\( y_2 \) 與 \( e_1 \) 相關 ⇒ 說明內生性。
@@ -171,27 +161,22 @@ $$
 我們已得：
 
 $$
-\[
 \text{cov}(y_2, e_1 \mid \mathbf{x}) = E(y_2 e_1 \mid \mathbf{x})
-\]
 $$
 
 接著，
 
 $$
-\[
 \begin{aligned}
 \text{cov}(y_2, e_1 \mid \mathbf{x}) 
 &= \frac{E(e_2 e_1 \mid \mathbf{x}) + \alpha_2 E(e_1^2 \mid \mathbf{x})}{1 - \alpha_1 \alpha_2} \\
 &= \frac{\alpha_2}{1 - \alpha_1 \alpha_2} \sigma_1^2
 \end{aligned}
-\]
 $$
 
 此共變數非零，除非：
 
 $$
-\[
 \alpha_2 = 0 \Rightarrow \text{無同時性問題 (no simultaneity)}
 $$
 
@@ -219,25 +204,19 @@ $$
 這些 moment conditions 來自於 \( x \) 為外生變數（exogenous）的假設。因此有：
 
 $$
-\[
 E(x_{i1} v_{i1} \mid \mathbf{x}) = E(x_{i2} v_{i2} \mid \mathbf{x}) = 0
-\]
 $$
 
 根據 part (a) 的結果，\( y_2 \) 的 reduced form 為：
 
 $$
-\[
 y_2 = \frac{\beta_1}{1 - \alpha_1 \alpha_2} x_1 + \frac{\beta_2}{1 - \alpha_1 \alpha_2} x_2 + \frac{e_2 + \alpha_2 e_1}{1 - \alpha_1 \alpha_2}
-\]
 $$
 
 簡記為：
 
 $$
-\[
 y_2 = \pi_1 x_1 + \pi_2 x_2 + v_2
-\]
 $$
 
 Reduced Form 誤差項與 \( x \) 無相關性證明：
@@ -258,25 +237,19 @@ Reduced Form 誤差項與 \( x \) 無相關性證明：
 略去下標 \( i \) 的情況下，平方和函數為：
 
 $$
-\[
 S(\pi_1, \pi_2 \mid \mathbf{y}, \mathbf{x}) = \sum (y_2 - \pi_1 x_1 - \pi_2 x_2)^2
-\]
 $$
 
 對參數求一階導數如下：
 
 $$
-\[
 \frac{\partial S(\pi_1, \pi_2 \mid \mathbf{y}, \mathbf{x})}{\partial \pi_1}
 = 2 \sum (y_2 - \pi_1 x_1 - \pi_2 x_2) x_1 = 0
-\]
 $$
 
 $$
-\[
 \frac{\partial S(\pi_1, \pi_2 \mid \mathbf{y}, \mathbf{x})}{\partial \pi_2}
 = 2 \sum (y_2 - \pi_1 x_1 - \pi_2 x_2) x_2 = 0
-\]
 $$
 
 這些為 **最小平方法 (OLS)** 條件，用以求解 \( \hat{\pi}_1, \hat{\pi}_2 \) 的常見正規方程式（normal equations）。
@@ -288,34 +261,31 @@ $$
 我們根據 OLS 一階條件式得到以下 moment conditions：
 
 $$
-\[
 \frac{1}{N} \sum x_{i1} (y_2 - \pi_1 x_{i1} - \pi_2 x_{i2}) = 0
-\]
-\[
+$$
+
+$$
 \frac{1}{N} \sum x_{i2} (y_2 - \pi_1 x_{i1} - \pi_2 x_{i2}) = 0
-\]
 $$
 
 展開後得到：
 
 $$
-\[
 \sum x_{i1} y_{i2} - \pi_1 \sum x_{i1}^2 - \pi_2 \sum x_{i1} x_{i2} = 0
-\]
-\[
+$$
+
+$$
 \sum x_{i2} y_{i2} - \pi_1 \sum x_{i1} x_{i2} - \pi_2 \sum x_{i2}^2 = 0
-\]
 $$
 
 插入已知值計算：
 
 $$
-\[
 3 - \hat{\pi}_1 = 0 \quad \Rightarrow \quad \hat{\pi}_1 = 3
-\]
-\[
+$$
+
+$$
 4 - \hat{\pi}_2 = 0 \quad \Rightarrow \quad \hat{\pi}_2 = 4
-\]
 $$
 
 ----
@@ -325,26 +295,20 @@ $$
 第一條結構方程式為：
 
 $$
-\[
 y_1 = \alpha_1 y_2 + e_1
-\]
 $$
 
 因此，
 
 $$
-\[
 E \left[ (\pi_1 x_1 + \pi_2 x_2) e_1 \mid \mathbf{x} \right] 
 = E \left[ (\pi_1 x_1 + \pi_2 x_2)(y_1 - \alpha_1 y_2) \mid \mathbf{x} \right] = 0
-\]
 $$
 
 這個 moment condition 的經驗型形式為：
 
 $$
-\[
 \frac{1}{N} \sum (\pi_1 x_{i1} + \pi_2 x_{i2})(y_{i1} - \alpha_1 y_{i2}) = 0
-\]
 $$
 
 如果我們知道 \( \pi_1 \) 與 \( \pi_2 \)，就可以解出 \( \alpha_1 \) 的估計量。
@@ -352,9 +316,7 @@ $$
 雖然我們不知道真實參數，但可以從 reduced form 中一致估計：
 
 $$
-\[
 \text{plim } \hat{\pi}_1 = \pi_1, \quad \text{plim } \hat{\pi}_2 = \pi_2
-\]
 $$
 
 因此，將估計值代入後，有：
