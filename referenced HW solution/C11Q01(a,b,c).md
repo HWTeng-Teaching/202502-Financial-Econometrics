@@ -1,8 +1,10 @@
 #### This homework is written by 卓伯呈(313707012)
 # CH11 Q1
 our aim is to estimate the parameters of the simultaneous equations model
-y_1  =α_1 y_2  +e_1
-y_2  =α_2 y_1  +β_1 x_1  +β_2 x_2  +e_2
+$$
+y_1  =\α_1 y_2  +e_1
+y_2  =\α_2 y_1  +β_1 x_1  +β_2 x_2  +e_2
+$$
 We assume that x_1 and x_2 are exogenous and uncorrelated with the error terms e_1 and e_2.
 
 ## **Question(a):**
