@@ -52,7 +52,7 @@ $$
 y_1 = \alpha_1 y_2 + e_1
 $$
 
-Since $$y_2$$ is endogenous, we cannot use OLS directly. Thus, we use  $$\hat{y}_2$$ as an instrumental variables (IV) and $$\hat{y}_2$$ is uncorrelated with the error.  And according to moment condition for IV estimation and plugging in values, we could get the answer of $$\hat{\alpha_1}$$ is 18/25
+Since $$y_2$$ is endogenous, we cannot use OLS directly. Thus, we use  $$\hat{y}_2$$ as an instrumental variables (IV) and $$\hat{y}_2$$ is uncorrelated with the error.  And according to moment condition for IV estimation and plugging in values, we find $$\hat{\alpha_1}$$ is 18/25
 
 $$
 \hat{y}_2 = \hat{\pi}_1 x_1 + \hat{\pi}_2 x_2
@@ -106,7 +106,7 @@ $$
 
 
 
-According to moment condition:
+According to moment condition, we know:
 
 $$
 \hat{y}_2 = y_2 - v_i \Rightarrow y_2 = \hat{y}_2 + v_2
