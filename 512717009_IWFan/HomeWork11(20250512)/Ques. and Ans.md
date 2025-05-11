@@ -223,7 +223,7 @@ OLS 對投資函數的估計結果見表 XR 11.30 的第 (1) 欄。自由度為 
 至於滯後資本存量 (KLAG) 的符號為負，且顯著，說明資本存量越大，對新投資的需求越小。
 
 
- Investment Function Estimation
+ Table:
 
 <img width="682" alt="table" src="https://github.com/user-attachments/assets/f4a6ddb8-4d9f-4fea-a496-7db21a4dfe75" />
 
