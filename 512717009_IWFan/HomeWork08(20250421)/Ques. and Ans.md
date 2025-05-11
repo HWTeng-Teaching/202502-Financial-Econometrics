@@ -102,26 +102,17 @@ $$
 
 **(e)** 取得 IV/2SLS 估計的步驟（非程式語法）
 
-第一步：第一階段回歸（first stage）
-
-將內生變數 WAGE 迴歸於工具變數：
+第一階段回歸模型如下：
 
 $$
-WAGE = \gamma_0 + \gamma_1 \cdot EXPER + \gamma_2 \cdot EXPER^2 + \text{controls} + v
+\text{WAGE} = r_1 + r_2 \text{EDUC} + r_3 \text{AGE} + r_4 \text{KIDSLE} + r_5 \text{KIDS618}
++ r_6 \text{NWIFEINC} + r_7 \text{EXPER} + r_8 \text{EXPER}^2 + u
 $$
 
-計算出預測值 $\widehat{WAGE}$
 
+先對上述的式子回歸，得到 WAGE^。
 
-第二步：第二階段回歸（second stage）
-
-將 $\widehat{WAGE}$ 代入原始模型：
-
-$$
-HOURS = \beta_1 + \beta_2 \cdot \widehat{WAGE} + \beta_3 \cdot EDUC + \beta_4 \cdot AGE + \beta_5 \cdot KIDSL6 + \beta_6 \cdot NWIFEINC + u
-$$
-
-透過 OLS 估計上式，所得到的 $\hat{\beta}_2$ 即為 **工具變數法（二階段最小平方法）** 的估計值。
+接著將原本式中的 WAGE 用  WAGE^ 替換，再進行 2SLS 第二階段估計。
 
 
 -----
