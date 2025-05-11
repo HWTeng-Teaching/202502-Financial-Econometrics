@@ -118,7 +118,8 @@ $$
 **(d)**
 
 
-<img width="533" alt="d" src="https://github.com/user-attachments/assets/2a0db13e-90fa-4dfc-a458-35f2fef273e2" />
+<img width="699" alt="d1" src="https://github.com/user-attachments/assets/21415175-ad22-4642-a5d9-da9ac0d5674e" />
+
 
 
 
