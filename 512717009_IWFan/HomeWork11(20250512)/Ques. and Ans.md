@@ -126,6 +126,10 @@ $$
 
 **(e) 均衡價格與數量的計算**
 
+<img width="861" alt="e" src="https://github.com/user-attachments/assets/7e2217de-cb53-4aef-97db-db8a805a61bd" />
+
+
+
 根據 (d) 小題所建立的供需模型，將外生變數的估計值代入後，令供需相等可得：
 
 $$
