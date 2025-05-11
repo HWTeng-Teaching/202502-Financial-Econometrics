@@ -90,6 +90,11 @@ $$
 
 **(c) 平均值下的需求價格彈性（Price Elasticity of Demand）**
 
+
+<img width="762" alt="C" src="https://github.com/user-attachments/assets/d5396a43-9860-4220-902d-ffb2c44dea86" />
+
+
+
 需求價格彈性在平均值處的計算公式為：
 
 $$
