@@ -45,17 +45,25 @@ $$
 #### b. Which equation parameters are consistently estimated using OLS? Explain.
 ### ANS:
 $$
-y_1 = \alpha_1 x_1  + e_1, \quad \text{we know that } \text{cov}(y_2, e_1) \neq 0 \Rightarrow \text{endogeneity problem} \Rightarrow \text{OLS is biased and inconsistent}
+y_1 = \alpha_1 y_2  + e_1, \quad \text{we know that } \text{cov}(y_2, e_1) \neq 0 \Rightarrow \text{endogeneity problem} \Rightarrow \text{inconsistent}
 $$
 $$
-y_2 =α_2 y_1 +β_1 x_1 +β_2 x_2 +e_2, \text{cov}(y_1, e_1) = \text{cov}(\alpha_1(\pi_1 x_1 + \pi_2 x_2 + v_2), e_1) = \text{cov}(\beta_1 x_1 + e_1, e_1)
+y_2 =α_2 y_1 +β_1 x_1 +β_2 x_2 +e_2, \text{cov}(y_1, e_1) = \text{cov}(\alpha_1(\pi_1 x_1 + \pi_2 x_2 + v_2), e_1) = \text{cov}(\frac{\alpha_1 \alpha_2 e_1 + e_2}{1 - \alpha_2 \alpha_1}, e_2)= \frac{\text{var}(e_1)}{1 - \alpha_2 \alpha_1} \neq 0
 $$
 $$
-= \beta_1 \text{cov}(x_1, e_1) + \text{var}(e_1) \neq 0
-$$
-$$
-\Rightarrow \text{endogeneity problem} \Rightarrow \text{OLS is biased and inconsistent}
+\Rightarrow \text{endogeneity problem} \Rightarrow \text{inconsistent}
 $$
 ## **Question(c):**
 #### c. Which parameters are “identified,” in the simultaneous equations sense? Explain your reasoning.
 ### ANS:
+![image](https://github.com/user-attachments/assets/b51ba18c-0e0e-4af4-9e56-0a966d662148)
+
+$$
+M=2 \Rightarrow \text{at least 1 variable must be absent} 
+$$
+$$
+y_1 = \alpha_1 y_2  + e_1, \text{exclude 2 variables } \Rightarrow \text{identified}
+$$
+$$
+y_2 =α_2 y_1 +β_1 x_1 +β_2 x_2 +e_2, \text{exclude 0 variable } \Rightarrow \text{not identified}
+$$
