@@ -1,4 +1,4 @@
-by 陳紀蓁 
+By 陳紀蓁 Ariel
 ### f.
 
 <img width="798" alt="截圖 2025-05-11 晚上9 14 54" src="https://github.com/user-attachments/assets/ffc57e0f-537f-4bc2-bd02-12f0f75d393c" />
