@@ -104,10 +104,10 @@ $$
 
 第一階段回歸模型如下：
 
-$$
+\[
 \text{WAGE} = r_1 + r_2 \text{EDUC} + r_3 \text{AGE} + r_4 \text{KIDSLE} + r_5 \text{KIDS618}
 + r_6 \text{NWIFEINC} + r_7 \text{EXPER} + r_8 \text{EXPER}^2 + u
-$$
+\]
 
 
 先對上述的式子回歸，得到 WAGE^。
