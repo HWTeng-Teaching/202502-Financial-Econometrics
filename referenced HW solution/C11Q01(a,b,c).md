@@ -48,7 +48,7 @@ $$
 y_1 = \alpha_1 y_2  + e_1, \quad \text{we know that } \text{cov}(y_2, e_1) \neq 0 \Rightarrow \text{endogeneity problem} \Rightarrow \text{inconsistent}
 $$
 $$
-y_2 =α_2 y_1 +β_1 x_1 +β_2 x_2 +e_2, \text{cov}(y_1, e_2) = \text{cov}(\alpha_1(\pi_1 x_1 + \pi_2 x_2 + v_2), e_2) = \text{cov}(\frac{\alpha_1 \alpha_2 e_1 + e_2}{1 - \alpha_2 \alpha_1}, e_2)= \frac{\text{var}(e_2)}{1 - \alpha_2 \alpha_1} \neq 0
+y_2 =α_2 y_1 +β_1 x_1 +β_2 x_2 +e_2, \text{cov}(y_1, e_2) = \text{cov}(\alpha_1(\pi_1 x_1 + \pi_2 x_2 + v_2)+e_1 , e_2) = \text{cov}(\frac{ e_1 + \alpha_1 e_2}{1 - \alpha_2 \alpha_1}, e_2)= \frac{\alpha_1 \text{var}(e_2)}{1 - \alpha_2 \alpha_1} \neq 0
 $$
 $$
 \Rightarrow \text{endogeneity problem} \Rightarrow \text{inconsistent}
