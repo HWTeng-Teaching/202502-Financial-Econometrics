@@ -1,0 +1,150 @@
+---
+title: 'HW0428 - CH10 Questions 18, 20, 24'
+author: "鄭凱鴻"
+output: html_document
+date: "2025-05-05"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# **CH10 Question 18**
+
+```{r}
+setwd("C:/Users/User/Downloads/poe5rdata")
+load("mroz.RData")
+ls()
+```
+## **(a) **
+```{r}
+# 查看欄位名稱確認變數是否存在
+names(mroz)
+
+# 建立虛擬變數
+mroz$MOTHERCOLL <- ifelse(mroz$mothereduc > 12, 1, 0)
+mroz$FATHERCOLL <- ifelse(mroz$fathereduc > 12, 1, 0)
+
+# 計算百分比
+mother_percent <- mean(mroz$MOTHERCOLL, na.rm = TRUE) * 100
+father_percent <- mean(mroz$FATHERCOLL, na.rm = TRUE) * 100
+
+# 顯示結果
+cat("Percentage of mothers with some college education: ", round(mother_percent, 2), "%\n")
+cat("Percentage of fathers with some college education: ", round(father_percent, 2), "%\n")
+```
+## **(b) **
+```{r}
+# 確保變數存在（已在前面建立過 MOTHERCOLL 和 FATHERCOLL）
+cor(mroz[, c("educ", "MOTHERCOLL", "FATHERCOLL")], use = "complete.obs")
+```
+
+# **CH10 Question 20**
+```{r}
+# 設定工作目錄到檔案所在的位置
+setwd("C:/Users/User/Downloads/poe5rdata")
+
+# 載入 RData 檔案
+load("capm5.rdata")
+
+# 確認資料是否成功載入
+ls()  # 應該會看到 capm5 出現在環境中
+
+```
+## **(a) **
+
+```{r}
+# 建立 CAPM 模型：Microsoft 的超額報酬對市場超額報酬做迴歸
+capm_model <- lm(I(msft - riskfree) ~ I(mkt - riskfree), data = capm5)
+
+# 顯示回歸結果
+summary(capm_model)
+```
+## **(b) **
+
+```{r}
+# 建立 x = mkt - riskfree
+capm5$x <- capm5$mkt - capm5$riskfree
+
+# 建立 RANK：x 的由小到大排序名次
+capm5$RANK <- rank(capm5$x)
+
+# 第一階段迴歸：x ~ RANK
+first_stage <- lm(x ~ RANK, data = capm5)
+
+# 顯示回歸結果
+summary(first_stage)
+```
+## **(c) **
+
+```{r}
+capm5$resid_v <- residuals(first_stage)
+
+augmented_model <- lm(I(msft - riskfree) ~ I(mkt - riskfree) + resid_v, data = capm5)
+summary(augmented_model)
+```
+## **(d) **
+
+```{r}
+install.packages("AER")
+
+library(AER)
+
+# 用 RANK 當作工具變數，進行 2SLS 估計
+iv_model <- ivreg(I(msft - riskfree) ~ I(mkt - riskfree) | RANK, data = capm5)
+
+# 顯示估計結果
+summary(iv_model)
+```
+## **(e) **
+
+```{r}
+# 建立 POS：若 (mkt - riskfree) > 0 則為 1，否則為 0
+capm5$POS <- ifelse(capm5$mkt - capm5$riskfree > 0, 1, 0)
+
+first_stage_e <- lm(x ~ RANK + POS, data = capm5)
+summary(first_stage_e)
+```
+## **(f) **
+
+```{r}
+capm5$resid_v_e <- residuals(first_stage_e)
+
+aug_model_e <- lm(I(msft - riskfree) ~ I(mkt - riskfree) + resid_v_e, data = capm5)
+summary(aug_model_e)
+```
+## **(g) **
+
+```{r}
+library(AER)
+
+# 以 RANK 與 POS 為工具變數估計 CAPM 模型
+iv_model_g <- ivreg(I(msft - riskfree) ~ I(mkt - riskfree) | RANK + POS, data = capm5)
+
+# 顯示結果
+summary(iv_model_g)
+```
+## **(h) **
+
+```{r}
+# 1. 取出 2SLS 殘差
+capm5$resid_iv <- residuals(iv_model_g)
+
+# 2. 將 resid_iv 對所有 IV（RANK 和 POS）做回歸
+sargan_model <- lm(resid_iv ~ RANK + POS, data = capm5)
+
+# 3. 擷取 R-squared
+R2 <- summary(sargan_model)$r.squared
+
+# 4. 計算檢定統計量：n * R^2
+n <- nrow(capm5)
+sargan_stat <- n * R2
+
+# 5. 自由度 = 工具變數數量 - 內生變數數量 = 2 - 1 = 1
+p_value <- 1 - pchisq(sargan_stat, df = 1)
+
+# 輸出結果
+sargan_stat
+p_value
+```
+
