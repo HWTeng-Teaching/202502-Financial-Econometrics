@@ -24,6 +24,32 @@ f. 表 (5) 為隨機效果模型估計結果。除了截距項外，哪些係數
 
 --------
 
+## C15Q17
+
+<img width="554" alt="C15Q17" src="https://github.com/user-attachments/assets/e66ca321-5253-42de-94e4-5e4eb831d832" />
+
+
+15.17 資料檔 liquor 包含 40 戶家庭連續三年的觀察值，內容包括每年的酒類支出（LIQUOR，單位為千美元）與年收入（INCOME，單位也為千美元）。
+
+a. 建立 LIQUOR 與 INCOME 的「第一階差分變數」，並分別命名為 LIQUORD 與 INCOMED。使用 OLS（普通最小平方法）回歸 LIQUORD 對 INCOMED（不包含常數項）。建構該係數的 95% 信賴區間估計。
+
+b. 使用隨機效果（random effects）估計下列模型：
+
+<img width="291" alt="1" src="https://github.com/user-attachments/assets/d4a8e017-2293-43ef-a721-f9e01ac09cc7" />
+
+建構 INCOME 係數的 95% 信賴區間估計。請與 (a) 小題的區間進行比較。
+
+c. 使用公式 (15.35) 中的 LM 檢定統計量來檢定是否存在隨機效果（random effects）。使用 5% 的顯著水準。
+
+d. 對每位家庭成員計算變數 INCOME 的時間平均值，命名為 INCOMEM。使用下列模型與隨機效果估計法：
+
+<img width="408" alt="2" src="https://github.com/user-attachments/assets/fefb4530-6696-4121-8a85-cd65f3af0eaa" />
+
+檢定 𝛾係數在 5% 顯著水準下是否顯著。根據此檢定結果，我們能否得出隨機效果 𝑢𝑖 與 INCOME 是否相關？是否適合在 (b) 的模型中使用隨機效果估計量？
+
+
+--------
+
 ## C15Q20
 
 <img width="613" alt="C15Q20" src="https://github.com/user-attachments/assets/ab7934c0-88e0-4e07-929b-ba3caefc894a" />
