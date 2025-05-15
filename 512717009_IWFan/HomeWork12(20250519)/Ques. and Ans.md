@@ -75,8 +75,7 @@ f. 建立各變數的學校平均值，並執行 Mundlak 檢定，以檢查這�
 
 **Table**
 
-<img width="642" alt="Table" src="https://github.com/user-attachments/assets/1276efae-55c7-4913-9aa6-6e1043f39a65" />
-
+<img width="651" alt="Table" src="https://github.com/user-attachments/assets/0b52c3be-5a86-4a48-87d0-a0f72d9ea195" />
 
 
 **(a)** OLS 估計與解釋（見 Table  第一欄）
