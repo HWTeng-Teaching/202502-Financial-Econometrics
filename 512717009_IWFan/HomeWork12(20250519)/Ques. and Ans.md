@@ -104,6 +104,9 @@ f. 建立各變數的學校平均值，並執行 Mundlak 檢定，以檢查這�
 
 **(c)**固定效果顯著性 F 值（16.70；df = 78, 5681）
 
+<img width="539" alt="cpng" src="https://github.com/user-attachments/assets/b3433ae7-685d-4b85-aa7b-c214addbaa97" />
+
+
 F 檢定統計量為 16.70。臨界值 
 
 𝐹(0.95,78,5681)=1.2798
