@@ -73,6 +73,12 @@ f. 建立各變數的學校平均值，並執行 Mundlak 檢定，以檢查這�
 
 ## ANS:
 
+**Table**
+
+<img width="642" alt="Table" src="https://github.com/user-attachments/assets/1276efae-55c7-4913-9aa6-6e1043f39a65" />
+
+
+
 **(a)** OLS 估計與解釋（見 Table  第一欄）
 
 1.小班效果（SMALL）：若學生從一般班轉到小班，平均閱讀成績估計可提高 5.8 分。係數在 1% 顯著水準下顯著不為零。
