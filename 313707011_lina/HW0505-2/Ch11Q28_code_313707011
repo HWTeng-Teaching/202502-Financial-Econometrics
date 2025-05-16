@@ -1,0 +1,118 @@
+# 設定資料集的 URL
+url <- "https://www.principlesofeconometrics.com/poe5/data/rdata/truffles.rdata"
+download.file(url, destfile = "truffles.rdata")  # 下載資料集並儲存為本地檔案
+load("truffles.rdata")  # 載入資料集
+names(truffles)  # 確認變數名稱
+str(truffles) # 查看資料結構
+
+
+# 11.28(b)
+library(systemfit)
+
+D <- p ~ q + ps + di
+S <- p ~ q + pf
+sys <- list(D,S)
+instr <- ~ps+di+pf
+truff.sys <- systemfit(sys, inst=instr, method="2SLS", data=truffles)
+summary(truff.sys)
+
+
+# 11.28(c)
+# 取出需求方程中 q 的係數（第 1 條方程，第 2 個係數）
+b_q <- coef(truff.sys$eq[[1]])["q"]
+
+# 平均價格與數量
+p_bar <- mean(truffles$p)
+q_bar <- mean(truffles$q)
+
+elasticity <- (1 / b_q) * (p_bar / q_bar)
+elasticity
+
+
+# 11.28(d)
+# 從 systemfit 結果中擷取係數
+coef_d <- coef(truff.sys$eq[[1]])  # demand equation
+coef_s <- coef(truff.sys$eq[[2]])  # supply equation
+
+ps_star <- 22
+di_star <- 3.5
+pf_star <- 23
+
+intercept_d <- coef_d["(Intercept)"] + coef_d["ps"] * ps_star + coef_d["di"] * di_star
+slope_d <- coef_d["q"]
+
+intercept_s <- coef_s["(Intercept)"] + coef_s["pf"] * pf_star
+slope_s <- coef_s["q"]
+
+q_range <- seq(10, 30, length.out = 100)    # 建立數量範圍
+
+p_d <- intercept_d + slope_d * q_range
+p_s <- intercept_s + slope_s * q_range
+
+plot(q_range, p_d, type = "l", col = "blue", lwd = 2,
+     xlab = "Quantity (Q)", ylab = "Price (P)", ylim = range(c(p_d, p_s)))
+lines(q_range, p_s, col = "red", lwd = 2)
+legend("topleft", legend = c("Demand", "Supply"), col = c("blue", "red"), lwd = 2)
+
+
+# 11.28(e)
+q_star <- (intercept_s - intercept_d) / (slope_d - slope_s)
+p_star <- intercept_d + slope_d * q_star
+
+cat(q_star, p_star)
+
+# Table 11.2a: Q = 7.8951 + 0.6564*ps + 2.1672*di - 0.5070*pf
+q_rform <- 7.8951 + 0.6564 * ps_star + 2.1672 * di_star - 0.5070 * pf_star
+
+# Table 11.2b: P = -32.5124 + 1.7081*ps + 7.6025*di + 1.3539*pf
+p_rform <- -32.5124 + 1.7081 * ps_star + 7.6025 * di_star + 1.3539 * pf_star
+
+cat(q_rform, p_rform)
+
+
+# 11.28(f)
+demand_ols <- lm(p ~ q + ps + di, data = truffles)
+supply_ols <- lm(p ~ q + pf, data = truffles)
+
+summary(demand_ols)
+summary(supply_ols)
+
+# 整理需求方程比較（OLS 與 2SLS）
+d_ols <- summary(demand_ols)$coefficients
+d_2sls <- summary(truff.sys$eq[[1]])$coefficients
+
+vars_d <- c("(Intercept)", "q", "ps", "di")
+
+demand_compare <- data.frame(
+  OLS_Estimate = round(d_ols[vars_d, "Estimate"], 4),
+  OLS_SE       = round(d_ols[vars_d, "Std. Error"], 4),
+  OLS_t        = round(d_ols[vars_d, "t value"], 4),
+  OLS_p        = signif(d_ols[vars_d, "Pr(>|t|)"], 3),
+  "2SLS_Estimate" = round(d_2sls[vars_d, "Estimate"], 4),
+  "2SLS_SE"       = round(d_2sls[vars_d, "Std. Error"], 4),
+  "2SLS_t"        = round(d_2sls[vars_d, "t value"], 4),
+  "2SLS_p"        = signif(d_2sls[vars_d, "Pr(>|t|)"], 3),
+  check.names = FALSE
+)
+
+# 整理供給方程比較（OLS 與 2SLS）
+s_ols <- summary(supply_ols)$coefficients
+s_2sls <- summary(truff.sys$eq[[2]])$coefficients
+
+vars_s <- c("(Intercept)", "q", "pf")
+
+supply_compare <- data.frame(
+  OLS_Estimate = round(s_ols[vars_s, "Estimate"], 4),
+  OLS_SE       = round(s_ols[vars_s, "Std. Error"], 4),
+  OLS_t        = round(s_ols[vars_s, "t value"], 4),
+  OLS_p        = signif(s_ols[vars_s, "Pr(>|t|)"], 3),
+  "2SLS_Estimate" = round(s_2sls[vars_s, "Estimate"], 4),
+  "2SLS_SE"       = round(s_2sls[vars_s, "Std. Error"], 4),
+  "2SLS_t"        = round(s_2sls[vars_s, "t value"], 4),
+  "2SLS_p"        = signif(s_2sls[vars_s, "Pr(>|t|)"], 3),
+  check.names = FALSE
+)
+
+print(demand_compare, right = FALSE)
+cat("\n")
+print(supply_compare, right = FALSE)
