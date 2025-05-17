@@ -1,0 +1,34 @@
+# 設定資料集的 URL
+url <- "https://www.principlesofeconometrics.com/poe5/data/rdata/star.rdata"
+download.file(url, destfile = "star.rdata")  # 下載資料集並儲存為本地檔案
+load("star.rdata")  # 載入資料集
+names(star)  # 確認變數名稱
+str(star) # 查看資料結構
+
+
+# 15.20(a)
+# 建立無固定效應的OLS模型
+ols_model <- lm(readscore ~ small + aide + tchexper + boy + white_asian + freelunch, data = star)
+summary(ols_model)
+
+
+# 15.20(b)
+
+library(plm)
+
+# 將資料轉換為 panel data 格式：個體為 schid（學校）
+pdata <- pdata.frame(star, index = c("schid","id"))
+
+# 建立學校固定效果模型（within estimator）
+fe_model <- plm(readscore ~ small + aide + tchexper + boy + white_asian + freelunch,
+               data = pdata, model = "within", effect = "individual")
+summary(fe_model)
+
+
+# 15.20(c)
+# 建立 pooled OLS 模型（不含固定效果）
+pooled_model <- plm(readscore ~ small + aide + tchexper + boy + white_asian + freelunch,
+                data = pdata, model = "pooling")
+
+# 執行固定效果檢定（F 檢定）
+pFtest(fe_model, pooled_model)
