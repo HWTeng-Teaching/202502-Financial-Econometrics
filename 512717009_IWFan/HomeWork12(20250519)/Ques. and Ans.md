@@ -63,21 +63,13 @@ INCOMED 係數的 95% 信賴區間為 [-0.02841 , 0.08791]。由於區間含括 
 
 1. **產生差分變數**
 
-$$
-\begin{aligned}
-\text{LIQUORD}_{it} &= \text{LIQUOR}_{it}-\text{LIQUOR}_{i,t-1}
-$$
+<img width="606" alt="a" src="https://github.com/user-attachments/assets/370525f1-f615-4626-8309-9c736ff640b6" />
 
-$$
-\text{INCOMED}_{it} &= \text{INCOME}_{it}-\text{INCOME}_{i,t-1}.
-\end{aligned}
-$$
 
 2. **回歸（無截距）**
 
-$$
-\widehat{\text{LIQUORD}}_{it}= \beta_{2}\,\text{INCOMED}_{it}.
-$$
+<img width="226" alt="a1" src="https://github.com/user-attachments/assets/670cb521-dca5-4c68-abba-e330978071ec" />
+
 
 3. **估計結果**
 
