@@ -65,7 +65,10 @@ INCOMED 係數的 95% 信賴區間為 [-0.02841 , 0.08791]。由於區間含括 
 
 $$
 \begin{aligned}
-\text{LIQUORD}_{it}&=\text{LIQUOR}_{it}-\text{LIQUOR}_{i,t-1},\\
+\text{LIQUORD}_{it}&=\text{LIQUOR}_{it}-\text{LIQUOR}_{i,t-1},
+$$
+
+$$
 \text{INCOMED}_{it}&=\text{INCOME}_{it}-\text{INCOME}_{i,t-1}.
 \end{aligned}
 $$
