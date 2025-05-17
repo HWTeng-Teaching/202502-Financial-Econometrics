@@ -81,6 +81,9 @@ $$
 
 **（b）隨機效果（RE）模型**
 
+![image](https://github.com/user-attachments/assets/1c75655f-76b0-4a17-8bb8-afeaf28961d9)
+
+
 <img width="516" alt="b" src="https://github.com/user-attachments/assets/6529a5fb-83d2-446a-a5f2-a1e487e78031" />
 
 
@@ -92,6 +95,9 @@ $$
 
 
 **(c）LM 檢定（Breusch–Pagan)** 
+
+![image](https://github.com/user-attachments/assets/d70afcd3-a7f4-4db2-98d5-731af62f0745)
+
 
 $$
 \text{LM}= 
@@ -110,6 +116,10 @@ $$
 
 
 **（d）Mundlak 檢定（控制戶別平均）**
+
+![image](https://github.com/user-attachments/assets/62306cd6-e5af-4021-8f71-3ed7046a13ef)
+
+
 
 <img width="494" alt="d" src="https://github.com/user-attachments/assets/7f53ce33-54c9-41e2-acdc-1af4067bae8f" />
 
