@@ -60,6 +60,44 @@ LIQUOR^it=0.02975 INCOMEDit
 
 INCOMED 係數的 95% 信賴區間為 [-0.02841 , 0.08791]。由於區間含括 0，無法拒絕「所得不影響酒類支出」的假設。
 
+
+1. **產生差分變數**
+
+\[
+\begin{aligned}
+\text{LIQUORD}_{it}&=\text{LIQUOR}_{it}-\text{LIQUOR}_{i,t-1},\\
+\text{INCOMED}_{it}&=\text{INCOME}_{it}-\text{INCOME}_{i,t-1}.
+\end{aligned}
+\]
+
+2. **回歸（無截距）**
+
+\[
+\widehat{\text{LIQUORD}}_{it}= \beta_2\,\text{INCOMED}_{it}.
+\]
+
+3. **估計結果**
+
+\[
+\hat\beta_2 = 0.02975,\quad \text{SE}=0.02922.
+\]
+
+4. **95 % 信賴區間**
+
+\[
+\bigl[-0.02841,\;0.08791\bigr].
+\]
+
+> 區間包含 0，無法拒絕「所得差分不影響酒類支出差分」的假說。
+
+
+
+
+
+
+
+
+
 **（b）以隨機效果模型估計得**
 
 LIQUOR^𝑖𝑡=0.96903+0.02658 INCOME𝑖𝑡
