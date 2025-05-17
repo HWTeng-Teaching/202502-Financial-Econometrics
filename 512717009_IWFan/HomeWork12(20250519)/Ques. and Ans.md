@@ -84,9 +84,10 @@ $$
 <img width="589" alt="b r" src="https://github.com/user-attachments/assets/22b3d2df-fb86-4488-9569-e81fe7d48622" />
 
 
-
+##
 <img width="516" alt="b" src="https://github.com/user-attachments/assets/6529a5fb-83d2-446a-a5f2-a1e487e78031" />
 
+##
 
 * 95 % 信賴區間   [0.01283 , 0.04032].
 
@@ -99,6 +100,7 @@ $$
 
 <img width="504" alt="c r" src="https://github.com/user-attachments/assets/a12e279b-eae4-4a02-b791-a20108ebd5df" />
 
+##
 
 $$
 \text{LM}= 
@@ -110,6 +112,7 @@ $$
 
 <img width="437" alt="c" src="https://github.com/user-attachments/assets/8a489094-d997-48c3-b791-f0dcd90a0d79" />
 
+##
 
 若無未觀察個體異質性，LM 服從標準常態分配，其 5% 臨界值為 ±1.96。由於 4.5475 超過臨界值，拒絕虛無假設 
 
@@ -120,7 +123,7 @@ $$
 
 <img width="577" alt="d r" src="https://github.com/user-attachments/assets/bd45a73d-501e-4ee4-8cca-5e712064df92" />
 
-
+##
 
 <img width="494" alt="d" src="https://github.com/user-attachments/assets/7f53ce33-54c9-41e2-acdc-1af4067bae8f" />
 
