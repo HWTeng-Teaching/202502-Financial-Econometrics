@@ -135,9 +135,8 @@ F 統計量與臨界值
 
 組內轉換後誤差項：
 
-$$
-\tilde{e}_{it} = e_{it} - \bar{e}_i
-$$
+<img width="108" alt="e" src="https://github.com/user-attachments/assets/5b772e4c-fca0-4c77-ad4b-84dd4784cae9" />
+
 
 即使原始 \( e_{it} \) 之間無相關性，轉換後的 \( \tilde{e}_{it} \) 仍會出現時間序列上的 **自我相關（serial correlation）**。
 
