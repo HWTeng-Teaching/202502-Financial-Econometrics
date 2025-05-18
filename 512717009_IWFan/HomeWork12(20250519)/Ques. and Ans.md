@@ -119,7 +119,7 @@ F 統計量與臨界值
 - 1% 臨界值（查表）：
   
   $$
-  F_{crit} = 1.0 \text{（Statistical Table 5）},\quad 1.1904959 \text{（電腦軟體）}
+  F_{crit} = 1.0 \text{（Statistical Table 5）},\quad 1.1904959 \text{（R Code）}
   $$
 
 結論
