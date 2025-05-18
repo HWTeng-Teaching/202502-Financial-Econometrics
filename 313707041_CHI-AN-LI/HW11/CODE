@@ -18,4 +18,18 @@ summary(model_a)
 confint(model_a, level = 0.95)  # 95%信賴區間
 
 #15.20
+#(a)
+model_a <- lm(readscore ~ small + aide + tchexper + boy + white_asian + freelunch, data = star)
+summary(model_a)
+#根據回歸結果，小班級學生和經驗教師能提升閱讀分數，性別和種族的分數也存在顯著差異
+#(b)
+pdata <- pdata.frame(star, index = c("schid", "id"))
+
+fe_model <- plm(readscore ~ small + aide + tchexper + boy + white_asian + freelunch,
+                data = pdata, model = "within", effect = "individual")
+summary(fe_model)
+#結論同(a)
+#(c)
+pFtest(model_b, model_a)  # 比較 FE 與 pooled OLS
+#只有當解釋變數與固定效果不相關時，加入 fixed effects 才不會影響其他變數的迴歸係數估計值。
 
