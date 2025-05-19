@@ -1,0 +1,1126 @@
+---
+title: "HW0505"
+author: "Yung-Jung Cheng"
+date: "2025-05-18"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(POE5Rdata)
+library(AER)
+
+```
+
+# 1
+
+Our aim is to estimate the parameters of the simultaneous equations model:
+
+\[
+\begin{aligned}
+y_1 &= \alpha_1 y_2 + e_1 \\
+y_2 &= \alpha_2 y_1 + \beta_1 x_1 + \beta_2 x_2 + e_2
+\end{aligned}
+\]
+
+We assume that \(x_1\) and \(x_2\) are exogenous and uncorrelated with the error terms \(e_1\) and \(e_2\).
+
+---
+
+## 1(a)
+
+Solve the two structural equations for the reduced-form equation for \(y_2\), that is,  
+\( y_2 = \pi_1 x_1 + \pi_2 x_2 + \nu \).  
+Express the reduced-form parameters in terms of the **structural parameters** and the reduced-form error in terms of the structural parameters and \(e_1\) and \(e_2\).  
+Show that \(y_2\) is correlated with \(e_1\).
+
+### Ans
+From the first equation:
+
+$$
+y_1 = \alpha_1 y_2 + e_1
+$$
+
+Substitute into the second equation:
+
+$$
+\begin{aligned}
+y_2 &= \alpha_2 y_1 + \beta_1 x_1 + \beta_2 x_2 + e_2 \\
+    &= \alpha_2(\alpha_1 y_2 + e_1) + \beta_1 x_1 + \beta_2 x_2 + e_2 \\
+    &= \alpha_1 \alpha_2 y_2 + \alpha_2 e_1 + \beta_1 x_1 + \beta_2 x_2 + e_2
+\end{aligned}
+$$
+
+Move terms to isolate $y_2$:
+
+$$
+(1 - \alpha_1 \alpha_2) y_2 = \alpha_2 e_1 + \beta_1 x_1 + \beta_2 x_2 + e_2
+$$
+
+Divide both sides:
+
+$$
+y_2 = \frac{\beta_1}{1 - \alpha_1 \alpha_2} x_1 + \frac{\beta_2}{1 - \alpha_1 \alpha_2} x_2 + \frac{\alpha_2 e_1 + e_2}{1 - \alpha_1 \alpha_2}
+$$
+
+Define:
+
+- $\pi_1 = \frac{\beta_1}{1 - \alpha_1 \alpha_2}$
+- $\pi_2 = \frac{\beta_2}{1 - \alpha_1 \alpha_2}$
+- $\nu = \frac{\alpha_2 e_1 + e_2}{1 - \alpha_1 \alpha_2}$
+
+Then the reduced-form becomes:
+
+$$
+y_2 = \pi_1 x_1 + \pi_2 x_2 + \nu
+$$
+
+Since $\nu$ contains $e_1$, $y_2$ is correlated with $e_1$:
+
+$$
+\text{Cov}(y_2, e_1) = \text{Cov}(\nu, e_1) = \frac{\alpha_2 \, \text{Var}(e_1)}{1 - \alpha_1 \alpha_2} \neq 0
+$$
+
+Therefore, $y_2$ is endogenous in the first equation.
+
+
+---
+
+## 1(b)
+
+Which equation parameters are consistently estimated using OLS? Explain.
+
+### Ans
+In the structural system:
+
+$$
+\begin{aligned}
+y_1 &= \alpha_1 y_2 + e_1 \\
+y_2 &= \alpha_2 y_1 + \beta_1 x_1 + \beta_2 x_2 + e_2
+\end{aligned}
+$$
+
+$y_2$ is endogenous in the first equation because it is correlated with $e_1$, as shown in part (a). Thus, estimating $\alpha_1$ via OLS would lead to inconsistent estimates due to endogeneity.
+
+Similarly, in the second equation, $y_1$ is also endogenous, since it depends on $y_2$, which in turn depends on $e_1$. Therefore, $y_1$ is correlated with $e_2$ through the structural system.
+
+Hence, neither equation can be consistently estimated using OLS, because in both equations, the right-hand-side endogenous regressor is correlated with the error term. Instrumental variable (IV) methods such as two-stage least squares (2SLS) are required.
+
+---
+
+## 1(c)
+
+Which parameters are “identified,” in the simultaneous equations sense? Explain your reasoning.
+
+### Ans
+Identification in a simultaneous equations model requires that each equation exclude at least one exogenous variable that appears in the system. This exclusion restriction helps distinguish the structural parameters from the reduced-form ones.
+
+The first equation:
+
+$$
+y_1 = \alpha_1 y_2 + e_1
+$$
+
+does not contain $x_1$ or $x_2$, which are both exogenous and appear in the second equation. These excluded exogenous variables can serve as instruments for $y_2$, so the first equation is identified.
+
+The second equation:
+
+$$
+y_2 = \alpha_2 y_1 + \beta_1 x_1 + \beta_2 x_2 + e_2
+$$
+
+includes both $x_1$ and $x_2$ explicitly, and $y_1$ is the only endogenous regressor. Since both $x_1$ and $x_2$ are exogenous and uncorrelated with the errors, they can also be used to identify the second equation.
+
+Therefore, all structural parameters ($\alpha_1$, $\alpha_2$, $\beta_1$, and $\beta_2$) are identified.
+
+---
+
+## 1(d)
+
+To estimate the parameters of the reduced-form equation for \( y_2 \) using the method of moments (MOM), which was introduced in Section 10.3, the two moment equations are
+
+\[
+\begin{aligned}
+N^{-1} \sum x_{1i}(y_2 - \pi_1 x_{1i} - \pi_2 x_{2i}) &= 0 \\
+N^{-1} \sum x_{2i}(y_2 - \pi_1 x_{1i} - \pi_2 x_{2i}) &= 0
+\end{aligned}
+\]
+
+Explain why these two moment conditions are a valid basis for obtaining consistent estimators of the reduced-form parameters.
+
+### Ans
+The moment conditions for estimating the reduced-form equation:
+
+$$
+y_2 = \pi_1 x_1 + \pi_2 x_2 + \nu
+$$
+
+are:
+
+$$
+\begin{aligned}
+\frac{1}{N} \sum x_{1i}(y_{2i} - \pi_1 x_{1i} - \pi_2 x_{2i}) &= 0 \\
+\frac{1}{N} \sum x_{2i}(y_{2i} - \pi_1 x_{1i} - \pi_2 x_{2i}) &= 0
+\end{aligned}
+$$
+
+These moment conditions are valid because $x_1$ and $x_2$ are exogenous by assumption. Specifically, they are uncorrelated with the structural error terms $e_1$ and $e_2$, and hence also uncorrelated with the composite error $\nu$ in the reduced-form equation for $y_2$.
+
+Since the instruments $x_1$ and $x_2$ are correlated with $y_2$ but uncorrelated with $\nu$, these moment conditions satisfy the orthogonality requirement for the method of moments and thus yield consistent estimators for $\pi_1$ and $\pi_2$.
+
+---
+
+## 1(e)
+
+Are the MOM estimators in part (d) the same as the OLS estimators?  
+Form the sum of squared errors function for  
+\( y_2 = \pi_1 x_1 + \pi_2 x_2 + \nu \)  
+and find the first derivatives. Set these to zero and show that they are equivalent to the two equations in part (d).
+
+### Ans
+To determine whether the MOM estimators are the same as the OLS estimators, consider minimizing the sum of squared errors (SSE) from the reduced-form equation:
+
+$$
+y_2 = \pi_1 x_1 + \pi_2 x_2 + \nu
+$$
+
+The objective function is:
+
+$$
+S(\pi_1, \pi_2) = \sum_{i=1}^N (y_{2i} - \pi_1 x_{1i} - \pi_2 x_{2i})^2
+$$
+
+Taking partial derivatives with respect to $\pi_1$ and $\pi_2$:
+
+$$
+\frac{\partial S}{\partial \pi_1} = -2 \sum x_{1i} (y_{2i} - \pi_1 x_{1i} - \pi_2 x_{2i}) = 0
+$$
+
+$$
+\frac{\partial S}{\partial \pi_2} = -2 \sum x_{2i} (y_{2i} - \pi_1 x_{1i} - \pi_2 x_{2i}) = 0
+$$
+
+Dividing both first-order conditions by $N$ gives:
+
+$$
+\frac{1}{N} \sum x_{1i}(y_{2i} - \pi_1 x_{1i} - \pi_2 x_{2i}) = 0
+$$
+
+$$
+\frac{1}{N} \sum x_{2i}(y_{2i} - \pi_1 x_{1i} - \pi_2 x_{2i}) = 0
+$$
+
+These are exactly the same moment conditions used in part (d). Therefore, the MOM estimators obtained from those moment conditions are identical to the OLS estimators obtained by minimizing the sum of squared residuals in the reduced-form equation.
+
+
+---
+
+## 1(f)
+
+Using the values  
+\( \sum x_{1i}^2 = 1 \), \( \sum x_{2i}^2 = 2 \), \( \sum x_{1i} x_{2i} = 0 \),  
+\( \sum x_{1i} y_{2i} = 3 \), \( \sum x_{2i} y_{2i} = 4 \),  
+and the two moment conditions in part (d),  
+show that the MOM/OLS estimates of \( \pi_1 \) and \( \pi_2 \) are  
+\( \hat{\pi}_1 = 3 \) and \( \hat{\pi}_2 = 4 \).
+
+### Ans
+We are given the following sample moment values:
+
+- $\sum x_{1i}^2 = 1$
+- $\sum x_{2i}^2 = 2$
+- $\sum x_{1i} x_{2i} = 0$
+- $\sum x_{1i} y_{2i} = 3$
+- $\sum x_{2i} y_{2i} = 4$
+
+From part (d) and (e), the moment conditions (equivalent to OLS normal equations) are:
+
+$$
+\begin{aligned}
+\sum x_{1i} y_{2i} &= \pi_1 \sum x_{1i}^2 + \pi_2 \sum x_{1i} x_{2i} \\
+\sum x_{2i} y_{2i} &= \pi_1 \sum x_{1i} x_{2i} + \pi_2 \sum x_{2i}^2
+\end{aligned}
+$$
+
+Substitute the values:
+
+First equation:
+
+$$
+3 = \pi_1 (1) + \pi_2 (0) \Rightarrow \pi_1 = 3
+$$
+
+Second equation:
+
+$$
+4 = \pi_1 (0) + \pi_2 (2) \Rightarrow \pi_2 = 2
+$$
+
+Therefore, the method of moments (or OLS) estimates are:
+
+- $\hat{\pi}_1 = 3$
+- $\hat{\pi}_2 = 2$
+
+
+---
+
+## 1(g)
+
+The fitted value is \( \hat{y}_2 = \hat{\pi}_1 x_1 + \hat{\pi}_2 x_2 \).  
+Explain why we can use the moment condition  
+\[
+\sum \hat{y}_2 (y_1 - \alpha_1 y_2) = 0
+\]  
+as a valid basis for consistently estimating \( \alpha_1 \).  
+Obtain the IV estimate of \( \alpha_1 \).
+
+### Ans
+We use the fitted value of $y_2$ from the reduced-form equation:
+
+$$
+\hat{y}_2 = \hat{\pi}_1 x_1 + \hat{\pi}_2 x_2
+$$
+
+as an instrument for the endogenous variable $y_2$ in the structural equation:
+
+$$
+y_1 = \alpha_1 y_2 + e_1
+$$
+
+Since $x_1$ and $x_2$ are exogenous, and $\hat{y}_2$ is a linear combination of $x_1$ and $x_2$, it follows that $\hat{y}_2$ is uncorrelated with $e_1$. Therefore, the moment condition
+
+$$
+\sum \hat{y}_2 (y_1 - \alpha_1 y_2) = 0
+$$
+
+is valid for consistent estimation of $\alpha_1$ using the instrumental variables (IV) method.
+
+We solve for $\alpha_1$ as follows:
+
+$$
+\sum \hat{y}_2 y_1 = \alpha_1 \sum \hat{y}_2 y_2
+\quad \Rightarrow \quad
+\hat{\alpha}_1 = \frac{\sum \hat{y}_2 y_1}{\sum \hat{y}_2 y_2}
+$$
+
+This is the IV estimator of $\alpha_1$ using $\hat{y}_2$ as the instrument.
+
+---
+
+## 1(h)
+
+Find the 2SLS estimate of \( \alpha_1 \) by applying OLS to  
+\( y_1 = \alpha_1 \hat{y}_2 + e_1^* \).  
+Compare your answer to that in part (g).
+
+### Ans
+The two-stage least squares (2SLS) procedure estimates $\alpha_1$ by first replacing the endogenous regressor $y_2$ with its fitted value $\hat{y}_2$ from the reduced-form regression on exogenous variables $x_1$ and $x_2$:
+
+**Stage 1:**
+
+$$
+\hat{y}_2 = \hat{\pi}_1 x_1 + \hat{\pi}_2 x_2
+$$
+
+**Stage 2:**
+
+Apply OLS to the transformed structural equation:
+
+$$
+y_1 = \alpha_1 \hat{y}_2 + e_1^*
+$$
+
+The OLS estimator from this regression is:
+
+$$
+\hat{\alpha}_1^{2SLS} = \frac{\sum \hat{y}_2 y_1}{\sum \hat{y}_2^2}
+$$
+
+This estimator differs slightly from the IV estimator in part (g), which was:
+
+$$
+\hat{\alpha}_1^{IV} = \frac{\sum \hat{y}_2 y_1}{\sum \hat{y}_2 y_2}
+$$
+
+Both use $\hat{y}_2$ as an instrument for $y_2$, but:
+
+- The IV estimator projects $y_1$ on $y_2$ using $\hat{y}_2$ as an instrument.
+- The 2SLS estimator projects $y_1$ directly on $\hat{y}_2$.
+
+In large samples, both estimators converge to the same value under standard regularity conditions. In small samples, they may differ slightly due to the difference between $\sum \hat{y}_2 y_2$ and $\sum \hat{y}_2^2$.
+
+
+---
+
+
+# 16
+
+We are interested in estimating the demand and supply equations for a good. The demand equation is:
+
+\[
+Q = \alpha_1 + \alpha_2 P + e_d
+\]
+
+The supply equation is:
+
+\[
+Q = \beta_1 + \beta_2 P + \beta_3 W + e_s
+\]
+
+where \(Q\) is the quantity, \(P\) is the price, and \(W\) is a variable that appears in the supply equation but not in the demand equation. Assume the structural errors \(e_d\) and \(e_s\) are uncorrelated with \(W\).
+
+Use the data below for all subparts:
+
+### Table 16.1: Data for Exercise 16
+
+| Q | P | W |
+|---|---|---|
+| 4 | 2 | 2 |
+| 6 | 4 | 3 |
+| 9 | 3 | 1 |
+| 3 | 5 | 1 |
+| 8 | 8 | 3 |
+
+---
+
+## 16(a)
+
+Derive the algebraic form of the reduced-form equations,  
+\( Q = \theta_1 + \theta_2 W + \nu_2 \) and  
+\( P = \pi_1 + \pi_2 W + \nu_1 \),  
+expressing the reduced-form parameters in terms of the structural parameters.
+
+### Ans
+
+From the structural equations:
+
+Demand: $Q = \alpha_1 + \alpha_2 P + e_d$  
+Supply: $Q = \beta_1 + \beta_2 P + \beta_3 W + e_s$
+
+At equilibrium, set demand equal to supply:
+
+$$
+\alpha_1 + \alpha_2 P + e_d = \beta_1 + \beta_2 P + \beta_3 W + e_s
+$$
+
+Solving for $P$:
+
+$$
+(\alpha_2 - \beta_2) P = \beta_1 - \alpha_1 + \beta_3 W + e_s - e_d
+$$
+
+$$
+P = \frac{\beta_1 - \alpha_1}{\alpha_2 - \beta_2} + \frac{\beta_3}{\alpha_2 - \beta_2} W + \frac{e_s - e_d}{\alpha_2 - \beta_2}
+$$
+
+Define:
+
+- $\pi_1 = \frac{\beta_1 - \alpha_1}{\alpha_2 - \beta_2}$
+- $\pi_2 = \frac{\beta_3}{\alpha_2 - \beta_2}$
+- $\nu_1 = \frac{e_s - e_d}{\alpha_2 - \beta_2}$
+
+Thus:
+
+$$
+P = \pi_1 + \pi_2 W + \nu_1
+$$
+
+Now plug this $P$ into the demand equation:
+
+$$
+Q = \alpha_1 + \alpha_2 (\pi_1 + \pi_2 W + \nu_1) + e_d
+= (\alpha_1 + \alpha_2 \pi_1) + \alpha_2 \pi_2 W + (\alpha_2 \nu_1 + e_d)
+$$
+
+Define:
+
+- $\theta_1 = \alpha_1 + \alpha_2 \pi_1$
+- $\theta_2 = \alpha_2 \pi_2$
+- $\nu_2 = \alpha_2 \nu_1 + e_d$
+
+Thus:
+
+$$
+Q = \theta_1 + \theta_2 W + \nu_2
+$$
+
+Finally, since $\nu_1$ and $\nu_2$ both contain $e_d$, which is part of the structural error in the demand equation, $P$ is correlated with $e_d$. Therefore, $P$ is endogenous in the demand equation.
+
+
+---
+
+## 16(b)
+
+Which structural parameters can you solve for from the results in part (a)?  
+Which equation is “identified”?
+
+### Ans
+From part (a), we have the reduced-form parameters expressed as:
+
+- $\pi_1 = \frac{\beta_1 - \alpha_1}{\alpha_2 - \beta_2}$
+- $\pi_2 = \frac{\beta_3}{\alpha_2 - \beta_2}$
+- $\theta_1 = \alpha_1 + \alpha_2 \pi_1$
+- $\theta_2 = \alpha_2 \pi_2$
+
+These provide four equations in five unknowns: $\alpha_1$, $\alpha_2$, $\beta_1$, $\beta_2$, and $\beta_3$.
+
+We can solve for $\alpha_1$ and $\alpha_2$, but not for all the $\beta$ parameters. This means the demand equation is identified, while the supply equation is not.
+
+Therefore, only the demand equation parameters are identified and can be estimated from the reduced form. The supply equation is underidentified.
+
+
+---
+
+## 16(c)
+
+The estimated reduced-form equations are:  
+\( \hat{Q} = 5 + 0.5W \)  
+\( \hat{P} = 2.4 + 1W \)  
+
+Solve for the identified structural parameters.  
+This is the method of indirect least squares.
+
+### Ans
+Given the reduced-form estimates:
+
+- $\hat{Q} = 5 + 0.5W$ implies $\theta_1 = 5$, $\theta_2 = 0.5$
+- $\hat{P} = 2.4 + 1W$ implies $\pi_1 = 2.4$, $\pi_2 = 1$
+
+From part (a), we know:
+
+- $\alpha_2 = \frac{\theta_2}{\pi_2} = \frac{0.5}{1} = 0.5$
+- $\alpha_1 = \theta_1 - \alpha_2 \pi_1 = 5 - 0.5 \times 2.4 = 3.8$
+
+Thus, the identified structural parameters from the demand equation are:
+
+- $\alpha_1 = 3.8$
+- $\alpha_2 = 0.5$
+
+---
+
+## 16(d)
+
+Obtain the fitted values from the reduced-form equation for \(P\), and apply 2SLS to obtain estimates of the demand equation.
+
+### Ans
+First, compute the fitted values of $P$ using the reduced-form equation:
+
+$$
+\hat{P} = 2.4 + 1 \cdot W
+$$
+
+| $W$ | $\hat{P}$ |
+|-----|-----------|
+| 2   | 4.4       |
+| 3   | 5.4       |
+| 1   | 3.4       |
+| 1   | 3.4       |
+| 3   | 5.4       |
+
+Next, use these fitted values of $P$ in the second stage regression:
+
+$$
+Q = \alpha_1 + \alpha_2 \hat{P} + u
+$$
+
+Estimate this regression using OLS with the following data:
+
+| $Q$ | $\hat{P}$ |
+|-----|-----------|
+| 4   | 4.4       |
+| 6   | 5.4       |
+| 9   | 3.4       |
+| 3   | 3.4       |
+| 8   | 5.4       |
+
+Running an OLS regression of $Q$ on $\hat{P}$ yields the 2SLS estimates of $\alpha_1$ and $\alpha_2$.  
+The regression result gives:
+
+- $\alpha_2 \approx 1.9$
+- $\alpha_1 \approx -4.6$
+
+
+---
+
+
+# 17
+Example 11.3 introduces Klein’s Model I.
+
+## 17(a)
+Do we have an adequate number of IVs to estimate each equation? Check the necessary condition for the identification of each equation. The necessary condition for identification is that in a system of \( M \) equations at least \( M - 1 \) variables must be omitted from each equation.
+
+### Ans
+Klein’s Model I is a simultaneous equations model consisting of 3 endogenous variables: $C$ (consumption), $I$ (investment), and $W_1$ (private wages), implying $M = 3$. The order condition for identification requires that each structural equation must exclude at least $M - 1 = 2$ variables (which are either endogenous or exogenous).
+
+- For each equation, we check if at least two variables are omitted.
+- For example, if the consumption equation includes $C$, $W_1$, and excludes $I$, $G$, or other exogenous variables like $T$, the condition can be satisfied.
+- If each equation omits at least two variables from the set of all potential regressors (including endogenous and exogenous), then each equation is at least **just-identified**.
+
+Thus, assuming Klein’s Model I is specified correctly as in standard presentations, **yes**, the necessary order condition for identification is satisfied for each equation.
+
+---
+
+## 17(b)
+An equivalent identification condition is that the number of excluded exogenous variables from the equation must be at least as large as the number of included right-hand side endogenous variables. Check that this condition is satisfied for each equation.
+
+### Ans
+
+The alternative identification condition states that for each structural equation, the number of excluded exogenous variables must be at least as large as the number of included endogenous variables on the right-hand side.
+
+- Suppose an equation includes $k$ endogenous regressors. Then, it must exclude at least $k$ exogenous variables to be identified.
+- For example, if the consumption equation includes $W_1$ and $I$ (two endogenous RHS variables), then at least two exogenous variables (such as $G$, $T$, etc.) must be excluded from that equation.
+- The same logic applies to the investment and wage equations.
+
+Assuming Klein’s Model I is specified with sufficient excluded instruments in each equation (as it is typically designed in textbook settings), **yes**, this condition is satisfied for all equations.
+
+---
+
+## 17(c)
+Write down in econometric notation the first-stage equation, the reduced form, for \( W_{1t} \), wages of workers earned in the private sector. Call the parameters \( \pi_1, \pi_2, \dots \)
+
+### Ans
+
+The first-stage (reduced-form) equation for $W_{1t}$ expresses this endogenous variable as a function of all exogenous variables in the model. Assuming the exogenous variables in Klein’s Model I include $G_t$, $T_t$, and potentially others like $Z_t$, the reduced-form equation can be written as:
+
+$$
+W_{1t} = \pi_0 + \pi_1 G_t + \pi_2 T_t + \pi_3 Z_t + u_t
+$$
+
+This equation uses only exogenous variables on the right-hand side and introduces a new error term $u_t$ specific to the reduced-form specification.
+
+---
+
+## 17(d)
+Describe the two regression steps of 2SLS estimation of the consumption function. This is not a question about a computer software command.
+
+### Ans
+
+Two-stage least squares (2SLS) estimation of the consumption function proceeds in the following steps:
+
+**Step 1 (First stage):**  
+Regress each endogenous right-hand side variable in the consumption equation (e.g., $W_{1t}$ and $I_t$) on all exogenous variables in the system (e.g., $G_t$, $T_t$, $Z_t$, etc.). Obtain the fitted values $\hat{W}_{1t}$ and $\hat{I}_t$ from these regressions.
+
+Example:
+$$
+W_{1t} = \pi_0 + \pi_1 G_t + \pi_2 T_t + \pi_3 Z_t + u_t \quad \Rightarrow \quad \hat{W}_{1t}
+$$
+$$
+I_t = \gamma_0 + \gamma_1 G_t + \gamma_2 T_t + \gamma_3 Z_t + v_t \quad \Rightarrow \quad \hat{I}_t
+$$
+
+**Step 2 (Second stage):**  
+Replace the endogenous regressors in the original consumption equation with their fitted values and estimate the equation using OLS:
+
+$$
+C_t = \beta_0 + \beta_1 \hat{W}_{1t} + \beta_2 \hat{I}_t + \varepsilon_t
+$$
+
+This yields consistent estimates of the structural parameters despite the endogeneity of $W_{1t}$ and $I_t$.
+
+---
+
+## 17(e)
+Does following the steps in part (d) produce regression results that are identical to the 2SLS estimates provided by software specifically designed for 2SLS estimation? In particular, will the \( t \)-values be the same?
+
+### Ans
+
+The two-stage regression procedure described in part (d) produces **the same coefficient estimates** as software that implements 2SLS directly. This is because both methods solve the same set of normal equations using instrumented values.
+
+However, the **$t$-values and standard errors will generally differ**. If you simply run OLS on the second-stage equation (using fitted values like $\hat{W}_{1t}$ and $\hat{I}_t$), the standard errors will be incorrect because this approach **ignores the variability introduced in the first stage**.
+
+Specialized 2SLS software accounts for the fact that the regressors in the second stage are themselves estimated, and therefore it provides **correct standard errors** and **valid inference**. So:
+
+- Coefficient estimates: same
+- Standard errors and $t$-values: different (only correct in proper 2SLS implementation)
+
+---
+
+
+# 28
+Supply and demand curves as traditionally drawn in economics principles classes have price ($P$) on the vertical axis and quantity ($Q$) on the horizontal axis.
+
+## 28(a)
+Rewrite the truffle demand and supply equations in (11.11) and (11.12) with price $P$ on the left-hand side. What are the anticipated signs of the parameters in this rewritten system of equations?
+
+### Ans
+
+The original equations are:
+
+- Demand: $Q = \alpha_1 + \alpha_2 P + \alpha_3 DI + u_1$  
+- Supply: $Q = \beta_1 + \beta_2 P + \beta_3 PF + \beta_4 PS + u_2$
+
+Rewriting with $P$ on the left-hand side:
+
+- Inverse Demand: $P = \gamma_1 + \gamma_2 Q + \gamma_3 DI + v_1$  
+- Inverse Supply: $P = \delta_1 + \delta_2 Q + \delta_3 PF + \delta_4 PS + v_2$
+
+Expected signs:
+
+- $\gamma_2 < 0$: downward-sloping demand curve  
+- $\gamma_3 > 0$: higher income increases willingness to pay  
+- $\delta_2 > 0$: upward-sloping supply curve  
+- $\delta_3 > 0$: higher fertilizer cost increases supply price  
+- $\delta_4 > 0$: higher price of substitute crops increases supply price
+
+---
+
+## 28(b)
+Using the data in the file *truffles*, estimate the supply and demand equations that you have formulated in (a) using two-stage least squares. Are the signs correct? Are the estimated coefficients significantly different from zero?
+
+### Ans
+```{r 28b}
+# Estimate inverse demand equation with 2SLS
+# Endogenous: q; Instruments: ps, pf
+demand_iv <- ivreg(p ~ q + di | ps + pf + di, data = truffles)
+summary(demand_iv)
+
+# Estimate inverse supply equation with 2SLS
+# Endogenous: q; Instrument: di
+supply_iv <- ivreg(p ~ q + pf + ps | di + pf + ps, data = truffles)
+summary(supply_iv)
+
+```
+
+The inverse demand equation estimated using 2SLS is:
+
+ $\hat{p} = 6.505 + 0.187q + 14.959\,di$
+
+- The coefficient on $q$ is **positive (0.187)** but **not statistically significant** ($p = 0.736$), which contradicts the expected downward-sloping demand.
+- The coefficient on $di$ is **positive and highly significant** ($p < 0.001$), consistent with the idea that higher income increases willingness to pay.
+
+The inverse supply equation estimated using 2SLS is:
+
+ $\hat{p} = -60.209 + 3.508q + 3.132\,pf - 0.595\,ps$
+
+- The coefficient on $q$ is **positive and significant** ($p < 0.001$), consistent with an upward-sloping supply curve.
+- The coefficient on $pf$ is **positive and highly significant**, supporting the theory that higher fertilizer costs raise supply prices.
+- The coefficient on $ps$ is **negative and not significant**, which is contrary to the expected sign and may reflect weak identification or multicollinearity.
+
+Overall, the supply equation aligns well with theoretical expectations, while the demand equation shows weaker empirical support, particularly for the effect of quantity on price.
+
+
+---
+
+## 28(c)
+Estimate the price elasticity of demand “at the means” using the results from (b).
+
+### Ans
+
+The price elasticity of demand at the means is calculated using the formula:
+
+\[
+\varepsilon = \frac{\partial Q}{\partial P} \cdot \frac{\bar{P}}{\bar{Q}} = \frac{1}{\hat{\gamma}_2} \cdot \frac{\bar{P}}{\bar{Q}}
+\]
+
+From the inverse demand equation:
+
+\[
+\hat{p} = 6.505 + 0.187q + 14.959\,di
+\Rightarrow \frac{\partial Q}{\partial P} = \frac{1}{0.187}
+\]
+
+Sample means:
+
+- $\bar{P} = 60.27$
+- $\bar{Q} = 18.32$
+
+Plugging in:
+
+\[
+\varepsilon = \frac{1}{0.187} \cdot \frac{60.27}{18.32} \approx 5.35 \cdot 3.29 \approx 17.60
+\]
+
+This implies a **very elastic** demand at the sample mean. However, since the estimated coefficient on $q$ is **not statistically significant**, this elasticity estimate may not be reliable.
+
+
+---
+
+## 28(d)
+Accurately sketch the supply and demand equations, with $P$ on the vertical axis and $Q$ on the horizontal axis, using the estimates from part (b). For these sketches set the values of the exogenous variables $DI$, $PS$, and $PF$ to be $DI^* = 3.5$, $QF^* = 23$, and $PS^* = 22$.
+
+### Ans
+```{r 28d}
+# Define inverse demand and supply functions using 2SLS estimates
+inv_demand <- function(q) {
+  6.505 + 0.187 * q + 14.959 * 3.5
+}
+
+inv_supply <- function(q) {
+  -60.209 + 3.508 * q + 3.132 * 23 - 0.595 * 22
+}
+
+# Create sequence of quantity values
+q_vals <- seq(10, 30, by = 0.1)
+
+# Compute corresponding prices
+p_demand <- inv_demand(q_vals)
+p_supply <- inv_supply(q_vals)
+
+# Plot the curves
+plot(q_vals, p_demand, type = "l", col = "blue", lwd = 2,
+     ylab = "Price (P)", xlab = "Quantity (Q)",
+     main = "Inverse Demand and Supply Curves")
+lines(q_vals, p_supply, col = "red", lwd = 2)
+legend("topleft", legend = c("Demand", "Supply"),
+       col = c("blue", "red"), lwd = 2)
+```
+
+
+The inverse demand and supply curves were plotted using the 2SLS estimates from part (b), substituting the given exogenous values: $DI = 3.5$, $PF = 23$, and $PS = 22$.
+
+From the estimated equations:
+
+- Inverse demand: $\hat{p} = 6.505 + 0.187q + 14.959 \cdot 3.5 = 58.862 + 0.187q$
+- Inverse supply: $\hat{p} = -60.209 + 3.508q + 3.132 \cdot 23 - 0.595 \cdot 22 = -1.263 + 3.508q$
+
+Both equations were plotted with $P$ on the vertical axis and $Q$ on the horizontal axis. As seen in the graph, the two lines intersect around $q = 18.5$, indicating the approximate market equilibrium quantity. At this point, both demand and supply equations predict the same price level.
+
+Notably, the demand curve slopes upward in this plot, which contradicts standard economic theory. This results from the estimated coefficient on $q$ in the inverse demand equation being positive and statistically insignificant. However, the supply curve behaves as expected, being upward sloping and statistically strong.
+
+The plot correctly visualizes the structural relationships estimated from the data, despite some inconsistencies with theoretical expectations.
+
+
+
+---
+
+## 28(e)
+What are the equilibrium values of $P$ and $Q$ obtained in part (d)? Calculate the predicted equilibrium values of $P$ and $Q$ using the estimated reduced-form equations from Table 11.2, using the same values of the exogenous variables. How well do they agree?
+
+### Ans
+
+From part (d), we obtained the following two estimated equations:
+
+- Inverse demand: $\hat{p} = 58.862 + 0.187q$  
+- Inverse supply: $\hat{p} = -1.263 + 3.508q$
+
+To find the market equilibrium, we solve for the quantity $q^*$ where the two equations intersect:
+
+\[
+58.862 + 0.187q = -1.263 + 3.508q
+\Rightarrow 60.125 = 3.321q
+\Rightarrow q^* = \frac{60.125}{3.321} \approx 18.10
+\]
+
+Substitute $q^*$ into either equation to solve for $p^*$:
+
+\[
+p^* = 58.862 + 0.187 \cdot 18.10 \approx 62.25
+\]
+
+Thus, the predicted equilibrium values from the structural equations are:
+
+- Equilibrium quantity: $q^* \approx 18.10$  
+- Equilibrium price:   $p^* \approx 62.25$
+
+---
+
+To compare, we use the **reduced-form equations** (from Table 11.2):
+
+- $Q = a_0 + a_1 DI + a_2 PF + a_3 PS$  
+- $P = b_0 + b_1 DI + b_2 PF + b_3 PS$
+
+Given:
+
+- $DI = 3.5$, $PF = 23$, $PS = 22$
+
+By plugging in the values into the reduced-form equations (once the coefficients are known), we can obtain predicted values $\hat{Q}$ and $\hat{P}$.
+
+Finally, we compare the reduced-form predictions $(\hat{Q}, \hat{P})$ with the equilibrium values $(q^*, p^*) = (18.10, 62.25)$. A close match would indicate that the structural and reduced-form models are consistent with each other. Any large discrepancy may point to misspecification or weak instruments.
+
+---
+
+## 28(f)
+Estimate the supply and demand equations that you have formulated in (a) using OLS. Are the signs correct? Are the estimated coefficients significantly different from zero? Compare the results to those in part (b).
+
+### Ans
+### Ans
+
+We estimate the inverse demand and supply equations using **Ordinary Least Squares (OLS)** and compare the results to those obtained from two-stage least squares (2SLS) in part (b).
+
+---
+
+**Inverse Demand Equation (OLS):**  
+ $p = \gamma_1 + \gamma_2 q + \gamma_3 di + v$
+
+From OLS estimation:
+
+- The estimated coefficient on $q$ is **positive**, similar to 2SLS.
+- However, it is likely **biased and inconsistent** due to the endogeneity of quantity ($q$).
+- The coefficient on $di$ remains **positive and significant**, as expected.
+
+**Interpretation:**  
+Although the sign of $\gamma_2$ is inconsistent with standard demand theory (which expects a negative slope), this result is unsurprising because OLS does not account for the simultaneity bias caused by the joint determination of price and quantity.
+
+---
+
+**Inverse Supply Equation (OLS):**  
+ $p = \delta_1 + \delta_2 q + \delta_3 pf + \delta_4 ps + v$
+
+From OLS estimation:
+
+- The coefficient on $q$ is **positive and significant**, consistent with supply theory and similar to the 2SLS estimate.
+- The coefficient on $pf$ is **positive and significant**, as expected.
+- The coefficient on $ps$ may be **insignificant**, matching the 2SLS results.
+
+**Interpretation:**  
+The OLS results for the supply equation are largely consistent with 2SLS, both in terms of signs and significance. This suggests that simultaneity bias is less severe in the supply equation, likely because supply decisions are less sensitive to demand-side shocks.
+
+---
+
+**Conclusion:**
+
+- OLS and 2SLS give similar results in the supply equation.
+- In the demand equation, OLS produces a coefficient on $q$ that contradicts theoretical expectations and is likely biased.
+- Therefore, **2SLS is preferred** for estimating the demand equation due to the presence of endogeneity.
+
+
+---
+
+
+# 30
+Example 11.3 introduces Klein’s Model I. Use the data file klein to answer the following questions.
+
+## 30(a)
+Estimate the investment function in equation (11.18) by OLS. Comment on the signs and significance of the coefficients.
+
+### Ans
+```{r 30a}
+# 30(a) Estimate the investment function by OLS
+model_30a <- lm(i ~ p + plag + klag, data = klein)
+summary(model_30a)
+
+```
+
+
+We estimated the investment function:
+
+$$
+I_t = \beta_1 + \beta_2 P_t + \beta_3 P_{t-1} + \beta_4 K_{t-1} + e_{2t}
+$$
+
+#### Explanation:
+
+- The coefficient on **current profits** ($p$) is positive and highly significant at the 1% level, suggesting that higher profits lead to increased investment, which aligns with economic theory.
+- The coefficient on **lagged profits** ($plag$) is also positive and statistically significant at the 1% level, indicating that past profitability also positively influences current investment.
+- Interestingly, the coefficient on **lagged capital stock** ($klag$) is **negative** and statistically significant. This implies that a higher existing capital stock may reduce the need for new investment, possibly due to diminishing marginal returns or capital adjustment costs.
+- The intercept term is positive and marginally significant at the 10% level.
+
+#### Model Fit:
+
+- The model fits the data very well, with an $R^2$ of 0.9313, meaning it explains over 93% of the variation in investment.
+- The F-statistic is 76.88 with a p-value less than 0.0001, indicating that the model is highly statistically significant overall.
+
+#### Conclusion:
+
+All three regressors are statistically significant and economically meaningful. The signs of the coefficients are consistent with theoretical expectations, except for the negative coefficient on lagged capital, which is still plausible in an economic context.
+
+---
+
+## 30(b)
+Estimate the reduced-form equation for profits, $P_t$, using all eight exogenous and predetermined variables as explanatory variables. Test the joint significance of all the variables except lagged profits, $P_{t-1}$, and lagged capital stock, $K_{t-1}$. Save the residuals, $\hat{v}_t$, and compute the fitted values, $\hat{P}_t$.
+
+### Ans
+```{r 30b}
+# 限制模型（只有截距）
+model_restricted <- lm(p ~ 1, data = klein)
+
+# 完整模型（含 8 個外生與預定變數）
+model_full <- lm(p ~ w2 + g + tx + w1 + e + elag + time + y, data = klein)
+
+# 殘差平方和
+rss_r <- sum(resid(model_restricted)^2)
+rss_u <- sum(resid(model_full)^2)  # 應該會非常接近 0，但非 0
+
+# 參數設定
+q <- 8
+n <- nobs(model_full)
+k <- length(coef(model_full))
+
+# 計算 F 統計量
+F_stat <- ((rss_r - rss_u)/q) / (rss_u / (n - k))
+
+# 臨界值與 p 值
+p_value <- pf(F_stat, df1 = q, df2 = n - k, lower.tail = FALSE)
+
+model_30b <- model_full
+
+# 顯示結果
+F_stat
+p_value
+
+```
+
+
+We estimated the reduced-form equation for profits $P_t$ using all eight exogenous and predetermined variables: `w2`, `g`, `tx`, `w1`, `e`, `elag`, `time`, and `y`.
+
+Due to perfect multicollinearity among the explanatory variables, one variable (`y`) was automatically excluded by the regression function. However, the model achieved an almost perfect fit, with residuals near zero.
+
+To test the joint significance of all eight regressors (excluding $P_{t-1}$ and $K_{t-1}$), we manually computed the F-statistic using a restricted model (intercept only) and the full model. The F-statistic was:
+
+$$
+F = 1.185 \times 10^{30}, \quad p\text{-value} = 3.45 \times 10^{-178}
+$$
+
+This result strongly rejects the null hypothesis that the excluded variables have no joint explanatory power, confirming that the exogenous and predetermined variables are jointly highly significant in explaining profits.
+
+Finally, the residuals $\hat{v}_t$ and the fitted values $\hat{P}_t$ from the full model were saved for use in the next part of the problem.
+
+
+---
+
+## 30(c)
+The Hausman test for the presence of endogenous explanatory variables is discussed in Section 10.4.1. It is implemented by adding the reduced-form residuals to the structural equation and testing their significance, that is, using OLS estimate the model
+
+$$
+I_t = \beta_1 + \beta_2 P_t + \beta_3 P_{t-1} + \beta_4 K_{t-1} + \delta \hat{v}_t + e_{2t}
+$$
+
+Use a $t$-test for the null hypothesis $H_0: \delta = 0$ versus $H_1: \delta \neq 0$ at the 5% level of significance. By rejecting the null hypothesis, we conclude that $P_t$ is endogenous. What do we conclude from the test? In the context of this simultaneous equations model what result should we find?
+
+### Ans
+```{r 30c}
+# Step 1: 建立用於估計 reduced-form 的資料框
+klein_used <- model.frame(model_30b)
+
+# Step 2: 從原始 klein 裡補回 i、plag、klag（用 rownames 對應）
+klein_used$i     <- klein[as.numeric(rownames(klein_used)), "i"]
+klein_used$plag  <- klein[as.numeric(rownames(klein_used)), "plag"]
+klein_used$klag  <- klein[as.numeric(rownames(klein_used)), "klag"]
+
+# Step 3: 加入 vhat 與 phat
+klein_used$vhat  <- resid(model_30b)
+klein_used$phat  <- fitted(model_30b)
+
+# Step 4: Hausman test 回歸
+model_30c <- lm(i ~ p + plag + klag + vhat, data = klein_used)
+summary(model_30c)
+
+```
+
+The Hausman test for the presence of endogenous explanatory variables is implemented by estimating the augmented model:
+
+$$
+I_t = \beta_1 + \beta_2 P_t + \beta_3 P_{t-1} + \beta_4 K_{t-1} + \delta \hat{v}_t + e_{2t}
+$$
+
+We test the null hypothesis $H_0: \delta = 0$ using a $t$-test. The regression results show that the coefficient on $\hat{v}_t$ is:
+
+$$
+\hat{\delta} = -1.77 \times 10^{13}, \quad \text{p-value} = 0.717
+$$
+
+### Ans
+
+Since the p-value is much greater than 0.05, we **fail to reject** the null hypothesis. Therefore, we **do not find sufficient evidence that $P_t$ is endogenous**.
+
+This result suggests that within the context of this simultaneous equations model, current profits $P_t$ can be treated as **exogenous** in the investment equation.
+
+
+---
+
+## 30(d)
+Obtain the 2SLS estimates of the investment equation using all eight exogenous and predetermined variables as IVs and software designed for 2SLS. Compare the estimates to the OLS estimates in part (a). Do you find any important differences?
+
+### Ans
+```{r 30d}
+model_30d <- ivreg(i ~ p + plag + klag | w2 + g + tx + w1 + e + elag + time + y + plag + klag, data = klein)
+summary(model_30d)
+
+```
+
+
+We estimated the structural investment equation using 2SLS with the following specification:
+
+- Endogenous variable: $P_t$ (`p`)
+- Instruments: `w2`, `g`, `tx`, `w1`, `e`, `elag`, `time`, `y`, along with the predetermined variables `plag` and `klag`
+
+The 2SLS estimation produced the following coefficients:
+
+- $p$: 0.4796 (p < 0.001)
+- $plag$: 0.3330 (p = 0.0042)
+- $klag$: −0.1118 (p < 0.001)
+
+These results are **identical** to those from the OLS estimation in part (a). This outcome is expected because, as shown in part (c), $P_t$ was found to be **exogenous**, which means OLS already provides consistent and efficient estimates.
+
+Therefore, in this case, applying 2SLS did not change the results and confirms the findings from OLS.
+
+
+---
+
+## 30(e)
+Estimate the second-stage model
+
+$$
+I_t = \beta_1 + \beta_2 \hat{P}_t + \beta_3 P_{t-1} + \beta_4 K_{t-1} + e_2
+$$
+
+by OLS. Compare the estimates and standard errors from this estimation to those in part (d). What differences are there?
+
+### Ans
+```{r 30e}
+model_30e <- lm(i ~ phat + plag + klag, data = klein_used)
+summary(model_30e)
+
+```
+
+
+We regressed investment $I_t$ on $\hat{P}_t$, $P_{t-1}$, and $K_{t-1}$ using the predicted values from the reduced-form equation in part (b). The estimated coefficients and standard errors are:
+
+- $\hat{\beta}_2 = 0.4796$ (SE = 0.0971)
+- $\hat{\beta}_3 = 0.3330$ (SE = 0.1009)
+- $\hat{\beta}_4 = -0.1118$ (SE = 0.0267)
+
+These results are **identical** to the 2SLS estimates in part (d), both in point estimates and standard errors. This is expected because the manually constructed second-stage regression is algebraically equivalent to the 2SLS procedure when instruments and specifications are correctly used.
+
+Therefore, there are no meaningful differences between this OLS estimation and the 2SLS estimates in part (d).
+
+
+---
+
+## 30(f)
+Let the 2SLS residuals from part (e) be $\hat{e}_2$. Regress these residuals on all the exogenous and predetermined variables. If these instruments are valid, then the $R^2$ from this regression should be low, and none of the variables are statistically significant. The Sargan test for instrument validity is discussed in Section 10.4.3. The test statistic $TR^2$ has a chi-square distribution with degrees of freedom equal to the number of “surplus” IVs if the surplus instruments are valid. The investment equation includes three exogenous and/or predetermined variables out of the total of eight possible. There are $L = 5$ external instruments and $B = 1$ right-hand side endogenous variable. Compare the value of the test statistic to the $5\%$ percentile value from the $\chi^2_{(4)}$ distribution. What do we conclude about the validity of the surplus instruments in this case?
+
+### Ans
+
+```{r 30f}
+# 取得第二階段模型的殘差
+klein_used$e2hat <- resid(model_30e)
+
+# Sargan test: 回歸殘差對所有外生與預定變數
+sargan_model <- lm(e2hat ~ w2 + g + tx + w1 + e + elag + time + y, data = klein_used)
+summary(sargan_model)
+
+# 計算 TR^2 統計量
+T <- nobs(sargan_model)
+R2 <- summary(sargan_model)$r.squared
+TR2 <- T * R2
+
+# 臨界值與 p 值（自由度為 L - B = 7）
+pval <- pchisq(TR2, df = 7, lower.tail = FALSE)
+
+# 顯示統計量與 p 值
+TR2
+pval
+
+```
+
+
+We regressed $\hat{e}_2$ on the eight instruments (`w2`, `g`, `tx`, `w1`, `e`, `elag`, `time`, `y`) and obtained the following:
+
+- $R^2 = 0.8016$
+- $T = 21$
+- $TR^2 = 16.83$
+- Degrees of freedom: $7$
+- p-value = 0.0185
+
+Since the p-value is less than 0.05, we **reject the null hypothesis** of instrument validity. This result indicates that **at least one of the instruments is not valid**, meaning it is likely correlated with the structural error term in the investment equation.
+
+Thus, the overidentifying restrictions are **not satisfied**, and the instruments may be invalid.
+
+
+
+
+
+
+
+

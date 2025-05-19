@@ -1,0 +1,90 @@
+# 設定資料集的 URL
+url <- "https://www.principlesofeconometrics.com/poe5/data/rdata/klein.rdata"
+download.file(url, destfile = "klein.rdata")  # 下載資料集並儲存為本地檔案
+load("klein.rdata")  # 載入資料集
+names(klein)  # 確認變數名稱
+str(klein) # 查看資料結構
+
+# 11.30(a)
+investment_ols <- lm(i ~ p + plag + klag, data = klein)
+summary(investment_ols)
+
+
+# 11.30(b)
+profit_rf <- lm(p ~ g + w2 + tx + time + plag + klag + elag, data = klein)
+summary(profit_rf)
+
+library(car)
+
+joint_test <- linearHypothesis(profit_rf, c("g = 0", "w2 = 0", "tx = 0", "time = 0", "elag = 0"))
+
+F_stat <- joint_test$F[2]       
+df1    <- joint_test$Df[2]      # 檢定的變數數
+df2    <- joint_test$Res.Df[2] 
+F_crit <- qf(0.95, df1, df2)
+
+cat(F_stat, F_crit)
+
+used_rows <- as.numeric(rownames(model.frame(profit_rf)))
+
+klein$p_hat <- NA
+klein$v_hat <- NA
+klein$p_hat[used_rows] <- fitted(profit_rf)   # 殘差
+klein$v_hat[used_rows] <- resid(profit_rf)    # 預測值
+
+
+# 11.30(c)
+hausman_test <- lm(i ~ p + plag + klag + v_hat, data = klein)
+summary(hausman_test)
+
+
+# 11.30(d)
+library(AER)
+investment_iv <- ivreg(i ~ p + plag + klag | 
+                         g + w2 + tx + time + elag + plag + klag, data = klein)
+summary(investment_iv)
+
+
+ols_summary <- summary(investment_ols)$coefficients
+iv_summary  <- summary(investment_iv)$coefficients
+
+common_vars <- rownames(ols_summary)  # "(Intercept)", "p", "plag", "klag"
+
+comparison_table <- data.frame(
+  OLS_Estimate = round(ols_summary[common_vars, "Estimate"], 4),
+  OLS_SE       = round(ols_summary[common_vars, "Std. Error"], 4),
+  OLS_t        = round(ols_summary[common_vars, "t value"], 4),
+  OLS_p        = signif(ols_summary[common_vars, "Pr(>|t|)"], 4),
+  
+  IV_Estimate  = round(iv_summary[common_vars, "Estimate"], 4),
+  IV_SE        = round(iv_summary[common_vars, "Std. Error"], 4),
+  IV_t         = round(iv_summary[common_vars, "t value"], 4),
+  IV_p         = signif(iv_summary[common_vars, "Pr(>|t|)"], 4)
+)
+
+print(comparison_table)
+
+
+# 11.30(e)
+second_stage <- lm(i ~ p_hat + plag + klag, data = klein)
+summary(second_stage)
+
+
+# 11.30(f)
+used_rows2 <- as.numeric(rownames(model.frame(second_stage)))
+klein$e2_hat <- NA
+klein$e2_hat[used_rows2] <- resid(second_stage)
+sargan_model <- lm(e2_hat ~ g + w2 + tx + time + elag + plag + klag,
+                   data = klein)
+summary(sargan_model)
+
+n_obs <- nrow(klein)
+R2_sargan <- summary(sargan_model)$r.squared
+TR2       <- n_obs * R2_sargan
+pval      <- 1 - pchisq(TR2, df = 4)
+crit_val <- qchisq(0.95, df = 4)
+
+cat("Sargan test statistic (TR^2):", TR2, "\n",
+    "df =", 4, "\n",
+    "p-value:", pval, "\n",
+    "Critical value (chi^2(4), 95%): ", crit_val, "\n")
