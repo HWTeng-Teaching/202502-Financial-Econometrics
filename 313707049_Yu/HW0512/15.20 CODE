@@ -1,1 +1,19 @@
+library(POE5Rdata)
+data("star")
+#a
+model_a <- lm(readscore ~ small + aide + tchexper + white_asian + freelunch, data = star)
 
+summary(model_a)
+
+#b
+# 加入學校固定效應
+model_b <- lm(readscore ~ small + aide + tchexper + white_asian + freelunch + factor(schid), data = star)
+summary(model_b)
+
+# 比較兩個模型的係數
+summary(model_a)$coefficients
+summary(model_b)$coefficients
+
+#c
+# 檢驗固定效應的顯著性
+anova(model_a, model_b)
