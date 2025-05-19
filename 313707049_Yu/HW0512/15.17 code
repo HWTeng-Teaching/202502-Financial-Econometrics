@@ -1,1 +1,37 @@
+#15.17(a)
+library(POE5Rdata)
+data(liquor5)
+summary
+str(data)
+liquir <- liquor5[order(liquor5$hh, liquor5$year), ]
+
+# 初始化 LIQUORD 和 INCOMED 欄位
+liquir$LIQUORD <- NA
+liquir$INCOMED <- NA
+
+
+# 按家庭 (hh) 計算差分
+unique_hh <- unique(liquir$hh)
+for (h in unique_hh) {
+  subset <- liquir[liquir$hh == h, ]
+  subset <- subset[order(subset$year), ]
+  for (i in 2:nrow(subset)) {
+    liquir$LIQUORD[liquir$hh == h][i] <- subset$liquor[i] - subset$liquor[i-1]
+    liquir$INCOMED[liquir$hh == h][i] <- subset$income[i] - subset$income[i-1]
+  }
+}
+
+# 移除差分為 NA 的觀測值
+data_diff <- liquir[!is.na(liquir$LIQUORD) & !is.na(liquir$INCOMED), ]
+
+# 執行 OLS 回歸
+model <- lm(LIQUORD ~ INCOMED, data = data_diff)
+
+# 查看回歸結果
+summary(model)
+
+
+# 計算 95% 信賴區間
+conf_interval <- confint(model, level = 0.95)
+print(conf_interval)
 
