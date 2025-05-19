@@ -1,4 +1,6 @@
 *By 李麒安 CHI AN LI*  
+![image](https://github.com/user-attachments/assets/6dc7b5ab-40ab-421c-b4ea-4a05191f06e9)
+
 ### (a)
 
 Overall, the coefficient estimates for the years 1987 and 1988 are quite similar, indicating model stability across the two periods. However, estimating the model separately for each year implicitly assumes that there is no unobserved heterogeneity across individuals. In other words, the models do not control for individual-specific fixed characteristics, which may lead to biased estimates.
