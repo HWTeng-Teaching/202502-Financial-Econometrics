@@ -15,5 +15,4 @@ The fixed effects model assumes that each individual has their own fixed effect,
 
 ### (c)
 
-In the fixed effects model, the coefficient on `EXPER` drops from around 0.127 (as estimated by OLS) to approximately 0.057, marking the largest decline among the variables. This suggests that failing to control for individual-specific traits (e.g., ability) may lead to an overestimation of the impact of experience on wages. By controlling for such unobserved heterogeneity, the fixed effects model provides a more accurate estimate of the marginal effect of experience, resulting in a lower coefficient.
-
+In the fixed effects model, the coefficient on `EXPER` drops from around 0.127 (as estimated by OLS) to approximately 0.057, marking the largest decline among the variables. This suggests that failing to control for individual-specific traits (e.g., ability) may lead to an overestimation of the impact of experience on wages. 
