@@ -1,16 +1,17 @@
 *By 李麒安 CHI AN LI*  
 ### (a)
 
-整體看來，兩年份的係數差異不大，顯示模型結果穩定。但這種分年估計隱含了不存在個體間異質性（unobserved heterogeneity）的假設。也就是說，模型並未控制每個勞工的固定特質差異，可能導致估計結果有偏誤。
+Overall, the coefficient estimates for the years 1987 and 1988 are quite similar, indicating model stability across the two periods. However, estimating the model separately for each year implicitly assumes that there is no unobserved heterogeneity across individuals. In other words, the models do not control for individual-specific fixed characteristics, which may lead to biased estimates.
 
 ---
 
 ### (b)
 
-固定效果模型假設每位個體都有自己的「固定效果」，代表不隨時間改變的個體特質，例如能力、動機、家庭背景等。這些特質雖未被觀察，但會影響工資水準。固定效果模型透過消除這些不可觀測但固定的特質，避免它們與解釋變數的相關性造成內生性偏誤。
+The fixed effects model assumes that each individual has their own fixed effect, representing time-invariant characteristics such as ability, motivation, or family background. Although these characteristics are unobserved, they influence wage outcomes. The fixed effects approach eliminates these unobserved but constant individual differences, thereby avoiding potential endogeneity caused by correlation between individual traits and explanatory variables.
 
 ---
 
 ### (c)
 
-在固定效果模型中，`EXPER` 的係數由 OLS 係數 0.127 降至約 0.057，下降幅度最大。這反映出若不控制個體的固定特質（如能力），可能會高估經驗對工資的影響。固定效果模型控制了這些不可觀測的個體差異，使得估計結果更接近經驗對薪資的真實邊際影響，因此係數下降。
+In the fixed effects model, the coefficient on `EXPER` drops from around 0.127 (as estimated by OLS) to approximately 0.057, marking the largest decline among the variables. This suggests that failing to control for individual-specific traits (e.g., ability) may lead to an overestimation of the impact of experience on wages. By controlling for such unobserved heterogeneity, the fixed effects model provides a more accurate estimate of the marginal effect of experience, resulting in a lower coefficient.
+
