@@ -1,0 +1,93 @@
+# 設定資料集的 URL
+url <- "https://www.principlesofeconometrics.com/poe5/data/rdata/star.rdata"
+download.file(url, destfile = "star.rdata")  # 下載資料集並儲存為本地檔案
+load("star.rdata")  # 載入資料集
+names(star)  # 確認變數名稱
+str(star) # 查看資料結構
+
+library(dplyr)
+library(plm)
+
+# 15.20(a)
+# OLS
+ols_model <- lm(readscore ~ small + aide + tchexper + boy + white_asian + freelunch, data = star)
+summary(ols_model)
+
+
+# 15.20(b)
+# panel data 
+pdata <- pdata.frame(star, index = "schid")
+
+# Fixed effects
+fe_model <- plm(readscore ~ small + aide + tchexper + boy + white_asian + freelunch,
+                data = pdata, model = "within", effect = "individual")
+summary(fe_model)
+
+
+# 15.20(c)
+# pooled OLS
+pooled_model <- plm(readscore ~ small + aide + tchexper + boy + white_asian + freelunch,
+                    data = pdata, model = "pooling")
+# F test for fixed effects
+pFtest(fe_model, pooled_model)
+
+
+# 15.20(d)
+# Random effects
+re_model <- plm(readscore ~ small + aide + tchexper + boy + white_asian + freelunch,
+                data = pdata, model = "random", effect = "individual")
+summary(re_model)
+# LM test for random effects (Breusch-Pagan type)
+plmtest(pooled_model, type = "bp")
+
+
+# 15.20(e)
+# Hausman test
+phtest(fe_model, re_model)
+
+# 提取 FE 與 RE 模型的係數與標準誤
+fe_coef <- summary(fe_model)$coefficients
+re_coef <- summary(re_model)$coefficients
+
+# 選擇要檢定的變數
+vars <- c("small", "aide", "tchexper", "white_asian", "freelunch", "boy")
+
+# 計算 t 統計量（公式 15.36）：(b_fe - b_re) / sqrt(se_fe^2 - se_re^2)
+for (v in vars) {
+  b_fe <- fe_coef[v, "Estimate"]
+  se_fe <- fe_coef[v, "Std. Error"]
+  
+  b_re <- re_coef[v, "Estimate"]
+  se_re <- re_coef[v, "Std. Error"]
+  
+  denom_sq <- se_fe^2 - se_re^2
+  
+  if (denom_sq <= 0) {
+    cat(sprintf("%-12s : 無法計算 t 值，因為 se_FE^2 - se_RE^2 <= 0\n", v))
+  } else {
+    t_value <- (b_fe - b_re) / sqrt(denom_sq)
+    p_value <- 2 * (1 - pnorm(abs(t_value)))
+    cat(sprintf("%-12s : t-value = %.4f, p-value = %.4f\n", v, t_value, p_value))
+  }
+}
+
+
+# 15.20(f)
+# 對每個學校計算變數平均值，命名為 *_m
+pdata$small_m       <- ave(pdata$small,       pdata$schid)
+pdata$aide_m        <- ave(pdata$aide,        pdata$schid)
+pdata$tchexper_m    <- ave(pdata$tchexper,    pdata$schid)
+pdata$boy_m         <- ave(pdata$boy,         pdata$schid)
+pdata$white_asian_m <- ave(pdata$white_asian, pdata$schid)
+pdata$freelunch_m   <- ave(pdata$freelunch,   pdata$schid)
+
+# 確保無 NA 值
+pdata_clean <- na.omit(pdata)
+
+# Mundlak 模型
+mundlak_model <- plm(readscore ~ small + aide + tchexper + boy + white_asian + freelunch +
+                       small_m + aide_m + tchexper_m + boy_m + white_asian_m + freelunch_m,
+                     data = pdata_clean,
+                     model = "random")
+
+summary(mundlak_model)
