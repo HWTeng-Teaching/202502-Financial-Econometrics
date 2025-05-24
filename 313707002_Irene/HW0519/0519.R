@@ -92,22 +92,41 @@ library(plm)
 library(lmtest)
 library(sandwich)
 
-data("star", package="plm")
-# schid = school id, id = student id
-pdat <- pdata.frame(star, index = c("schid","id"))
+pdata <- pdata.frame(star, index = c("schid", "id"))
 
-pdat$small_m      <- ave(pdat$small,       pdat$schid)
-pdat$aide_m       <- ave(pdat$aide,        pdat$schid)
-pdat$tchexper_m   <- ave(pdat$tchexper,    pdat$schid)
-pdat$boy_m        <- ave(pdat$boy,         pdat$schid)
-pdat$white_asian_m<- ave(pdat$white_asian, pdat$schid)
-pdat$freelunch_m  <- ave(pdat$freelunch,   pdat$schid)
+fe_b <- plm(readscore ~ small + aide + tchexper + boy + white_asian + freelunch,
+            data = pdata, model = "within")
 
-re_mundlak <- plm(
-  readscore ~ small + aide + tchexper + boy + white_asian + freelunch
-  + small_m + aide_m + tchexper_m + boy_m + white_asian_m + freelunch_m,
-  data  = pdat,
-  model = "random"
-)
+re_d <- plm(readscore ~ small + aide + tchexper + boy + white_asian + freelunch,
+            data = pdata, model = "random", random.method = "swar")
 
-summary(re_mundlak)
+haus <- phtest(fe_b, re_d)
+
+tv_raw <- c("small", "aide", "tchexper", "freelunch")
+
+varying <- tv_raw[
+  sapply(tv_raw, function(v){
+    all(tapply(star[[v]], star$schid, var, na.rm = TRUE) > 0, na.rm = TRUE)
+  })
+]
+
+sch_avg <- star %>% 
+  group_by(schid) %>% 
+  summarise(across(c(small, aide, tchexper,
+                     boy, white_asian, freelunch),
+                   mean, .names = "{.col}_avg"))
+
+star_m <- left_join(star, sch_avg, by = "schid") %>%
+  pdata.frame(index = c("schid","id"))
+
+form_m <- readscore ~ small + aide + tchexper + boy + white_asian + freelunch +
+  small_avg + aide_avg + tchexper_avg +
+  boy_avg + white_asian_avg + freelunch_avg
+
+ols_m   <- lm(form_m, data = star_m)
+vc_cl   <- vcovCL(ols_m, cluster = ~ schid)
+
+linearHypothesis(ols_m,
+                 c("small_avg = 0", "aide_avg = 0", "tchexper_avg = 0",
+                   "boy_avg = 0", "white_asian_avg = 0", "freelunch_avg = 0"),
+                 vcov. = vc_cl)
