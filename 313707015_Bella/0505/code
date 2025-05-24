@@ -1,0 +1,227 @@
+#11.28(b) --------------------------------------------------------------------
+library(AER)
+data("truffles")
+
+# 將價格 P 作為被解變數，使用 Q, PS, DI 為需求方程的解釋變數
+demand_2sls <- ivreg(p ~ q + ps + di | ps + di + pf, data = truffles)
+
+# 供給方程：價格 P 被解出，Q 和 PF 作為解釋變數
+supply_2sls <- ivreg(p ~ q + pf | di + ps + pf, data = truffles)
+
+# 顯示方程式估計結果
+summary(demand_2sls, diagnostics = TRUE)
+summary(supply_2sls, diagnostics = TRUE)
+
+#11.28(c) --------------------------------------------------------------------
+# 取得需求方程式係數
+coefs <- coef(demand_2sls)
+
+# 計算自變數平均值
+means <- colMeans(truffles[, c("q", "ps", "di")])
+
+# 在平均值下估計價格 P
+P_at_means <- coefs["(Intercept)"] + 
+              coefs["q"] * means["q"] + 
+              coefs["ps"] * means["ps"] + 
+              coefs["di"] * means["di"]
+
+cat("平均價格 P =", P_at_means, "\n")
+cat("平均數量 Q =", means["q"], "\n")
+
+# 計算需求價格彈性
+delta_2 <- coefs["q"]
+elasticity <- (1 / delta_2) * (P_at_means / means["q"])
+cat("需求價格彈性 =", elasticity, "\n")
+
+#11.28(d) --------------------------------------------------------------------
+library(ggplot2)
+
+# 需求方程式係數
+d_coefs <- coef(demand_2sls)
+# 供給方程式係數
+s_coefs <- coef(supply_2sls)
+
+# 固定外生變數
+DI_star <- 3.5
+PF_star <- 23
+PS_star <- 22
+
+# 設定 Q 範圍
+Q_vals <- seq(min(truffles$q), max(truffles$q), length.out = 100)
+
+# 計算需求價格
+P_demand <- d_coefs["(Intercept)"] + d_coefs["q"] * Q_vals + d_coefs["ps"] * PS_star + d_coefs["di"] * DI_star
+
+# 計算供給價格
+P_supply <- s_coefs["(Intercept)"] + s_coefs["q"] * Q_vals + s_coefs["pf"] * PF_star
+
+# 建立資料框
+df <- data.frame(
+  Q = rep(Q_vals, 2),
+  P = c(P_demand, P_supply),
+  Curve = factor(rep(c("Demand", "Supply"), each = length(Q_vals)))
+)
+
+# 繪圖
+ggplot(df, aes(x = Q, y = P, color = Curve)) +
+  geom_line(size = 1) +
+  labs(title = "Supply and Demand Curves",
+       x = "Quantity (Q)",
+       y = "Price (P)") +
+  theme_minimal()
+
+# 11.28(e) --------------------------------------------------------------------
+# 固定外生變數
+DI_star <- 3.5
+PF_star <- 23
+PS_star <- 22
+
+# 需求方程式係數（δ）
+d_coefs <- coef(demand_2sls)
+
+# 供給方程式係數（φ）
+s_coefs <- coef(supply_2sls)
+
+# Step 1: 由供需方程式交點求均衡數量 Q* 和價格 P*
+Q_star <- ((s_coefs["(Intercept)"] - d_coefs["(Intercept)"]) + 
+           s_coefs["pf"] * PF_star - d_coefs["ps"] * PS_star - d_coefs["di"] * DI_star) / 
+           (d_coefs["q"] - s_coefs["q"])
+
+P_star <- d_coefs["(Intercept)"] + d_coefs["q"] * Q_star + d_coefs["ps"] * PS_star + d_coefs["di"] * DI_star
+
+cat("由供需方程式交點計算：\n")
+cat("均衡數量 Q* =", Q_star, "\n")
+cat("均衡價格 P* =", P_star, "\n\n")
+
+# Step 2: 使用簡約式係數計算均衡
+reduced_coefs_Q <- c("(Intercept)"= 7.8951, "ps"= 0.6564, "di"= 2.1672, "pf"= -0.5070)
+reduced_coefs_P <- c("(Intercept)"= -32.5124, "ps"= 1.7081, "di"= 7.6025, "pf"= 1.3539)
+
+Q_reduced <- reduced_coefs_Q["(Intercept)"] + reduced_coefs_Q["ps"] * PS_star + reduced_coefs_Q["di"] * DI_star + reduced_coefs_Q["pf"] * PF_star
+P_reduced <- reduced_coefs_P["(Intercept)"] + reduced_coefs_P["ps"] * PS_star + reduced_coefs_P["di"] * DI_star + reduced_coefs_P["pf"] * PF_star
+
+cat("由簡約式計算：\n")
+cat("均衡數量 Q_reduced =", Q_reduced, "\n")
+cat("均衡價格 P_reduced =", P_reduced, "\n\n")
+cat("兩種方法均衡值差異：\n")
+cat("價格差異 =", abs(P_star - P_reduced), "\n")
+cat("數量差異 =", abs(Q_star - Q_reduced), "\n")
+
+# 11.28(f) --------------------------------------------------------------------
+# 需求方程式 OLS
+demand_ols <- lm(p ~ q + ps + di, data = truffles)
+
+# 供給方程式 OLS
+supply_ols <- lm(p ~ q + pf, data = truffles)
+
+# 顯示需求方程式結果
+summary(demand_ols)
+
+# 顯示供給方程式結果
+summary(supply_ols)
+
+#11.30(a)--------------------------------------------------------------------
+# 載入資料
+data("klein")
+
+# OLS估計投資方程式
+investment_ols <- lm(i ~ p + plag + klag, data = klein)
+
+# 顯示估計結果
+summary(investment_ols)
+
+#11.30(b) --------------------------------------------------------------------
+library(car)  # linearHypothesis函數所在套件
+
+data("klein")
+
+# 選擇資料（去除缺失值）
+df <- na.omit(klein)
+
+# 簡約式迴歸模型，利潤p對八個變數估計（包含plag, klag, elag）
+rf_P <- lm(p ~ g + w2 + tx + time + plag + klag + elag, data = df)
+
+# 顯示迴歸結果
+summary(rf_P)
+
+# 聯合假設檢定（除plag, klag外的五個變數係數是否全為0）
+joint_test <- linearHypothesis(
+  rf_P,
+  c("g = 0", "w2 = 0", "tx = 0", "time = 0", "elag = 0")
+)
+
+cat("\nJoint F-test for (g, w2, tx, time, elag):\n")
+print(joint_test)
+
+# 儲存殘差與擬合值
+df$profit_residuals <- residuals(rf_P)
+df$profit_fitted <- fitted(rf_P)
+
+#11.30(c) --------------------------------------------------------------------
+library(car)
+
+# 先建立沒有遺漏值的完整資料
+df <- na.omit(klein)
+
+# 簡約式迴歸
+rf_P <- lm(p ~ g + w2 + tx + time + plag + klag + elag, data = df)
+
+# 將殘差存入完整資料集
+df$vhat <- residuals(rf_P)
+
+# 結構方程加入vhat檢測內生性
+hausman_test <- lm(i ~ p + plag + klag + vhat, data = df)
+
+summary(hausman_test)
+
+#11.30(d) --------------------------------------------------------------------
+library(AER)
+
+iv_model <- ivreg(i ~ p + plag + klag | g + w2 + tx + time + elag + plag + klag, data = df)
+
+summary(iv_model)
+
+#11.30 (e) --------------------------------------------------------------------
+# 第一階段回歸：用外生與預定變數預測 p
+rf_P <- lm(p ~ g + w2 + tx + time + elag + plag + klag , data = df)
+df$phat <- fitted(rf_P)  
+
+# 第二階段回歸：以 phat 代替 p
+second_stage <- lm(i ~ phat + plag + klag, data = df)
+
+# 顯示結果
+summary(second_stage)
+
+#11.30(f) --------------------------------------------------------------------
+library(AER)
+
+# 1. 資料準備
+df <- na.omit(klein)
+
+# 2. 2SLS 回歸
+iv_model <- ivreg(i ~ p + plag + klag | g + w2 + tx + time + elag + plag + klag, data = df)
+
+# 3. 取出第二階段殘差
+df$e2_hat <- residuals(iv_model)
+
+# 4. 用殘差對所有工具變數做 OLS 回歸（輔助回歸）
+sargan_aux <- lm(e2_hat ~ g + w2 + tx + time + elag + plag + klag, data = df)
+
+# 5. 計算檢定統計量 TR^2
+T <- nrow(df)  # 樣本數
+R2 <- summary(sargan_aux)$r.squared
+TR2 <- T * R2
+
+# 6. 計算卡方臨界值（自由度 = 剩餘工具變數數 = 4）
+dfree <- 4
+crit_val <- qchisq(0.95, dfree)
+
+# 7. 輸出檢定結果
+cat("Sargan 檢定統計量 TR^2 =", round(TR2, 3), "\n")
+cat("95% 卡方臨界值 χ²(4) =", round(crit_val, 3), "\n")
+
+if(TR2 > crit_val){
+  cat("結論：拒絕虛無假設，工具變數可能無效。\n")
+} else {
+  cat("結論：無法拒絕虛無假設，工具變數有效。\n")
+}

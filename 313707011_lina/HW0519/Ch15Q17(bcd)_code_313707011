@@ -1,0 +1,41 @@
+# 設定資料集的 URL
+url <- "https://www.principlesofeconometrics.com/poe5/data/rdata/liquor5.rdata"
+download.file(url, destfile = "liquor5.rdata")  # 下載資料集並儲存為本地檔案
+load("liquor5.rdata")  # 載入資料集
+names(liquor5)  # 確認變數名稱
+str(liquor5) # 查看資料結構
+
+library(dplyr)
+library(plm)
+
+# 15.17(b)
+# 將資料轉為 panel 格式
+pdata <- pdata.frame(liquor5, index = c("hh", "year"))
+
+# 使用 plm() 建立 random effects model
+re_model <- plm(liquor ~ income, data = pdata, model = "random")
+
+summary(re_model)
+confint(re_model, level = 0.95)
+
+# 15.17(c)
+# 用 plm 建立 pooling 模型（等同 OLS）
+pooling_model <- plm(liquor ~ income, data = pdata, model = "pooling")
+
+plmtest(pooling_model, type = "bp")   # LM test for random effects
+
+
+# 15.17(d)
+# 計算每戶的 INCOME 平均值，並合併回原資料
+liquor5 <- liquor5 %>%
+  group_by(hh) %>%
+  mutate(INCOMEM = mean(income)) %>%
+  ungroup()
+
+# 轉換成 panel 資料格式
+pdata_m <- pdata.frame(liquor5, index = c("hh", "year"))
+
+# Mundlak 增強模型：包含時間變異 (income) 與跨期平均 (incomem)
+mundlak_model <- plm(liquor ~ income + INCOMEM, data = pdata_m, model = "random")
+summary(mundlak_model)
+
