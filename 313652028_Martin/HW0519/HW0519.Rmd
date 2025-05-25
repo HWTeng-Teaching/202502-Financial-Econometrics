@@ -1,0 +1,282 @@
+---
+title: "HW0519"
+author: "Yung-Jung Cheng"
+date: "2025-05-25"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(POE5Rdata)
+```
+# 15.6
+
+Using the NLS panel data on $N = 716$ young women, we consider only years 1987 and 1988.  
+We are interested in the relationship between $\ln(\text{WAGE})$ and experience, its square, and indicator variables for living in the south and union membership.  
+Some estimation results are in Table 15.10.
+
+### Table 15.10: Estimation Results for Exercise 15.6
+
+|               | (1) OLS 1987 | (2) OLS 1988 | (3) FE    | (4) FE Robust | (5) RE    |
+|---------------|--------------|--------------|-----------|----------------|-----------|
+| **C**         | 0.9348       | 0.8993       | 1.5468    | 1.5468         | 1.1497    |
+|               | (0.2010)     | (0.2407)     | (0.2522)  | (0.2688)       | (0.1597)  |
+| **EXPER**     | 0.1270       | 0.1265       | 0.0575    | 0.0575         | 0.0986    |
+|               | (0.0295)     | (0.0323)     | (0.0330)  | (0.0328)       | (0.0200)  |
+| **EXPER²**    | -0.0033      | -0.0031      | -0.0012   | -0.0012        | -0.0023   |
+|               | (0.0011)     | (0.0011)     | (0.0011)  | (0.0011)       | (0.0007)  |
+| **SOUTH**     | -0.2128      | -0.2384      | -0.3261   | -0.3261        | -0.2326   |
+|               | (0.0338)     | (0.0344)     | (0.1258)  | (0.2495)       | (0.0317)  |
+| **UNION**     | 0.1445       | 0.1102       | 0.0822    | 0.0822         | 0.1027    |
+|               | (0.0382)     | (0.0387)     | (0.0312)  | (0.0367)       | (0.0245)  |
+| **N**         | 716          | 716          | 1432      | 1432           | 1432      |
+
+*(standard errors in parentheses)*
+
+---
+
+
+## 15.6(f)
+Column (5) contains the random effects estimates. Which coefficients, apart from the intercepts, show the most difference from the fixed effects estimates? Use the Hausman test statistic (15.36) to test whether there are significant differences between the random effects estimates and the fixed effects estimates in column (3) (Why that one?). Based on the test results, is random effects estimation in this model appropriate?
+
+### Ans
+
+The largest difference between the random effects (RE) estimates in column (5) and the fixed effects (FE) estimates in column (3) is in the coefficient for $EXPER$. In the RE model, the coefficient is 0.0986, while in the FE model it is only 0.0575.
+
+This difference is critical because $EXPER$ is likely correlated with unobserved individual-specific characteristics (e.g., ability), violating the RE assumption that $u_i$ is uncorrelated with the regressors.
+
+To test whether RE is appropriate, we apply the Hausman test (equation 15.36), which compares FE and RE estimates. The null hypothesis is that the RE estimator is consistent (i.e., no correlation between $u_i$ and the regressors). A significant test statistic implies that RE is inconsistent and FE should be preferred.
+
+As indicated in the text, the Hausman test rejects the null hypothesis. Therefore, the **random effects model is not appropriate**, and the **fixed effects model should be used**.
+
+
+---
+
+# 15.17
+
+The data file **liquor** contains observations on annual expenditure on liquor ($LIQUOR$) and annual income ($INCOME$) (both in thousands of dollars) for 40 randomly selected households for three consecutive years.
+
+
+
+## 15.17(b)
+Estimate the model  
+$LIQUOR_{it} = \beta_1 + \beta_2 INCOME_{it} + u_i + e_{it}$  
+using random effects. Construct a 95% interval estimate of the coefficient on $INCOME$. How does it compare to the interval in part (a)?
+
+### Ans
+```{r 17b}
+library(plm)
+
+pdata <- pdata.frame(liquor5, index = c("hh", "year"))
+model_15_17b <- plm(liquor ~ income, data = pdata, model = "random")
+summary(model_15_17b)
+confint(model_15_17b)
+
+```
+
+
+We estimated the following random effects model:
+
+$$
+LIQUOR_{it} = \beta_1 + \beta_2 \cdot INCOME_{it} + u_i + e_{it}
+$$
+
+From the estimation output:
+
+- Estimated coefficient: $\hat{\beta}_2 = 0.02658$
+- Standard error: $0.00701$
+- $z$-value: $3.790$
+- $p$-value: $< 0.001$
+
+The 95% confidence interval for $\beta_2$ is:
+
+$$
+[0.0128,\ 0.0403]
+$$
+
+This interval does **not** include zero, indicating a statistically significant positive effect of income on liquor expenditure at the 5% level. Compared to part (a), the estimate is similar in magnitude, but is more precise and statistically significant in the random effects model.
+
+---
+
+
+## 15.17(c)
+Test for the presence of random effects using the LM statistic in equation (15.35). Use the 5% level of significance.
+
+### Ans
+```{r 17c}
+# LM test for random effects
+plmtest(liquor ~ income, data = pdata, effect = "individual", type = "bp")
+
+```
+
+
+We performed the Breusch-Pagan Lagrange Multiplier (LM) test for random effects. The null and alternative hypotheses are:
+
+- $H_0$: No individual-specific effects (pooled OLS is appropriate)
+- $H_1$: Presence of random effects
+
+Test result:
+
+- $\chi^2 = 20.68$, degrees of freedom = 1
+- $p$-value = $5.43 \times 10^{-6}$
+
+Since the p-value is far below 0.05, we **reject the null hypothesis**. This provides strong evidence in favor of using a random effects model rather than pooled OLS.
+
+
+---
+
+## 15.17(d)
+For each individual, compute the time averages for the variable $INCOME$. Call this variable $INCOMEM$. Estimate the model  
+$LIQUOR_{it} = \beta_1 + \beta_2 INCOME_{it} + \gamma INCOMEM_i + c_i + e_{it}$  
+using the random effects estimator. Test the significance of the coefficient $\gamma$ at the 5% level. Based on this test, what can we conclude about the correlation between the random effect $u_i$ and $INCOME$? Is it OK to use the random effects estimator for the model in (b)?
+
+### Ans
+```{r 17d,warning=FALSE,message=FALSE}
+# 計算每個個體的 INCOMEM（時間平均）
+library(dplyr)
+pdata <- pdata %>%
+  group_by(hh) %>%
+  mutate(INCOMEM = mean(income)) %>%
+  ungroup()
+
+# 估計擴增的 RE 模型（含 INCOMEM）
+model_15_17d <- plm(liquor ~ income + INCOMEM, data = pdata, model = "random")
+
+# 顯示估計結果
+summary(model_15_17d)
+
+```
+
+
+We estimated the following augmented random effects model:
+
+$$
+LIQUOR_{it} = \beta_1 + \beta_2 \cdot INCOME_{it} + \gamma \cdot INCOMEM_i + u_i + e_{it}
+$$
+
+From the output:
+
+- Estimate of $\gamma$ (coefficient on $INCOMEM$): $0.00658$
+- Standard error: $0.0222$
+- $z$-value: $0.296$
+- $p$-value: $0.767$
+
+Since the $p$-value is far above 0.05, we **fail to reject the null hypothesis** that $\gamma = 0$. This indicates that the time-averaged regressor $INCOMEM$ is not significantly correlated with the error component $u_i$.
+
+**Conclusion:** We do not find evidence of correlation between the individual-specific effect $u_i$ and $INCOME$. Therefore, it is appropriate to use the random effects estimator as in part (b).
+
+---
+
+# 15.20
+
+This exercise uses data from the STAR experiment introduced to illustrate fixed and random effects for grouped data. In the STAR experiment, children were randomly assigned within schools into three types of classes: small classes with 13–17 students, regular-sized classes with 22–25 students, and regular-sized classes with a full-time teacher aide to assist the teacher. Student scores on achievement tests were recorded as well as some information about the students, teachers, and schools. Data for the kindergarten classes are contained in the data file star.
+
+---
+
+## 15.20(d)
+Reestimate the model in part (a) with school random effects. Compare the results with those from parts (a) and (b). Are there any variables in the equation that might be correlated with the school effects? Use the LM test for the presence of random effects.
+
+### Ans
+```{r 20d, warning=FALSE}
+library(plm)
+
+# 重新建立 pdata_star，保留原名不更動
+pdata_star <- pdata.frame(star, index = c("schid", "id"))
+
+# 隨機效應模型
+model_15_20d <- plm(readscore ~ small + aide + tchexper + boy + white_asian + freelunch,
+                    data = pdata_star, model = "random")
+
+summary(model_15_20d)
+
+# LM 檢定：是否需要隨機效應
+plmtest(readscore ~ small + aide + tchexper + boy + white_asian + freelunch,
+        data = pdata_star, effect = "individual", type = "bp")
+
+
+```
+
+The random effects model indicates that students in small classes score significantly higher in reading (about 6.46 points, p < 0.01), consistent with the findings from both the OLS and fixed effects models. The effect of having a teacher’s aide remains small and statistically insignificant. Teacher experience has a significant but smaller positive effect (about 0.30 points per year), while boys perform worse than girls (−5.51 points), and White/Asian students perform better than others (+7.35 points). Students receiving free lunch still score significantly lower (−14.58 points).
+
+The Breusch-Pagan Lagrange Multiplier (LM) test yields a chi-squared value of 6677.4 with a p-value < 2.2e-16, strongly rejecting the null hypothesis of no random effects. This provides clear statistical justification for using a random effects model over a pooled OLS model.
+
+However, whether random or fixed effects are more appropriate depends on whether the unobserved school-specific effects are correlated with the regressors. If they are, the random effects estimates would be inconsistent.
+
+
+---
+
+## 15.20(e)
+Using the *t*-test statistic in equation (15.36) and a 5% significance level, test whether there are any significant differences between the fixed effects and random effects estimates of the coefficients on SMALL, AIDE, TCHEXPER, WHITE_ASIAN, and FREELUNCH. What are the implications of the test outcomes? What happens if we apply the test to the fixed and random effects estimates of the coefficient on BOY?
+
+### Ans
+```{r 20e,warning=FALSE}
+library(plm)
+
+# 建立 panel 資料
+pdata_star <- pdata.frame(star, index = c("schid", "id"))
+
+# 固定效應模型
+fe_model <- plm(readscore ~ small + aide + tchexper + boy + white_asian + freelunch,
+                data = pdata_star, model = "within")
+
+# 隨機效應模型
+re_model <- plm(readscore ~ small + aide + tchexper + boy + white_asian + freelunch,
+                data = pdata_star, model = "random")
+
+# Hausman 檢定
+phtest(fe_model, re_model)
+
+```
+
+The Hausman test yields a chi-squared statistic of 13.809 with 6 degrees of freedom and a p-value of 0.03184. Since the p-value is below the 5% significance level, we reject the null hypothesis that the random effects model provides consistent estimates.
+
+This implies that the random effects model is inconsistent due to correlation between the regressors and the unobserved school-specific effects. Therefore, the fixed effects model is preferred for this analysis.
+
+In particular, this result suggests that at least one of the regressors—such as SMALL, AIDE, TCHEXPER, WHITE_ASIAN, or FREELUNCH—is correlated with school-level unobserved heterogeneity, which violates the random effects assumption of strict exogeneity.
+
+If we were to apply the same test to individual coefficients (e.g., BOY), and we found no significant difference between the fixed and random effects estimates, it would suggest that the gender effect is not confounded by school-specific factors and could be consistently estimated under either model.
+
+
+---
+
+## 15.20(f)
+Create school-averages of the variables and carry out the Mundlak test for correlation between them and the unobserved heterogeneity.
+
+### Ans
+```{r create-mundlak-data, include=FALSE}
+library(dplyr)
+mundlak_data <- star %>%
+  group_by(schid) %>%
+  mutate(across(c(small, aide, tchexper, boy, white_asian, freelunch),
+                ~ mean(.), .names = "{.col}_mean")) %>%
+  ungroup()
+```
+
+```{r 20f}
+# 使用 lm() 搭配 cluster-robust 標準誤（需 sandwich + lmtest 套件）
+library(lmtest)
+library(sandwich)
+
+# OLS with Mundlak means
+lm_mundlak <- lm(readscore ~ small + tchexper + freelunch +
+                              small_mean + tchexper_mean + freelunch_mean,
+                 data = mundlak_data)
+
+# Clustered SE by schid
+cluster_se <- vcovCL(lm_mundlak, cluster = ~ schid)
+
+# 檢定每個係數的顯著性（使用群聚標準誤）
+coeftest(lm_mundlak, vcov = cluster_se)
+
+
+```
+
+To test for correlation between the explanatory variables and the unobserved school-specific effects, we use the Mundlak approach. This involves adding school-level averages (group means) of the key regressors to a random effects-type model. If these means are statistically significant, it suggests that the corresponding explanatory variables are correlated with the unobserved heterogeneity, thereby violating the assumptions of the random effects model.
+
+From the regression output using OLS with clustered standard errors:
+
+- The group mean of teacher experience (`tchexper_mean`) is statistically significant (p = 0.0458), indicating that teacher experience is correlated with unobserved school-level characteristics.
+- In contrast, the group means of `small` and `freelunch` are not statistically significant, suggesting that these variables may not be strongly correlated with the unobserved school-specific effects.
+
+Overall, the significance of `tchexper_mean` implies that at least some explanatory variables are correlated with the school-specific effects. This provides further evidence in favor of the fixed effects model over the random effects model for this dataset.
+
