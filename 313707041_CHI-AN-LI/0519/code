@@ -20,3 +20,40 @@ plmtest(liquor ~ income, data = pdata, type = "bp")
 pdata$incomem <- ave(pdata$income, pdata$hh)
 cre_model <- plm(liquor ~ income + incomem, data = pdata, model = "random")
 summary(cre_model)
+#15.20
+#(d)
+pdata <- pdata.frame(star, index = c("schid", "id"))
+re_model <- plm(readscore ~ small + aide + tchexper + boy + white_asian + freelunch,
+                data = pdata, model = "random")
+
+summary(re_model)
+#(e)
+# 先建 FE 模型
+fe_model <- plm(readscore ~ small + aide + tchexper + boy + white_asian + freelunch,
+                data = pdata, model = "within")
+
+# 抽出 small 的係數與標準誤（你可替換成其他變數）
+b_fe <- coef(fe_model)["small"]
+b_re <- coef(re_model)["small"]
+se_fe <- sqrt(vcov(fe_model)["small", "small"])
+se_re <- sqrt(vcov(re_model)["small", "small"])
+
+# 計算 t 值（公式 15.36）
+t_val <- (b_fe - b_re) / sqrt(se_fe^2 - se_re^2)
+t_val
+#(f)
+# 加入每所學校的平均解釋變數
+pdata$smallm      <- ave(pdata$small, pdata$schid)
+pdata$aidem       <- ave(pdata$aide, pdata$schid)
+pdata$tchexperm   <- ave(pdata$tchexper, pdata$schid)
+pdata$boym        <- ave(pdata$boy, pdata$schid)
+pdata$wam         <- ave(pdata$white_asian, pdata$schid)
+pdata$freelunchm  <- ave(pdata$freelunch, pdata$schid)
+
+# 建立 CRE 模型（Mundlak）
+cre_model <- plm(readscore ~ small + aide + tchexper + boy + white_asian + freelunch +
+                   smallm + aidem + tchexperm + boym + wam + freelunchm,
+                 data = pdata, model = "random")
+
+summary(cre_model)
+
