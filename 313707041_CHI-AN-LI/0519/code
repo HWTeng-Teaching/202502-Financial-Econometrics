@@ -1,0 +1,22 @@
+##15.17
+# (b)
+library(plm)
+
+# 定義 panel 資料格式
+pdata <- pdata.frame(liquor5, index = c("hh", "year"))
+
+# (b) Random effects model: liquor ~ income
+re_model <- plm(liquor ~ income, data = pdata, model = "random")
+
+# 顯示估計結果
+summary(re_model)
+
+# 95% 信賴區間
+confint(re_model)
+
+#(c)
+plmtest(liquor ~ income, data = pdata, type = "bp")
+#(d)
+pdata$incomem <- ave(pdata$income, pdata$hh)
+cre_model <- plm(liquor ~ income + incomem, data = pdata, model = "random")
+summary(cre_model)
