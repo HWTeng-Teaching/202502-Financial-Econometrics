@@ -1,0 +1,58 @@
+---
+title: "HW0512 - CH15 Questions 20, 17"
+author: "鄭凱鴻"
+output: html_document
+date: "2025-05-19"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# **CH15 Question 20**
+
+```{r}
+# 設定工作目錄
+setwd("C:/Users/User/Downloads/poe5rdata")
+
+# 載入 .rdata 檔案
+load("star.rdata")
+
+# 查看載入的物件
+ls()
+
+# 假設資料名稱叫 star，先看前幾筆
+head(star)
+
+str(star)
+
+head(star)
+
+```
+
+## **(a) **
+```{r}
+# 線性迴歸
+model <- lm(readscore ~ small + aide + tchexper + boy + white_asian + freelunch, data = star)
+
+# 顯示模型摘要
+summary(model)
+```
+
+## **(b) **
+```{r}
+# 安裝並載入 plm 套件
+install.packages("plm")
+library(plm)
+
+# 設定資料為 panel data（橫斷面單期）
+pdata <- pdata.frame(star, index = "schid")
+
+
+# 套用學校固定效果模型（固定 school，非時間）
+model_fe <- plm(readscore ~ small + aide + tchexper + boy + white_asian + freelunch,
+                data = pdata, model = "within", effect = "individual")
+
+# 顯示結果
+summary(model_fe)
+```
